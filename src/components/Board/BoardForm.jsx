@@ -1,1 +1,7 @@
-// 게시글 작성+수정 컴포넌트
+import React from 'react';
+
+const Write = () => {
+  return <p>안녕</p>;
+};
+
+export default Write;
