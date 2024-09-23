@@ -7,17 +7,17 @@ const Header = ({ isLoggedIn }) => {
   return (
     <header>
       <div className="inner flex">
-        <h1 clssName="logo">
+        <h1 className="logo">
 					<a href="/"><img src={logo} alt="SOLT" /></a>
 				</h1>
 
         <nav>
             <ul className="flex">
 							<li>
-									<a href="/plan/survey">여행 계획 만들기</a>
+									<Link to="/plan/survey">여행 계획 만들기</Link>
 							</li>
 							<li>
-									<a href="/board/list">플랜 공유하기</a>
+									<Link to="/board/list">플랜 공유하기</Link>
 							</li>
 						</ul>
 				</nav>
