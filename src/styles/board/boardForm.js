@@ -1,0 +1,164 @@
+import styled from 'styled-components';
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1600px;
+`;
+
+export const InputGroup = styled.div`
+  margin-bottom: 15px;
+`;
+
+export const TitleInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  font-family: 'Paperlogy', sans-serif;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  transition: border-color 0.3s;
+  color: black;
+  margin-top: 10px;
+
+  &:focus {
+    border-bottom: 2px solid #007bff;
+  }
+`;
+
+export const ContentInput = styled.textarea`
+  width: 100%;
+  padding: 10px;
+  font-family: 'Paperlogy', sans-serif;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  color: black;
+  height: 300px;
+  resize: none;
+
+  &:focus {
+    border-color: #007bff;
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+`;
+
+export const Button = styled.button`
+  width: 100px;
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Paperlogy', sans-serif;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+`;
+
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 50vh;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative; /* 부모 요소에 상대 위치 추가 */
+`;
+
+export const Title = styled.h3`
+  font-family: 'Paperlogy', sans-serif;
+  font-size: 24px;
+  text-align: center;
+`;
+
+export const PlanSelect = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0px;
+  margin-left: 5px;
+`;
+
+export const PlanStyledBox = styled.div`
+  width: 100%;
+  height: 150px; /* 플랜 박스 높이 */
+  line-height: 80px;
+  border: 2px solid #9999; /* 테두리 색상 */
+  border-radius: 5px;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+`;
+
+export const ImageStyledBox = styled.div`
+  width: 100%;
+  height: 250px; /* 이미지 첨부 박스 높이 */
+  line-height: 110px;
+  border: 2px solid #999;
+  border-radius: 5px;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  color: #999;
+`;
+
+export const InputLabel = styled.label`
+  padding: 5px 10px;
+  font-size: 12px;
+  font-family: 'Paperlogy', sans-serif;
+  color: black;
+  border: 2px solid black;
+  background-color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-left: 10px;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+`;
+
+export const HiddenFileInput = styled.input`
+  display: none;
+`;
+
+export const RemoveButton = styled.button`
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.5); /* 투명도 있는 흰색 배경 */
+  border: none;
+  color: black;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.8); /* 호버 시 약간 더 밝게 */
+  }
+`;

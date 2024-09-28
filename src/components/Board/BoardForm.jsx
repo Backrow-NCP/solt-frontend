@@ -1,95 +1,171 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import PlanPopup from './PlanPopup';
+import {
+  Form,
+  InputGroup,
+  TitleInput,
+  ContentInput,
+  ButtonGroup,
+  Container,
+  Title,
+  PlanSelect,
+  PlanStyledBox,
+  ImageStyledBox,
+  HiddenFileInput,
+  InputLabel,
+  RemoveButton,
+} from '../../styles/board/boardForm';
 
-const BoardForm = () => {
+const BoardForm = ({ onSubmit, buttonText }) => {
   const [boardTitle, setBoardTitle] = useState('');
   const [boardContent, setBoardContent] = useState('');
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleFileChange = e => {
+    const files = Array.from(e.target.files);
+    const validFiles = files.filter(file => file.type.startsWith('image/'));
+    if (validFiles.length !== files.length) {
+      alert('이미지 파일만 업로드 가능합니다.');
+    }
+    setSelectedFiles(prevFiles => [...prevFiles, ...validFiles]);
+  };
 
-    // 제출 시 서버에 데이터를 전송하는 로직을 추가할 수 있습니다.
-    console.log('제출된 게시글:', { title: boardTitle, content: boardContent });
+  const handleRemoveFile = indexToRemove => {
+    setSelectedFiles(prevFiles =>
+      prevFiles.filter((_, index) => index !== indexToRemove)
+    );
+  };
 
-    // 제출 후 입력값 초기화
-    setBoardTitle('');
-    setBoardContent('');
+  const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
   };
 
   return (
-    <div style={styles.container}>
-      <h2>게시글 작성</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.inputGroup}>
-          <label htmlFor="title">제목:</label>
-          <input
+    <Container>
+      <Form onSubmit={onSubmit}>
+        <PlanSelect>
+          <Title>나의 플랜</Title>
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+            <InputLabel htmlFor="plan" onClick={togglePopup}>
+              플랜 선택
+            </InputLabel>
+            {isPopupOpen && (
+              <PlanPopup
+                onClose={closePopup}
+                style={{
+                  position: 'absolute',
+                  top: '-5px',
+                  left: '105%',
+                }}
+              />
+            )}
+          </div>
+        </PlanSelect>
+
+        <PlanStyledBox>선택된 플랜이 여기에 표시됩니다</PlanStyledBox>
+
+        <InputGroup>
+          <TitleInput
             type="text"
             id="title"
             value={boardTitle}
             onChange={e => setBoardTitle(e.target.value)}
+            placeholder="제목을 입력하세요"
             required
-            style={styles.input}
           />
-        </div>
+        </InputGroup>
 
-        <div style={styles.inputGroup}>
-          <label htmlFor="content">내용:</label>
-          <textarea
+        <InputGroup>
+          <ContentInput
             id="content"
             value={boardContent}
             onChange={e => setBoardContent(e.target.value)}
+            placeholder="내용을 입력하세요"
             required
             rows="5"
-            style={styles.textarea}
-          ></textarea>
-        </div>
+          />
+        </InputGroup>
 
-        <button type="submit" style={styles.button}>
-          게시글 제출
-        </button>
-      </form>
-    </div>
+        <PlanSelect>
+          <Title>이미지 첨부</Title>
+          <InputLabel htmlFor="file">파일 선택</InputLabel>
+          <HiddenFileInput
+            type="file"
+            accept="image/*"
+            id="file"
+            onChange={handleFileChange}
+            multiple
+          />
+        </PlanSelect>
+
+        <ImageStyledBox>
+          {selectedFiles.length > 0 ? (
+            <div
+              style={{
+                display: 'flex',
+                gap: '10px',
+                overflowX: 'auto',
+                justifyContent: 'flex-start',
+              }}
+            >
+              {selectedFiles.map((file, index) => (
+                <div
+                  key={index}
+                  style={{ position: 'relative', display: 'inline-block' }}
+                >
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`thumbnail-${index}`}
+                    style={{
+                      width: '110px',
+                      height: '110px',
+                      objectFit: 'cover',
+                      borderRadius: '5px',
+                      padding: '10px 5px',
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={e => {
+                      handleRemoveFile(index);
+                    }}
+                  >
+                    <RemoveButton
+                      onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleRemoveFile(index);
+                      }}
+                    >
+                      x
+                    </RemoveButton>
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{ textAlign: 'center', width: '100%' }}>
+              선택된 이미지가 없습니다
+            </div>
+          )}
+        </ImageStyledBox>
+
+        <ButtonGroup>
+          <button type="button" className="btn_wht">
+            취소
+          </button>
+          <button type="submit" className="btn_blue">
+            {buttonText}
+          </button>
+        </ButtonGroup>
+      </Form>
+    </Container>
   );
-};
-
-const styles = {
-  container: {
-    maxWidth: '600px',
-    margin: '0 auto',
-    padding: '20px',
-    border: '1px solid #ddd',
-    borderRadius: '10px',
-    backgroundColor: '#f9f9f9',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  inputGroup: {
-    marginBottom: '15px',
-  },
-  input: {
-    width: '100%',
-    padding: '8px',
-    fontSize: '16px',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-  },
-  textarea: {
-    width: '100%',
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-  },
-  button: {
-    padding: '10px 15px',
-    fontSize: '16px',
-    backgroundColor: '#007BFF',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
 };
 
 export default BoardForm;

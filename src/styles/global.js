@@ -119,6 +119,40 @@ const GlobalStyles = createGlobalStyle`
     font-weight: 700;
   }
 
+    /* font */
+  h3 {
+    font-size: 32px;
+    font-weight: 500;
+  }
+	.size_xxs {
+    font-size: 12px;
+	}
+  .size_xs {
+    font-size: 14px;
+	}
+	.size_sm {
+		font-size: 16px;
+	}
+	.size_md {
+		font-size: 18px;
+	}
+	.size_lg {
+		font-size: 20px;
+	}
+	.size_xl {
+		font-size: 24px;
+	}
+  .weight_md {
+    font-weight: 500;
+  }
+  .weight_sb {
+    font-weight: 600;
+  }
+  .weight_b {
+    font-weight: 700;
+  }
+
+
   /* button */
   a[class^="btn_"],
   button[class^="btn_"]  {
@@ -209,6 +243,7 @@ const GlobalStyles = createGlobalStyle`
     pointer-events: none;
     cursor: default;
   }
+
 
 	/* position */
 	.flex {
@@ -475,6 +510,11 @@ const GlobalStyles = createGlobalStyle`
       right: 4%;
       bottom: 60px
     }
+
+
+
+
+
   }
 `;
 
