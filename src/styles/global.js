@@ -123,8 +123,8 @@ const GlobalStyles = createGlobalStyle`
   }
 
   /* button */
-  a[class^="btn_"],
-  button[class^="btn_"]  {
+ a[class^="btn_"],
+    button[class^="btn_"]  {
     display: inline-block;
     position: relative;
     padding: 10px 15px;

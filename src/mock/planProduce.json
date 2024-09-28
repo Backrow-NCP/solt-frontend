@@ -1,0 +1,98 @@
+{
+	"planId": 1,
+	"title": "서울배낭여행",
+	"area" : "서울특별시",
+	"confirm": true,
+	"member": {
+		"memberId": 101,
+		"name": "트래블보이"
+	},
+	"place": [
+		{
+			"placeId": 10,
+			"placeName": "무신사 스탠다드 강남",
+			"description": "무신사 스탠다드 강남점은 인기 의류 브랜드 무신사의 오프라인 매장으로, 다양한 캐주얼 패션 아이템을 직접 체험하고 구매할 수 있는 곳입니다.",
+			"price": 120000,
+			"addr": "서울특별시 서초구 서초대로77길 54",
+			"category": "쇼핑",
+			"startTime": "2024-09-15T10:00:00",
+			"endTime": "2024-09-15T11:40:00",
+			"checker": true
+		},
+		{
+			"placeId": 11,
+			"placeName": "만족오향족발 역삼점",
+			"description": "만족오향족발 역삼점은 부드럽고 풍미 깊은 오향족발로 유명한 맛집입니다.",
+			"price": 17000,
+			"addr": "역삼동 테헤란로25길 15-5 1층",
+			"category": "음식점",
+			"startTime": "2024-09-15T12:00:00",
+			"endTime": "2024-09-15T13:00:00",
+			"checker": true
+		},
+		{
+			"placeId": 12,
+			"placeName": "엠티티 게스트하우스",
+			"description": "엠티티 게스트하우스는 편안한 숙박을 제공하는 서울의 인기 게스트하우스입니다.",
+			"price": 60000,
+			"addr": "서울특별시 강남구 테헤란로22길 63-5 B02호",
+			"category": "숙박",
+			"startTime": "2024-09-15T13:20:00",
+			"endTime": "2024-09-15T13:20:00",
+			"checker": true
+		},
+		{
+			"placeId": 13,
+			"placeName": "도른계 강남역점",
+			"description": "도른계 강남역점은 치킨을 다양한 소스로 맛있게 즐길 수 있는 강남역 근처의 인기 치킨 맛집입니다.",
+			"price": 15900,
+			"addr": "서울 강남구 강남대로96길 12 1층 102호",
+			"category": "음식점",
+			"startTime": "2024-09-15T13:20:00",
+			"endTime": "2024-09-15T13:24:00",
+			"checker": true
+		}
+	],
+	"route": [
+		{
+			"startPlaceId": 10,
+			"endPlaceId": 11,
+			"price": 2000,
+			"transport": {
+					"id": 2,
+					"type": "버스"
+			},
+			"distance": 1.2,
+			"checker": true,
+			"travelTime": 20
+		},
+		{
+			"startPlaceId": 11,
+			"endPlaceId": 12,
+			"price": 0,
+			"transport": {
+					"id": 1,
+					"type": "도보"
+			},
+			"distance": 0.1,
+			"checker": true,
+			"travelTime": 20
+		}
+	],
+	"regDate": "2024-09-15T10:00:00",
+	"modDate": "2024-09-15T13:20:00",
+	"themes": [
+		{
+			"id": "1",
+			"category": "널널한게 좋아요"
+		},
+		{
+			"id": "6",
+			"category": "쇼핑에 관심 있어요"
+		},
+		{
+			"id": "9",
+			"category": "가성비가 좋아요"
+		}
+	]
+} 
