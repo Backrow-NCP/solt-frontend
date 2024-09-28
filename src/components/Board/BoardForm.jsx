@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import PlanPopup from './PlanPopup';
 import {
   Form,
@@ -45,9 +45,28 @@ const BoardForm = ({ onSubmit, buttonText }) => {
     setIsPopupOpen(false);
   };
 
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    // 게시글 데이터를 JSON으로 생성
+    const formData = {
+      title: boardTitle,
+      content: boardContent,
+      memberId: 1, // 예시로 고정 값, 실제로는 로그인된 사용자 정보
+      boardImages: selectedFiles.map((file, index) => ({
+        uuid: URL.createObjectURL(file),
+        fileName: file.name,
+        ord: index,
+      })),
+    };
+
+    // onSubmit을 호출하면서 데이터를 넘겨줌
+    onSubmit(formData);
+  };
+
   return (
     <Container>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={handleSubmit}>
         <PlanSelect>
           <Title>나의 플랜</Title>
           <div style={{ position: 'relative', display: 'inline-block' }}>
