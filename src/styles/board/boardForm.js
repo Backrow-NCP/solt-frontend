@@ -75,7 +75,7 @@ export const ButtonGroup = styled.div`
 export const Container = styled.div`
   display: flex;
   justify-content: center;
-  height: 50vh;
+  height: 80vh;
   padding: 20px;
   box-sizing: border-box;
   position: relative; /* 부모 요소에 상대 위치 추가 */
@@ -109,7 +109,7 @@ export const PlanStyledBox = styled.div`
 
 export const ImageStyledBox = styled.div`
   width: 100%;
-  height: 250px; /* 이미지 첨부 박스 높이 */
+  height: ${props => (props.scrollable ? '122px' : '110px')};
   line-height: 110px;
   border: 2px solid #999;
   border-radius: 5px;
@@ -117,6 +117,26 @@ export const ImageStyledBox = styled.div`
   display: flex;
   align-items: center;
   color: #999;
+  overflow-x: auto; /* 좌우 스크롤 허용 */
+  overflow-y: hidden; /* 세로 스크롤 방지 */
+  white-space: nowrap; /* 이미지들을 한 줄로 정렬 */
+  padding-top: ${props => (props.scrollable ? '5px' : '0')};
+  padding-left: 10px; /* 왼쪽 패딩 추가 */
+`;
+
+export const ImageContainer = styled.div`
+  position: relative;
+  display: inline-block;
+  min-width: 110px; /* 고정된 썸네일 크기 */
+  height: 110px; /* 고정된 썸네일 크기 */
+  margin-right: 10px; /* 이미지 간격 */
+`;
+
+export const ImageThumbnail = styled.img`
+  width: 110px; /* 고정된 이미지 크기 */
+  height: 110px; /* 고정된 이미지 크기 */
+  object-fit: cover;
+  padding: 10px 0px;
 `;
 
 export const InputLabel = styled.label`

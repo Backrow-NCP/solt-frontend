@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PlanPopup from './PlanPopup';
 import {
   Form,
@@ -10,10 +10,12 @@ import {
   Title,
   PlanSelect,
   PlanStyledBox,
-  ImageStyledBox,
   HiddenFileInput,
   InputLabel,
   RemoveButton,
+  ImageContainer,
+  ImageThumbnail,
+  ImageStyledBox,
 } from '../../styles/board/boardForm';
 
 const BoardForm = ({ onSubmit, buttonText }) => {
@@ -21,6 +23,8 @@ const BoardForm = ({ onSubmit, buttonText }) => {
   const [boardContent, setBoardContent] = useState('');
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const imageContainerRef = useRef(null); // 이미지 컨테이너에 대한 참조
 
   const handleFileChange = e => {
     const files = Array.from(e.target.files);
@@ -38,7 +42,15 @@ const BoardForm = ({ onSubmit, buttonText }) => {
   };
 
   const togglePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
+    if (!isButtonClicked) {
+      setIsPopupOpen(!isPopupOpen);
+    }
+    setIsButtonClicked(false);
+  };
+
+  const handleButtonClick = () => {
+    setIsButtonClicked(true);
+    togglePopup();
   };
 
   const closePopup = () => {
@@ -47,22 +59,41 @@ const BoardForm = ({ onSubmit, buttonText }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    // 게시글 데이터를 JSON으로 생성
     const formData = {
       title: boardTitle,
       content: boardContent,
-      memberId: 1, // 예시로 고정 값, 실제로는 로그인된 사용자 정보
+      memberId: 1,
       boardImages: selectedFiles.map((file, index) => ({
         uuid: URL.createObjectURL(file),
         fileName: file.name,
         ord: index,
       })),
     };
-
-    // onSubmit을 호출하면서 데이터를 넘겨줌
     onSubmit(formData);
   };
+
+  const handleScroll = e => {
+    e.preventDefault();
+    const container = imageContainerRef.current;
+    if (container) {
+      container.scrollLeft += e.deltaY; // 수직 스크롤을 좌우 스크롤로 변환
+    }
+  };
+
+  useEffect(() => {
+    const container = imageContainerRef.current;
+    if (container) {
+      // passive: false로 설정하여 preventDefault()가 작동하도록 함
+      container.addEventListener('wheel', handleScroll, { passive: false });
+    }
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      if (container) {
+        container.removeEventListener('wheel', handleScroll);
+      }
+    };
+  }, []);
 
   return (
     <Container>
@@ -70,7 +101,7 @@ const BoardForm = ({ onSubmit, buttonText }) => {
         <PlanSelect>
           <Title>나의 플랜</Title>
           <div style={{ position: 'relative', display: 'inline-block' }}>
-            <InputLabel htmlFor="plan" onClick={togglePopup}>
+            <InputLabel htmlFor="plan" onClick={handleButtonClick}>
               플랜 선택
             </InputLabel>
             {isPopupOpen && (
@@ -122,51 +153,28 @@ const BoardForm = ({ onSubmit, buttonText }) => {
           />
         </PlanSelect>
 
-        <ImageStyledBox>
+        <ImageStyledBox
+          ref={imageContainerRef} // ref 추가
+          scrollable={selectedFiles.length > 9} // selectedFiles가 4개 이상일 때 scrollable prop 설정
+        >
           {selectedFiles.length > 0 ? (
-            <div
-              style={{
-                display: 'flex',
-                gap: '10px',
-                overflowX: 'auto',
-                justifyContent: 'flex-start',
-              }}
-            >
-              {selectedFiles.map((file, index) => (
-                <div
-                  key={index}
-                  style={{ position: 'relative', display: 'inline-block' }}
+            selectedFiles.map((file, index) => (
+              <ImageContainer key={index}>
+                <ImageThumbnail
+                  src={URL.createObjectURL(file)}
+                  alt={`thumbnail-${index}`}
+                />
+                <RemoveButton
+                  onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleRemoveFile(index);
+                  }}
                 >
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={`thumbnail-${index}`}
-                    style={{
-                      width: '110px',
-                      height: '110px',
-                      objectFit: 'cover',
-                      borderRadius: '5px',
-                      padding: '10px 5px',
-                    }}
-                  />
-                  <button
-                    type="button"
-                    onClick={e => {
-                      handleRemoveFile(index);
-                    }}
-                  >
-                    <RemoveButton
-                      onClick={e => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleRemoveFile(index);
-                      }}
-                    >
-                      x
-                    </RemoveButton>
-                  </button>
-                </div>
-              ))}
-            </div>
+                  x
+                </RemoveButton>
+              </ImageContainer>
+            ))
           ) : (
             <div style={{ textAlign: 'center', width: '100%' }}>
               선택된 이미지가 없습니다
