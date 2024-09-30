@@ -16,7 +16,7 @@ import {
   ImageContainer,
   ImageThumbnail,
   ImageStyledBox,
-  RemoveAllButton, // 모든 이미지 삭제 버튼 스타일 추가
+  RemoveAllButton,
 } from '../../styles/board/boardForm';
 
 const BoardForm = ({ onSubmit, buttonText }) => {
@@ -25,15 +25,16 @@ const BoardForm = ({ onSubmit, buttonText }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [scrollable, setScrollable] = useState(false);
   const imageContainerRef = useRef(null);
 
   const handleFileChange = e => {
     const files = Array.from(e.target.files);
     const validFiles = files.filter(file => file.type.startsWith('image/'));
+
     if (validFiles.length !== files.length) {
       alert('이미지 파일만 업로드 가능합니다.');
     }
+
     setSelectedFiles(prevFiles => [...prevFiles, ...validFiles]);
   };
 
@@ -53,7 +54,7 @@ const BoardForm = ({ onSubmit, buttonText }) => {
 
   const togglePopup = () => {
     if (!isButtonClicked) {
-      setIsPopupOpen(!isPopupOpen);
+      setIsPopupOpen(prev => !prev);
     }
     setIsButtonClicked(false);
   };
@@ -102,24 +103,6 @@ const BoardForm = ({ onSubmit, buttonText }) => {
       }
     };
   }, []);
-
-  useEffect(() => {
-    const container = imageContainerRef.current;
-
-    const checkScrollable = () => {
-      if (container) {
-        // 스크롤이 필요할 경우
-        setScrollable(container.scrollWidth > container.clientWidth);
-      }
-    };
-
-    checkScrollable(); // 처음 렌더링 시 체크
-    window.addEventListener('resize', checkScrollable); // 창 크기 변경 시 체크
-
-    return () => {
-      window.removeEventListener('resize', checkScrollable);
-    };
-  }, [selectedFiles]); // selectedFiles가 변경될 때마다 체크
 
   return (
     <Container>
@@ -177,7 +160,6 @@ const BoardForm = ({ onSubmit, buttonText }) => {
             onChange={handleFileChange}
             multiple
           />
-          {/* 이미지가 2개 이상일 때만 삭제 버튼 표시 */}
           {selectedFiles.length > 1 && (
             <RemoveAllButton type="button" onClick={handleRemoveAllFiles}>
               모든 이미지 삭제
@@ -186,8 +168,8 @@ const BoardForm = ({ onSubmit, buttonText }) => {
         </SectionContainer>
 
         <ImageStyledBox
-          ref={imageContainerRef} // ref 추가
-          scrollable={scrollable} // 스크롤 가능 여부에 따라 scrollable prop 설정
+          ref={imageContainerRef}
+          style={{ overflowX: 'auto', display: 'flex', alignItems: 'center' }} // 스타일 추가
         >
           {selectedFiles.length > 0 ? (
             selectedFiles.map((file, index) => (

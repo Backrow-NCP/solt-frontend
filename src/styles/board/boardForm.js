@@ -109,7 +109,7 @@ export const PlanStyledBox = styled.div`
 
 export const ImageStyledBox = styled.div`
   width: 100%;
-  height: ${props => (props.scrollable ? '122px' : '110px')};
+  // height: ${props => (props.scrollable ? '122px' : '110px')};
   line-height: 110px;
   border: 2px solid #999;
   border-radius: 5px;
@@ -121,7 +121,7 @@ export const ImageStyledBox = styled.div`
   overflow-x: auto; /* 좌우 스크롤 허용 */
   overflow-y: hidden; /* 세로 스크롤 방지 */
   white-space: nowrap; /* 이미지들을 한 줄로 정렬 */
-  padding-top: ${props => (props.scrollable ? '5px' : '0')};
+  // padding-top: ${props => (props.scrollable ? '5px' : '0')};
   padding-left: 10px; /* 왼쪽 패딩 추가 */
 `;
 
