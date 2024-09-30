@@ -8,7 +8,7 @@ import {
   ButtonGroup,
   Container,
   Title,
-  PlanSelect,
+  SectionContainer,
   PlanStyledBox,
   HiddenFileInput,
   InputLabel,
@@ -16,6 +16,7 @@ import {
   ImageContainer,
   ImageThumbnail,
   ImageStyledBox,
+  RemoveAllButton, // 모든 이미지 삭제 버튼 스타일 추가
 } from '../../styles/board/boardForm';
 
 const BoardForm = ({ onSubmit, buttonText }) => {
@@ -24,7 +25,8 @@ const BoardForm = ({ onSubmit, buttonText }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const imageContainerRef = useRef(null); // 이미지 컨테이너에 대한 참조
+  const [scrollable, setScrollable] = useState(false);
+  const imageContainerRef = useRef(null);
 
   const handleFileChange = e => {
     const files = Array.from(e.target.files);
@@ -36,9 +38,17 @@ const BoardForm = ({ onSubmit, buttonText }) => {
   };
 
   const handleRemoveFile = indexToRemove => {
-    setSelectedFiles(prevFiles =>
-      prevFiles.filter((_, index) => index !== indexToRemove)
-    );
+    if (window.confirm('이 이미지를 정말로 제거하시겠습니까?')) {
+      setSelectedFiles(prevFiles =>
+        prevFiles.filter((_, index) => index !== indexToRemove)
+      );
+    }
+  };
+
+  const handleRemoveAllFiles = () => {
+    if (window.confirm('모든 이미지를 삭제하시겠습니까?')) {
+      setSelectedFiles([]); // 모든 이미지 삭제
+    }
   };
 
   const togglePopup = () => {
@@ -83,11 +93,9 @@ const BoardForm = ({ onSubmit, buttonText }) => {
   useEffect(() => {
     const container = imageContainerRef.current;
     if (container) {
-      // passive: false로 설정하여 preventDefault()가 작동하도록 함
       container.addEventListener('wheel', handleScroll, { passive: false });
     }
 
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       if (container) {
         container.removeEventListener('wheel', handleScroll);
@@ -95,10 +103,28 @@ const BoardForm = ({ onSubmit, buttonText }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const container = imageContainerRef.current;
+
+    const checkScrollable = () => {
+      if (container) {
+        // 스크롤이 필요할 경우
+        setScrollable(container.scrollWidth > container.clientWidth);
+      }
+    };
+
+    checkScrollable(); // 처음 렌더링 시 체크
+    window.addEventListener('resize', checkScrollable); // 창 크기 변경 시 체크
+
+    return () => {
+      window.removeEventListener('resize', checkScrollable);
+    };
+  }, [selectedFiles]); // selectedFiles가 변경될 때마다 체크
+
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
-        <PlanSelect>
+        <SectionContainer>
           <Title>나의 플랜</Title>
           <div style={{ position: 'relative', display: 'inline-block' }}>
             <InputLabel htmlFor="plan" onClick={handleButtonClick}>
@@ -115,7 +141,7 @@ const BoardForm = ({ onSubmit, buttonText }) => {
               />
             )}
           </div>
-        </PlanSelect>
+        </SectionContainer>
 
         <PlanStyledBox>선택된 플랜이 여기에 표시됩니다</PlanStyledBox>
 
@@ -141,7 +167,7 @@ const BoardForm = ({ onSubmit, buttonText }) => {
           />
         </InputGroup>
 
-        <PlanSelect>
+        <SectionContainer style={{ alignItems: 'flex-end' }}>
           <Title>이미지 첨부</Title>
           <InputLabel htmlFor="file">파일 선택</InputLabel>
           <HiddenFileInput
@@ -151,11 +177,17 @@ const BoardForm = ({ onSubmit, buttonText }) => {
             onChange={handleFileChange}
             multiple
           />
-        </PlanSelect>
+          {/* 이미지가 2개 이상일 때만 삭제 버튼 표시 */}
+          {selectedFiles.length > 1 && (
+            <RemoveAllButton type="button" onClick={handleRemoveAllFiles}>
+              모든 이미지 삭제
+            </RemoveAllButton>
+          )}
+        </SectionContainer>
 
         <ImageStyledBox
           ref={imageContainerRef} // ref 추가
-          scrollable={selectedFiles.length > 9} // selectedFiles가 4개 이상일 때 scrollable prop 설정
+          scrollable={scrollable} // 스크롤 가능 여부에 따라 scrollable prop 설정
         >
           {selectedFiles.length > 0 ? (
             selectedFiles.map((file, index) => (

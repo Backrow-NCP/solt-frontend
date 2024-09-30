@@ -49,22 +49,22 @@ export const ContentInput = styled.textarea`
   }
 `;
 
-export const Button = styled.button`
-  width: 100px;
-  padding: 10px 15px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-family: 'Paperlogy', sans-serif;
+// export const Button = styled.button`
+//   width: 100px;
+//   padding: 10px 15px;
+//   font-size: 16px;
+//   background-color: #007bff;
+//   color: #fff;
+//   border: none;
+//   border-radius: 5px;
+//   cursor: pointer;
+//   transition: background-color 0.3s;
+//   font-family: 'Paperlogy', sans-serif;
 
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
+//   &:hover {
+//     background-color: #0056b3;
+//   }
+// `;
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -87,7 +87,7 @@ export const Title = styled.h3`
   text-align: center;
 `;
 
-export const PlanSelect = styled.div`
+export const SectionContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0px;
@@ -113,7 +113,8 @@ export const ImageStyledBox = styled.div`
   line-height: 110px;
   border: 2px solid #999;
   border-radius: 5px;
-  margin: 20px 0;
+  margin-top: 20px;
+  margin-bottom: 50px;
   display: flex;
   align-items: center;
   color: #999;
@@ -163,7 +164,7 @@ export const HiddenFileInput = styled.input`
 export const RemoveButton = styled.button`
   position: absolute;
   top: 15px;
-  right: 10px;
+  right: 5px;
   background: rgba(255, 255, 255, 0.5); /* 투명도 있는 흰색 배경 */
   border: none;
   color: black;
@@ -180,5 +181,22 @@ export const RemoveButton = styled.button`
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.8); /* 호버 시 약간 더 밝게 */
+  }
+`;
+
+export const RemoveAllButton = styled.button`
+  padding: 6.5px 10px;
+  font-size: 12px;
+  font-family: 'Paperlogy', sans-serif;
+  color: #fff;
+  background-color: #dc3545; /* 빨간색 배경 */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px; /* 파일 선택 버튼과의 간격 */
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #c82333; /* 호버 시 더 어두운 빨간색 */
   }
 `;
