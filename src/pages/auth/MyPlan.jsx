@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import MyPlanStyles from '../../styles/auth/MyPlan'; // 스타일 파일을 import
 import { Link } from 'react-router-dom'; // Link 컴포넌트를 사용
+import seoulImage from '../../assets/images//bn/survey_area_01.jpg';
+import jejuImage from '../../assets/images/bn/survey_area_02.jpg';
+import busanImage from '../../assets/images/bn/survey_area_03.jpg';
+
 
 const MyPlan = () => {
   const [plans, setPlans] = useState([]); // useState 훅 사용
@@ -10,6 +14,21 @@ const MyPlan = () => {
       .then((response) => response.json())
       .then((data) => setPlans(data));
   }, []);
+
+  // area 값에 따라 해당 지역에 맞는 이미지를 반환하는 함수
+  const getImageForArea = (area) => {
+    switch (area) {
+      case '서울':
+        return seoulImage; // 서울 이미지 경로
+      case '제주도':
+        return jejuImage; // 서울 이미지 경로
+      case '부산':
+        return busanImage; // 서울 이미지 경로
+      // 추가적으로 필요한 지역 이미지를 추가할 수 있습니다.
+      default:
+        return '/images/default.jpg'; // 기본 이미지 (없을 경우)
+    }
+  };
     
 
   return (
@@ -37,7 +56,12 @@ const MyPlan = () => {
         <div className="my-plan-container">
           <h1>나의 플랜</h1>
           {plans.map((plan) => (
-            <div className="plan-card" key={plan.id}>
+            <div className="plan-card" key={plan.id}
+            style={{
+              backgroundImage: `url(${getImageForArea(plan.area)})`, // 지역에 따른 배경 이미지 설정
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}>
               {/* 왼쪽 영역 (Date, Area) */}
               <div className="plan-details">
                 <p className="plan-date">{`${plan.startDate} ~ ${plan.endDate}`}</p>
@@ -56,6 +80,7 @@ const MyPlan = () => {
             </div>
           ))}
         </div>
+
       </div>
     </>
   );

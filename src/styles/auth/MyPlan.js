@@ -5,17 +5,21 @@ const MyPlanStyles = createGlobalStyle`
   .main-container {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 80%;
     gap: 20px;
+    max-width: 1600px;
+    margin: 80px auto 0; /* 위에 여백을 주고, 좌우는 auto로 중앙에 배치 */
+
   }
 
-  /* 좌측 네비게이션 바 */
+   /* 좌측 네비게이션 바 */
   .sidebar {
     width: 200px;
     background-color: #fff;
-    padding: 20px;
+    //padding: 20px;
     position: relative;
-    top: 130px;
+    margin-top: 60px;
+    //top: 130px;
     bottom: 0;
     z-index: 1;
   }
@@ -59,6 +63,7 @@ const MyPlanStyles = createGlobalStyle`
     justify-content: space-between;
     align-items: center;
     background-color: #f9f9f9;
+    height: 150px;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -105,6 +110,8 @@ const MyPlanStyles = createGlobalStyle`
     gap: 10px;
     width: 33.3%;
   }
+
+
 
   /* 반응형 설정 */
   @media (max-width: 1024px) {
