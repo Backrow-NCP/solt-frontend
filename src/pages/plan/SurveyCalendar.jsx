@@ -27,12 +27,21 @@ const SurveyCalendar = ({ onDateSelect, selectedDates  }) => {
   };
 
   // 각 날짜에 스타일을 적용하는 함수
-  const dayClassName = (date) => {
+  const dayClassName = date => {
     const today = startOfToday();
     if (isSameDay(date, today)) return 'today-date';
-    if (isSameDay(date, startDate)) return 'start-date';
+    if (isSameDay(date, startDate))
+      return endDate == null || isSameDay(date, endDate)
+        ? 'start-date start-date-only'
+        : 'start-date';
     if (isSameDay(date, endDate)) return 'end-date';
-    if (startDate && endDate && isAfter(date, startDate) && isBefore(date, endDate)) return 'middle-date';
+    if (
+      startDate &&
+      endDate &&
+      isAfter(date, startDate) &&
+      isBefore(date, endDate)
+    )
+      return 'middle-date';
     return '';
   };
 

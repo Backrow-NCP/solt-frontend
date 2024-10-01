@@ -16,7 +16,7 @@ const SurveyPlace = ({ onPlaceSelect }) => {
 			// Google Maps API가 이미 로드되었는지 확인
       if (!window.google) {
         const googleScript = document.createElement('script');
-        googleScript.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY&libraries=places`;
+        googleScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBMPGhDUUOre8nHwSGv53Xl6K4UtGVPQfc&libraries=places`;
         window.document.body.appendChild(googleScript);
 
         googleScript.addEventListener('load', initializeAutocomplete);

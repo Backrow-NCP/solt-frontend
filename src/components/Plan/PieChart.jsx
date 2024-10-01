@@ -29,19 +29,21 @@ const PieChart = ({ data }) => {
 
     // 추가적으로 색상 배열을 각 카테고리별로 확장
     const backgroundColors = [
-			'#15B8FF', '#F78CA0', '#36E0C5', '#FFD600', '#43A311', 
-			'#FF9E9E', '#121212', '#888', '#0043FF', '#FEAE5E'
+      '#15B8FF', '#FFD600', '#6dd3ff', '#F78CA0', '#43A311', 
+      '#FF9E9E', '#121212', '#888', '#36E0C5', '#FEAE5E'
     ];
 
     chartInstance = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: Object.keys(totals), // 카테고리 이름들
+				 // 카테고리 이름
+        labels: Object.keys(totals),
         datasets: [
           {
-            data: Object.values(totals), // 각 카테고리별 금액
+            data: Object.values(totals),
             backgroundColor: backgroundColors.slice(0, Object.keys(totals).length),
-            hoverOffset: 4,
+            hoverOffset: 0,
+            borderWidth: 0,
           },
         ],
       },
@@ -49,24 +51,22 @@ const PieChart = ({ data }) => {
         responsive: true,
         plugins: {
           tooltip: {
-            enabled: false // 호버 툴팁 비활성화
-          }
+            enabled: false,
+          },
+          legend: {
+            display: false,
+          },
         },
         onClick: () => {
-          // 0원인 카테고리 제외하고 모든 카테고리 정보 업데이트
+          // 0원인 카테고리 제외
           const allInfo = Object.keys(totals)
-            .filter(label => totals[label] > 0) // 0원인 항목 제외
+            .filter(label => totals[label] > 0)
             .map(label => {
               const value = totals[label];
               const percentage = ((value / totalSum) * 100).toFixed(1); // 퍼센트 계산
               return { label, value, percentage };
             });
-          setSelectedInfo(allInfo); // 클릭 시 모든 카테고리 정보를 업데이트
-        },
-        plugins: {
-          legend: {
-            display: false // 범례 비활성화
-          },
+          setSelectedInfo(allInfo);
         },
       },
     });
@@ -77,7 +77,8 @@ const PieChart = ({ data }) => {
   }, [data]);
 
   return (
-    <ChartContainer>
+    <ChartContainer className="graph">
+			<span>클릭해서 세부 내용을 확인하세요</span>
       <canvas ref={chartRef} />
       <InfoContainer>
         {selectedInfo.length > 0 && selectedInfo.map((info, index) => (

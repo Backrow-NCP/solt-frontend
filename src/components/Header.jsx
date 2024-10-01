@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Button from './Button';
 import logo from '../assets/images/logo.svg';
 import mypage from '../assets/images/ico/mypage.svg'
 
@@ -27,8 +28,12 @@ const Header = ({ isLoggedIn }) => {
             <Link to="/auth/mypage" className="logout"><img src={mypage} alt="mypage" /></Link>
             ) : (
             <div className="login">
-                <Link to="/auth/signup" className="btn_blk">회원가입</Link>
-                <Link to="/auth/login" className="btn_wht">로그인</Link>
+							<Link to="/auth/signup">
+								<Button size="sm" color="black">회원가입</Button>
+							</Link>
+							<Link to="/auth/login">
+								<Button size="sm" color="white">로그인</Button>
+							</Link>
             </div>
             )}
         </div>

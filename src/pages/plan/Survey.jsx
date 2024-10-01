@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import memberData from '../../mock/member.json'; // 임시 데이터
@@ -8,6 +8,7 @@ import SurveyCalendar from './SurveyCalendar';
 import SurveyArea from './SurveyArea';
 import SurveyKeyword from './SurveyKeyword';
 import SurveyPlace from './SurveyPlace';
+import Button from '../../components/Button';
 
 import PrevBtn from '../../assets/images/ico/btn_survey_prev.svg';
 
@@ -57,7 +58,7 @@ const Survey = () => {
   };
 
   // 키워드 선택
-	const handleKeywordSelect = (keywords) => {
+	const handleKeywordSelect = useCallback(keywords => {
 		setAnswers(prevAnswers => ({
 			...prevAnswers,
 			keywords: {
@@ -65,8 +66,8 @@ const Survey = () => {
 				theme: keywords.theme,
 				environment: keywords.environment,
 			},
-		}));
-	};
+        }));
+      }, []);
 
   // 장소 선택 핸들러 추가
   const handlePlaceSelect = (places) => {
@@ -148,24 +149,40 @@ const Survey = () => {
   const renderButtons = () => {
     if (questionIndex === 0) {
       return (
-        <button onClick={handleNext} className={`btn_blue btn_xxl ${isNextButtonDisabled() ? 'disabled' : ''}`} disabled={isNextButtonDisabled()}>
+        <Button
+          size="xxl"
+          color="blue"
+          onClick={handleNext}
+          disabled={isNextButtonDisabled()}
+        >
           다음 페이지
-        </button>
+        </Button>
       );
     } else if (questionIndex === questions.length - 1) {
       return (
         <>
-          <button onClick={handlePrev} className="btn_prev"><img src={PrevBtn} alt="이전 페이지" /></button>
-          <button onClick={handleFinish} className="btn_pink btn_xxl">여행 일정 확인하기</button>
+          <button onClick={handlePrev} className="btn_prev">
+            <img src={PrevBtn} alt="이전 페이지" />
+          </button>
+          <Button size="xxl" color="pink" onClick={handleFinish}>
+            여행 일정 확인하기
+          </Button>
         </>
       );
     } else {
       return (
         <>
-          <button onClick={handlePrev} className="btn_prev"><img src={PrevBtn} alt="이전 페이지" /></button>
-          <button onClick={handleNext} className={`btn_blue btn_xxl ${isNextButtonDisabled() ? 'disabled' : ''}`} disabled={isNextButtonDisabled()}>
-            다음 페이지
+          <button onClick={handlePrev} className="btn_prev">
+            <img src={PrevBtn} alt="이전 페이지" />
           </button>
+          <Button
+            size="xxl"
+            color="blue"
+            onClick={handleNext}
+            disabled={isNextButtonDisabled()}
+          >
+            다음 페이지
+          </Button>
         </>
       );
     }

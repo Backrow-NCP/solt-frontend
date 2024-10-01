@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
 import Loading from './Loading';
 import styled from 'styled-components';
+import PlanProduce from '../../styles/plan/produce';
 import planTime from '../../utils/plan/planTime';
 import PieChart from '../../components/Plan/PieChart';
+import Button from '../../components/Button';
+
 import memberData from '../../mock/member.json'; // 임시 데이터
 import planData from '../../mock/planProduce.json'; // 임시 데이터
+
+import transportBus from '../../assets/images/ico/transport_bus.svg';
+import transportRun from '../../assets/images/ico/transport_run.svg';
 
 const Produce = () => {
 
@@ -84,128 +90,121 @@ const Produce = () => {
   if (!plan) return <Loading />;
 
   return (
-    <PlanContainer>
-      <>
-        <div className="plan_info">
-          <span>솔트 AI 플래너</span>
-          <h2>{userName} 님의 <span>{plan.area}</span> 여행 플랜</h2>
-          <div className="">
-            <span>예상 총 금액</span>
-            <strong>{places.reduce((acc, place) => acc + place.price, 0).toLocaleString()}원</strong>
-          </div>
+    <PlanProduce>
 
-          {/* 원그래프 */}
-          <PieChart data={places} />
+      <PlanContainer className="plan_cont">
+
+        <div className="plan_info">
+          <span className="size_sm weight_md pt_blue">솔트 AI 플래너</span>
+          <h2>{userName} 님의 <span className="pt_blue">{plan.area}</span> 여행 플랜</h2>
+
+          <div className="price pt_pink">
+            <span className="size_sm weight_sb">예상 총 금액</span>
+            <strong><span>{places.reduce((acc, place) => acc + place.price, 0).toLocaleString()}</span>원</strong>
+
+						{/* 원그래프 */}
+						<PieChart data={places} />
+          </div>
         </div>
 
-        <ul className="tab flex">
-          <li>DAY 1</li>
-          <li>DAY 2</li>
-          <li>DAY 3</li>
-          <li>DAY 4</li>
-          <li>DAY 5</li>
+        <ul className="tab_date flex pt_gy size_sm weight_b">
+          <li className="active">Day 1</li>
+          <li>Day 2</li>
+          <li>Day 3</li>
+          <li>Day 4</li>
+          <li>Day 5</li>
         </ul>
         
         <PlanBox>
-          <ul>
-            {combinedList.map((item, index) => {
-              if (item.type === 'place') {
-                const place = item.data;
-                return (
-                  <RouteList key={`place-${place.placeId}`}>
-                    <div>
-                      <span>{planTime(place.startTime)}</span>
-                      <div>
-                        <h3>{place.placeName}</h3>
-                        <span>{place.category}</span>
+					{combinedList.map((item, index) => {
+						if (item.type === 'place') {
+							const place = item.data;
+							return (
+								<RouteList key={`place-${place.placeId}`} className="flex">
+									<span className="place_time pt_blue size_xs weight_b">{planTime(place.startTime)}</span>
 
-                        {/* 이동수단 정보 표시 */}
-                        {plan.route[index] && (
-                          <div>
-                            {/* 이동 수단이 '도보'일 때와 아닐 때 처리 */}
-                            {plan.route[index].transport.type === '도보' ? (
-                              <>
-                                <span><img alt="대중교통" />{plan.route[index].transport.type}</span>
-                                <span>{plan.route[index].travelTime}분</span>
-                                <span>({plan.route[index].distance}km)</span>
-                                <span className="pt_blue">약 {plan.route[index].price}원</span>
-                              </>
-                            ) : (
-                              <>
-                                <span><img alt="도보" />{plan.route[index].transport.type}</span>
-                                <span>{plan.route[index].travelTime}분</span>
-                                <span>({plan.route[index].distance}km)</span>
-                              </>
-                            )}
-                          </div>
-                        )}
+									<div className="place_info">
+										<h3 className="size_md">{place.placeName}</h3>
+										<span className="pt_gy size_xs">{place.category}</span>
 
-                        <p>{place.description}</p>
-                      </div>
+										{/* 이동수단 정보 표시 */}
+										{plan.route[index] && (
+											<>
+												{/* 이동 수단이 '도보'일 때와 아닐 때 처리 */}
+												{plan.route[index].transport.type !== '도보' ? (
+													<div className="size_xs weight_md">
+														<img src={transportBus} alt="대중교통" />
+														<span>{plan.route[index].transport.type}</span>
+														<span>{plan.route[index].travelTime}분</span>
+														<span>({plan.route[index].distance}km)</span>
+														<strong className="pt_blue size_xs weight_sb">약 {plan.route[index].price}원</strong>
+													</div>
+												) : (
+													<div className="size_xs weight_md">
+														<img src={transportRun} alt="도보" />
+														<span>{plan.route[index].transport.type}</span>
+														<span>{plan.route[index].travelTime}분</span>
+														<span>({plan.route[index].distance}km)</span>
+													</div>
+												)}
+											</>
+										)}
 
-                      <div className="">
-                        <span>예상 금액</span>
-                        <div>
-                          <input
-                            value={place.price}
-                            onChange={(e) => handlePriceChange(place.placeId, Number(e.target.value))}
-                            disabled={!editMode[place.placeId]} // editMode가 false면 비활성화
-                          />
-                          원
-                        </div>
-                        <button onClick={() => toggleEditMode(place.placeId)}>
-                          {editMode[place.placeId] ? '취소' : '금액 수정'}
-                        </button>
+										<p className="desc pt_gy size_xs">{place.description}</p>
+									</div>
 
-                        {/* 일정 수정 버튼 */}
-                        <button onClick={() => toggleEditScheduleMode(place.placeId)}>
-                          {editScheduleMode[place.placeId] ? '취소' : '일정 수정'}
-                        </button>
-                      </div>
+									<div className="place_price">
+										<p className="size_xs weight_md">예상 금액</p>
+										<div className="flex">
+											<input
+												value={place.price}
+												onChange={(e) => handlePriceChange(place.placeId, Number(e.target.value))}
+												disabled={!editMode[place.placeId]}
+											/>
+											<span className="pt_pink size_sm weight_b">원</span>
+										</div>
+										<button onClick={() => toggleEditMode(place.placeId)} className="pt_gy size_xxs">
+											{editMode[place.placeId] ? '취소' : '금액 수정'}
+										</button>
+									</div>
 
-                      {/* editScheduleMode가 true일 때만 버튼을 보여줌 */}
-                      {editScheduleMode[place.placeId] && (
-                        <ul>
-                          <li><button>직접 쓸래요</button></li>
-                          <li><button>다른 추천 받을래요</button></li>
-                        </ul>
-                      )}
-                    </div>
-                  </RouteList>
-                );
-              } else if (item.type === 'route') {
-                const route = item.data;
-                return (
-                  <RouteList key={`route-${index}`}>
-                    <div>
-                      <span>{`이동수단: ${route.transport.type}, 거리: ${route.distance}km`}</span>
-                    </div>
-                  </RouteList>
-                );
-              }
-            })}
-          </ul>
+									{/* 일정 수정 버튼 */}
+									<button onClick={() => toggleEditScheduleMode(place.placeId)}>
+										{editScheduleMode[place.placeId] ? '취소' : '일정 수정'}
+									</button>
+
+									{/* editScheduleMode가 true일 때만 버튼을 보여줌 */}
+									{editScheduleMode[place.placeId] && (
+										<ul className="place_change">
+											<li><button>직접 쓸래요</button></li>
+											<li><button>다른 추천 받을래요</button></li>
+										</ul>
+										)}
+								</RouteList>
+							);
+						}
+					})}
         </PlanBox>
 
-        <button>일정 추가하기</button>
-        <button>플랜 확정</button>
-      </>
-    </PlanContainer>
+				<Button
+					size="xxl"
+					color="white"
+					style={{ borderColor: '#eee' }}
+				>일정 추가하기</Button>
+
+				<Button
+					size="xxl"
+					color="blue"
+				>플랜 확정</Button>
+      </PlanContainer>
+
+			<div className="map" style={{ width: '100%', height: '100vh', background: '#000' }}></div>
+    </PlanProduce>
   );
 };
 
 export default Produce;
 
-const PlanContainer = styled.div`
-  padding: 20px;
-	width: 568px;
-	position: fixed;
-	top: 20px;
-	left: 20px;
-`;
-
 const PlanBox = styled.ol``;
-
-const RouteList = styled.div`
-  margin-bottom: 20px;
-`;
+const RouteList = styled.li``;
+const PlanContainer = styled.div``;

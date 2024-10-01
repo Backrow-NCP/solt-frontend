@@ -38,7 +38,7 @@ const SurveyKeyword = ({ onKeywordSelect, savedKeywords }) => {
         theme: selectedThemes,
         environment: selectedEnvirons,
       };
-      onKeywordSelect(selectedKeywords); // 상태가 선택된 후 한 번만 호출
+      onKeywordSelect(selectedKeywords); // 상태가 선택된 후 한 번만 호출 (여기 이슈 생김 !!)
     }
   }, [selectedStyles, selectedThemes, selectedEnvirons, onKeywordSelect]);
 

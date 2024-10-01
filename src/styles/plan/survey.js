@@ -177,7 +177,7 @@ const SurveyCommon = styled.div`
     border-radius: 0 16px 16px 0;
     font-weight: 600;
   }
-  .start-date.react-datepicker__day--selecting-range-end {
+  .start-date-only {
     border-radius: 16px !important;
   }
   .react-datepicker__day--disabled  {
