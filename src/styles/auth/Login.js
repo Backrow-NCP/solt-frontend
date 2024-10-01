@@ -61,15 +61,19 @@ const LoginStyles = createGlobalStyle`
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 16px;
   }
 
   .login-options {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     font-size: 16px;
     margin-bottom: 20px;
+  }
+
+  .login-options a {
+    margin: 0 5px; /* 각 링크 사이에 5px의 여백 추가 */
   }
 
   .login-button {

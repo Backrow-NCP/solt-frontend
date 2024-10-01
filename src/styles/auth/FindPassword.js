@@ -47,10 +47,6 @@ const FindPasswordStyles = createGlobalStyle`
   }
 
   .input-group {
-    margin-bottom: 15px;
-  }
-
-  .input-group {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
@@ -58,45 +54,18 @@ const FindPasswordStyles = createGlobalStyle`
 
   .input-group input {
     flex: 1;
+    width: 70%; /* 이메일 입력란의 너비를 줄임 */
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 10px;
+    font-size: 14px;
   }
 
-    .find-password-button {
-    margin-left: 15px;
-    padding: 10px 20px;
-    background-color: #fff; /* 버튼 배경색을 흰색으로 변경 */
-    color: #000; /* 텍스트 색상을 검은색으로 변경 */
-    border: 1px solid #888; /* 테두리 색상을 #888로 설정 */
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #f1f1f1; /* 호버 시 살짝 밝은 색으로 변경 */
-    }
-    }
-
-
-  .find-password-submit-button {
-    width: 40%;
-    padding: 10px;
-    background-color: #000;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 15px auto 0 auto; /* 수평 중앙 정렬 */
-
-    &:hover {
-      background-color: #333;
-    }
+  .input-group button {
+    margin-left: 10px; /* 이메일 입력란과 버튼 사이의 간격을 늘림 */
   }
+
+  
 `;
 
 export default FindPasswordStyles;

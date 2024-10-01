@@ -57,7 +57,7 @@ const SignupStyles = createGlobalStyle`
     width: 100%;  /* 이메일, 이름, 비밀번호 입력란 */
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 16px;
   }
 
@@ -80,7 +80,7 @@ const SignupStyles = createGlobalStyle`
     width: 32%;  /* 각 드롭다운 너비를 균등하게 설정하여 전체 너비가 100%에 맞도록 */
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 16px;
     appearance: none;
     background-color: white;

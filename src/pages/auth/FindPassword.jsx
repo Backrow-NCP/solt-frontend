@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FindPasswordStyles from '../../styles/auth/FindPassword'; // FindPasswordStyles import
+import Button from '../../components/Button';
 
 const FindPassword = ({ closePopup }) => {
   const [email, setEmail] = useState('');
@@ -31,7 +32,7 @@ const FindPassword = ({ closePopup }) => {
                 onChange={handleEmailChange}
                 required
               />
-              <button type="button" className="find-password-button">확인</button>
+              <Button color="white" size="sm">확인</Button>
             </div>
 
             <div className="input-group">
@@ -44,7 +45,7 @@ const FindPassword = ({ closePopup }) => {
               />
             </div>
 
-            <button type="submit" className="find-password-submit-button">확인</button>
+            <Button color="black" size="sm">확인</Button>
           </form>
         </div>
       </div>

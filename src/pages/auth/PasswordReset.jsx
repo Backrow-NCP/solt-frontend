@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PasswordResetStyles from '../../styles/auth/PasswordReset'; // PasswordReset 스타일 import
+import Button from '../../components/Button';
 
 const PasswordReset = ({ closePopup }) => {
   const [newPassword, setNewPassword] = useState('');
@@ -44,7 +45,7 @@ const PasswordReset = ({ closePopup }) => {
               />
             </div>
 
-            <button type="submit" className="password-reset-submit-button">확인</button>
+            <Button color="black" size="sm">확인</Button>
           </form>
         </div>
       </div>

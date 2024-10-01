@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import LoginStyles from '../../styles/auth/Login';
+import Button from '../../components/Button';
 
 const Login = ({ closePopup }) => {
   const [email, setEmail] = useState('');
@@ -62,15 +63,14 @@ const Login = ({ closePopup }) => {
                 required
               />
             </div>
-
-            {error && <p className="error-message">{error}</p>} {/* 에러 메시지 표시 */}
+            {error && <p className="error-message" style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
             <div className="login-options">
-              <Link to="/FindPassword">비밀번호 찾기</Link> / 
-              <Link to="/signup">회원가입</Link>
+              <Link to="/auth/FindPassword" style={{ marginRight: '8px' }}>비밀번호 찾기</Link> /
+              <Link to="/auth/signup" style={{ marginLeft: '8px' }}>회원가입</Link>
             </div>
 
-            <button type="submit" className="login-button">확인</button>
+            <Button color="black" size="lg">확인</Button>
           </form>
         </div>
       </div>

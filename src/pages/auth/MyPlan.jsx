@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import MyPlanStyles from '../../styles/auth/MyPlan'; // 스타일 파일을 import
+import Button from '../../components/Button'; // Button 컴포넌트 import
 import { Link } from 'react-router-dom'; // Link 컴포넌트를 사용
-import seoulImage from '../../assets/images//bn/survey_area_01.jpg';
-import jejuImage from '../../assets/images/bn/survey_area_02.jpg';
-import busanImage from '../../assets/images/bn/survey_area_03.jpg';
+import seoulImage from '../../assets/images//bn/area1.jpg';
+import jejuImage from '../../assets/images/bn/area2.jpg';
+import busanImage from '../../assets/images/bn/area3.jpg';
+import gyeongjuImage from '../../assets/images/bn/area4.jpg';
+import gangneungImage from '../../assets/images/bn/area5.jpg';
 
 
 const MyPlan = () => {
@@ -19,11 +22,15 @@ const MyPlan = () => {
   const getImageForArea = (area) => {
     switch (area) {
       case '서울':
-        return seoulImage; // 서울 이미지 경로
+        return seoulImage; 
       case '제주도':
-        return jejuImage; // 서울 이미지 경로
+        return jejuImage; 
       case '부산':
-        return busanImage; // 서울 이미지 경로
+        return busanImage; 
+      case '경주':
+        return gyeongjuImage;
+      case '강릉':
+        return gangneungImage;
       // 추가적으로 필요한 지역 이미지를 추가할 수 있습니다.
       default:
         return '/images/default.jpg'; // 기본 이미지 (없을 경우)
@@ -70,12 +77,12 @@ const MyPlan = () => {
               {/* 가운데 영역 (Name + 수정 버튼) */}
               <div className="plan-name">
                 <h2 className="plan-title">{plan.title}</h2>
-                <button className="edit-btn">✎</button> {/* 이름 수정 버튼 */}
+                <button className="edit-btn">✎</button> 
               </div>
               {/* 오른쪽 영역 (Buttons) */}
               <div className="plan-actions">
-                <button className="btn_pink">수정</button>
-                <button className="btn_wht">삭제</button>
+                <Button color="blue" size="sm">수정</Button>
+                <Button color="white" size="sm">삭제</Button>
               </div>
             </div>
           ))}

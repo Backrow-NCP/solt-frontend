@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import SignupStyles from '../../styles/auth/Signup'; // SignupStyles import
+import Button from '../../components/Button';
 
-function Signup() {
-  const [setSignupOpen] = useState(false);
+function Signup({closePopup}) {
+  //const [setSignupOpen] = useState(false);
 
-  const closeSignup = () => setSignupOpen(false);
+  //const closeSignup = () => setSignupOpen(false);
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
@@ -54,17 +55,17 @@ function Signup() {
       <SignupStyles /> 
       <div className="signup-popup-overlay">
         <div className="signup-popup">
-          <button className="close-button" onClick={closeSignup}>X</button>
+          <button className="close-button" onClick={closePopup}>X</button>
           <h2>회원가입</h2>
           <form className="signup-form" onSubmit={handleSubmit}>
             <div className="input-group">
               <input type="email" id="email" className="input-small" placeholder="이메일" required />
-              <button type="button" className="btn_wht" onClick={handleSubmit}>확인</button>
+              <Button color="white" size="sm">확인</Button>
             </div>
 
             <div className="input-group">
               <input type="text" id="name" className="input-small" placeholder="이름" required />
-              <button type="button" className="btn_wht" onClick={handleSubmit}>확인</button>
+              <Button color="white" size="sm">확인</Button>
             </div>
 
             {/* 비밀번호 필드 */}
@@ -143,7 +144,7 @@ function Signup() {
             </div>
 
             {/* 회원가입 버튼 */}
-            <button type="submit" className="btn_blk">회원가입</button>
+            <Button color="black" size="lg">회원가입</Button>
           </form>
         </div>
       </div>

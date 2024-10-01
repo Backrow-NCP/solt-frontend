@@ -54,7 +54,7 @@ const PasswordResetStyles = createGlobalStyle`
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 16px;
   }
 
