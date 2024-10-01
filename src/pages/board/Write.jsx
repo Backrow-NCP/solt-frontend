@@ -29,6 +29,7 @@ const Write = () => {
       <h2
         style={{
           textAlign: 'center',
+          marginTop: '50px',
         }}
       >
         게시글 작성

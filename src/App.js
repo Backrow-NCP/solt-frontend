@@ -7,7 +7,6 @@ import GlobalStyles from './styles/global.js';
 import Write from './pages/board/Write';
 import Edit from './pages/board/Edit';
 import List from './pages/board/List';
-import ExamplePage from './components/Board/ExamplePage.jsx';
 function App() {
   return (
     <>
@@ -23,7 +22,6 @@ function App() {
               <Route path="/board/write" element={<Write />} />
               <Route path="/board/edit" element={<Edit />} />
               <Route path="/board/list" element={<List />} />
-              <Route path="/board/ex" element={<ExamplePage />} />
             </Routes>
           </main>
 

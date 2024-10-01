@@ -295,7 +295,7 @@ const GlobalStyles = createGlobalStyle`
 
 	/* footer */
   footer {
-    margin-top: 200px;
+    margin-top: 100px;
     padding: 80px 0;
     border-top: 1px solid #ededed;
     background: #fff;

@@ -27,9 +27,6 @@ const Header = ({ isLoggedIn }) => {
             <li>
               <Link to="/board/edit">게시글 수정하기(예시)</Link>
             </li>
-            <li>
-              <Link to="/board/ex">예시페이지</Link>
-            </li>
           </ul>
         </nav>
 

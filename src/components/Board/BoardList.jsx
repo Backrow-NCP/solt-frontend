@@ -5,7 +5,11 @@ import { BoardContainer, BoardBox } from '../../styles/board/boardList';
 const BoardList = ({ items = [] }) => {
   // 기본값으로 빈 배열 설정
   if (!Array.isArray(items) || items.length === 0) {
-    return <p>게시글이 없습니다.</p>; // 게시글이 없을 때 표시할 메시지
+    return (
+      <h3 style={{ textAlign: 'center', marginTop: '50px' }}>
+        게시글이 없습니다.
+      </h3>
+    );
   }
 
   return (
