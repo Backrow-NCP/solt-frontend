@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
 import mypage from '../assets/images/ico/mypage.svg';
+import Button from '../components/Button';
 
 const Header = ({ isLoggedIn }) => {
   return (
@@ -37,12 +38,24 @@ const Header = ({ isLoggedIn }) => {
             </Link>
           ) : (
             <div className="login">
-              <Link to="/auth/signup" className="btn_blk">
+              <Button
+                size="lg"
+                color="black"
+                as={Link}
+                to="/auth/signup"
+                className="btn_blk"
+              >
                 회원가입
-              </Link>
-              <Link to="/auth/login" className="btn_wht">
+              </Button>
+              <Button
+                size="lg"
+                color="white"
+                as={Link}
+                to="/auth/login"
+                className="btn_wht"
+              >
                 로그인
-              </Link>
+              </Button>
             </div>
           )}
         </div>

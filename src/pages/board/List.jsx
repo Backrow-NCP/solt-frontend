@@ -4,6 +4,7 @@ import BoardList from '../../components/Board/BoardList';
 import BestBoardList from '../../components/Board/BestBoardList';
 import Button from '../../components/Button';
 import { PlanContainer, ButtonContainer } from '../../styles/board/listPage';
+import boardData from '../../data/board.json';
 
 const List = () => {
   const boardItems = Array.from({ length: 200 }, (_, i) => ({
@@ -39,7 +40,7 @@ const List = () => {
         </ButtonContainer>
       </PlanContainer>
 
-      <BoardList items={boardItems} />
+      <BoardList items={boardData} />
     </div>
   );
 };
