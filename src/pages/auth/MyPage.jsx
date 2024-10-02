@@ -62,8 +62,10 @@ const MyPage = () => {
   return (
     <>
       <MyPageStyles />
-      <div className="main-container">
-        {/* 좌측 네비게이션 바 */}
+  
+      {/* 네비게이션 바와 메인 컨테이너를 flex row로 정렬하기 위해 className 적용 */}
+      <div className="mypage">
+        {/* 네비게이션 바 */}
         <nav className="sidebar">
           <h2 className="size_lg weight_b pt_blue">마이페이지</h2>
           <ul>
@@ -79,58 +81,59 @@ const MyPage = () => {
             </li>
           </ul>
         </nav>
-
-        {/* 우측 상단 프로필 영역 */}
-        <div className="profile-section">
-          <div className="profile-image-container">
-            <img src={profileImage} alt="프로필 이미지" className="profile-image" />
-            <Link to="/auth/profileEdit" className="size_xs profile-edit">프로필 관리 ⚙️</Link>
-          </div>
-          <div className="profile-info">
-            <h1>{name} 님만의 공간 :)</h1> {/* 이름만 표시 */}
-          </div>
-                    {/* 로그아웃 버튼 추가 */}
-                    <div className="logout-section">
-            <button className="logout-btn" onClick={handleLogout}>로그아웃</button>
-          </div>
-          
-        </div>
-
-        {/*임시*/}
-        <div className="example-section2">
-        </div>
-        
-      </div>
-
-      <div className="my-plan-container">
-          <h1>나의 플랜</h1>
-          {plans.map((plan) => (
-            <div className="plan-card" key={plan.id}
-            style={{
-              backgroundImage: `url(${getImageForArea(plan.area)})`, // 지역에 따른 배경 이미지 설정
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}>
-              {/* 왼쪽 영역 (Date, Area) */}
-              <div className="plan-details">
-                <p className="plan-date">{`${plan.startDate} ~ ${plan.endDate}`}</p>
-                <p className="plan-area">{plan.area}</p>
-              </div>
-              {/* 가운데 영역 (Name + 수정 버튼) */}
-              <div className="plan-name">
-                <h2 className="plan-title">{plan.title}</h2>
-                <button className="edit-btn">✎</button> 
-              </div>
-              {/* 오른쪽 영역 (Buttons) */}
-              <div className="plan-actions">
-                <Button color="blue" size="sm">수정</Button>
-                <Button color="white" size="sm">삭제</Button>
-              </div>
+  
+        {/* 메인 컨테이너 */}
+        <div className="main-container">
+          {/* 우측 상단 프로필 영역 */}
+          <div className="profile-container">
+            <div className="profile-image-container">
+              <img src={profileImage} alt="프로필 이미지" className="profile-image" />
+              <Link to="/auth/profileEdit" className="size_xs profile-edit">프로필 관리 ⚙️</Link>
             </div>
-          ))}
+            <div className="profile-info">
+              <h1>{name} 님만의 공간 :)</h1> {/* 이름만 표시 */}
+            </div>
+            {/* 로그아웃 버튼 추가 */}
+            <div className="logout-section">
+              <button className="logout-btn" onClick={handleLogout}>로그아웃</button>
+            </div>
+          </div>
+  
+          {/* 플랜 컨테이너 */}
+          <div className="my-plan-container">
+            <h1>나의 플랜</h1>
+            {plans.map((plan) => (
+              <div className="plan-card" key={plan.id}
+                style={{
+                  backgroundImage: `url(${getImageForArea(plan.area)})`, // 지역에 따른 배경 이미지 설정
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}>
+                {/* 왼쪽 영역 (Date, Area) */}
+                <div className="plan-details">
+                  <p className="plan-date">{`${plan.startDate} ~ ${plan.endDate}`}</p>
+                  <p className="plan-area">{plan.area}</p>
+                </div>
+                {/* 가운데 영역 (Name + 수정 버튼) */}
+                <div className="plan-name">
+                  <h2 className="plan-title">{plan.title}</h2>
+                  <button className="edit-btn">✎</button> 
+                </div>
+                {/* 오른쪽 영역 (Buttons) */}
+                <div className="plan-actions">
+                  <Button color="blue" size="sm">수정</Button>
+                  <Button color="white" size="sm">삭제</Button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+      </div>
     </>
   );
+  
+  
+  
 };
 
 export default MyPage;

@@ -49,6 +49,8 @@ const MyPlanStyles = createGlobalStyle`
     margin-left: auto;
     margin-right: auto;
   }
+    
+  
 
   .my-plan-container h1 {
     font-size: 24px;
@@ -69,6 +71,8 @@ const MyPlanStyles = createGlobalStyle`
     border-radius: 10px;
     margin-bottom: 20px;
   }
+
+  
 
   /* 왼쪽 영역 (Date와 Area) */
   .plan-details {
