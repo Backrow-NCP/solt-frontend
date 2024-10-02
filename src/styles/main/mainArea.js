@@ -187,9 +187,10 @@ const MainArea = styled.div`
     position: absolute;
     bottom: -20px;
     left: 14px;
-    border-width: 13px 20px 13px 2px;
-    border-style: solid;
-    border-color: #F78C9F transparent transparent transparent;
+    border-top: 13px solid #F78C9F;
+    border-left: 2px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 13px solid transparent;
     border-radius: 8px;
   }
   @keyframes float {

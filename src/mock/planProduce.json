@@ -51,6 +51,50 @@
 			"startTime": "2024-09-15T13:20:00",
 			"endTime": "2024-09-15T13:24:00",
 			"checker": true
+		},
+		{
+			"placeId": 14,
+			"placeName": "22",
+			"description": "도른계 강남역점은 치킨을 다양한 소스로 맛있게 즐길 수 있는 강남역 근처의 인기 치킨 맛집입니다.",
+			"price": 15900,
+			"addr": "서울 강남구 강남대로96길 12 1층 102호",
+			"category": "음식점",
+			"startTime": "2024-09-15T15:20:00",
+			"endTime": "2024-09-15T15:24:00",
+			"checker": true
+		},
+		{
+			"placeId": 15,
+			"placeName": "33",
+			"description": "도른계 강남역점은 치킨을 다양한 소스로 맛있게 즐길 수 있는 강남역 근처의 인기 치킨 맛집입니다.",
+			"price": 15900,
+			"addr": "서울 강남구 강남대로96길 12 1층 102호",
+			"category": "음식점",
+			"startTime": "2024-09-15T16:20:00",
+			"endTime": "2024-09-15T16:24:00",
+			"checker": true
+		},
+		{
+			"placeId": 16,
+			"placeName": "2 DAY",
+			"description": "무신사 스탠다드 강남점은 인기 의류 브랜드 무신사의 오프라인 매장으로, 다양한 캐주얼 패션 아이템을 직접 체험하고 구매할 수 있는 곳입니다.",
+			"price": 120000,
+			"addr": "서울특별시 서초구 서초대로77길 54",
+			"category": "쇼핑",
+			"startTime": "2024-09-16T10:00:00",
+			"endTime": "2024-09-16T11:40:00",
+			"checker": true
+		},
+		{
+			"placeId": 17,
+			"placeName": "3 DAY",
+			"description": "만족오향족발 역삼점은 부드럽고 풍미 깊은 오향족발로 유명한 맛집입니다.",
+			"price": 17000,
+			"addr": "역삼동 테헤란로25길 15-5 1층",
+			"category": "음식점",
+			"startTime": "2024-09-17T12:00:00",
+			"endTime": "2024-09-17T13:00:00",
+			"checker": true
 		}
 	],
 	"route": [
@@ -59,8 +103,8 @@
 			"endPlaceId": 11,
 			"price": 2000,
 			"transport": {
-					"id": 2,
-					"type": "버스"
+				"id": 2,
+				"type": "버스"
 			},
 			"distance": 1.2,
 			"checker": true,
@@ -71,12 +115,72 @@
 			"endPlaceId": 12,
 			"price": 0,
 			"transport": {
-					"id": 1,
-					"type": "도보"
+				"id": 1,
+				"type": "도보"
 			},
 			"distance": 0.1,
 			"checker": true,
 			"travelTime": 20
+		},
+		{
+			"startPlaceId": 12,
+			"endPlaceId": 13,
+			"price": 1800,
+			"transport": {
+				"id": 1,
+				"type": "지하철"
+			},
+			"distance": 0.1,
+			"checker": true,
+			"travelTime": 10
+		},
+		{
+			"startPlaceId": 13,
+			"endPlaceId": 14,
+			"price": 0,
+			"transport": {
+				"id": 1,
+				"type": "도보"
+			},
+			"distance": 0.1,
+			"checker": true,
+			"travelTime": 5
+		},
+		{
+			"startPlaceId": 14,
+			"endPlaceId": 15,
+			"price": 2900,
+			"transport": {
+				"id": 1,
+				"type": "버스"
+			},
+			"distance": 0.1,
+			"checker": true,
+			"travelTime": 40
+		},
+		{
+			"startPlaceId": 15,
+			"endPlaceId": 16,
+			"price": 2100,
+			"transport": {
+				"id": 1,
+				"type": "버스"
+			},
+			"distance": 0.1,
+			"checker": true,
+			"travelTime": 20
+		},
+		{
+			"startPlaceId": 16,
+			"endPlaceId": 17,
+			"price": 0,
+			"transport": {
+				"id": 1,
+				"type": "도보"
+			},
+			"distance": 0.1,
+			"checker": true,
+			"travelTime": 40
 		}
 	],
 	"regDate": "2024-09-15T10:00:00",
