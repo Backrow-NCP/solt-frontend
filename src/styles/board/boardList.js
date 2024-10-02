@@ -33,3 +33,24 @@ export const BoardBox = styled.div`
     flex-grow: 1; /* 본문 내용이 박스 안에서 공간을 유동적으로 차지하게 함 */
   }
 `;
+
+export const WriteButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-right: 20px; /* 오른쪽에서 30px 떨어지도록 설정 */
+`;
+
+export const WriteButton = styled.button`
+  background: #14b8ff;
+  color: #fff;
+  padding: 12px 18px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    background: rgba(20, 184, 255, 0.7);
+  }
+`;

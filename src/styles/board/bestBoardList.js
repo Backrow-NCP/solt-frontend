@@ -7,22 +7,13 @@ export const GlobalStyle = createGlobalStyle`
     opacity: 0.4; /* 화살표 투명도 설정 */
     font-size: 30px; /* 화살표 크기 설정 */
   }
-    
-//       /* the slides */
-//   .slick-slide {
-//       margin: 0 10px;
-//   }
-
-//   /* the parent */
-//   .slick-list {
-//       margin: 0 100px;
-//   }
-
+  .slick-list {margin: 0 -20px;}
+  .slick-slide>div {padding: 0 20px;}
 `;
 
 export const CarouselContainer = styled.div`
   width: 100%; /* 전체 화면의 90% 정도의 너비만 차지하도록 수정 */
-  max-width: 1200px; /* 최대 너비를 설정하여 너무 커지지 않도록 제한 */
+  max-width: 1400px; /* 최대 너비를 설정하여 너무 커지지 않도록 제한 */
   margin: 0 auto;
   padding: 20px 0;
   position: relative; /* 필요 시, 내부 요소의 포지셔닝을 위한 상대 위치 */
@@ -34,7 +25,6 @@ export const ImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  //   overflow: visible;
   overflow: hidden;
   border-radius: 10px;
 `;

@@ -49,23 +49,6 @@ export const ContentInput = styled.textarea`
   }
 `;
 
-// export const Button = styled.button`
-//   width: 100px;
-//   padding: 10px 15px;
-//   font-size: 16px;
-//   background-color: #007bff;
-//   color: #fff;
-//   border: none;
-//   border-radius: 5px;
-//   cursor: pointer;
-//   transition: background-color 0.3s;
-//   font-family: 'Paperlogy', sans-serif;
-
-//   &:hover {
-//     background-color: #0056b3;
-//   }
-// `;
-
 export const ButtonGroup = styled.div`
   display: flex;
   gap: 10px;
@@ -104,14 +87,14 @@ export const PlanStyledBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #333;
+  color: #999;
 `;
 
 export const ImageStyledBox = styled.div`
   width: 100%;
   // height: ${props => (props.scrollable ? '122px' : '110px')};
   line-height: 110px;
-  border: 2px solid #999;
+  border: 2px solid #9999;
   border-radius: 5px;
   margin-top: 20px;
   margin-bottom: 50px;

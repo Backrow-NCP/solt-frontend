@@ -1,9 +1,17 @@
-// BoardList.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { BoardContainer, BoardBox } from '../../styles/board/boardList';
+import Pagination from '../../components/Board/Pagination';
 
 const BoardList = ({ items = [] }) => {
-  // 기본값으로 빈 배열 설정
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6; // 한 페이지에 6개씩 표시
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(items.length / itemsPerPage);
+
   if (!Array.isArray(items) || items.length === 0) {
     return (
       <h3 style={{ textAlign: 'center', marginTop: '50px' }}>
@@ -13,14 +21,21 @@ const BoardList = ({ items = [] }) => {
   }
 
   return (
-    <BoardContainer>
-      {items.map((item, index) => (
-        <BoardBox key={index}>
-          <h3>{item.title}</h3>
-          <p>{item.content}</p>
-        </BoardBox>
-      ))}
-    </BoardContainer>
+    <>
+      <BoardContainer>
+        {currentItems.map((item, index) => (
+          <BoardBox key={index}>
+            <h3>{item.title}</h3>
+            <p>{item.content}</p>
+          </BoardBox>
+        ))}
+      </BoardContainer>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
+    </>
   );
 };
 

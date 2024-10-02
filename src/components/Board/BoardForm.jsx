@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PlanPopup from './PlanPopup';
+import Button from '../../components/Button';
 import {
   Form,
   InputGroup,
@@ -169,7 +170,7 @@ const BoardForm = ({ onSubmit, buttonText }) => {
 
         <ImageStyledBox
           ref={imageContainerRef}
-          style={{ overflowX: 'auto', display: 'flex', alignItems: 'center' }} // 스타일 추가
+          style={{ overflowX: 'auto', display: 'flex', alignItems: 'center' }}
         >
           {selectedFiles.length > 0 ? (
             selectedFiles.map((file, index) => (
@@ -197,12 +198,12 @@ const BoardForm = ({ onSubmit, buttonText }) => {
         </ImageStyledBox>
 
         <ButtonGroup>
-          <button type="button" className="btn_wht">
+          <Button type="button" color="white" size="lg">
             취소
-          </button>
-          <button type="submit" className="btn_blue">
+          </Button>
+          <Button type="submit" color="blue" size="lg">
             {buttonText}
-          </button>
+          </Button>
         </ButtonGroup>
       </Form>
     </Container>
