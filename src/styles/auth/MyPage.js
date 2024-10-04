@@ -113,6 +113,7 @@ const MyPageStyles = createGlobalStyle`
   position: relative;
   background-size: cover;
   background-position: center;
+  margin-top: 10px;
 }
 
 .plan-card::before {
@@ -122,14 +123,21 @@ const MyPageStyles = createGlobalStyle`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4); /* 어두운 반투명 배경 */
-  z-index: 1;
+  background: rgba(0, 0, 0, 0); /* 초기 상태에서 투명하게 설정 */
+  z-index: 0;
   border-radius: 20px;
+  transition: background 0.3s ease; /* 배경색이 부드럽게 변경되도록 트랜지션 설정 */
 }
 
-.plan-details, .plan-name, .plan-actions {
-  z-index: 2; /* 어두운 배경보다 앞에 나오게 설정 */
+.plan-card:hover::before {
+  background: rgba(0, 0, 0, 0.4); /* 마우스를 올렸을 때 어두운 반투명 배경 표시 */
 }
+
+.plan-details, .plan-name, .plan-actions, .edit-btn {
+  z-index: 1; /* z-index를 1로 낮춤 */
+  weight: 500px;
+}
+
 
 /* 왼쪽 영역 (Date와 Area) */
 .plan-details {
@@ -139,9 +147,7 @@ const MyPageStyles = createGlobalStyle`
   text-align: center;
 }
 
-.plan-date {
-  color: #888;
-}
+
 
 /* 가운데 영역 (Name + 수정 버튼) */
 .plan-name {
@@ -161,7 +167,7 @@ const MyPageStyles = createGlobalStyle`
   border: none;
   cursor: pointer;
   font-size: 16px;
-  color: #333;
+  //color: #333;
 }
 
 /* 오른쪽 영역 (Buttons) */

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import ProfileEditStyles from '../../styles/auth/ProfileEdit'; // ProfileEditStyles import
 import Button from '../../components/Button';
+import profileImage from '../../assets/images/profile.png'; // 프로필 이미지를 불러오는 경로를 맞춰주세요
+
 
 function ProfileEdit() {
   const currentYear = new Date().getFullYear();
@@ -57,6 +60,12 @@ function ProfileEdit() {
         </div>
         <div className="edit-content">
           {/* 이미지 및 프로필 수정 입력 폼 */}
+
+          <div className="profile-image-container">
+            <img src={profileImage} alt="프로필 이미지" className="profile-image" />
+             <Link to="/auth/profileEdit" className="size_xs profile-edit">프로필 삭제</Link>
+          </div>
+
           <div className="edit-form">
             <div className="input-group">
               <input type="email" id="email" className="input-small" value="test1234@gmail.com" readOnly />

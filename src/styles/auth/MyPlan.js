@@ -9,17 +9,14 @@ const MyPlanStyles = createGlobalStyle`
     gap: 20px;
     max-width: 1600px;
     margin: 80px auto 0; /* 위에 여백을 주고, 좌우는 auto로 중앙에 배치 */
-
   }
 
-   /* 좌측 네비게이션 바 */
+  /* 좌측 네비게이션 바 */
   .sidebar {
     width: 200px;
     background-color: #fff;
-    //padding: 20px;
     position: relative;
     margin-top: 60px;
-    //top: 130px;
     bottom: 0;
     z-index: 1;
   }
@@ -49,8 +46,6 @@ const MyPlanStyles = createGlobalStyle`
     margin-left: auto;
     margin-right: auto;
   }
-    
-  
 
   .my-plan-container h1 {
     font-size: 24px;
@@ -70,9 +65,30 @@ const MyPlanStyles = createGlobalStyle`
     border: 1px solid #ddd;
     border-radius: 10px;
     margin-bottom: 20px;
+    position: relative; /* ::before를 사용하려면 position 설정 필요 */
+    overflow: hidden; /* ::before 요소가 카드 경계를 벗어나지 않도록 설정 */
   }
 
-  
+  .plan-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0); /* 기본 상태에서는 투명 */
+    transition: background 0.3s ease; /* 부드러운 전환 효과 */
+    z-index: 0;
+    border-radius: 10px;
+  }
+
+  .plan-card:hover::before {
+    background: rgba(0, 0, 0, 0.4); /* 마우스 오버 시 어두운 반투명 배경 적용 */
+  }
+
+  .plan-details, .plan-name, .plan-actions {
+    z-index: 1; /* 내용이 ::before 위에 표시되도록 설정 */
+  }
 
   /* 왼쪽 영역 (Date와 Area) */
   .plan-details {
@@ -114,8 +130,6 @@ const MyPlanStyles = createGlobalStyle`
     gap: 10px;
     width: 33.3%;
   }
-
-
 
   /* 반응형 설정 */
   @media (max-width: 1024px) {

@@ -3,11 +3,11 @@ import MyPageStyles from '../../styles/auth/MyPage'; // 스타일 파일을 impo
 import Button from '../../components/Button'; // Button 컴포넌트 import
 import { Link } from 'react-router-dom'; // Link 컴포넌트를 사용
 import profileImage from '../../assets/images/profile.png'; // 프로필 이미지를 불러오는 경로를 맞춰주세요
-import seoulImage from '../../assets/images//bn/area1.jpg';
-import jejuImage from '../../assets/images/bn/area2.jpg';
-import busanImage from '../../assets/images/bn/area3.jpg';
-import gyeongjuImage from '../../assets/images/bn/area4.jpg';
-import gangneungImage from '../../assets/images/bn/area5.jpg';
+import itaewonImage from '../../assets/images//bn/area1.jpg';
+import jamsilImage from '../../assets/images/bn/area2.jpg';
+import gangnamImage from '../../assets/images/bn/area3.jpg';
+import jongroImage from '../../assets/images/bn/area4.jpg';
+import hongdaeImage from '../../assets/images/bn/area5.jpg';
 
 
 const MyPage = () => {
@@ -35,16 +35,16 @@ const MyPage = () => {
   // area 값에 따라 해당 지역에 맞는 이미지를 반환하는 함수
   const getImageForArea = (area) => {
     switch (area) {
-      case '서울':
-        return seoulImage; 
-      case '제주도':
-        return jejuImage; 
-      case '부산':
-        return busanImage; 
-      case '경주':
-        return gyeongjuImage;
-      case '강릉':
-        return gangneungImage;
+      case '이태원':
+        return itaewonImage; 
+      case '잠실':
+        return jamsilImage; 
+      case '강남':
+        return gangnamImage; 
+      case '종로':
+        return jongroImage;
+      case '홍대':
+        return hongdaeImage;
       // 추가적으로 필요한 지역 이미지를 추가할 수 있습니다.
       default:
         return '/images/default.jpg'; // 기본 이미지 (없을 경우)
@@ -111,14 +111,14 @@ const MyPage = () => {
                 }}>
                 {/* 왼쪽 영역 (Date, Area) */}
                 <div className="plan-details">
-                  <p className="plan-date">{`${plan.startDate} ~ ${plan.endDate}`}</p>
-                  <p className="plan-area">{plan.area}</p>
+                  <p className="plan-date weight_sb" style={{ color: 'white' }}>{`${plan.startDate} ~ ${plan.endDate}`}</p>
+                  <p className="plan-area weight_sb" style={{ color: 'white' }}>{plan.area}</p>
                 </div>
-                {/* 가운데 영역 (Name + 수정 버튼) */}
                 <div className="plan-name">
-                  <h2 className="plan-title">{plan.title}</h2>
-                  <button className="edit-btn">✎</button> 
+                  <h2 className="plan-title weight_sb" style={{ color: 'white' }}>{plan.title}</h2>
+                  <button className="edit-btn weight_sb" style={{ color: 'white' }}>✎</button>
                 </div>
+
                 {/* 오른쪽 영역 (Buttons) */}
                 <div className="plan-actions">
                   <Button color="blue" size="sm">수정</Button>

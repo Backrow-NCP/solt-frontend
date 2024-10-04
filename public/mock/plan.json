@@ -3,36 +3,36 @@
       "id": 1,
       "startDate": "1/1",
       "endDate": "1/10",
-      "area": "서울",
-      "title": "서울 여행"
+      "area": "이태원",
+      "title": "이태원 여행"
     },
     {
       "id": 2,
       "startDate": "2/5",
       "endDate": "2/15",
-      "area": "부산",
-      "title": "부산 여행"
+      "area": "잠실",
+      "title": "잠실 여행"
     },
     {
       "id": 3,
       "startDate": "3/10",
       "endDate": "3/15",
-      "area": "제주도",
-      "title": "제주도 여행"
+      "area": "강남",
+      "title": "강남 여행"
     },
     {
       "id": 4,
       "startDate": "4/1",
       "endDate": "4/7",
-      "area": "강릉",
-      "title": "강릉 여행"
+      "area": "종로",
+      "title": "종로 여행"
     },
     {
       "id": 5,
       "startDate": "5/15",
       "endDate": "5/20",
-      "area": "경주",
-      "title": "경주 여행"
+      "area": "홍대",
+      "title": "홍대 여행"
     }
   ]
   
