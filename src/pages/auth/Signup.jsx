@@ -55,7 +55,7 @@ function Signup({closePopup}) {
       <SignupStyles /> 
       <div className="signup-popup-overlay">
         <div className="signup-popup">
-          <button className="close-button" onClick={closePopup}>X</button>
+          <button className="close-button" onClick={closePopup}>x</button>
           <h2>회원가입</h2>
           <form className="signup-form" onSubmit={handleSubmit}>
             <div className="input-group">
@@ -144,7 +144,7 @@ function Signup({closePopup}) {
             </div>
 
             {/* 회원가입 버튼 */}
-            <Button color="black" size="lg">회원가입</Button>
+            <Button color="blue" size="lg">회원가입</Button>
           </form>
         </div>
       </div>

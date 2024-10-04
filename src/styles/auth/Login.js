@@ -12,6 +12,8 @@ const LoginStyles = createGlobalStyle`
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards; /* 팝업 배경 페이드인 */
   }
 
   .login-popup {
@@ -21,8 +23,32 @@ const LoginStyles = createGlobalStyle`
     width: 400px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
+    opacity: 0;
+    transform: translateY(-30px); /* 위에서 아래로 슬라이드하는 효과 */
+    animation: slideDown 0.5s forwards; /* 팝업 슬라이드 다운 애니메이션 */
   }
 
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px); /* 초기 위치: 위 */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0); /* 최종 위치: 제자리 */
+    }
+  }
+
+  /* 닫기 버튼 */
   .close-button {
     position: absolute;
     top: 10px;
@@ -68,7 +94,7 @@ const LoginStyles = createGlobalStyle`
   .login-options {
     display: flex;
     justify-content: center;
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 20px;
   }
 
@@ -85,6 +111,7 @@ const LoginStyles = createGlobalStyle`
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
     &:hover {
       background-color: #333;
     }

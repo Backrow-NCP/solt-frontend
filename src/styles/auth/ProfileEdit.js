@@ -33,7 +33,7 @@ const ProfileEditStyles = createGlobalStyle`
   max-width: 250px;
   height: auto;
   border-radius: 50%;
-  background-color: #888;
+  background-color: #fff;
 }
 
 .profile-edit {
@@ -71,7 +71,10 @@ const ProfileEditStyles = createGlobalStyle`
 
   .input-group button {
     margin-left: 10px;
+    justify-content: center;
   }
+
+  
 
   .date-dropdown {
     display: flex;
@@ -101,6 +104,7 @@ const ProfileEditStyles = createGlobalStyle`
     display: flex;  /* 성별 라디오 버튼을 가로로 배치 */
     gap: 40px;  /* 남자, 여자 사이 간격 */
     align-items: center;
+    justify-content: center;
   }
 
   .gender-group > div {

@@ -68,7 +68,7 @@ const MyPageStyles = createGlobalStyle`
   max-width: 200px;
   height: auto;
   border-radius: 50%;
-  background-color: #888;
+  background-color: #fff;
 }
 
 .profile-edit {

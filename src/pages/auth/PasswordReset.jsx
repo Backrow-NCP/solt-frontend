@@ -45,7 +45,7 @@ const PasswordReset = ({ closePopup }) => {
               />
             </div>
 
-            <Button color="black" size="sm">확인</Button>
+            <Button color="blue" size="sm">확인</Button>
           </form>
         </div>
       </div>

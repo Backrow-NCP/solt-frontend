@@ -37,11 +37,11 @@ const Login = ({ closePopup }) => {
       <LoginStyles />
       <div className="login-popup-overlay">
         <div className="login-popup">
-          <button className="close-button" onClick={closePopup}>X</button>
+          <button className="close-button" onClick={closePopup}>x</button>
           <h2>로그인</h2>
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="input-group">
-              <label htmlFor="email">이메일</label>
+              
               <input
                 type="email"
                 id="email"
@@ -53,7 +53,7 @@ const Login = ({ closePopup }) => {
             </div>
 
             <div className="input-group">
-              <label htmlFor="password">비밀번호</label>
+              
               <input
                 type="password"
                 id="password"
@@ -66,11 +66,11 @@ const Login = ({ closePopup }) => {
             {error && <p className="error-message" style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
             <div className="login-options">
-              <Link to="/auth/FindPassword" style={{ marginRight: '8px' }}>비밀번호 찾기</Link> /
-              <Link to="/auth/signup" style={{ marginLeft: '8px' }}>회원가입</Link>
+              <Link to="/auth/FindPassword" style={{ marginRight: '15px' }}>비밀번호 찾기</Link> 
+              <Link to="/auth/signup" style={{ marginLeft: '15px' }}>회원가입</Link>
             </div>
 
-            <Button color="black" size="lg">확인</Button>
+            <Button color="blue" size="lg">확인</Button>
           </form>
         </div>
       </div>

@@ -30,7 +30,7 @@ function App() {
               <Route path="auth/profileEdit" element={<ProfileEdit/>}/>
             </Routes>
           </main>
-          {/*<Footer />*/}
+          <Footer />
         </div>
       </Router>
     </>

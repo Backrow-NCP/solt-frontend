@@ -20,7 +20,7 @@ const FindPassword = ({ closePopup }) => {
       <FindPasswordStyles /> {/* 글로벌 스타일 적용 */}
       <div className="find-password-popup-overlay">
         <div className="find-password-popup">
-          <button className="close-button" onClick={closePopup}>X</button>
+          <button className="close-button" onClick={closePopup}>x</button>
           <h2>비밀번호 찾기</h2>
           <form className="find-password-form" onSubmit={handleSubmit}>
             <div className="input-group">
@@ -45,7 +45,7 @@ const FindPassword = ({ closePopup }) => {
               />
             </div>
 
-            <Button color="black" size="sm">확인</Button>
+            <Button color="blue" size="sm">확인</Button>
           </form>
         </div>
       </div>
