@@ -171,6 +171,12 @@ const GlobalStyles = createGlobalStyle`
 	header nav ul li.active a {
 		font-weight: 600;
 	}
+  
+  header .login {
+    display: flex;
+    gap: 10px; /* 버튼 사이 간격 설정 */
+  }
+
   header .login a:first-child {
     margin-right: 16px;
   }

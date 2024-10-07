@@ -41,21 +41,20 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
-import Button from '../components/Button'; // Button 컴포넌트 import
-import profileImage from '../assets/images/profile.png'; // 프로필 사진 경로
+import Button from '../components/Button';
+import profileImage from '../assets/images/profile.png';
 
-const Header = () => {
+const Header = ({ onLoginClick, onSignupClick }) => {
   const location = useLocation();
-  const [username, setUsername] = useState(''); // 사용자 이름 상태 관리
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
-    // member.json 파일에서 데이터를 가져오는 fetch 함수
     fetch('/mock/member.json')
       .then((response) => response.json())
       .then((data) => {
-        const member = data.members.find((member) => member.id === 1); // 임의로 id 1인 회원 선택
+        const member = data.members.find((member) => member.id === 1);
         if (member) {
-          setUsername(member.name); // 사용자 이름 설정
+          setUsername(member.name);
         }
       });
   }, []);
@@ -80,35 +79,31 @@ const Header = () => {
 
         <div className="log">
           {location.pathname === '/auth/mypage' ? (
-            // MyPage에서만 프로필 이미지와 사용자 이름 표시
             <div className="profile-section" style={{ display: 'flex', alignItems: 'center' }}>
               <Link to="/auth/mypage">
                 <img 
                   src={profileImage} 
                   alt="프로필" 
                   className="profile-image" 
-                  style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '10px' }} // 이미지 크기와 둥글게 처리
+                  style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '10px' }}
                 />
               </Link>
-              <span>{username}님</span> {/* 사용자 이름 표시 */}
+              <span>{username}님</span>
             </div>
           ) : (
-            // 다른 페이지에서는 회원가입과 로그인 버튼 표시
             <div className="login">
               <Button
-                size="lg"
+                size="sm"
                 color="black"
-                as={Link}
-                to="/auth/signup"
+                onClick={onSignupClick}
                 className="btn_blk"
               >
                 회원가입
               </Button>
               <Button
-                size="lg"
+                size="sm"
                 color="white"
-                as={Link}
-                to="/auth/login"
+                onClick={onLoginClick}
                 className="btn_wht"
               >
                 로그인
@@ -122,4 +117,7 @@ const Header = () => {
 };
 
 export default Header;
+
+
+
 

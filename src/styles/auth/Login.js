@@ -96,6 +96,8 @@ const LoginStyles = createGlobalStyle`
     justify-content: center;
     font-size: 14px;
     margin-bottom: 20px;
+    gap: 15px; /* 버튼 사이의 간격을 15px로 설정 */
+
   }
 
   .login-options a {

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import LoginStyles from '../../styles/auth/Login';
 import Button from '../../components/Button';
 
-const Login = ({ closePopup }) => {
+const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -41,7 +40,6 @@ const Login = ({ closePopup }) => {
           <h2>로그인</h2>
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="input-group">
-              
               <input
                 type="email"
                 id="email"
@@ -53,7 +51,6 @@ const Login = ({ closePopup }) => {
             </div>
 
             <div className="input-group">
-              
               <input
                 type="password"
                 id="password"
@@ -63,11 +60,28 @@ const Login = ({ closePopup }) => {
                 required
               />
             </div>
+
             {error && <p className="error-message" style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
             <div className="login-options">
-              <Link to="/auth/FindPassword" style={{ marginRight: '15px' }}>비밀번호 찾기</Link> 
-              <Link to="/auth/signup" style={{ marginLeft: '15px' }}>회원가입</Link>
+              <button
+                onClick={() => {
+                  closePopup();
+                  onFindPasswordClick();
+                }}
+                className="find-password-link"
+              >
+                비밀번호 찾기
+              </button>
+              <button
+                onClick={() => {
+                  closePopup();
+                  onSignupClick();
+                }}
+                className="signup-link"
+              >
+                회원가입
+              </button>
             </div>
 
             <Button color="blue" size="lg">확인</Button>
