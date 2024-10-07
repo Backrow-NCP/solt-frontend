@@ -1,0 +1,323 @@
+{
+  "page": 1,
+  "size": 6,
+  "total": 12,
+  "startPage": 1,
+  "endPage": 2,
+  "prev": false,
+  "next": true,
+  "dtoList": [
+    {
+      "boardId": 1,
+      "title": "첫 번째 게시글",
+      "content": "이것은 첫 번째 게시글의 내용입니다. 이것은 첫 번째 게시글의 내용입니다. 이것은 첫 번째 게시글의 내용입니다. 이것은 첫 번째 게시글의 내용입니다.",
+      "location": "서울",
+      "duration": "1박 2일",
+      "member": {
+        "memberId": 101,
+        "name": "홍길동",
+        "birthYear": "1990-01-01T00:00:00.000Z",
+        "gender": true,
+        "fileName": "profile1.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img1-uuid",
+          "fileName": "",
+          "ord": 1
+        }
+      ],
+      "likeCount": 5,
+      "regDate": "2024-10-01T06:11:50.370Z",
+      "modDate": "2024-10-01T06:11:50.370Z"
+    },
+    {
+      "boardId": 2,
+      "title": "두 번째 게시글",
+      "content": "이것은 두 번째 게시글의 내용입니다.",
+      "location": "경주",
+      "duration": "3박 4일",
+      "member": {
+        "memberId": 102,
+        "name": "김철수",
+        "birthYear": "1985-05-15T00:00:00.000Z",
+        "gender": true,
+        "fileName": "profile2.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img2-uuid",
+          "fileName": "/sampleImage/1.jpg",
+          "ord": 1
+        }
+      ],
+      "likeCount": 10,
+      "regDate": "2024-10-02T06:11:50.370Z",
+      "modDate": "2024-10-02T06:11:50.370Z"
+    },
+    {
+      "boardId": 3,
+      "title": "세 번째 게시글",
+      "content": "이것은 세 번째 게시글의 내용입니다.",
+      "location": "장소 3",
+      "duration": "3주",
+      "member": {
+        "memberId": 103,
+        "name": "이영희",
+        "birthYear": "1995-12-30T00:00:00.000Z",
+        "gender": false,
+        "fileName": "profile3.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img3-uuid",
+          "fileName": "/sampleImage/2.jpg",
+          "ord": 1
+        }
+      ],
+      "likeCount": 3,
+      "regDate": "2024-10-03T06:11:50.370Z",
+      "modDate": "2024-10-03T06:11:50.370Z"
+    },
+    {
+      "boardId": 4,
+      "title": "네 번째 게시글",
+      "content": "이것은 네 번째 게시글의 내용입니다.",
+      "location": "장소 4",
+      "duration": "4주",
+      "member": {
+        "memberId": 104,
+        "name": "박지민",
+        "birthYear": "1992-04-22T00:00:00.000Z",
+        "gender": false,
+        "fileName": "profile4.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img4-uuid",
+          "fileName": "",
+          "ord": 1
+        }
+      ],
+      "likeCount": 8,
+      "regDate": "2024-10-04T06:11:50.370Z",
+      "modDate": "2024-10-04T06:11:50.370Z"
+    },
+    {
+      "boardId": 5,
+      "title": "다섯 번째 게시글",
+      "content": "이것은 다섯 번째 게시글의 내용입니다.",
+      "location": "장소 5",
+      "duration": "5주",
+      "member": {
+        "memberId": 105,
+        "name": "최윤아",
+        "birthYear": "1988-08-08T00:00:00.000Z",
+        "gender": false,
+        "fileName": "profile5.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img5-uuid",
+          "fileName": "",
+          "ord": 1
+        }
+      ],
+      "likeCount": 15,
+      "regDate": "2024-10-05T06:11:50.370Z",
+      "modDate": "2024-10-05T06:11:50.370Z"
+    },
+    {
+      "boardId": 6,
+      "title": "여섯 번째 게시글",
+      "content": "이것은 여섯 번째 게시글의 내용입니다.",
+      "location": "장소 6",
+      "duration": "6주",
+      "member": {
+        "memberId": 106,
+        "name": "한창민",
+        "birthYear": "1993-03-03T00:00:00.000Z",
+        "gender": true,
+        "fileName": "profile6.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img6-uuid",
+          "fileName": "/sampleImage/3.jpg",
+          "ord": 1
+        }
+      ],
+      "likeCount": 2,
+      "regDate": "2024-10-06T06:11:50.370Z",
+      "modDate": "2024-10-06T06:11:50.370Z"
+    },
+    {
+      "boardId": 7,
+      "title": "일곱 번째 게시글",
+      "content": "이것은 일곱 번째 게시글의 내용입니다.",
+      "location": "장소 7",
+      "duration": "7주",
+      "member": {
+        "memberId": 106,
+        "name": "김성민",
+        "birthYear": "1993-03-03T00:00:00.000Z",
+        "gender": true,
+        "fileName": "profile6.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img6-uuid",
+          "fileName": "/sampleImage/4.jpg",
+          "ord": 1
+        }
+      ],
+      "likeCount": 2,
+      "regDate": "2024-10-06T06:11:50.370Z",
+      "modDate": "2024-10-06T06:11:50.370Z"
+    },
+    {
+      "boardId": 8,
+      "title": "8 번째 게시글",
+      "content": "이것은 여덟 번째 게시글의 내용입니다.",
+      "location": "장소 8",
+      "duration": "8주",
+      "member": {
+        "memberId": 106,
+        "name": "한성민",
+        "birthYear": "1993-03-03T00:00:00.000Z",
+        "gender": true,
+        "fileName": "profile6.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img6-uuid",
+          "fileName": "/sampleImage/5.jpg",
+          "ord": 1
+        }
+      ],
+      "likeCount": 2,
+      "regDate": "2024-10-06T06:11:50.370Z",
+      "modDate": "2024-10-06T06:11:50.370Z"
+    },
+    {
+      "boardId": 9,
+      "title": "9 번째 게시글",
+      "content": "이것은 아홉 번째 게시글의 내용입니다.",
+      "location": "장소 9",
+      "duration": "9주",
+      "member": {
+        "memberId": 106,
+        "name": "한성민",
+        "birthYear": "1993-03-03T00:00:00.000Z",
+        "gender": true,
+        "fileName": "profile6.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img6-uuid",
+          "fileName": "/sampleImage/6.jpg",
+          "ord": 1
+        }
+      ],
+      "likeCount": 2,
+      "regDate": "2024-10-06T06:11:50.370Z",
+      "modDate": "2024-10-06T06:11:50.370Z"
+    },
+    {
+      "boardId": 10,
+      "title": "10 번째 게시글",
+      "content": "이것은 열 번째 게시글의 내용입니다.",
+      "location": "장소 10",
+      "duration": "10주",
+      "member": {
+        "memberId": 106,
+        "name": "한성민",
+        "birthYear": "1993-03-03T00:00:00.000Z",
+        "gender": true,
+        "fileName": "profile6.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img6-uuid",
+          "fileName": "/sampleImage/7.jpg",
+          "ord": 1
+        }
+      ],
+      "likeCount": 2,
+      "regDate": "2024-10-06T06:11:50.370Z",
+      "modDate": "2024-10-06T06:11:50.370Z"
+    },
+    {
+      "boardId": 11,
+      "title": "11 번째 게시글",
+      "content": "이것은 열한 번째 게시글의 내용입니다.",
+      "location": "장소 11",
+      "duration": "11주",
+      "member": {
+        "memberId": 106,
+        "name": "한성민",
+        "birthYear": "1993-03-03T00:00:00.000Z",
+        "gender": true,
+        "fileName": "profile6.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img6-uuid",
+          "fileName": "/sampleImage/8.jpg",
+          "ord": 1
+        }
+      ],
+      "likeCount": 2,
+      "regDate": "2024-10-06T06:11:50.370Z",
+      "modDate": "2024-10-06T06:11:50.370Z"
+    },
+    {
+      "boardId": 12,
+      "title": "12 번째 게시글",
+      "content": "이것은 열두 번째 게시글의 내용입니다.",
+      "location": "장소 12",
+      "duration": "12주",
+      "member": {
+        "memberId": 106,
+        "name": "한성민",
+        "birthYear": "1993-03-03T00:00:00.000Z",
+        "gender": true,
+        "fileName": "profile6.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img6-uuid",
+          "fileName": "/sampleImage/9.jpg",
+          "ord": 1
+        }
+      ],
+      "likeCount": 2,
+      "regDate": "2024-10-06T06:11:50.370Z",
+      "modDate": "2024-10-06T06:11:50.370Z"
+    },
+    {
+      "boardId": 13,
+      "title": "13 번째 게시글",
+      "content": "이것은 열세 번째 게시글의 내용입니다.",
+      "location": "장소 13",
+      "duration": "12주",
+      "member": {
+        "memberId": 106,
+        "name": "김뿅뿅",
+        "birthYear": "1993-03-03T00:00:00.000Z",
+        "gender": true,
+        "fileName": "profile6.jpg"
+      },
+      "images": [
+        {
+          "uuid": "img6-uuid",
+          "fileName": "/sampleImage/10.jpg",
+          "ord": 1
+        }
+      ],
+      "likeCount": 2,
+      "regDate": "2024-10-06T06:11:50.370Z",
+      "modDate": "2024-10-06T06:11:50.370Z"
+    }
+  ]
+}

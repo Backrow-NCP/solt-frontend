@@ -4,7 +4,8 @@ import BoardList from '../../components/Board/BoardList';
 import BestBoardList from '../../components/Board/BestBoardList';
 import Button from '../../components/Button';
 import { PlanContainer, ButtonContainer } from '../../styles/board/listPage';
-import boardData from '../../data/board.json';
+// import boardData from '../../data/board.json';
+import boardData from '../../data/sampleData.json';
 
 const List = () => {
   const navigate = useNavigate();
