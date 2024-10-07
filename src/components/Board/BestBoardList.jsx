@@ -14,16 +14,16 @@ import {
 } from '../../styles/board/bestBoardList'; // 경로 수정
 
 // 이미지 임포트
-import img1 from '../../assets/images/sample/IMG_3133.jpg';
-import img2 from '../../assets/images/sample/IMG_3141.jpg';
-import img3 from '../../assets/images/sample/IMG_3158.jpg';
-import img4 from '../../assets/images/sample/IMG_3159.jpg';
-import img5 from '../../assets/images/sample/IMG_3160.jpg';
-import img6 from '../../assets/images/sample/IMG_3161.jpg';
-import img7 from '../../assets/images/sample/IMG_3171.jpg';
-import img8 from '../../assets/images/sample/IMG_3173.jpg';
-import img9 from '../../assets/images/sample/IMG_3174.jpg';
-import img10 from '../../assets/images/sample/IMG_3178.jpg';
+import img1 from '../../assets/images/sample/1.jpg';
+import img2 from '../../assets/images/sample/2.jpg';
+import img3 from '../../assets/images/sample/3.jpg';
+import img4 from '../../assets/images/sample/4.jpg';
+import img5 from '../../assets/images/sample/5.jpg';
+import img6 from '../../assets/images/sample/6.jpg';
+import img7 from '../../assets/images/sample/7.jpg';
+import img8 from '../../assets/images/sample/8.jpg';
+import img9 from '../../assets/images/sample/9.jpg';
+import img10 from '../../assets/images/sample/10.jpg';
 
 const BestBoardList = () => {
   const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];

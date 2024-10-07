@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { BoardContainer, BoardBox } from '../../styles/board/boardList';
+import { BoardContainer } from '../../styles/board/boardList';
 import Pagination from '../../components/Board/Pagination';
+import BoardItem from '../Board/BoardItem';
 
 const BoardList = ({ items = [] }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6; // 한 페이지에 6개씩 표시
+  const itemsPerPage = 6;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -24,10 +25,7 @@ const BoardList = ({ items = [] }) => {
     <>
       <BoardContainer>
         {currentItems.map((item, index) => (
-          <BoardBox key={index}>
-            <h3>{item.title}</h3>
-            <p>{item.content}</p>
-          </BoardBox>
+          <BoardItem key={index} title={item.title} content={item.content} />
         ))}
       </BoardContainer>
       <Pagination
