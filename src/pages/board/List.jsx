@@ -7,11 +7,6 @@ import { PlanContainer, ButtonContainer } from '../../styles/board/listPage';
 import boardData from '../../data/board.json';
 
 const List = () => {
-  const boardItems = Array.from({ length: 200 }, (_, i) => ({
-    title: `게시글 ${i + 1}`,
-    content: `내용 ${i + 1}`,
-  }));
-
   const navigate = useNavigate();
 
   return (

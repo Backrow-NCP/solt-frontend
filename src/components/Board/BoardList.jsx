@@ -25,7 +25,16 @@ const BoardList = ({ items = [] }) => {
     <>
       <BoardContainer>
         {currentItems.map((item, index) => (
-          <BoardItem key={index} title={item.title} content={item.content} />
+          <BoardItem
+            key={index}
+            title={item.title}
+            content={item.content}
+            imageUrl={item.imageUrl}
+            location={item.location}
+            date={item.date}
+            author={item.author}
+            duration={item.duration}
+          />
         ))}
       </BoardContainer>
       <Pagination
