@@ -71,7 +71,7 @@ export const TextContainer = styled.div`
     -webkit-line-clamp: 3; /* 최대 3줄로 제한 */
     -webkit-box-orient: vertical;
     word-wrap: break-word; /* 긴 단어를 자동으로 줄바꿈 */
-    line-height: 1.6em; /* 줄 높이를 맞춤 */
+    line-height: 1.2em; /* 줄 높이를 맞춤 */
     white-space: normal; /* 여러 줄을 허용 */
     margin-left: 10px;
   }

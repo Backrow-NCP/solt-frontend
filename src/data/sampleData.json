@@ -1,0 +1,95 @@
+{
+  "page": 0,
+  "size": 0,
+  "total": 0,
+  "startPage": 0,
+  "endPage": 0,
+  "prev": true,
+  "next": true,
+  "dtoList": [
+    {
+      "boardId": 0,
+      "title": "string",
+      "content": "string",
+      "member": {
+        "memberId": 0,
+        "name": "string",
+        "birthYear": "2024-10-07T06:11:50.370Z",
+        "gender": true,
+        "fileName": "string"
+      },
+      "images": [
+        {
+          "uuid": "string",
+          "fileName": "string",
+          "ord": 0
+        }
+      ],
+      "likeCount": 0,
+      "regDate": "2024-10-07T06:11:50.370Z",
+      "modDate": "2024-10-07T06:11:50.370Z"
+    }
+  ],
+  "page": 0,
+  "size": 0,
+  "total": 0,
+  "startPage": 0,
+  "endPage": 0,
+  "prev": true,
+  "next": true,
+  "dtoList": [
+    {
+      "boardId": 0,
+      "title": "string",
+      "content": "string",
+      "member": {
+        "memberId": 0,
+        "name": "string",
+        "birthYear": "2024-10-07T06:11:50.370Z",
+        "gender": true,
+        "fileName": "string"
+      },
+      "images": [
+        {
+          "uuid": "string",
+          "fileName": "string",
+          "ord": 0
+        }
+      ],
+      "likeCount": 0,
+      "regDate": "2024-10-07T06:11:50.370Z",
+      "modDate": "2024-10-07T06:11:50.370Z"
+    }
+  ],
+  "page": 0,
+  "size": 0,
+  "total": 0,
+  "startPage": 0,
+  "endPage": 0,
+  "prev": true,
+  "next": true,
+  "dtoList": [
+    {
+      "boardId": 0,
+      "title": "string",
+      "content": "string",
+      "member": {
+        "memberId": 0,
+        "name": "string",
+        "birthYear": "2024-10-07T06:11:50.370Z",
+        "gender": true,
+        "fileName": "string"
+      },
+      "images": [
+        {
+          "uuid": "string",
+          "fileName": "string",
+          "ord": 0
+        }
+      ],
+      "likeCount": 0,
+      "regDate": "2024-10-07T06:11:50.370Z",
+      "modDate": "2024-10-07T06:11:50.370Z"
+    }
+  ]
+}

@@ -4,7 +4,7 @@ import {
   Thumbnail,
   TextContainer,
 } from '../../styles/board/boardItem';
-import defaultImage from '../../assets/images/sample/defaultImage.jpg'; // 기본 이미지 임포트
+import defaultImage from '../../assets/images/sample/nonImage.jpg';
 
 const BoardItem = ({
   title,
@@ -35,7 +35,7 @@ const BoardItem = ({
         </div>
 
         <div className="contentBox">
-          <h3>{title}</h3>
+          <h3 style={{ marginBottom: 5 }}>{title}</h3>
           {content}
         </div>
       </TextContainer>
