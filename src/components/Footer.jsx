@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import scrollTop from '../services/scrollTop';
+import scrollTop from '../services/scrollTop';
 
 import logo from '../assets/images/logo_f.svg';
-// import ai from '../assets/images/ico/floating_ai.svg';
-// import up from '../assets/images/ico/floating_up.svg';
+import ai from '../assets/images/ico/floating_ai.svg';
+import up from '../assets/images/ico/floating_up.svg';
 
 const Footer = () => {
   return (
@@ -37,14 +37,14 @@ const Footer = () => {
         </ul>
       </div>
 
-      {/* <ul className="floating">
+      <ul className="floating">
         <li>
           <button id="chatbot"><img src={ai} alt="챗봇창 열기" /></button>
         </li>
         <li>
           <button id="up" onClick={scrollTop}><img src={up} alt="최상단으로 이동" /></button>
         </li>
-      </ul> */}
+      </ul>
     </footer>
   );
 };
