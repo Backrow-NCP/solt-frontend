@@ -1,52 +1,52 @@
 // 완성된 plan 
 //마이페이지, 마이플랜, 게시글 작성시에 plan 선택 요소에 이용될 예정
 
-// src/components/PlanContainer.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from './Button'; // Button 컴포넌트 경로에 맞게 import
+import Button from './Button'; 
+import {
+  PlanCard,
+  PlanDetails,
+  PlanName,
+  PlanActions,
+  EditButton,
+} from '../styles/PlanContainer';
+import itaewonImage from '../assets/images/bn/area1.jpg';
+import jamsilImage from '../assets/images/bn/area2.jpg';
+import gangnamImage from '../assets/images/bn/area3.jpg';
+import jongroImage from '../assets/images/bn/area4.jpg';
+import hongdaeImage from '../assets/images/bn/area5.jpg';
 
-const PlanContainer = ({ plan, getImageForArea }) => {
+const PlanContainer = ({ plan }) => {
+  const getImageForArea = (area) => {
+    switch (area) {
+      case '이태원': return itaewonImage;
+      case '잠실': return jamsilImage;
+      case '강남': return gangnamImage;
+      case '종로': return jongroImage;
+      case '홍대': return hongdaeImage;
+      default: return '/images/default.jpg';
+    }
+  };
+
   return (
-    <div
-      className="plan-card"
-      style={{
-        backgroundImage: `url(${getImageForArea(plan.area)})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      {/* 왼쪽 영역 (Date, Area) */}
-      <div className="plan-details">
-        <p className="plan-date weight_sb" style={{ color: 'white' }}>
-          {`${plan.startDate} ~ ${plan.endDate}`}
-        </p>
-        <p className="plan-area weight_sb" style={{ color: 'white' }}>
-          {plan.area}
-        </p>
-      </div>
-      <div className="plan-name">
-        <h2 className="plan-title weight_sb" style={{ color: 'white' }}>
-          {plan.title}
-        </h2>
-        <button className="edit-btn weight_sb" style={{ color: 'white' }}>
-          ✎
-        </button>
-      </div>
-      {/* 오른쪽 영역 (Buttons) */}
-      <div className="plan-actions">
-        <Button color="blue" size="sm">
-          수정
-        </Button>
-        <Button color="white" size="sm">
-          삭제
-        </Button>
-      </div>
-    </div>
+    <PlanCard style={{ backgroundImage: `url(${getImageForArea(plan.area)})` }}>
+      <PlanDetails>
+        <p className="plan-date weight_sb">{`${plan.startDate} ~ ${plan.endDate}`}</p>
+        <p className="plan-area weight_sb">{plan.area}</p>
+      </PlanDetails>
+      <PlanName>
+        <h2 className="plan-title weight_sb">{plan.title}</h2>
+        <EditButton>✎</EditButton>
+      </PlanName>
+      <PlanActions>
+        <Button color="blue" size="sm">수정</Button>
+        <Button color="white" size="sm">삭제</Button>
+      </PlanActions>
+    </PlanCard>
   );
 };
 
-// PropTypes 설정 (옵션)
 PlanContainer.propTypes = {
   plan: PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -55,7 +55,6 @@ PlanContainer.propTypes = {
     endDate: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
   }).isRequired,
-  getImageForArea: PropTypes.func.isRequired,
 };
 
 export default PlanContainer;
