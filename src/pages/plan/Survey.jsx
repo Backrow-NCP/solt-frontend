@@ -142,6 +142,7 @@ const Survey = () => {
       navigate('/plan/produce');
     } catch (error) {
       console.log('데이터 오류 발생', error);
+      navigate('/plan/produce');
     }
   };
 

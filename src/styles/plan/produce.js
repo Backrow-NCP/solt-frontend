@@ -27,17 +27,7 @@ const PlanProduce = styled.div`
 		margin-top: 10px;
 	}
 	.plan_cont > button:first-of-type {
-		position: relative;
-	}
-	.plan_cont > button:first-of-type::after {
-		content: "";
-		position: absolute;
-		top: -100%;
-		left: 0;
-		width: 100%;
-		height: 80px;
-		background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
-		transform: translateY(-25px);
+		margin-top: 40px;
 	}
 
 	.plan_info > span {
@@ -163,7 +153,7 @@ const PlanProduce = styled.div`
 	}
 
 	ol {
-		height: 45vh;
+		height: 40vh;
 		padding-right: 10px;
 		overflow-y: auto;
 	}
@@ -288,10 +278,126 @@ const PlanProduce = styled.div`
 		color: #fff;
 	}
 
+	// 수정 영역
+	.plan_modify {
+		position: fixed;
+    z-index: 1;
+		top: 50%;
+		left: 600px;
+		width: 500px;
+		padding: 40px 30px 40px 40px;
+		background: #fff;
+		border-radius: 32px;
+		box-sizing: border-box;
+		box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+		transform: translateY(-50%);
+		transition: 0.3s ease;
+	}
+	.plan_modify h3 {
+		margin-bottom: 40px;
+	}
+	.plan_modify button {
+		width: 100%;
+	}
+	.plan_modify button:first-of-type {
+		margin: 40px 0 10px;
+	}
+	.directly input {
+		width: 100%;
+		height: 72px;
+		padding: 0 40px;
+		border: 1px solid #ddd;
+		border-radius: 16px;
+		box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		font-size: 18px;
+		color: #121212;
+	}
+	.directly input::placeholder {
+		color: #888;
+	}
+	.directly .selected_place {
+		margin-top: 10px;
+		padding: 16px;
+		border: 1px solid #14B8FF;
+		border-radius: 16px;
+		background: rgba(20,184,255,0.06);
+	}
+	.directly .selected_place h4 {
+		margin-bottom: 5px;
+	}
+	.recomm ul {
+    overflow-y: auto;
+		height: 30vh;
+    padding-right: 10px;
+	}
+	.recomm ul::-webkit-scrollbar {
+		width: 3px;
+	}
+	.recomm ul::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+		border-radius: 5px;
+  }
+  .recomm ul::-webkit-scrollbar-track {
+    background-color: #eee;
+		border-radius: 5px;
+  }
+	.recomm ul li {
+		flex-wrap: nowrap;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 10px;
+		padding: 16px;
+		border: 1px solid #ddd;
+    border-radius: 16px;
+		background: #fff;
+		transition: 0.2s;
+		cursor: pointer;
+	}
+	.recomm ul li:last-child {
+		margin-bottom: 4px;
+	}
+	.recomm ul li:hover {
+		border-color: #14B8FF;
+	}
+	.recomm ul li.selected {
+		border-color: #14B8FF;
+		background: rgba(20,184,255,0.06);
+	}
+	.recomm ul li img {
+    width: 70px;
+    margin-right: 15px;
+    border-radius: 12px;
+  }
+	.recomm ul li .place_info {
+		width: calc(100% - 185px);
+	}
+	.recomm ul li .place_info p {
+		overflow: hidden;
+		display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+		height: 30px;
+		margin-top: 6px;
+		font-size: 13px;
+		line-height: 15px;
+		text-overflow:ellipsis;
+
+	}
+	.recomm ul li .place_price {
+		width: 100px;
+		text-align: right;
+	}
+	.recomm ul li .place_price strong {
+		display: block;
+		margin-top: 5px;
+	}
+
   // map
   .gmnoprint {
     display: none;
   }
+		
 
 `;
 

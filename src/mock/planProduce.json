@@ -95,6 +95,17 @@
 			"startTime": "2024-09-17T12:00:00",
 			"endTime": "2024-09-17T13:00:00",
 			"checker": true
+		},
+		{
+			"placeId": 18,
+			"placeName": "4 DAY",
+			"description": "만족오향족발 역삼점은 부드럽고 풍미 깊은 오향족발로 유명한 맛집입니다.",
+			"price": 17000,
+			"addr": "역삼동 테헤란로25길 15-5 1층",
+			"category": "음식점",
+			"startTime": "2024-09-18T12:00:00",
+			"endTime": "2024-09-18T13:00:00",
+			"checker": true
 		}
 	],
 	"route": [
