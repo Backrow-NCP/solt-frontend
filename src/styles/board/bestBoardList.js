@@ -58,14 +58,14 @@ export const TextOverlay = styled.div`
   .author {
     opacity: 0.8; /* 작성자 이름의 투명도 설정 */
     font-size: 12px;
-    margin-left: 18px;
+    margin-left: 15px;
   }
 
   .locationDurationContainer {
     display: flex; /* 가로 배치 */
     font-size: 12px;
     gap: 3px; /* 박스 간 간격 조정 */
-    margin-left: 15px;
+    margin-left: 13px;
     margin-bottom: 5px;
   }
 
@@ -74,6 +74,7 @@ export const TextOverlay = styled.div`
     border: 1px solid #ccc; /* 테두리 추가 */
     border-radius: 10px; /* 테두리 둥글게 */
     padding: 5px; /* 내부 여백 추가 */
+    font-weight: bold;
   }
 
   .contentBox {

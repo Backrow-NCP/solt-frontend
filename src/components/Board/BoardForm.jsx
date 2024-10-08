@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PlanPopup from './PlanPopup';
 import Button from '../../components/Button';
+import PlanSelectBox from './PlanSelectBox'; // PlanSelectBox 임포트
 import {
   Form,
   InputGroup,
@@ -10,7 +11,6 @@ import {
   Container,
   Title,
   SectionContainer,
-  PlanStyledBox,
   HiddenFileInput,
   InputLabel,
   RemoveButton,
@@ -25,7 +25,7 @@ const BoardForm = ({ onSubmit, buttonText }) => {
   const [boardContent, setBoardContent] = useState('');
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null); // 선택된 플랜 상태 추가
   const imageContainerRef = useRef(null);
 
   const handleFileChange = e => {
@@ -54,19 +54,16 @@ const BoardForm = ({ onSubmit, buttonText }) => {
   };
 
   const togglePopup = () => {
-    if (!isButtonClicked) {
-      setIsPopupOpen(prev => !prev);
-    }
-    setIsButtonClicked(false);
-  };
-
-  const handleButtonClick = () => {
-    setIsButtonClicked(true);
-    togglePopup();
+    setIsPopupOpen(prev => !prev);
   };
 
   const closePopup = () => {
     setIsPopupOpen(false);
+  };
+
+  const handlePlanSelect = plan => {
+    setSelectedPlan(plan); // 선택된 플랜 상태 업데이트
+    closePopup();
   };
 
   const handleSubmit = e => {
@@ -75,6 +72,7 @@ const BoardForm = ({ onSubmit, buttonText }) => {
       title: boardTitle,
       content: boardContent,
       memberId: 1,
+      selectedPlan, // 선택된 플랜 추가
       boardImages: selectedFiles.map((file, index) => ({
         uuid: URL.createObjectURL(file),
         fileName: file.name,
@@ -84,16 +82,15 @@ const BoardForm = ({ onSubmit, buttonText }) => {
     onSubmit(formData);
   };
 
-  const handleScroll = e => {
-    e.preventDefault();
-    const container = imageContainerRef.current;
-    if (container) {
-      container.scrollLeft += e.deltaY; // 수직 스크롤을 좌우 스크롤로 변환
-    }
-  };
-
   useEffect(() => {
     const container = imageContainerRef.current;
+    const handleScroll = e => {
+      e.preventDefault();
+      if (container) {
+        container.scrollLeft += e.deltaY; // 수직 스크롤을 좌우 스크롤로 변환
+      }
+    };
+
     if (container) {
       container.addEventListener('wheel', handleScroll, { passive: false });
     }
@@ -111,12 +108,13 @@ const BoardForm = ({ onSubmit, buttonText }) => {
         <SectionContainer>
           <Title>나의 플랜</Title>
           <div style={{ position: 'relative', display: 'inline-block' }}>
-            <InputLabel htmlFor="plan" onClick={handleButtonClick}>
+            <InputLabel htmlFor="plan" onClick={togglePopup}>
               플랜 선택
             </InputLabel>
             {isPopupOpen && (
               <PlanPopup
                 onClose={closePopup}
+                onSelect={handlePlanSelect} // 선택한 플랜을 부모에게 전달
                 style={{
                   position: 'absolute',
                   top: '-5px',
@@ -126,9 +124,8 @@ const BoardForm = ({ onSubmit, buttonText }) => {
             )}
           </div>
         </SectionContainer>
-
-        <PlanStyledBox>선택된 플랜이 여기에 표시됩니다</PlanStyledBox>
-
+        <PlanSelectBox selectedPlan={selectedPlan} />{' '}
+        {/* 선택한 플랜을 표시하는 컴포넌트 */}
         <InputGroup>
           <TitleInput
             type="text"
@@ -139,7 +136,6 @@ const BoardForm = ({ onSubmit, buttonText }) => {
             required
           />
         </InputGroup>
-
         <InputGroup>
           <ContentInput
             id="content"
@@ -150,7 +146,6 @@ const BoardForm = ({ onSubmit, buttonText }) => {
             rows="5"
           />
         </InputGroup>
-
         <SectionContainer style={{ alignItems: 'flex-end' }}>
           <Title>이미지 첨부</Title>
           <InputLabel htmlFor="file">파일 선택</InputLabel>
@@ -167,7 +162,6 @@ const BoardForm = ({ onSubmit, buttonText }) => {
             </RemoveAllButton>
           )}
         </SectionContainer>
-
         <ImageStyledBox
           ref={imageContainerRef}
           style={{ overflowX: 'auto', display: 'flex', alignItems: 'center' }}
@@ -196,7 +190,6 @@ const BoardForm = ({ onSubmit, buttonText }) => {
             </div>
           )}
         </ImageStyledBox>
-
         <ButtonGroup>
           <Button type="button" color="white" size="lg">
             취소
