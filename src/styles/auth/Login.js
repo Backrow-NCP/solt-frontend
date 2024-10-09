@@ -19,7 +19,7 @@ const LoginStyles = createGlobalStyle`
   .login-popup {
     background-color: #fff;
     padding: 30px;
-    border-radius: 10px;
+    border-radius: 32px;
     width: 400px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
