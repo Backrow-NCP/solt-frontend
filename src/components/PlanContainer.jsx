@@ -41,12 +41,12 @@ const planContainer = ({ plan, children }) => {
       </PlanDetails>
       <PlanName>
         <h2 className="plan-title weight_sb">{plan.title}</h2>
-        <EditButton>✎</EditButton>
+        {/* <EditButton>✎</EditButton> */}
       </PlanName>
-      <PlanActions>
+      {/* <PlanActions>
         <Button color="blue" size="sm">수정</Button>
         <Button color="white" size="sm">삭제</Button>
-      </PlanActions>
+      </PlanActions> */}
       {/* PlanActions 추가하여 버튼을 중앙 정렬 */}
       <PlanActions>{children}</PlanActions>
     </PlanCard>
@@ -62,6 +62,8 @@ planContainer.propTypes = {
     title: PropTypes.string.isRequired,
   }).isRequired,
   children: PropTypes.node, // children을 통해 외부에서 버튼을 추가할 수 있도록 설정
+  onEdit: PropTypes.func.isRequired, // 수정 함수 추가
+  onDelete: PropTypes.func.isRequired, // 삭제 함수 추가
 };
 
 export default planContainer;

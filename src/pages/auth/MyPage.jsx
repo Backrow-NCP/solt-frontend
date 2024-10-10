@@ -1,10 +1,9 @@
-// src/components/MyPage.jsx
 import React, { useEffect, useState } from 'react';
 import MyPageStyles from '../../styles/auth/myPage';
 import PlanContainer from '../../components/PlanContainer';
 import { Link } from 'react-router-dom';
 import profileImage from '../../assets/images/profile.png';
-
+import Button from '../../components/Button';
 const MyPage = () => {
   const [name, setName] = useState('');
   const [plans, setPlans] = useState([]);
@@ -26,6 +25,17 @@ const MyPage = () => {
 
   const handleLogout = () => {
     console.log('로그아웃 처리');
+  };
+
+  const handleEdit = (planId) => {
+    // 수정 로직 (예: 편집 페이지로 이동)
+    console.log(`Plan ${planId} 수정`);
+  };
+
+  const handleDelete = (planId) => {
+    // 삭제 로직
+    console.log(`Plan ${planId} 삭제`);
+    setPlans(plans.filter(plan => plan.id !== planId)); // 상태에서 삭제
   };
 
   return (
@@ -59,7 +69,10 @@ const MyPage = () => {
           <div className="my-plan-container">
             <h1>나의 플랜</h1>
             {plans.map((plan) => (
-              <PlanContainer key={plan.id} plan={plan} />
+              <PlanContainer key={plan.id} plan={plan}>
+                <Button color="blue" size="sm" onClick={() => handleEdit(plan.id)}>수정</Button>
+                <Button color="white" size="sm" onClick={() => handleDelete(plan.id)}>삭제</Button>
+              </PlanContainer>
             ))}
           </div>
         </div>
