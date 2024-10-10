@@ -10,6 +10,12 @@ export const BoardBox = styled.div`
   flex-direction: row; /* 가로 배치 */
   align-items: flex-start; /* 수직 정렬 */
   margin-bottom: 20px; /* 게시글 간 간격 */
+
+  &:hover {
+    cursor: pointer; /* 클릭 가능한 상태를 나타내는 커서 모양 */
+    background-color: rgba(0, 0, 0, 0.06); /* 배경색 변경 (투명도 조절) */
+    transition: background-color 0.3s ease; /* 부드러운 전환 효과 */
+  }
 `;
 
 export const Thumbnail = styled.img`

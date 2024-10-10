@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate 훅 추가
 import axios from 'axios';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -16,6 +17,7 @@ import {
 
 const BestBoardList = () => {
   const [items, setItems] = useState([]);
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,13 +61,23 @@ const BestBoardList = () => {
     prevArrow: <PrevArrow />,
   };
 
+  const handleItemClick = boardId => {
+    // 게시물 클릭 시 호출되는 함수
+    navigate(`/board/detail/${boardId}`); // 게시물 상세 페이지로 이동
+  };
+
   return (
     <>
       <GlobalStyle />
       <CarouselContainer>
         <Slider {...settings}>
           {items.map((item, index) => (
-            <ImageWrapper key={item.boardId}>
+            <ImageWrapper
+              key={item.boardId}
+              onClick={() => handleItemClick(item.boardId)}
+            >
+              {' '}
+              {/* 클릭 핸들러 추가 */}
               <Image
                 src={item.images[0]?.fileName || '/sampleImage/nonImage.jpg'} // 이미지 경로
                 alt={`Best post ${index + 1}`}

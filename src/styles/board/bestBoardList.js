@@ -14,7 +14,6 @@ export const GlobalStyle = createGlobalStyle`
 export const CarouselContainer = styled.div`
   width: 100%; /* 전체 화면의 90% 정도의 너비만 차지하도록 수정 */
   max-width: 1400px; /* 최대 너비를 설정하여 너무 커지지 않도록 제한 */
-
   margin: 0 auto;
   padding: 20px 0;
   position: relative; /* 필요 시, 내부 요소의 포지셔닝을 위한 상대 위치 */
@@ -27,6 +26,13 @@ export const ImageWrapper = styled.div`
   align-items: center;
   overflow: hidden;
   border-radius: 10px;
+  cursor: pointer; /* 커서 모양을 손 모양으로 변경 */
+
+  /* 마우스 호버 시 배경색 변경 */
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.5); /* 호버 시 어두운 배경색 */
+    transition: background-color 0.3s ease; /* 부드러운 전환 효과 */
+  }
 `;
 
 export const Image = styled.img`
