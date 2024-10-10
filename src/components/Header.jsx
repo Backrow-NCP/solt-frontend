@@ -38,6 +38,7 @@
 // };
 
 // export default Header;
+
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
@@ -78,7 +79,7 @@ const Header = ({ onLoginClick, onSignupClick }) => {
         </nav>
 
         <div className="log">
-          {location.pathname === '/auth/mypage' ? (
+        {['/auth/mypage', '/auth/myplan', '/auth/myboard'].includes(location.pathname) ? (
             <div className="profile-section" style={{ display: 'flex', alignItems: 'center' }}>
               <Link to="/auth/mypage">
                 <img 

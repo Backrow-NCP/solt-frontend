@@ -25,13 +25,20 @@ export const ChatbotContainer = styled.div`
   }
 `;
 
+export const TitleWrapper = styled.div`
+  display: flex;
+  align-items: baseline; /* 하단을 맞춤 */
+  gap: 8px; /* SOLT와 챗봇 ai 사이의 간격 조정 */
+  margin-bottom: 10px; /* 아래 컨텐츠와의 간격 */
+`;
+
+
 export const CloseButton = styled.button`
   background: none;
   border: none;
-  font-size: 20px;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   cursor: pointer;
   color: #999;
 
@@ -45,10 +52,27 @@ export const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  overflow-y: auto;
+  overflow-y: auto; /* 스크롤바 */
   margin-bottom: 10px;
   padding-right: 10px; /* 스크롤바가 있을 때 오른쪽 공간 확보 */
+
+  /* 스크롤바 스타일 */
+  &::-webkit-scrollbar {
+    width: 8px;  
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #B2EBF4; /* 스크롤바 색상 */
+    border-radius: 10px; /* 스크롤바 둥근 테두리 */
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);  /* 스크롤바 뒷 배경 색상 */
+  }
 `;
+
+
+
 
 // 애니메이션 정의
 const fadeIn = keyframes`
@@ -66,8 +90,9 @@ export const ChatBubble = styled.div`
   max-width: 70%;
   padding: 10px 15px;
   margin-bottom: 10px;
+  margin-top: 10px;
   border-radius: 15px;
-  background-color: ${({ isUser }) => (isUser ? '#14B8FF' : '#f1f1f1')};
+  background-color: ${({ isUser }) => (isUser ? '#6ACFFF' : '#f1f1f1')};
   color: ${({ isUser }) => (isUser ? '#fff' : '#333')};
   align-self: ${({ isUser }) => (isUser ? 'flex-end' : 'flex-start')};
   font-size: 14px;
@@ -83,10 +108,9 @@ export const ChatBubble = styled.div`
 export const InputWrapper = styled.div`
   display: flex;
   align-items: center;
-  background: #f1f1f1;
+  background: #D9F3FF;
   border-radius: 35px;
   padding: 5px;
-  border: 1px solid #ddd;
 
   input {
     flex: 1;

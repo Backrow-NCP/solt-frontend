@@ -50,11 +50,11 @@ const SignupStyles = createGlobalStyle`
 
   .close-button {
     position: absolute;
-    top: 10px;
+    top: 15px;
+    margin-right: 10px;
     right: 10px;
     background: none;
     border: none;
-    font-size: 16px;
     font-weight: 400;
     cursor: pointer;
   }

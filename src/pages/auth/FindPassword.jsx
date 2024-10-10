@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import FindPasswordStyles from '../../styles/auth/FindPassword'; // FindPasswordStyles import
+import FindPasswordStyles from '../../styles/auth/findPassword'; // FindPasswordStyles import
 import Button from '../../components/Button';
 
 const FindPassword = ({ closePopup }) => {
@@ -20,7 +20,7 @@ const FindPassword = ({ closePopup }) => {
       <FindPasswordStyles /> {/* 글로벌 스타일 적용 */}
       <div className="find-password-popup-overlay">
         <div className="find-password-popup">
-          <button className="close-button" onClick={closePopup}>x</button>
+          <button className="close-button size_xxs pt_gy" onClick={closePopup}>닫기</button>
           <h2>비밀번호 찾기</h2>
           <form className="find-password-form" onSubmit={handleSubmit}>
             <div className="input-group">

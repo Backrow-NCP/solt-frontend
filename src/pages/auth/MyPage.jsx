@@ -1,6 +1,6 @@
 // src/components/MyPage.jsx
 import React, { useEffect, useState } from 'react';
-import MyPageStyles from '../../styles/auth/MyPage';
+import MyPageStyles from '../../styles/auth/myPage';
 import PlanContainer from '../../components/PlanContainer';
 import { Link } from 'react-router-dom';
 import profileImage from '../../assets/images/profile.png';

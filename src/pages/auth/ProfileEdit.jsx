@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import ProfileEditStyles from '../../styles/auth/ProfileEdit'; // ProfileEditStyles import
+import ProfileEditStyles from '../../styles/auth/profileEdit'; // ProfileEditStyles import
 import Button from '../../components/Button';
 import profileImage from '../../assets/images/profile.png'; // 프로필 이미지를 불러오는 경로를 맞춰주세요
 

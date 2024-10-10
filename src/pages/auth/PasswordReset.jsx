@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PasswordResetStyles from '../../styles/auth/PasswordReset'; // PasswordReset 스타일 import
+import PasswordResetStyles from '../../styles/auth/passwordReset'; // PasswordReset 스타일 import
 import Button from '../../components/Button';
 
 const PasswordReset = ({ closePopup }) => {
@@ -20,7 +20,7 @@ const PasswordReset = ({ closePopup }) => {
       <PasswordResetStyles /> {/* 글로벌 스타일 적용 */}
       <div className="password-reset-popup-overlay">
         <div className="password-reset-popup">
-          <button className="close-button" onClick={closePopup}>X</button>
+          <button className="close-button size_xxs pt_gy" onClick={closePopup}>닫기</button>
           <h2>새 비밀번호</h2>
           <form className="password-reset-form" onSubmit={handleSubmit}>
             <div className="input-group">

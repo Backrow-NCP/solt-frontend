@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import LoginStyles from '../../styles/auth/Login';
+import LoginStyles from '../../styles/auth/login';
 import Button from '../../components/Button';
 
 const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
@@ -36,7 +36,7 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
       <LoginStyles />
       <div className="login-popup-overlay">
         <div className="login-popup">
-          <button className="close-button" onClick={closePopup}>x</button>
+          <button className="close-button size_xxs pt_gy" onClick={closePopup}>닫기</button>
           <h2>로그인</h2>
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="input-group">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import MyPlanStyles from '../../styles/auth/MyPlan';
+import MyPlanStyles from '../../styles/auth/myPlan';
 import PlanContainer from '../../components/PlanContainer'; // PlanContainer import
 import { Link } from 'react-router-dom';
 import itaewonImage from '../../assets/images/bn/area1.jpg';
