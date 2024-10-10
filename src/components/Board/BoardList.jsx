@@ -40,7 +40,7 @@ const BoardList = () => {
       <BoardContainer>
         {currentItems.map(item => (
           <BoardItem
-            key={item.boardId} // boardId를 키로 사용
+            boardId={item.boardId} // boardId를 키로 사용
             title={item.title}
             content={item.content}
             imageUrl={item.images[0]?.fileName || '/sampleImage/nonImage.jpg'}

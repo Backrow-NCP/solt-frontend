@@ -23,11 +23,11 @@ const BoardItem = ({
   const handleClick = async () => {
     try {
       // boardId를 사용하여 해당 게시물 데이터를 GET 요청으로 가져옴
-      const response = await axios.get(`/board/Detail/${boardId}`);
+      const response = await axios.get(`/sampleData.json`);
       const boardData = response.data;
 
       // 상세 페이지로 이동하면서 가져온 데이터를 state로 전달
-      navigate(`/board/${boardId}`, { state: { boardData } });
+      navigate(`/board/detail/${boardId}`, { state: { boardData } });
     } catch (error) {
       console.error('게시물 데이터를 가져오는 데 실패했습니다:', error);
     }
