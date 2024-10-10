@@ -1,4 +1,6 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate 훅
+import axios from 'axios'; // axios 임포트
 import {
   BoardBox,
   Thumbnail,
@@ -7,6 +9,7 @@ import {
 import defaultImage from '../../assets/images/sample/nonImage.jpg';
 
 const BoardItem = ({
+  boardId, // boardId 추가
   title,
   content,
   imageUrl,
@@ -15,8 +18,25 @@ const BoardItem = ({
   author,
   duration,
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = async () => {
+    try {
+      // boardId를 사용하여 해당 게시물 데이터를 GET 요청으로 가져옴
+      const response = await axios.get(`/board/Detail/${boardId}`);
+      const boardData = response.data;
+
+      // 상세 페이지로 이동하면서 가져온 데이터를 state로 전달
+      navigate(`/board/${boardId}`, { state: { boardData } });
+    } catch (error) {
+      console.error('게시물 데이터를 가져오는 데 실패했습니다:', error);
+    }
+  };
+
   return (
-    <BoardBox>
+    <BoardBox onClick={handleClick}>
+      {' '}
+      {/* 게시물 클릭 이벤트 추가 */}
       <Thumbnail src={imageUrl || defaultImage} alt="게시글 이미지" />
       <TextContainer>
         <div className="info">

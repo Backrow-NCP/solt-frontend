@@ -480,6 +480,76 @@
       "memberId": 1,
       "selectedPlan": null,
       "boardImages": []
+    },
+    {
+      "id": "ba1e",
+      "title": "안녕하세요",
+      "content": "안녕 테스트 123",
+      "memberId": 1,
+      "selectedPlan": {
+        "id": 5,
+        "startDate": "5/15",
+        "endDate": "5/20",
+        "area": "홍대",
+        "title": "홍대 여행"
+      },
+      "boardImages": [
+        {
+          "uuid": "blob:http://localhost:3000/f7d33d3f-729e-4bfb-b3f6-f774ea7fe61f",
+          "fileName": "IMG_3159.jpg",
+          "ord": 0
+        },
+        {
+          "uuid": "blob:http://localhost:3000/c6c2fcfc-4d34-47ca-8a17-ac912156e803",
+          "fileName": "IMG_3160.jpg",
+          "ord": 1
+        },
+        {
+          "uuid": "blob:http://localhost:3000/7b26ddd5-1371-4f88-87a7-93eb839e15c9",
+          "fileName": "IMG_3171.jpg",
+          "ord": 2
+        },
+        {
+          "uuid": "blob:http://localhost:3000/3a09c5e6-4513-4154-9ca1-1ca7aebc035f",
+          "fileName": "IMG_3173.jpg",
+          "ord": 3
+        },
+        {
+          "uuid": "blob:http://localhost:3000/9a1c6dd2-910e-4e3d-bf65-eed8fd9fee9b",
+          "fileName": "IMG_3174.jpg",
+          "ord": 4
+        },
+        {
+          "uuid": "blob:http://localhost:3000/e5986091-6f62-4ace-a79c-6436525f463a",
+          "fileName": "IMG_3178.jpg",
+          "ord": 5
+        },
+        {
+          "uuid": "blob:http://localhost:3000/fc67e0eb-3c08-4b9c-b86e-ff2814ea0fb6",
+          "fileName": "IMG_3133.jpg",
+          "ord": 6
+        }
+      ]
+    },
+    {
+      "id": "a55a",
+      "title": "ㅣㅣㅣㅣ",
+      "content": "ㅣㅣㅣㅣㅣㅣ",
+      "memberId": 1,
+      "selectedPlan": {
+        "id": 1,
+        "startDate": "1/1",
+        "endDate": "1/10",
+        "area": "이태원",
+        "title": "이태원 여행"
+      },
+      "boardImages": [
+        {
+          "uuid": "blob:http://localhost:3000/04596c3b-cf05-48e2-ab57-2c7fc72e0e80",
+          "fileName": "IMG_3171.jpg",
+          "ord": 0
+        }
+      ]
     }
   ]
 }
