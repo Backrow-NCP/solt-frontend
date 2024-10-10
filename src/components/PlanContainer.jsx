@@ -7,14 +7,14 @@ import {
   PlanName,
   PlanActions,
   EditButton,
-} from '../styles/PlanContainer';
+} from '../styles/planContainer';
 import itaewonImage from '../assets/images/bn/area1.jpg';
 import jamsilImage from '../assets/images/bn/area2.jpg';
 import gangnamImage from '../assets/images/bn/area3.jpg';
 import jongroImage from '../assets/images/bn/area4.jpg';
 import hongdaeImage from '../assets/images/bn/area5.jpg';
 
-const PlanContainer = ({ plan, children }) => {
+const planContainer = ({ plan, children }) => {
   // 지역에 따른 이미지를 반환하는 함수
   const getImageForArea = (area) => {
     switch (area) {
@@ -53,7 +53,7 @@ const PlanContainer = ({ plan, children }) => {
   );
 };
 
-PlanContainer.propTypes = {
+planContainer.propTypes = {
   plan: PropTypes.shape({
     id: PropTypes.number.isRequired,
     area: PropTypes.string.isRequired,
@@ -64,4 +64,4 @@ PlanContainer.propTypes = {
   children: PropTypes.node, // children을 통해 외부에서 버튼을 추가할 수 있도록 설정
 };
 
-export default PlanContainer;
+export default planContainer;
