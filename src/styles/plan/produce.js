@@ -237,6 +237,14 @@ const PlanProduce = styled.div`
 	ol li .place_price input:disabled {
 		color: #F78C9F;
 	}
+	ol li .place_price input::-webkit-outer-spin-button,
+	ol li .place_price input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+	}
+	ol li .place_price input {
+	-moz-appearance: textfield;
+	}
 	ol li .place_price span {
 		vertical-align: text-bottom;
 	}
