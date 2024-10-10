@@ -1,18 +1,15 @@
-// src/styles/PlanContainerStyles.js
 import styled from 'styled-components';
 
 export const PlanCard = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  display: flex;
-  justify-content: flex-start; /* 혹은 center, space-around */
-  width: 100%;
+  background-color: #f9f9f9;
   height: 150px;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 10px;
-  margin-bottom: 0px;
+  margin-bottom: 20px;
   position: relative;
   overflow: hidden;
   background-size: cover;
@@ -51,14 +48,13 @@ export const PlanName = styled.div`
   justify-content: center;
   width: 33.3%;
   z-index: 1;
-  color: white;
 `;
 
 export const PlanActions = styled.div`
   display: flex;
-  justify-content: center; /* 중앙 정렬 */
+  justify-content: flex-end;
   gap: 10px;
-  width: 33.3%; /* 원래의 너비를 유지합니다. */
+  width: 33.3%;
   z-index: 1;
 `;
 
