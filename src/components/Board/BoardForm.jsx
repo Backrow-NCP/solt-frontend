@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios'; // axios 임포트
 import PlanPopup from './PlanPopup';
 import Button from '../../components/Button';
 import PlanSelectBox from './PlanSelectBox'; // PlanSelectBox 임포트

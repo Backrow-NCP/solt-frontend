@@ -550,6 +550,26 @@
           "ord": 0
         }
       ]
+    },
+    {
+      "id": "b11e",
+      "title": "ㅂㅈㅇㅂㅈㅇㅂㅈㅇ",
+      "content": "ㅂㅈㅇㅂㅈㅇㅂㅈㅇ",
+      "memberId": 1,
+      "selectedPlan": {
+        "id": 1,
+        "startDate": "1/1",
+        "endDate": "1/10",
+        "area": "이태원",
+        "title": "이태원 여행"
+      },
+      "boardImages": [
+        {
+          "uuid": "blob:http://localhost:3000/e3cd8b5b-bc87-4940-b13f-6c202e386406",
+          "fileName": "IMG_3141.jpg",
+          "ord": 0
+        }
+      ]
     }
   ]
 }
