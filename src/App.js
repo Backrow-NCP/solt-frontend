@@ -7,6 +7,7 @@ import GlobalStyles from './styles/global.js';
 import Write from './pages/board/Write';
 import Edit from './pages/board/Edit';
 import List from './pages/board/List';
+import Detail from './pages/board/Detail.jsx';
 //아래는 로그인 서비스와 병합
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
@@ -50,7 +51,7 @@ function App() {
               <Route path="/board/write" element={<Write />} />
               <Route path="/board/edit" element={<Edit />} />
               <Route path="/board/list" element={<List />} />
-              
+              <Route path="/board/detail/:boardId" element={<Detail />} /> {/* 게시글 ID를 가진 URL 설정 */}
               <Route path="/auth/signup" element={<Signup />}/>{/* 회원가입 페이지 */}
               <Route path="/auth/findpassword" element={<FindPassword />}/>{/* 비밀번호 찾기 페이지 */}              
               <Route path="/auth/passwordreset" element={<PasswordReset />}/>{/* 비밀번호 재설정 페이지 */}

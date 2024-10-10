@@ -570,6 +570,26 @@
           "ord": 0
         }
       ]
+    },
+    {
+      "id": "8e02",
+      "title": "안녕하세여",
+      "content": "테스트 123",
+      "memberId": 1,
+      "selectedPlan": {
+        "id": 5,
+        "startDate": "5/15",
+        "endDate": "5/20",
+        "area": "홍대",
+        "title": "홍대 여행"
+      },
+      "boardImages": [
+        {
+          "uuid": "blob:http://localhost:3000/db2cdb3f-8876-4dd0-af37-1bc14b912736",
+          "fileName": "123.jpg",
+          "ord": 0
+        }
+      ]
     }
   ]
 }
