@@ -135,7 +135,7 @@
       "duration": "6주",
       "member": {
         "memberId": 106,
-        "name": "한창민",
+        "name": "최강창민",
         "birthYear": "1993-03-03T00:00:00.000Z",
         "gender": true,
         "fileName": "profile6.jpg"
@@ -219,7 +219,7 @@
           "ord": 1
         }
       ],
-      "likeCount": 26,
+      "likeCount": 18,
       "regDate": "2024-10-06T06:11:50.370Z",
       "modDate": "2024-10-06T06:11:50.370Z"
     },
@@ -315,7 +315,7 @@
           "ord": 1
         }
       ],
-      "likeCount": 8,
+      "likeCount": 98,
       "regDate": "2024-10-06T06:11:50.370Z",
       "modDate": "2024-10-06T06:11:50.370Z"
     }
