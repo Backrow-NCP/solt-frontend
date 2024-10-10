@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BoardContainer } from '../../styles/board/boardList';
+import Pagination from '../../components/Board/Pagination';
 import BoardItem from '../Board/BoardItem';
 
 const BoardList = () => {
@@ -50,7 +51,11 @@ const BoardList = () => {
           />
         ))}
       </BoardContainer>
-
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </>
   );
 };

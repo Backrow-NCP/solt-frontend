@@ -1,6 +1,3 @@
-// 완성된 plan 
-//마이페이지, 마이플랜, 게시글 작성시에 plan 선택 요소에 이용될 예정
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button'; 
@@ -17,15 +14,22 @@ import gangnamImage from '../assets/images/bn/area3.jpg';
 import jongroImage from '../assets/images/bn/area4.jpg';
 import hongdaeImage from '../assets/images/bn/area5.jpg';
 
-const PlanContainer = ({ plan }) => {
+const PlanContainer = ({ plan, children }) => {
+  // 지역에 따른 이미지를 반환하는 함수
   const getImageForArea = (area) => {
     switch (area) {
-      case '이태원': return itaewonImage;
-      case '잠실': return jamsilImage;
-      case '강남': return gangnamImage;
-      case '종로': return jongroImage;
-      case '홍대': return hongdaeImage;
-      default: return '/images/default.jpg';
+      case '이태원':
+        return itaewonImage;
+      case '잠실':
+        return jamsilImage;
+      case '강남':
+        return gangnamImage;
+      case '종로':
+        return jongroImage;
+      case '홍대':
+        return hongdaeImage;
+      default:
+        return '/images/default.jpg';
     }
   };
 
@@ -43,6 +47,8 @@ const PlanContainer = ({ plan }) => {
         <Button color="blue" size="sm">수정</Button>
         <Button color="white" size="sm">삭제</Button>
       </PlanActions>
+      {/* PlanActions 추가하여 버튼을 중앙 정렬 */}
+      <PlanActions>{children}</PlanActions>
     </PlanCard>
   );
 };
@@ -55,6 +61,7 @@ PlanContainer.propTypes = {
     endDate: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
   }).isRequired,
+  children: PropTypes.node, // children을 통해 외부에서 버튼을 추가할 수 있도록 설정
 };
 
 export default PlanContainer;

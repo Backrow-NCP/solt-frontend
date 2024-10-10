@@ -79,7 +79,7 @@ const Header = ({ onLoginClick, onSignupClick }) => {
         </nav>
 
         <div className="log">
-        {['/auth/mypage', '/auth/myplan', '/auth/myboard'].includes(location.pathname) ? (
+          {['/auth/mypage', '/auth/myplan', '/auth/myboard'].includes(location.pathname) ? (
             <div className="profile-section" style={{ display: 'flex', alignItems: 'center' }}>
               <Link to="/auth/mypage">
                 <img 
@@ -118,7 +118,3 @@ const Header = ({ onLoginClick, onSignupClick }) => {
 };
 
 export default Header;
-
-
-
-

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios'; // axios 임포트
 import PlanPopup from './PlanPopup';
 import Button from '../../components/Button';
 import PlanSelectBox from './PlanSelectBox'; // PlanSelectBox 임포트
@@ -20,12 +21,14 @@ import {
   RemoveAllButton,
 } from '../../styles/board/boardForm';
 
-const BoardForm = ({ onSubmit, buttonText }) => {
-  const [boardTitle, setBoardTitle] = useState('');
-  const [boardContent, setBoardContent] = useState('');
+const BoardForm = ({ onSubmit, buttonText, initialData }) => {
+  const [boardTitle, setBoardTitle] = useState(initialData?.title || '');
+  const [boardContent, setBoardContent] = useState(initialData?.content || '');
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState(null); // 선택된 플랜 상태 추가
+  const [selectedPlan, setSelectedPlan] = useState(
+    initialData?.selectedPlan || null
+  ); // 초기 선택된 플랜
   const imageContainerRef = useRef(null);
 
   const handleFileChange = e => {
@@ -66,12 +69,12 @@ const BoardForm = ({ onSubmit, buttonText }) => {
     closePopup();
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const formData = {
       title: boardTitle,
       content: boardContent,
-      memberId: 1,
+      memberId: 1, // 임시 사용자 ID
       selectedPlan, // 선택된 플랜 추가
       boardImages: selectedFiles.map((file, index) => ({
         uuid: URL.createObjectURL(file),
@@ -79,7 +82,15 @@ const BoardForm = ({ onSubmit, buttonText }) => {
         ord: index,
       })),
     };
-    onSubmit(formData);
+
+    try {
+      // BoardForm에서 전달된 onSubmit을 호출하여 POST 또는 PUT 처리
+      if (onSubmit) {
+        await onSubmit(formData);
+      }
+    } catch (error) {
+      console.error('게시글 전송 실패:', error);
+    }
   };
 
   useEffect(() => {
