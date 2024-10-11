@@ -6,7 +6,7 @@ import Button from '../../components/Button';
 import { PlanContainer, ButtonContainer } from '../../styles/board/listPage';
 // import boardData from '../../data/board.json';
 import boardData from '../../data/sampleData.json';
-
+// 커밋 테스트
 const List = () => {
   const navigate = useNavigate();
 
