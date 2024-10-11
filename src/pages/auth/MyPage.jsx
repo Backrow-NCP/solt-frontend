@@ -4,6 +4,7 @@ import PlanContainer from '../../components/Board/PlanContainer';
 import { Link } from 'react-router-dom';
 import profileImage from '../../assets/images/profile.png';
 import Button from '../../components/Button';
+//커밋테스트
 const MyPage = () => {
   const [name, setName] = useState('');
   const [plans, setPlans] = useState([]);
