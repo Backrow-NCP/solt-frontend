@@ -74,7 +74,8 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
       title: boardTitle,
       content: boardContent,
       memberId: 1, // 임시 사용자 ID
-      selectedPlan, // 선택된 플랜 추가
+      planId: selectedPlan.id,
+      // selectedPlan, // 선택된 플랜 추가
       boardImages: selectedFiles.map((file, index) => ({
         uuid: URL.createObjectURL(file),
         fileName: file.name,

@@ -8,12 +8,14 @@ const Write = () => {
 
   const handleSubmit = async formData => {
     try {
-      const response = await axios.post(
-        'http://localhost:3001/boards',
-        formData
-      );
+      console.log(formData);
 
-      if (response.status !== 201) {
+      const url = `http://192.168.0.27:12000`;
+      const response = await axios.post(url + '/board', formData);
+
+      console.log(response);
+
+      if (response.status !== 200) {
         throw new Error('서버에서 에러가 발생했습니다.');
       }
 

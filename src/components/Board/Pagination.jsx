@@ -44,7 +44,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <PaginationButton
           key={startPage + index}
           onClick={() => onPageChange(startPage + index)}
-          active={currentPage === startPage + index}
+          active={currentPage === startPage + index ? 'true' : 'false'}
         >
           {startPage + index}
         </PaginationButton>

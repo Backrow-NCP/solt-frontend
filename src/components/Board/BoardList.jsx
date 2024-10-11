@@ -12,7 +12,13 @@ const BoardList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/sampledata.json'); // 로컬 JSON 파일 경로
+        const url = `${process.env.REACT_APP_API_URL}/board/list`;
+        const params = `?page=${currentPage}&size=${itemsPerPage}`;
+        const fullUrl = url + params; // 전체 URL 확인
+        console.log('Fetching data from:', fullUrl); // 전체 URL 로그
+
+        const response = await axios.get(fullUrl);
+        console.log(response);
         setItems(response.data.dtoList); // 데이터 배열을 상태에 저장
       } catch (error) {
         console.error('데이터를 가져오는 중 오류 발생:', error);
@@ -20,11 +26,8 @@ const BoardList = () => {
     };
 
     fetchData();
-  }, []); // 빈 배열은 컴포넌트가 처음 마운트될 때만 실행
+  }, [currentPage, itemsPerPage]); // currentPage와 itemsPerPage 변경 시 fetchData 호출
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(items.length / itemsPerPage);
 
   if (!Array.isArray(items) || items.length === 0) {
@@ -38,12 +41,14 @@ const BoardList = () => {
   return (
     <>
       <BoardContainer>
-        {currentItems.map(item => (
+        {items.map(item => (
           <BoardItem
+            key={item.boardId}
+            item={item}
             boardId={item.boardId} // boardId를 키로 사용
             title={item.title}
             content={item.content}
-            imageUrl={item.images[0]?.fileName || '/sampleImage/nonImage.jpg'}
+            imageUrl={item?.images[0]?.fileName || '/sampleImage/nonImage.jpg'}
             location={item.location} // location이 필요하면 추가
             date={new Date(item.regDate).toLocaleDateString()} // 등록일을 원하는 형식으로 포맷
             author={item.member.name} // 작성자 이름
