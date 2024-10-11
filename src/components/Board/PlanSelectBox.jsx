@@ -1,6 +1,6 @@
 import React from 'react';
 import { PlanStyledBox } from '../../styles/board/boardForm';
-import PlanContainer from '../PlanContainer'; // PlanContainer 임포트
+import PlanContainer from '../Board/PlanContainer'; // PlanContainer 임포트
 
 const PlanSelectBox = ({ selectedPlan }) => {
   return (

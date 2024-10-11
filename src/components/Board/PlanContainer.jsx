@@ -1,22 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from './Button'; 
+
 import {
   PlanCard,
   PlanDetails,
   PlanName,
   PlanActions,
-  EditButton,
-} from '../styles/planContainer';
-import itaewonImage from '../assets/images/bn/area1.jpg';
-import jamsilImage from '../assets/images/bn/area2.jpg';
-import gangnamImage from '../assets/images/bn/area3.jpg';
-import jongroImage from '../assets/images/bn/area4.jpg';
-import hongdaeImage from '../assets/images/bn/area5.jpg';
+} from '../../styles/board/planContainer';
+import itaewonImage from '../../assets/images/bn/area1.jpg';
+import jamsilImage from '../../assets/images/bn/area2.jpg';
+import gangnamImage from '../../assets/images/bn/area3.jpg';
+import jongroImage from '../../assets/images/bn/area4.jpg';
+import hongdaeImage from '../../assets/images/bn/area5.jpg';
 
-const planContainer = ({ plan, children }) => {
+const PlanContainer = ({ plan, children }) => {
   // 지역에 따른 이미지를 반환하는 함수
-  const getImageForArea = (area) => {
+  const getImageForArea = area => {
     switch (area) {
       case '이태원':
         return itaewonImage;
@@ -41,19 +40,13 @@ const planContainer = ({ plan, children }) => {
       </PlanDetails>
       <PlanName>
         <h2 className="plan-title weight_sb">{plan.title}</h2>
-        {/* <EditButton>✎</EditButton> */}
       </PlanName>
-      {/* <PlanActions>
-        <Button color="blue" size="sm">수정</Button>
-        <Button color="white" size="sm">삭제</Button>
-      </PlanActions> */}
-      {/* PlanActions 추가하여 버튼을 중앙 정렬 */}
       <PlanActions>{children}</PlanActions>
     </PlanCard>
   );
 };
 
-planContainer.propTypes = {
+PlanContainer.propTypes = {
   plan: PropTypes.shape({
     id: PropTypes.number.isRequired,
     area: PropTypes.string.isRequired,
@@ -61,9 +54,7 @@ planContainer.propTypes = {
     endDate: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
   }).isRequired,
-  children: PropTypes.node, // children을 통해 외부에서 버튼을 추가할 수 있도록 설정
-  onEdit: PropTypes.func.isRequired, // 수정 함수 추가
-  onDelete: PropTypes.func.isRequired, // 삭제 함수 추가
+  children: PropTypes.node,
 };
 
-export default planContainer;
+export default PlanContainer;

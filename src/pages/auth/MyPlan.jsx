@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MyPlanStyles from '../../styles/auth/myPlan';
-import PlanContainer from '../../components/PlanContainer'; // PlanContainer import
+import PlanContainer from '../../components/Board/PlanContainer'; // PlanContainer import
 import { Link } from 'react-router-dom';
 import itaewonImage from '../../assets/images/bn/area1.jpg';
 import jamsilImage from '../../assets/images/bn/area2.jpg';
@@ -14,21 +14,21 @@ const MyPlan = () => {
 
   useEffect(() => {
     fetch('/mock/plan.json')
-      .then((response) => response.json())
-      .then((data) => setPlans(data));
+      .then(response => response.json())
+      .then(data => setPlans(data));
   }, []);
 
-  const handleEdit = (id) => {
+  const handleEdit = id => {
     console.log(`Plan ${id} 수정`);
     // 수정 로직 추가
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = id => {
     console.log(`Plan ${id} 삭제`);
     // 삭제 로직 추가
   };
 
-  const getImageForArea = (area) => {
+  const getImageForArea = area => {
     switch (area) {
       case '이태원':
         return itaewonImage;
@@ -69,15 +69,27 @@ const MyPlan = () => {
 
         <div className="my-plan-container">
           <h1>나의 플랜</h1>
-          {plans.map((plan) => (
-            <PlanContainer 
-              key={plan.id} 
-              plan={plan} 
+          {plans.map(plan => (
+            <PlanContainer
+              key={plan.id}
+              plan={plan}
               style={{ marginBottom: '10px' }} // 마진 추가
             >
-                              <Button color="blue" size="sm" onClick={() => handleEdit(plan.id)}>수정</Button>
-                              <Button color="white" size="sm" onClick={() => handleDelete(plan.id)}>삭제</Button>
-                              </PlanContainer>
+              <Button
+                color="blue"
+                size="sm"
+                onClick={() => handleEdit(plan.id)}
+              >
+                수정
+              </Button>
+              <Button
+                color="white"
+                size="sm"
+                onClick={() => handleDelete(plan.id)}
+              >
+                삭제
+              </Button>
+            </PlanContainer>
           ))}
         </div>
       </div>
