@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
+import { Player } from '@lottiefiles/react-lottie-player';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import MainArea from '../styles/main/mainArea.js';
 import SpecialService from '../styles/main/specialService.js';
 
 import banner from '../assets/images/bn/main.jpg';
+import animationLogo from '../assets/images/ico/BannerObj.json';
 import service01 from '../assets/images/bn/service_01.jpg';
 import service02 from '../assets/images/bn/service_02.jpg';
 import sample from '../assets/images/bn/sample.jpg';
@@ -48,12 +50,12 @@ const Home = () => {
             <p className="pt_gy size_lg weight_md">3분 투자로 나만의 맞춤 여행 일정 만들어 보세요</p>
           </div>
 
-          <div className="logo_anim">
-            <svg className="shape1" xmlns="http://www.w3.org/2000/svg" width="149" height="149" fill="none"><path fill="#15B8FF" d="M9.01 148.102s28.978-37.341 4.515-73.97C-13.068 33.202 9.828.162 9.828.162h125.283s-22.867 33.035 3.71 73.958c24.456 36.638-4.634 73.982-4.634 73.982H9.009Z"/></svg>
-            <svg className="shape2" xmlns="http://www.w3.org/2000/svg" width="149" height="148" fill="none"><path fill="#FFD600" fillRule="evenodd" d="M.697 73.899C.697 33.086 33.783 0 74.597 0c40.813 0 73.898 33.086 73.898 73.899s-33.085 73.899-73.899 73.899c-40.813 0-73.899-33.086-73.899-73.899Z" clipRule="evenodd"/></svg>
-            <svg className="shape3" xmlns="http://www.w3.org/2000/svg" width="148" height="149" fill="none"><path fill="#F78CA0" d="M.146.213h49.266v51.161h49.265v48.318h49.267v48.319H.146V.213Z"/></svg>
-            <svg className="shape4" xmlns="http://www.w3.org/2000/svg" width="154" height="155" fill="none"><path fill="#36E0C5" d="M.799.89H153.59C158.003 34.997 109 43.198 109 77.567c0 34.369 49.003 42.57 44.59 76.677H.799c-4.413-34.107 44.59-42.308 44.59-76.677C45.39 43.197-3.614 34.997.8.89Z"/></svg>
-          </div>
+          <Player
+            autoplay
+            loop
+            src={animationLogo}
+          />
+
         </section>
         
         <ul className="service_list flex">

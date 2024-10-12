@@ -46,6 +46,7 @@ const SurveyCommon = styled.div`
     align-items: center;
     justify-content: center;
     margin: 32px auto 0;
+    gap: 10px;
   }
   .survey_cont {
     margin-top: 32px;

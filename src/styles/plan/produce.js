@@ -239,8 +239,8 @@ const PlanProduce = styled.div`
 	}
 	ol li .place_price input::-webkit-outer-spin-button,
 	ol li .place_price input::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+		-webkit-appearance: none;
+		margin: 0;
 	}
 	ol li .place_price input {
 	-moz-appearance: textfield;
@@ -405,8 +405,41 @@ const PlanProduce = styled.div`
   .gmnoprint {
     display: none;
   }
-		
-
+	.gm-style {
+		font-family: 'Paperlogy', sans-serif !important;
+	}
+	.gm-style .gm-style-moc {
+    display: none !important;
+	}
+	.gm-style .gm-style-iw-tc:after {
+		display: none;
+	}
+	.gm-style .gm-style-iw-c {
+		width: 200px;
+		padding: 15px 0px 5px 15px !important;
+		text-align: center;
+	}
+	.gm-style .gm-style-iw-c strong {
+		display: block;
+		margin-bottom: 5px;
+	}
+	.gm-style .gm-style-iw-chr {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+	}
+	.gm-style .gm-style-iw-chr .gm-style-iw-c p {
+		font-size: 11px;
+	}
+	.gm-style .gm-style-iw-chr button {
+		width: 20px !important;
+		height: 20px !important;
+	}
+	.gm-style .gm-style-iw-chr button span {
+		width: 20px !important;
+		height: 20px !important;
+		margin: 0 !important;
+	}
 `;
 
 export default PlanProduce;
