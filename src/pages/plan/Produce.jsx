@@ -461,7 +461,7 @@ const Produce = () => {
       addr: '',
       category: '',
       startTime: newStartTime,
-      endTime: null,
+      endTime: newStartTime,
       checker: false,
       isNew: true, // 새로 추가된 장소다
     };
