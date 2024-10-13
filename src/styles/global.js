@@ -178,6 +178,11 @@ const GlobalStyles = createGlobalStyle`
 		font-weight: 600;
 	}
 
+  header .login {
+    gap: 10px;
+  }
+
+
   header .login a:first-child {
     margin-right: 16px;
   }

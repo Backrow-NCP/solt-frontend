@@ -19,6 +19,7 @@ import MyPlan from './pages/auth/MyPlan';
 import MyPage from './pages/auth/MyPage';
 import ProfileEdit from './pages/auth/ProfileEdit.jsx';
 import MyBoard from './pages/auth/MyBoard.jsx';
+import GlobalStyles from '../src/styles/global.js';
 
 function App() {
   const [isLoginPopupOpen, setLoginPopupOpen] = useState(false);

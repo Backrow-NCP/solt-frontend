@@ -52,7 +52,7 @@ const Header = ({ onLoginClick, onSignupClick }) => {
               <span>{username}님</span>
             </div>
           ) : (
-            <div className="login">
+            <div className="login flex">
               <Button
                 size="sm"
                 color="black"
