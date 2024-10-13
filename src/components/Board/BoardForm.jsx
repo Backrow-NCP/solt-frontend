@@ -215,3 +215,4 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
 };
 
 export default BoardForm;
+

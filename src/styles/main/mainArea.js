@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import serviceIcon01 from '../../assets/images/ico/service_ai.svg';
 import serviceIcon02 from '../../assets/images/ico/service_share.svg';
-import banner from '../../assets/images/bn/main.jpg';
+import banner from '../../assets/images/bn/main_s.jpg';
+
 
 const MainArea = styled.div`
   flex-wrap: nowrap !important;
@@ -35,100 +36,6 @@ const MainArea = styled.div`
   }
   section .title_box p {
     margin-top: 24px;
-  }
-  section .logo_anim {
-    position: relative;
-    height: 270px;
-  }
-  section .logo_anim svg {
-    position: absolute;
-    top: -120px;
-    opacity: 0;
-  }
-  section .logo_anim .shape1 {
-    left: 90px;
-    animation: pour1 1.6s ease-in-out forwards;
-    animation-delay: 1.2s;
-  }
-  section .logo_anim .shape2 {
-    left: 155px;
-    animation: pour2 1.6s ease-in-out forwards;
-    animation-delay: 2.5s;
-  }
-  section .logo_anim .shape3 {
-    left: 215px;
-    animation: pour3 1s ease-in-out forwards;
-  }
-  section .logo_anim .shape4 {
-    left: 327px;
-    animation: pour4 1.2s ease-in-out forwards;
-    animation-delay: 1s;
-  }
-
-  @keyframes pour1 {
-    0% {
-      opacity: 0;
-      transform: translateY(0) rotateZ(-5deg);
-    }
-    30% {
-      opacity: 1;
-      transform: translateY(98px) rotateZ(-5deg);
-    }
-    40% {
-      opacity: 1;
-      transform: translateX(-20px) translateY(124px) rotateZ(-30deg);
-    }
-    70% {
-      opacity: 1;
-      transform: translateX(-60px) translateY(218px) rotateZ(-40deg);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(-28px) translateY(232px) rotateZ(-10deg);
-    }
-  }
-  @keyframes pour2 {
-    0% {
-      transform: translateY(0);
-    }
-    30% {
-      transform: translateY(95px);
-      opacity: 1;
-    }
-    40% {
-      opacity: 1;
-      transform: translateX(45px) translateY(95px) rotate(45deg);
-    }
-    60% {
-      opacity: 1;
-      transform: translateX(80px) translateY(112px) rotate(60deg);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(93px) translateY(123px) rotate(60deg);
-    }
-  }
-  @keyframes pour3 {
-    0% {
-      transform: translateY(0);
-    }
-    100% {
-      transform: translateY(242px);
-      opacity: 1;
-    }
-  }
-  @keyframes pour4 {
-    0% {
-      transform: translateY(0);
-    }
-    70% {
-      transform: translateY(188px);
-      opacity: 1;
-    }
-    100% {
-      transform: translateX(33px) translateY(212px) rotate(25deg);
-      opacity: 1;
-    }
   }
 
   .service_list {
@@ -309,3 +216,4 @@ const MainArea = styled.div`
 `;
 
 export default MainArea;
+

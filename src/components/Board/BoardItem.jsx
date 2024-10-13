@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate 훅
 import axios from 'axios'; // axios 임포트
@@ -62,3 +63,4 @@ const BoardItem = ({
 };
 
 export default BoardItem;
+

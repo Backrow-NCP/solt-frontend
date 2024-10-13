@@ -3,12 +3,14 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import GlobalStyles from './styles/global.js';
+import Survey from './pages/plan/Survey';
+import Produce from './pages/plan/Produce';
+import Complete from './pages/plan/Complete';
+import Test from './pages/plan/Test';
 import Write from './pages/board/Write';
 import Edit from './pages/board/Edit';
 import List from './pages/board/List';
 import Detail from './pages/board/Detail.jsx';
-//아래는 로그인 서비스와 병합
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import FindPassword from './pages/auth/FindPassword';
@@ -29,6 +31,7 @@ function App() {
   const closeSignupPopup = () => setSignupPopupOpen(false);
   const openFindPasswordPopup = () => setFindPasswordPopupOpen(true);
   const closeFindPasswordPopup = () => setFindPasswordPopupOpen(false);
+
   return (
     <>
       <GlobalStyles />
@@ -58,11 +61,17 @@ function App() {
               <Route path="/auth/mypage" element={<MyPage />}/>{/* 마이 페이지 */}              
               <Route path="/auth/myplan" element={<MyPlan />}/>{/* 마이 플랜 페이지 */}
               <Route path="/auth/myboard" element={<MyBoard />}/> {/*마이 보드 페이지*/}
-              <Route path="/auth/profileEdit" element={<ProfileEdit />}/>{/* 프로필 수정 페이지 */}       
+              <Route path="/auth/profileEdit" element={<ProfileEdit />}/>{/* 프로필 수정 페이지 */}    
+              <Route path="/plan/survey" element={<Survey />} />
+              <Route path="/plan/produce" element={<Produce />} />
+              <Route path="/plan/complete" element={<Complete />} />
+              
+
             </Routes>
           </main>
 
           <Footer />
+
           {/* 로그인 팝업 조건부 렌더링 */}
           {isLoginPopupOpen && (
             <Login
@@ -79,6 +88,7 @@ function App() {
           {isFindPasswordPopupOpen && (
             <FindPassword closePopup={closeFindPasswordPopup} />
           )}
+
         </div>
       </Router>
     </>
@@ -86,4 +96,3 @@ function App() {
 }
 
 export default App;
-

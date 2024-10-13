@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BoardContainer } from '../../styles/board/boardList';
@@ -66,3 +67,4 @@ const BoardList = () => {
 };
 
 export default BoardList;
+

@@ -1,49 +1,9 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-// import logo from '../assets/images/logo.svg';
-// import mypage from '../assets/images/ico/mypage.svg'
-
-// const Header = ({ isLoggedIn }) => {
-//   return (
-//     <header>
-//       <div className="inner flex">
-//         <h1 className="logo">
-// 					<a href="/"><img src={logo} alt="SOLT" /></a>
-// 				</h1>
-
-//         <nav>
-//             <ul className="flex">
-// 							<li>
-// 									<Link to="/plan/survey">여행 계획 만들기</Link>
-// 							</li>
-// 							<li>
-// 									<Link to="/board/list">플랜 공유하기</Link>
-// 							</li>
-// 						</ul>
-// 				</nav>
-
-//         <div className="log">
-//             {isLoggedIn ? (
-//             <Link to="/auth/mypage" className="logout"><img src={mypage} alt="mypage" /></Link>
-//             ) : (
-//             <div className="login">
-//                 <Link to="/auth/signup" className="btn_blk">회원가입</Link>
-//                 <Link to="/auth/login" className="btn_wht">로그인</Link>
-//             </div>
-//             )}
-//         </div>
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default Header;
-
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
 import Button from '../components/Button';
 import profileImage from '../assets/images/profile.png';
+import mypage from '../assets/images/ico/mypage.svg'
 
 const Header = ({ onLoginClick, onSignupClick }) => {
   const location = useLocation();
@@ -64,7 +24,7 @@ const Header = ({ onLoginClick, onSignupClick }) => {
     <header>
       <div className="inner flex">
         <h1 className="logo">
-          <a href="/"><img src={logo} alt="SOLT" /></a>
+         <a href="/"><img src={logo} alt="SOLT" /></a>
         </h1>
 
         <nav>
