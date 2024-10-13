@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom';
+
 import { Player } from '@lottiefiles/react-lottie-player';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+
 import MainArea from '../styles/main/mainArea.js';
 import SpecialService from '../styles/main/specialService.js';
 
 import banner from '../assets/images/bn/main.jpg';
+
 import animationLogo from '../assets/images/ico/BannerObj.json';
 import service01 from '../assets/images/bn/service_01.jpg';
 import service02 from '../assets/images/bn/service_02.jpg';
@@ -17,18 +20,21 @@ const Home = () => {
       subtitle: '예산이 얼마나 필요할까?',
       title: '사용자 일정에 따라<br />즉시 반영되는 총 예상 금액!',
       imgSrc: sample,
+
       imgAlt: 'sample'
     },
     {
       subtitle: '솔트가 꼼꼼하게 따져드려요!',
       title: '이번 여행, 어디에 제일 썼지?<br />경비 비율을 한눈에 확인하세요!',
       imgSrc: sample,
+
       imgAlt: 'sample'
     },
     {
       subtitle: '키워드 추천 해드려요',
       title: '내 취향과 라이프스타일에 딱!<br />맞춤형 키워드 추천',
       imgSrc: sample,
+
       imgAlt: 'sample'
     }
   ];
@@ -44,6 +50,7 @@ const Home = () => {
         <section className="flex">
           <div className="title_box">
             <h2>
+
               <span>혼자 떠나는 여행</span><br />
               <span>일정 관리는 솔트와 함께!</span>
             </h2>
@@ -67,6 +74,7 @@ const Home = () => {
               <div className="cont weight_md">
                 <p className="pt_blue">솔트 AI 플래너</p>
                 <h3 className="size_xl weight_md">
+
                   클릭 몇 번이면 단숨에!<br />
                   여행 계획 만들기
                 </h3>
@@ -100,7 +108,9 @@ const Home = () => {
             <li key={index}>
               <div className="cont">
                 <p className="size_lg pt_gy">{item.subtitle}</p>
+
                 <h3 className="weight_sb" dangerouslySetInnerHTML={{ __html: item.title }} />
+
               </div>
               <div className="thumb">
                 <img src={item.imgSrc} alt={item.imgAlt} />

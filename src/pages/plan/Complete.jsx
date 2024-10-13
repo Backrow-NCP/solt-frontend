@@ -182,3 +182,4 @@ const Complete = () => {
 const DaySlide = styled.div``;
 
 export default Complete;
+

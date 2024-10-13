@@ -52,3 +52,4 @@ const PlanItem = styled.div`
 `;
 
 export default DayPlanItem;
+

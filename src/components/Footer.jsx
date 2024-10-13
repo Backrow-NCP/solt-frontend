@@ -1,16 +1,30 @@
+
 import React from 'react';
+
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import scrollTop from '../services/scrollTop';
+import ChatbotPopup from './ChatbotPopup';
+
 
 import logo from '../assets/images/logo_f.svg';
 import ai from '../assets/images/ico/floating_ai.svg';
 import up from '../assets/images/ico/floating_up.svg';
 
 const Footer = () => {
+
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+
+  const toggleChatbot = () => {
+    setIsChatbotOpen(!isChatbotOpen);
+  };
+
+
   return (
     <footer>
       <div className="inner flex">
         <h2 className="logo">
+
           <a href="/"><img src={logo} alt="SOLO TRIP"></img></a>
         </h2>
         <div className="info size_xs pt_gy">
@@ -22,19 +36,36 @@ const Footer = () => {
           <p>Copyright © BackRow. All Rights Reserved.</p>
         </div>
         <ul className="menu size_sm">
-          <li><a href="#none">개인처리보호방침</a></li>
-          <li><a href="#none">이용약관</a></li>
+          <li>
+            <a href="#none">개인처리보호방침</a>
+          </li>
+          <li>
+            <a href="#none">이용약관</a>
+          </li>
         </ul>
       </div>
 
-      <ul className="floating">
-        <li>
-          <button id="chatbot"><img src={ai} alt="챗봇창 열기" /></button>
-        </li>
-        <li>
-          <button id="up" onClick={scrollTop}><img src={up} alt="최상단으로 이동" /></button>
-        </li>
-      </ul>
+      {/* floating과 ChatbotPopup을 함께 묶어서 flex로 배치 */}
+      <div className="floating-wrapper">
+        <ul className="floating">
+          <li>
+            <button id="chatbot" onClick={toggleChatbot}>
+              <img src={ai} alt="챗봇창 열기" />
+            </button>
+          </li>
+          <li>
+            <button id="up" onClick={scrollTop}>
+              <img src={up} alt="최상단으로 이동" />
+            </button>
+          </li>
+        </ul>
+
+        {/* Chatbot Popup을 함께 배치 */}
+        {isChatbotOpen && (
+          <ChatbotPopup isOpen={isChatbotOpen} onClose={toggleChatbot} />
+        )}
+      </div>
+
     </footer>
   );
 };

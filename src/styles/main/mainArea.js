@@ -3,6 +3,7 @@ import serviceIcon01 from '../../assets/images/ico/service_ai.svg';
 import serviceIcon02 from '../../assets/images/ico/service_share.svg';
 import banner from '../../assets/images/bn/main_s.jpg';
 
+
 const MainArea = styled.div`
   flex-wrap: nowrap !important;
   align-items: stretch;
@@ -36,7 +37,7 @@ const MainArea = styled.div`
   section .title_box p {
     margin-top: 24px;
   }
-    
+
   .service_list {
     flex-direction: column;
     justify-content: space-between;
@@ -215,3 +216,4 @@ const MainArea = styled.div`
 `;
 
 export default MainArea;
+

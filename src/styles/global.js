@@ -75,6 +75,7 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Paperlogy', sans-serif;
     cursor: pointer;
   }
+
 	select, input {
     font-family: 'Paperlogy', sans-serif;
 	}
@@ -99,6 +100,7 @@ const GlobalStyles = createGlobalStyle`
     font-size: 36px;
     font-weight: 500;
   }
+
 	.size_xxs {
     font-size: 12px;
 	}
@@ -117,6 +119,7 @@ const GlobalStyles = createGlobalStyle`
 	.size_xl {
 		font-size: 24px;
 	}
+
   .weight_md {
     font-weight: 500;
   }
@@ -126,6 +129,7 @@ const GlobalStyles = createGlobalStyle`
   .weight_b {
     font-weight: 700;
   }
+
 		
 	/* position */
 	.flex {
@@ -147,10 +151,12 @@ const GlobalStyles = createGlobalStyle`
 	/* header */
 	header {
 		position: sticky;
+
     top: 0;
     z-index: 10;
     height: 100px;
     background: rgba(255,255,255,0.8);
+
 	}
 	header .inner {
 		align-items: center;
@@ -171,9 +177,11 @@ const GlobalStyles = createGlobalStyle`
 	header nav ul li.active a {
 		font-weight: 600;
 	}
+
   header .login a:first-child {
     margin-right: 16px;
   }
+
 
 	/* footer */
   footer {
@@ -217,11 +225,20 @@ const GlobalStyles = createGlobalStyle`
   footer .menu li:hover a {
     color: #000;
   }
-  footer .floating {
+
+  .floating-wrapper {
     position: fixed;
-    z-index: 10;
     right: 10vh;
     bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* 팝업이 오른쪽에서 나타나도록 조정 */
+    gap: 6px; /* 버튼 사이 간격 */
+    z-index: 10;
+  }
+
+  footer .floating {
+
     font-size: 0;
   }
   footer .floating li:first-child {
@@ -229,6 +246,17 @@ const GlobalStyles = createGlobalStyle`
   }
   footer .floating li a {
     display: block;
+  }
+    .chatbot-popup {
+    position: absolute; /* 팝업이 고정된 위치에 나타나도록 */
+    bottom: 60px; /* 필요한 위치로 조정 */
+    right: 0;
+    width: 350px; /* 팝업의 너비 */
+    background: white;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 20; /* 팝업이 버튼들 위에 표시되도록 */
   }
 
 	// 구글맵 검색
@@ -256,13 +284,16 @@ const GlobalStyles = createGlobalStyle`
 		font-weight: 500;
 	}
 
+
   /* media size */
   @media (max-width: 1650px) {
     body {
       font-size: 14px;
     }
     .inner {
+
 		  max-width: 1200px;
+
     }
     .size_xxs {
       font-size: 11px;
@@ -309,7 +340,7 @@ const GlobalStyles = createGlobalStyle`
     .size_xl {
       font-size: 18px;
     }
-    
+
     header {
       height: 85px;
     }
@@ -334,7 +365,9 @@ const GlobalStyles = createGlobalStyle`
     footer .info {
       margin-left: 40px;
     }
-    footer .floating {
+
+    footer .floating-wrapper {
+
       right: 5vh;
     }
     footer .floating img {
@@ -387,9 +420,11 @@ const GlobalStyles = createGlobalStyle`
       width: 100%;
       margin: 20px 0 0;
     }
-    footer .floating {
+
+    footer .floating-wrapper {
       right: 4%;
-      bottom: 60px
+      bottom: 60px;
+
     }
   }
 `;
