@@ -12,12 +12,12 @@ const BoardList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/board/list`;
-        const params = `?page=${currentPage}&size=${itemsPerPage}`;
-        const fullUrl = url + params; // 전체 URL 확인
-        console.log('Fetching data from:', fullUrl); // 전체 URL 로그
-
-        const response = await axios.get(fullUrl);
+        // const url = `${process.env.REACT_APP_API_URL}/board/list`;
+        // const params = `?page=${currentPage}&size=${itemsPerPage}`;
+        // const fullUrl = url + params; // 전체 URL 확인
+        // console.log('Fetching data from:', fullUrl); // 전체 URL 로그
+        // const response = await axios.get(fullUrl);
+        const response = await axios.get('/sampledata.json');
         console.log(response);
         setItems(response.data.dtoList); // 데이터 배열을 상태에 저장
       } catch (error) {

@@ -22,8 +22,9 @@ const BestBoardList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/board/list`;
-        const response = await axios.get(url);
+        // const url = `${process.env.REACT_APP_API_URL}/board/list`;
+        // const response = await axios.get(url);
+        const response = await axios.get('/sampledata.json');
         let data = response.data.dtoList;
 
         // likeCount가 높은 순서로 정렬, likeCount가 같으면 regDate 최신순으로 정렬
