@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import profileImage from '../../assets/images/profile.png';
 import Button from '../../components/Button';
 
-const MyPage = () => {
+const MyPage2 = () => {
   const [name, setName] = useState('');
   const [plans, setPlans] = useState([]);
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -115,4 +115,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default MyPage2;

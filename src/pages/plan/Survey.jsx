@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import memberData from '../../mock/member.json'; // 임시 데이터
+import planData from '../../mock/planProduce.json'; // 임시 데이터
 import SurveyCommon from '../../styles/plan/survey';
 
 import SurveyCalendar from './SurveyCalendar';
@@ -14,12 +14,6 @@ import PrevBtn from '../../assets/images/ico/btn_survey_prev.svg';
 
 const Survey = () => {
   const navigate = useNavigate();
-
-  // 회원 이름
-  const [userName, setUserName] = useState('');
-  useEffect(() => {
-    setUserName(memberData.firstName);
-  }, []);
 
   // 질문
   const questions = [
@@ -58,14 +52,14 @@ const Survey = () => {
   };
 
   // 키워드 선택
-	const handleKeywordSelect = useCallback(keywords => {
-		setAnswers(prevAnswers => ({
-			...prevAnswers,
-			keywords: {
-				travelStyle: keywords.travelStyle,
-				theme: keywords.theme,
-				environment: keywords.environment,
-			},
+   const handleKeywordSelect = useCallback(keywords => {
+      setAnswers(prevAnswers => ({
+         ...prevAnswers,
+         keywords: {
+            travelStyle: keywords.travelStyle,
+            theme: keywords.theme,
+            environment: keywords.environment,
+         },
         }));
       }, []);
 
@@ -78,17 +72,17 @@ const Survey = () => {
   };
 
   // 버튼 비활성화 여부
-	const isNextButtonDisabled = () => {
-		const questionType = questions[questionIndex].type;
+   const isNextButtonDisabled = () => {
+      const questionType = questions[questionIndex].type;
 
-		if (questionType === 'calendar') {
-			return !answers.calendar;
-		} else if (questionType === 'keywords') {
-			const { travelStyle, theme, environment } = answers.keywords;
-			return travelStyle.length === 0 || theme.length === 0 || environment.length === 0;
-		}
-		return false;
-	};
+      if (questionType === 'calendar') {
+         return !answers.calendar;
+      } else if (questionType === 'keywords') {
+         const { travelStyle, theme, environment } = answers.keywords;
+         return travelStyle.length === 0 || theme.length === 0 || environment.length === 0;
+      }
+      return false;
+   };
 
   // 질문 렌더링
   const renderQuestion = () => {
@@ -193,7 +187,7 @@ const Survey = () => {
     <SurveyCommon className="inner">
       <div className="title">
         <h2>
-          {userName} 님을 위한<br />
+            {planData.member.name} 님을 위한<br />
           <span className="pt_blue">맞춤 여행 일정</span>을 만들어 볼게요
         </h2>
         <p className="pt_gy size_md">막막한 계획 짜기, AI 소금이가 대신 해드릴게요!</p>
@@ -227,4 +221,3 @@ const Survey = () => {
 };
 
 export default Survey;
-

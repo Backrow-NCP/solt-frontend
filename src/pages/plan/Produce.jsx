@@ -102,6 +102,7 @@ const Produce = () => {
   useEffect(() => {
     const fetchPlanData = async () => {
       try {
+        await new Promise(resolve => setTimeout(resolve, 5000));
         // 실제 API 호출 시 주석 해제
         // const response = await axios.get('/api/getPlanData');
         // const fetchedPlan = response.data;

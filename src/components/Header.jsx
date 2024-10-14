@@ -1,30 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
 import Button from '../components/Button';
 import profileImage from '../assets/images/profile.png';
-import mypage from '../assets/images/ico/mypage.svg'
 
 const Header = ({ onLoginClick, onSignupClick }) => {
   const location = useLocation();
+  const navigate = useNavigate(); // 페이지 리다이렉트를 위한 useNavigate 훅 사용
   const [username, setUsername] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    fetch('/mock/member.json')
-      .then((response) => response.json())
-      .then((data) => {
-        const member = data.members.find((member) => member.id === 1);
-        if (member) {
-          setUsername(member.name);
-        }
-      });
-  }, []);
+    // 페이지가 로드될 때 로그인 여부 확인
+    checkLoginStatus();
+  }, []); // 첫 로드 시에만 실행
+
+  const checkLoginStatus = () => {
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      // 로그인된 상태
+      setIsLoggedIn(true);
+
+      // 회원 정보를 가져와서 이름 설정 (id: 1의 회원 정보를 이용)
+      fetch('/mock/member.json')
+        .then((response) => response.json())
+        .then((data) => {
+          const member = data.members.find((member) => member.id === 1);
+          if (member) {
+            setUsername(member.name);
+          }
+        });
+    } else {
+      // 로그아웃 상태
+      setIsLoggedIn(false);
+      setUsername('');
+    }
+  };
+
+  // 로그아웃 버튼을 클릭했을 때 실행
+  const handleLogout = () => {
+    // 로그아웃 시 localStorage에서 토큰 제거
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    setUsername('');
+
+    // 메인 화면으로 이동하여 헤더가 원래대로 돌아가도록 리다이렉트
+    navigate('/');
+  };
 
   return (
     <header>
       <div className="inner flex">
         <h1 className="logo">
-         <a href="/"><img src={logo} alt="SOLT" /></a>
+          <a href="/"><img src={logo} alt="SOLT" /></a>
         </h1>
 
         <nav>
@@ -39,7 +68,7 @@ const Header = ({ onLoginClick, onSignupClick }) => {
         </nav>
 
         <div className="log">
-          {['/auth/mypage', '/auth/myplan', '/auth/myboard'].includes(location.pathname) ? (
+          {isLoggedIn ? (
             <div className="profile-section" style={{ display: 'flex', alignItems: 'center' }}>
               <Link to="/auth/mypage">
                 <img 
@@ -50,6 +79,7 @@ const Header = ({ onLoginClick, onSignupClick }) => {
                 />
               </Link>
               <span>{username}님</span>
+
             </div>
           ) : (
             <div className="login flex">

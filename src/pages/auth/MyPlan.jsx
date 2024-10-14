@@ -70,26 +70,24 @@ const MyPlan = () => {
         <div className="my-plan-container">
           <h1>나의 플랜</h1>
           {plans.map(plan => (
-            <PlanContainer
-              key={plan.id}
-              plan={plan}
-              style={{ marginBottom: '10px' }} // 마진 추가
-            >
-              <Button
-                color="blue"
-                size="sm"
-                onClick={() => handleEdit(plan.id)}
-              >
-                수정
-              </Button>
-              <Button
-                color="white"
-                size="sm"
-                onClick={() => handleDelete(plan.id)}
-              >
-                삭제
-              </Button>
-            </PlanContainer>
+            <div key={plan.id} style={{ marginBottom: '15px' }}> {/* PlanContainer 사이에 간격 추가 */}
+              <PlanContainer plan={plan}>
+                <Button
+                  color="blue"
+                  size="sm"
+                  onClick={() => handleEdit(plan.id)}
+                >
+                  수정
+                </Button>
+                <Button
+                  color="white"
+                  size="sm"
+                  onClick={() => handleDelete(plan.id)}
+                >
+                  삭제
+                </Button>
+              </PlanContainer>
+            </div>
           ))}
         </div>
       </div>
