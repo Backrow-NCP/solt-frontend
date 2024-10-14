@@ -233,14 +233,15 @@ const GlobalStyles = createGlobalStyle`
 
   .floating-wrapper {
     position: fixed;
-    right: 10vh;
+    right: 20vh; /* 기존 10vh에서 8vh로 변경 */
     bottom: 100px;
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* 팝업이 오른쪽에서 나타나도록 조정 */
-    gap: 6px; /* 버튼 사이 간격 */
+    align-items: flex-end;
+    gap: 6px;
     z-index: 10;
   }
+
 
   footer .floating {
 

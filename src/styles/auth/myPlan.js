@@ -9,17 +9,18 @@ const MyPlanStyles = createGlobalStyle`
     width: 80%;
     gap: 20px;
     max-width: 1600px;
+    max-height: 1200px;
     margin: 80px auto 0;
   }
 
-  .sidebar {
-    width: 200px;
-    background-color: #fff;
-    position: relative;
-    margin-top: 60px;
-    bottom: 0;
-    z-index: 1;
-  }
+    .sidebar {
+      width: 200px;
+      background-color: #fff;
+      position: relative;
+      margin-top: 60px;
+      bottom: 0;
+      z-index: 1;
+    }
 
   .sidebar h2 {
     margin-bottom: 20px;

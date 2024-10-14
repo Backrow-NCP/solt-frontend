@@ -3,51 +3,51 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
 import Button from '../components/Button';
 import profileImage from '../assets/images/profile.png';
+import profileImage2 from '../assets/images/아이유.jpg'; // MyPage2에서 사용할 이미지
 
 const Header = ({ onLoginClick, onSignupClick }) => {
-  const location = useLocation();
-  const navigate = useNavigate(); // 페이지 리다이렉트를 위한 useNavigate 훅 사용
+  const location = useLocation(); // 현재 경로 확인
+  const navigate = useNavigate(); 
   const [username, setUsername] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // 페이지가 로드될 때 로그인 여부 확인
     checkLoginStatus();
-  }, []); // 첫 로드 시에만 실행
+  }, [location]); // location 변경 시 실행
 
   const checkLoginStatus = () => {
     const token = localStorage.getItem('token');
-    
     if (token) {
-      // 로그인된 상태
       setIsLoggedIn(true);
 
-      // 회원 정보를 가져와서 이름 설정 (id: 1의 회원 정보를 이용)
-      fetch('/mock/member.json')
-        .then((response) => response.json())
-        .then((data) => {
-          const member = data.members.find((member) => member.id === 1);
-          if (member) {
-            setUsername(member.name);
-          }
-        });
+      // MyPage2로 리다이렉트 되었을 때 "지은"으로 고정
+      if (location.pathname === '/auth/mypage2') {
+        setUsername('지은');
+      } else {
+        fetch('/mock/member.json')
+          .then((response) => response.json())
+          .then((data) => {
+            const member = data.members.find((member) => member.id === 1);
+            if (member) {
+              setUsername(member.name);
+            }
+          });
+      }
     } else {
-      // 로그아웃 상태
       setIsLoggedIn(false);
       setUsername('');
     }
   };
 
-  // 로그아웃 버튼을 클릭했을 때 실행
   const handleLogout = () => {
-    // 로그아웃 시 localStorage에서 토큰 제거
     localStorage.removeItem('token');
     setIsLoggedIn(false);
     setUsername('');
-
-    // 메인 화면으로 이동하여 헤더가 원래대로 돌아가도록 리다이렉트
     navigate('/');
   };
+
+  // MyPage2로 이동할 경우 profileImage2 사용, 그 외는 profileImage 사용
+  const currentProfileImage = location.pathname === '/auth/mypage2' ? profileImage2 : profileImage;
 
   return (
     <header>
@@ -72,7 +72,7 @@ const Header = ({ onLoginClick, onSignupClick }) => {
             <div className="profile-section" style={{ display: 'flex', alignItems: 'center' }}>
               <Link to="/auth/mypage">
                 <img 
-                  src={profileImage} 
+                  src={currentProfileImage} // 경로에 따른 이미지 변경
                   alt="프로필" 
                   className="profile-image" 
                   style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '10px' }}

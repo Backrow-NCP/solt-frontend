@@ -33,6 +33,20 @@
       "endDate": "5/20",
       "area": "홍대",
       "title": "홍대 여행"
+    },
+    {
+      "id": 6,
+      "startDate": "6/5",
+      "endDate": "6/15",
+      "area": "잠실",
+      "title": "잠실 여행"
+    },
+    {
+      "id": 7,
+      "startDate": "10/10",
+      "endDate": "10/15",
+      "area": "강남",
+      "title": "강남 여행"
     }
   ]
   

@@ -8,6 +8,7 @@ import Button from '../../components/Button';
 const MyPage = () => {
   const [name, setName] = useState('');
   const [plans, setPlans] = useState([]);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // 상태로 네비게이션 바 가시성 관리
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
@@ -23,19 +24,16 @@ const MyPage = () => {
       .then(data => {
         setPlans(data.slice(0, 2));
       });
+
+    // 네비게이션 바가 부드럽게 나타나도록 상태 업데이트
+    setIsSidebarVisible(true);
   }, []);
 
   const handleLogout = () => {
-    // 로그아웃 시 localStorage에서 토큰 제거
     localStorage.removeItem('token');
     console.log('로그아웃 처리');
-  
-    // 메인 화면으로 이동
     navigate('/');
-  
-    // 헤더 상태가 업데이트되어 로그인 상태가 초기화됨
   };
-  
 
   const handleEdit = planId => {
     console.log(`Plan ${planId} 수정`);
@@ -43,15 +41,16 @@ const MyPage = () => {
 
   const handleDelete = planId => {
     console.log(`Plan ${planId} 삭제`);
-    setPlans(plans.filter(plan => plan.id !== planId)); // 상태에서 삭제
+    setPlans(plans.filter(plan => plan.id !== planId));
   };
 
   return (
     <>
       <MyPageStyles />
       <div className="mypage">
-        <nav className="sidebar">
-          <h2 className="size_lg weight_b pt_blue">마이페이지</h2>
+        {/* 네비게이션 바에 isSidebarVisible 상태에 따라 show 클래스를 추가 */}
+        <nav className={`sidebar ${isSidebarVisible ? 'show' : ''}`}>
+          <h2 className="size_xl weight_b pt_blue">마이페이지</h2>
           <ul>
             <li>
               <Link to="/auth/myplan" className="size_sm">
@@ -60,7 +59,7 @@ const MyPage = () => {
             </li>
             <li>
               <Link to="/auth/myboard" className="size_sm">
-                내가 쓴 게시글
+                나의 게시글
               </Link>
             </li>
           </ul>

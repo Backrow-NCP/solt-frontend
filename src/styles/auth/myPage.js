@@ -4,10 +4,10 @@ const MyPageStyles = createGlobalStyle`
 .mypage {
   display: flex;
   flex-direction: row;
-  margin: 80px auto 0; /* 위에 여백을 주고, 좌우는 auto로 중앙에 배치 */
+  margin: 80px auto 0;
   max-width: 1600px;
+  max-height: 800px;
 }
-
 
 .main-container {
   display: flex;
@@ -18,7 +18,6 @@ const MyPageStyles = createGlobalStyle`
   margin: 20px;
 }
 
-
 /* 좌측 네비게이션 바 */
 .sidebar {
   width: 200px;
@@ -27,6 +26,16 @@ const MyPageStyles = createGlobalStyle`
   margin-top: 60px;
   bottom: 0;
   z-index: 1;
+  opacity: 0; /* 초기값: 투명 */
+  visibility: hidden; /* 초기값: 숨김 */
+  transform: translateX(-20px); /* 슬라이드 효과 추가 */
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, transform 0.7s ease-in-out; /* 트랜지션 */
+}
+
+.sidebar.show {
+  opacity: 1; /* 보이게 설정 */
+  visibility: visible; /* 가시성 설정 */
+  transform: translateX(0); /* 원래 위치로 슬라이드 */
 }
 
 .sidebar h2 {
@@ -46,6 +55,7 @@ const MyPageStyles = createGlobalStyle`
   color: #14B8FF;
 }
 
+/* 프로필 및 메인 컨텐츠 */
 .profile-container {
   display: flex;
   align-items: center;
@@ -53,31 +63,30 @@ const MyPageStyles = createGlobalStyle`
   width: 100%;
   max-width: 100%;
   margin-top: 60px;
-  margin-left: 50px; /* 요소들을 오른쪽으로 이동 */
+  margin-left: 50px;
 }
 
-/* 프로필 이미지 및 관리 버튼을 세로로 정렬 */
 .profile-image-container {
   display: flex;
-  flex-direction: column; /* 세로 정렬 */
+  flex-direction: column;
   align-items: center;
 }
 
 .profile-image {
   width: 100%;
-  max-width: 200px;
-  height: auto;
+  max-width: 250px;
+  height: 250px;
   border-radius: 50%;
   background-color: #fff;
+  object-fit: cover;
 }
 
 .profile-edit {
-  margin-top: 10px; /* 이미지와 간격 */
+  margin-top: 10px;
   color: #000000;
   text-decoration: none;
 }
 
-/* 프로필 정보 */
 .profile-info {
   display: flex;
   flex-direction: column;
@@ -89,8 +98,6 @@ const MyPageStyles = createGlobalStyle`
   font-weight: 600;
 }
 
-
-/* 하단 플랜 컨테이너 */
 .my-plan-container {
   max-width: 1200px;
   width: 100%;
@@ -99,8 +106,6 @@ const MyPageStyles = createGlobalStyle`
   margin-right: auto;
   border-radius: 10px;
 }
-
-
 
 /* 반응형 설정 */
 @media (max-width: 1024px) {

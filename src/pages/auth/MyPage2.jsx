@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import MyPageStyles from '../../styles/auth/myPage';
 import PlanContainer from '../../components/Board/PlanContainer';
 import { Link, useNavigate } from 'react-router-dom';
-import profileImage from '../../assets/images/profile.png';
+import profileImage from '../../assets/images/아이유.jpg';
 import Button from '../../components/Button';
 
 const MyPage2 = () => {
   const [name, setName] = useState('');
   const [plans, setPlans] = useState([]);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // 상태로 네비게이션 바 가시성 관리
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
@@ -23,6 +24,9 @@ const MyPage2 = () => {
       .then(data => {
         setPlans(data.slice(0, 2));
       });
+
+    // 네비게이션 바가 부드럽게 나타나도록 상태 업데이트
+    setIsSidebarVisible(true);
   }, []);
 
   const handleLogout = () => {
@@ -35,7 +39,6 @@ const MyPage2 = () => {
   
     // 헤더 상태가 업데이트되어 로그인 상태가 초기화됨
   };
-  
 
   const handleEdit = planId => {
     console.log(`Plan ${planId} 수정`);
@@ -50,7 +53,8 @@ const MyPage2 = () => {
     <>
       <MyPageStyles />
       <div className="mypage">
-        <nav className="sidebar">
+        {/* 네비게이션 바에 isSidebarVisible 상태에 따라 show 클래스를 추가 */}
+        <nav className={`sidebar ${isSidebarVisible ? 'show' : ''}`}>
           <h2 className="size_lg weight_b pt_blue">마이페이지</h2>
           <ul>
             <li>
@@ -78,7 +82,7 @@ const MyPage2 = () => {
               </Link>
             </div>
             <div className="profile-info">
-              <h1>{name} 님만의 공간 :)</h1>
+              <h1> 지은 님만의 공간 :)</h1>
             </div>
             <div className="logout-section">
               <button className="logout-btn" onClick={handleLogout}>
