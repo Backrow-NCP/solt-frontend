@@ -1,10 +1,19 @@
 import { useEffect, useState, useRef } from 'react';
-import { GoogleMap, MarkerF, useLoadScript, Autocomplete, InfoWindow } from '@react-google-maps/api';
+import {
+  GoogleMap,
+  MarkerF,
+  useLoadScript,
+  Autocomplete,
+  InfoWindow,
+} from '@react-google-maps/api';
 import Loading from './Loading';
 import styled from 'styled-components';
 import PlanProduce from '../../styles/plan/produce';
 import planTime from '../../utils/plan/planTime';
-import { AdjustPlanScroll, removePlanScroll } from '../../utils/plan/planScroll';
+import {
+  AdjustPlanScroll,
+  removePlanScroll,
+} from '../../utils/plan/planScroll';
 import PieChart from '../../components/Plan/PieChart';
 import Button from '../../components/Button';
 import axios from 'axios';
@@ -23,7 +32,7 @@ import MarkerBg from '../../assets/images/ico/ico_plan_marker.png';
 // Autocomplete를 위해 'places' 라이브러리 추가
 const libraries = ['places'];
 const mapContainerStyle = { width: '100%', height: '90vh' }; // 맵의 높이를 조정 (필요 시 변경)
-const center = { lat: 37.5665, lng: 126.9780 }; // 서울의 중심 좌표
+const center = { lat: 37.5665, lng: 126.978 }; // 서울의 중심 좌표
 const options = {
   disableDefaultUI: true,
   zoomControl: true,
@@ -34,11 +43,20 @@ const seoulBounds = {
   north: 37.7015,
   south: 37.4133,
   west: 126.7342,
-  east: 127.1790,
+  east: 127.179,
 };
 
 // 고정된 카테고리 목록
-const categories = ['숙박', '음식점', '교통비', '쇼핑', '관광지', '레포츠', '문화시설', '축제'];
+const categories = [
+  '숙박',
+  '음식점',
+  '교통비',
+  '쇼핑',
+  '관광지',
+  '레포츠',
+  '문화시설',
+  '축제',
+];
 
 const Produce = () => {
   const [plan, setPlan] = useState(null);
@@ -48,12 +66,17 @@ const Produce = () => {
   const [editPlace, setEditPlace] = useState({}); // 일정 수정 버튼
   const [isEditing, setIsEditing] = useState(false); // 일정 수정 여부
   const [selectedDay, setSelectedDay] = useState(1); // 날짜 선택
-  const [selectedOption, setSelectedOption] = useState({ option: null, placeId: null }); // 플랜 수정 방법, 수정 아이디
+  const [selectedOption, setSelectedOption] = useState({
+    option: null,
+    placeId: null,
+  }); // 플랜 수정 방법, 수정 아이디
   const [planConfirmed, setPlanConfirmed] = useState(true); // 플랜 확정
-  const [selectedRecommendedPlace, setSelectedRecommendedPlace] = useState(null); // ModifyContainer 선택된 장소
-  const [autocompleteSelectedPlace, setAutocompleteSelectedPlace] = useState(null); // Autocomplete 선택된 장소
+  const [selectedRecommendedPlace, setSelectedRecommendedPlace] =
+    useState(null); // ModifyContainer 선택된 장소
+  const [autocompleteSelectedPlace, setAutocompleteSelectedPlace] =
+    useState(null); // Autocomplete 선택된 장소
   const [modifiedPlaces, setModifiedPlaces] = useState([]); // 수정된 장소
-	const [selectedMarker, setSelectedMarker] = useState(null); // 구글맵 마커 선택
+  const [selectedMarker, setSelectedMarker] = useState(null); // 구글맵 마커 선택
 
   const inputRef = useRef(null); // Autocomplete 입력 필드
   const autocompleteRef = useRef(null); // Autocomplete 객체
@@ -62,12 +85,17 @@ const Produce = () => {
   const navigate = useNavigate(); // 페이지 네비게이션
 
   // 날짜별 일정 (ISO 형식으로 일관성 유지 및 정렬)
-  const days = Array.from(new Set(places.map((place) => new Date(place.startTime).toISOString().split('T')[0])))
-    .sort((a, b) => new Date(a) - new Date(b));
+  const days = Array.from(
+    new Set(
+      places.map(place => new Date(place.startTime).toISOString().split('T')[0])
+    )
+  ).sort((a, b) => new Date(a) - new Date(b));
 
   // 선택한 날짜 일정만 필터링
   const filteredPlaces = places.filter(
-    (place) => new Date(place.startTime).toISOString().split('T')[0] === days[selectedDay - 1]
+    place =>
+      new Date(place.startTime).toISOString().split('T')[0] ===
+      days[selectedDay - 1]
   );
 
   // 플랜 임시데이터 불러오기
@@ -80,37 +108,58 @@ const Produce = () => {
         const fetchedPlan = planData; // 임시 데이터 사용
 
         // 지오코딩을 통해 위도와 경도 추가
-        const placesWithCoordinates = await Promise.all(fetchedPlan.place.map(async (place) => {
-					if (!place.latitude || !place.longitude) {
-						// Geocoding API 호출
-						try {
-							const geocodeResponse = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-								params: {
-									address: place.addr,
-									key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-								},
-							});
-							const location = geocodeResponse.data.results[0]?.geometry.location;
-							if (location) {
-								return {
-									...place,
-									latitude: location.lat,
-									longitude: location.lng,
-									price: Number(place.price) || 0, // price가 숫자가 아니면 0으로 설정
-								};
-							} else {
-								console.warn(`Geocoding 결과 없음 for placeId ${place.placeId}`);
-								return { ...place, latitude: null, longitude: null, price: Number(place.price) || 0 };
-							}
-						} catch (error) {
-							console.error(`Geocoding 실패 for placeId ${place.placeId}:`, error);
-							return { ...place, latitude: null, longitude: null, price: Number(place.price) || 0 };
-						}
-					}
-					return { ...place, price: Number(place.price) || 0 }; // 이미 위도와 경도가 있는 경우에도 price 변환
-				}));
+        const placesWithCoordinates = await Promise.all(
+          fetchedPlan.place.map(async place => {
+            if (!place.latitude || !place.longitude) {
+              // Geocoding API 호출
+              try {
+                const geocodeResponse = await axios.get(
+                  'https://maps.googleapis.com/maps/api/geocode/json',
+                  {
+                    params: {
+                      address: place.addr,
+                      key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+                    },
+                  }
+                );
+                const location =
+                  geocodeResponse.data.results[0]?.geometry.location;
+                if (location) {
+                  return {
+                    ...place,
+                    latitude: location.lat,
+                    longitude: location.lng,
+                    price: Number(place.price) || 0, // price가 숫자가 아니면 0으로 설정
+                  };
+                } else {
+                  console.warn(
+                    `Geocoding 결과 없음 for placeId ${place.placeId}`
+                  );
+                  return {
+                    ...place,
+                    latitude: null,
+                    longitude: null,
+                    price: Number(place.price) || 0,
+                  };
+                }
+              } catch (error) {
+                console.error(
+                  `Geocoding 실패 for placeId ${place.placeId}:`,
+                  error
+                );
+                return {
+                  ...place,
+                  latitude: null,
+                  longitude: null,
+                  price: Number(place.price) || 0,
+                };
+              }
+            }
+            return { ...place, price: Number(place.price) || 0 }; // 이미 위도와 경도가 있는 경우에도 price 변환
+          })
+        );
 
-				// console.log(JSON.stringify(placesWithCoordinates, null, 2));
+        // console.log(JSON.stringify(placesWithCoordinates, null, 2));
 
         setPlan(fetchedPlan);
         setPlaces(placesWithCoordinates);
@@ -120,7 +169,9 @@ const Produce = () => {
         fetchedPlan.place.forEach((place, i) => {
           newCombinedList.push({ type: 'place', data: place });
           // Route가 place.placeId와 일치하는지 확인
-          const route = fetchedPlan.route.find(r => r.startPlaceId === place.placeId);
+          const route = fetchedPlan.route.find(
+            r => r.startPlaceId === place.placeId
+          );
           if (route) {
             newCombinedList.push({ type: 'route', data: route });
           }
@@ -148,50 +199,50 @@ const Produce = () => {
   });
 
   // mapRef를 설정하기 위한 함수
-  const onMapLoad = (map) => {
+  const onMapLoad = map => {
     mapRef.current = map;
   };
 
   // Autocomplete 선택 시 처리
   const handlePlaceChanged = () => {
-		if (autocompleteRef.current !== null) {
-			const place = autocompleteRef.current.getPlace();
-			
-			// 'place'가 유효한지 확인
-			if (place && place.geometry) {
-				const newSelectedPlace = {
-					placeId: place.place_id,
-					name: place.name,
-					address: place.formatted_address,
-					latitude: place.geometry.location.lat(),
-					longitude: place.geometry.location.lng(),
-				};
-				setAutocompleteSelectedPlace(newSelectedPlace);
-				
-				// 지도 중심을 선택한 장소로 이동
-				if (mapRef.current) {
-					mapRef.current.panTo({
-						lat: newSelectedPlace.latitude,
-						lng: newSelectedPlace.longitude,
-					});
-					mapRef.current.setZoom(14);
-				}
-			} else {
-				alert("서울 안에서 선택해 주세요");
-			}
-		} else {
-			alert("자동 완성이 아직 로드되지 않았습니다");
-		}
-	};
+    if (autocompleteRef.current !== null) {
+      const place = autocompleteRef.current.getPlace();
+
+      // 'place'가 유효한지 확인
+      if (place && place.geometry) {
+        const newSelectedPlace = {
+          placeId: place.place_id,
+          name: place.name,
+          address: place.formatted_address,
+          latitude: place.geometry.location.lat(),
+          longitude: place.geometry.location.lng(),
+        };
+        setAutocompleteSelectedPlace(newSelectedPlace);
+
+        // 지도 중심을 선택한 장소로 이동
+        if (mapRef.current) {
+          mapRef.current.panTo({
+            lat: newSelectedPlace.latitude,
+            lng: newSelectedPlace.longitude,
+          });
+          mapRef.current.setZoom(14);
+        }
+      } else {
+        alert('서울 안에서 선택해 주세요');
+      }
+    } else {
+      alert('자동 완성이 아직 로드되지 않았습니다');
+    }
+  };
 
   // handleSelectRecommendedPlace 함수 정의
-  const handleSelectRecommendedPlace = (place) => {
+  const handleSelectRecommendedPlace = place => {
     setSelectedRecommendedPlace(place);
   };
 
   // 금액 변경 처리
   const handlePriceChange = (placeId, newPrice) => {
-    const updatedPlaces = places.map((place) => {
+    const updatedPlaces = places.map(place => {
       if (place.placeId === placeId) {
         // 금액 변경
         return { ...place, price: newPrice };
@@ -203,7 +254,7 @@ const Produce = () => {
     setPlaces(updatedPlaces);
 
     // 날짜 금액 업데이트
-    const updatedCombinedList = combinedList.map((item) => {
+    const updatedCombinedList = combinedList.map(item => {
       if (item.type === 'place' && item.data.placeId === placeId) {
         return {
           ...item,
@@ -217,16 +268,16 @@ const Produce = () => {
   };
 
   // 금액 수정 활성화
-  const toggleEditPrice = (placeId) => {
-    setEditPrice((prevState) => ({
+  const toggleEditPrice = placeId => {
+    setEditPrice(prevState => ({
       ...prevState,
       [placeId]: !prevState[placeId],
     }));
   };
 
   // 일정 수정 버튼 클릭 시 상태 변경
-  const toggleModifyPlace = (placeId) => {
-    setEditPlace((prevState) => ({
+  const toggleModifyPlace = placeId => {
+    setEditPlace(prevState => ({
       ...prevState,
       [placeId]: !prevState[placeId],
     }));
@@ -244,7 +295,8 @@ const Produce = () => {
     const place = places.find(p => p.placeId === placeId);
 
     // 일정 추가 place 삭제 (isNew 플래그 사용)
-    if (place && place.isNew) { // isNew 플래그로 새로 추가된 장소만 제거
+    if (place && place.isNew) {
+      // isNew 플래그로 새로 추가된 장소만 제거
       setPlaces(prevPlaces => prevPlaces.filter(p => p.placeId !== placeId));
       console.log('New place removed:', placeId);
     }
@@ -254,7 +306,7 @@ const Produce = () => {
     setSelectedOption({ option: null, placeId: null }); // 선택 옵션 초기화
     setSelectedRecommendedPlace(null); // 선택된 추천 장소 초기화
     setAutocompleteSelectedPlace(null); // Autocomplete 선택된 장소 초기화
-    setEditPlace((prev) => {
+    setEditPlace(prev => {
       const updatedEditPlace = { ...prev };
       delete updatedEditPlace[placeId]; // 해당 장소의 수정 버튼 비활성화
       return updatedEditPlace;
@@ -264,41 +316,49 @@ const Produce = () => {
   // ModifyContainer의 "이 장소로 선택" 버튼 클릭 시
   const handleSelectClick = async () => {
     const { option, placeId } = selectedOption;
-		
+
     console.log('handleSelectClick called with:', { option, placeId });
 
-		// 지도
-		if (option === 'directly' && autocompleteSelectedPlace) {
-			const coordinates = await fetchCoordinates(autocompleteSelectedPlace.address);
-			
-			if (coordinates) {
-				const updatedPlaces = places.map((place) => {
-					if (place.placeId === placeId) {
-						return {
-							...place,
-							latitude: coordinates.latitude,
-							longitude: coordinates.longitude,
-							addr: autocompleteSelectedPlace.address,
-							isNew: false, // 수정 완료 후 isNew 플래그 제거
-						};
-					}
-					return place;
-				});
-	
-				setPlaces(updatedPlaces);
-			}
-		}
+    // 지도
+    if (option === 'directly' && autocompleteSelectedPlace) {
+      const coordinates = await fetchCoordinates(
+        autocompleteSelectedPlace.address
+      );
+
+      if (coordinates) {
+        const updatedPlaces = places.map(place => {
+          if (place.placeId === placeId) {
+            return {
+              ...place,
+              latitude: coordinates.latitude,
+              longitude: coordinates.longitude,
+              addr: autocompleteSelectedPlace.address,
+              isNew: false, // 수정 완료 후 isNew 플래그 제거
+            };
+          }
+          return place;
+        });
+
+        setPlaces(updatedPlaces);
+      }
+    }
 
     if (option === 'recomm' && selectedRecommendedPlace) {
       // 추천 받은 장소로 업데이트
-      const updatedPlaces = places.map((place) => {
+      const updatedPlaces = places.map(place => {
         if (place.placeId === placeId) {
           return {
             ...place,
-            placeName: selectedRecommendedPlace.placeName || selectedRecommendedPlace.name,
+            placeName:
+              selectedRecommendedPlace.placeName ||
+              selectedRecommendedPlace.name,
             startTime: place.startTime, // startTime 유지
-            addr: selectedRecommendedPlace.addr || selectedRecommendedPlace.address || place.addr,
-            description: selectedRecommendedPlace.description || place.description, // 필요 시 수정
+            addr:
+              selectedRecommendedPlace.addr ||
+              selectedRecommendedPlace.address ||
+              place.addr,
+            description:
+              selectedRecommendedPlace.description || place.description, // 필요 시 수정
             isNew: false, // 수정 완료 후 isNew 플래그 제거
           };
         }
@@ -308,7 +368,7 @@ const Produce = () => {
       setPlaces(updatedPlaces);
 
       // 해당 장소와 연결된 경로(route) 제거
-      const updatedPlanRoute = plan.route.filter((route) => {
+      const updatedPlanRoute = plan.route.filter(route => {
         return route.startPlaceId !== placeId && route.endPlaceId !== placeId;
       });
 
@@ -320,7 +380,7 @@ const Produce = () => {
       // combinedList는 useEffect에서 자동으로 업데이트됨
 
       // 수정된 장소를 추적
-      setModifiedPlaces((prev) => [...prev, placeId]);
+      setModifiedPlaces(prev => [...prev, placeId]);
 
       // 상태 초기화
       setIsEditing(false); // 수정 모드 비활성화
@@ -328,20 +388,25 @@ const Produce = () => {
       setSelectedOption({ option: null, placeId: null }); // 선택 옵션 초기화
       setSelectedRecommendedPlace(null); // 선택된 추천 장소 초기화
       setAutocompleteSelectedPlace(null); // Autocomplete 선택된 장소 초기화
-      setEditPlace((prev) => {
+      setEditPlace(prev => {
         const updatedEditPlace = { ...prev };
         delete updatedEditPlace[placeId]; // 해당 장소의 수정 버튼 비활성화
         return updatedEditPlace;
       });
     } else if (option === 'directly' && autocompleteSelectedPlace) {
       // 직접 검색한 장소로 업데이트
-      const updatedPlaces = places.map((place) => {
+      const updatedPlaces = places.map(place => {
         if (place.placeId === placeId) {
           return {
             ...place,
-            placeName: autocompleteSelectedPlace.placeName || autocompleteSelectedPlace.name,
+            placeName:
+              autocompleteSelectedPlace.placeName ||
+              autocompleteSelectedPlace.name,
             startTime: place.startTime, // startTime 유지
-            addr: autocompleteSelectedPlace.addr || autocompleteSelectedPlace.address || place.addr,
+            addr:
+              autocompleteSelectedPlace.addr ||
+              autocompleteSelectedPlace.address ||
+              place.addr,
             description: null, // description을 null로 설정
             isNew: false, // 수정 완료 후 isNew 플래그 제거
           };
@@ -352,7 +417,7 @@ const Produce = () => {
       setPlaces(updatedPlaces);
 
       // 해당 장소와 연결된 경로(route) 제거
-      const updatedPlanRoute = plan.route.filter((route) => {
+      const updatedPlanRoute = plan.route.filter(route => {
         return route.startPlaceId !== placeId && route.endPlaceId !== placeId;
       });
 
@@ -364,7 +429,7 @@ const Produce = () => {
       // combinedList는 useEffect에서 자동으로 업데이트됨
 
       // 수정된 장소를 추적
-      setModifiedPlaces((prev) => [...prev, placeId]);
+      setModifiedPlaces(prev => [...prev, placeId]);
 
       // 상태 초기화
       setIsEditing(false); // 수정 모드 비활성화
@@ -372,7 +437,7 @@ const Produce = () => {
       setSelectedOption({ option: null, placeId: null }); // 선택 옵션 초기화
       setSelectedRecommendedPlace(null); // 선택된 추천 장소 초기화
       setAutocompleteSelectedPlace(null); // Autocomplete 선택된 장소 초기화
-      setEditPlace((prev) => {
+      setEditPlace(prev => {
         const updatedEditPlace = { ...prev };
         delete updatedEditPlace[placeId]; // 해당 장소의 수정 버튼 비활성화
         return updatedEditPlace;
@@ -407,7 +472,7 @@ const Produce = () => {
   const planButtonText = planConfirmed ? '플랜 확정하기' : '플랜 수정하기';
 
   // 탭 클릭 시 일정 수정 상태 초기화
-  const handleTabClick = (index) => {
+  const handleTabClick = index => {
     setSelectedDay(index + 1);
     setEditPlace({});
     setIsEditing(false);
@@ -418,12 +483,14 @@ const Produce = () => {
 
   const findRoute = (currentPlaceId, nextPlaceId) => {
     return plan.route.find(
-      (route) => route.startPlaceId === currentPlaceId && route.endPlaceId === nextPlaceId
+      route =>
+        route.startPlaceId === currentPlaceId &&
+        route.endPlaceId === nextPlaceId
     );
   };
 
   // 추천 장소 식당 노이미지
-  const onErrorImg = (e) => {
+  const onErrorImg = e => {
     e.target.onerror = null;
     e.target.src = Restaurant;
   };
@@ -432,7 +499,9 @@ const Produce = () => {
   const handleAddPlace = () => {
     // 선택한 날짜에 해당하는 장소들 필터링
     const placesOnSelectedDay = places.filter(
-      (place) => new Date(place.startTime).toISOString().split('T')[0] === days[selectedDay - 1]
+      place =>
+        new Date(place.startTime).toISOString().split('T')[0] ===
+        days[selectedDay - 1]
     );
 
     let newStartTime;
@@ -467,14 +536,14 @@ const Produce = () => {
     };
 
     // 새로운 장소 추가
-    setPlaces((prevPlaces) => [...prevPlaces, newPlace]);
+    setPlaces(prevPlaces => [...prevPlaces, newPlace]);
 
     // 수정 모드 활성화 및 새로운 장소 선택
     setIsEditing(true);
     setSelectedOption({ option: 'choose', placeId: newPlace.placeId });
 
     // ModifyContainer를 열기 위해 modifyPlace 상태도 업데이트
-    setEditPlace((prevState) => ({
+    setEditPlace(prevState => ({
       ...prevState,
       [newPlace.placeId]: true, // 새로운 장소의 modify 버튼을 활성화
     }));
@@ -491,7 +560,11 @@ const Produce = () => {
 
       const nextPlace = places[i + 1];
       if (nextPlace) {
-        const route = plan.route.find(r => r.startPlaceId === place.placeId && r.endPlaceId === nextPlace.placeId);
+        const route = plan.route.find(
+          r =>
+            r.startPlaceId === place.placeId &&
+            r.endPlaceId === nextPlace.placeId
+        );
         if (route) {
           newCombinedList.push({ type: 'route', data: route });
         }
@@ -502,14 +575,20 @@ const Produce = () => {
 
   // 에러 처리 및 로딩 상태
   if (loadError) return <div>Error loading maps</div>;
-	if (!isLoaded) return <Loading />;
+  if (!isLoaded) return <Loading />;
 
   // 로딩 페이지
   if (!plan) return <Loading />;
 
   // 총 금액 계산 (장소 가격 + 교통비)
-  const totalPlacePrice = places.reduce((acc, place) => acc + (place.price || 0), 0);
-  const totalRoutePrice = plan.route.reduce((acc, route) => acc + (route.price || 0), 0);
+  const totalPlacePrice = places.reduce(
+    (acc, place) => acc + (place.price || 0),
+    0
+  );
+  const totalRoutePrice = plan.route.reduce(
+    (acc, route) => acc + (route.price || 0),
+    0
+  );
   const totalPrice = totalPlacePrice + totalRoutePrice;
 
   // 카테고리별 총 금액 계산
@@ -525,7 +604,10 @@ const Produce = () => {
   });
 
   // 교통비 합산
-  const totalTransportCost = plan.route.reduce((acc, route) => acc + (route.price || 0), 0);
+  const totalTransportCost = plan.route.reduce(
+    (acc, route) => acc + (route.price || 0),
+    0
+  );
   categoryTotals['교통비'] = totalTransportCost;
 
   // 원그래프 데이터 생성 (고정된 카테고리만 포함)
@@ -534,44 +616,47 @@ const Produce = () => {
     value: categoryTotals[category],
   }));
 
-	// 네이버 api 위도/경도
-	const fetchCoordinates = async (address) => {
-		try {
-			const response = await axios.get('https://openapi.naver.com/v1/map/geocode.json', {
-				params: { query: address },
-				headers: {
-					'X-Naver-Client-Id': 'wl601tw1a7',
-					'X-Naver-Client-Secret': '7M2MI3ihJMiDDZvPZhegoIbXqQQ0j7PPDiBv6FzN', // 네이버 API Client Secret
-				},
-			});
-			const { items } = response.data;
-			if (items.length > 0) {
-				const { point } = items[0]; // 첫 번째 결과의 좌표를 사용
-				return {
-					latitude: point.y,
-					longitude: point.x,
-				};
-			} else {
-				console.warn('주소에 대한 결과가 없습니다.');
-				return null;
-			}
-		} catch (error) {
-			console.error('위도, 경도 가져오기 실패:', error);
-			return null;
-		}
-	};
+  // 네이버 api 위도/경도
+  const fetchCoordinates = async address => {
+    try {
+      const response = await axios.get(
+        'https://openapi.naver.com/v1/map/geocode.json',
+        {
+          params: { query: address },
+          headers: {
+            'X-Naver-Client-Id': 'wl601tw1a7',
+            'X-Naver-Client-Secret': '7M2MI3ihJMiDDZvPZhegoIbXqQQ0j7PPDiBv6FzN', // 네이버 API Client Secret
+          },
+        }
+      );
+      const { items } = response.data;
+      if (items.length > 0) {
+        const { point } = items[0]; // 첫 번째 결과의 좌표를 사용
+        return {
+          latitude: point.y,
+          longitude: point.x,
+        };
+      } else {
+        console.warn('주소에 대한 결과가 없습니다.');
+        return null;
+      }
+    } catch (error) {
+      console.error('위도, 경도 가져오기 실패:', error);
+      return null;
+    }
+  };
 
-	// 마커 일정 설명
-	const handleInfoWindowOpen = () => {
-		const infoWindows = document.querySelectorAll('.gm-style-iw-tc');
-		infoWindows.forEach((window) => {
-			if (!window.innerHTML.trim() && !window.style.content) {
-				window.parentElement.remove();
-			}
-		});
-	};
+  // 마커 일정 설명
+  const handleInfoWindowOpen = () => {
+    const infoWindows = document.querySelectorAll('.gm-style-iw-tc');
+    infoWindows.forEach(window => {
+      if (!window.innerHTML.trim() && !window.style.content) {
+        window.parentElement.remove();
+      }
+    });
+  };
 
-	// console.log(places);
+  // console.log(places);
 
   return (
     <PlanProduce>
@@ -579,7 +664,8 @@ const Produce = () => {
         <div className="plan_info">
           <span className="size_sm weight_md pt_blue">솔트 AI 플래너</span>
           <h2>
-            {plan.member.name} 님의<br />
+            {plan.member.name} 님의
+            <br />
             <span className="pt_blue">{plan.area}</span> 여행 플랜
           </h2>
 
@@ -608,33 +694,47 @@ const Produce = () => {
         </ul>
 
         <ol>
-        {filteredPlaces.map((place, index) => {
-          const previousPlace = filteredPlaces[index - 1]; // 이전 일정
-					const route = previousPlace ? findRoute(previousPlace.placeId, place.placeId) : null; // 이전 일정과 현재 일정 간의 경로
+          {filteredPlaces.map((place, index) => {
+            const previousPlace = filteredPlaces[index - 1]; // 이전 일정
+            const route = previousPlace
+              ? findRoute(previousPlace.placeId, place.placeId)
+              : null; // 이전 일정과 현재 일정 간의 경로
 
             return (
               <li key={`place-${place.placeId}`} className="flex">
-              <span className="place_time pt_blue size_xs weight_b">{planTime(place.startTime)}</span>
+                <span className="place_time pt_blue size_xs weight_b">
+                  {planTime(place.startTime)}
+                </span>
 
-              <div className="place_info">
-								<h3 className="size_md">{place.placeName}</h3>
-								<span className="pt_gy size_xs">{place.category}</span>
+                <div className="place_info">
+                  <h3 className="size_md">{place.placeName}</h3>
+                  <span className="pt_gy size_xs">{place.category}</span>
 
-								{/* 이동수단 영역 */}
-								{previousPlace && route && ( // route가 존재하는 경우 이동 수단 표시
-									<div className="size_xs weight_md">
-										<img src={route.transport.type === '도보' ? transportRun : transportBus} alt={route.transport.type} />
-										<span>{route.transport.type}</span>
-										<span>{route.travelTime}분</span>
-										<span>({route.distance}km)</span>
-										{route.price !== 0 && (
-											<strong className="pt_blue size_xs weight_sb">약 {route.price.toLocaleString()}원</strong>
-										)}
-									</div>
-                )}
+                  {/* 이동수단 영역 */}
+                  {previousPlace &&
+                    route && ( // route가 존재하는 경우 이동 수단 표시
+                      <div className="size_xs weight_md">
+                        <img
+                          src={
+                            route.transport.type === '도보'
+                              ? transportRun
+                              : transportBus
+                          }
+                          alt={route.transport.type}
+                        />
+                        <span>{route.transport.type}</span>
+                        <span>{route.travelTime}분</span>
+                        <span>({route.distance}km)</span>
+                        {route.price !== 0 && (
+                          <strong className="pt_blue size_xs weight_sb">
+                            약 {route.price.toLocaleString()}원
+                          </strong>
+                        )}
+                      </div>
+                    )}
 
                   <p className="desc pt_gy size_xs">{place.description}</p>
-              </div>
+                </div>
 
                 <div className="place_price">
                   <p className="size_xs weight_md">예상 금액</p>
@@ -643,12 +743,18 @@ const Produce = () => {
                       type="number"
                       min="0"
                       value={place.price}
-                      onChange={(e) => handlePriceChange(place.placeId, Number(e.target.value))}
+                      onChange={e =>
+                        handlePriceChange(place.placeId, Number(e.target.value))
+                      }
                       disabled={!editPrice[place.placeId] || isEditing} // 수정 모드일 때 비활성화
                     />
                     <span className="pt_pink size_sm weight_b">원</span>
                   </div>
-                  <button onClick={() => toggleEditPrice(place.placeId)} className="pt_gy size_xxs" disabled={isEditing}>
+                  <button
+                    onClick={() => toggleEditPrice(place.placeId)}
+                    className="pt_gy size_xxs"
+                    disabled={isEditing}
+                  >
                     {editPrice[place.placeId] ? '확인' : '금액 수정'}
                   </button>
                 </div>
@@ -666,10 +772,22 @@ const Produce = () => {
                 {editPlace[place.placeId] && (
                   <ul className="place_change">
                     <li>
-                      <button onClick={() => handleModifyClick('directly', place.placeId)}>직접 쓸래요</button>
+                      <button
+                        onClick={() =>
+                          handleModifyClick('directly', place.placeId)
+                        }
+                      >
+                        직접 쓸래요
+                      </button>
                     </li>
                     <li>
-                      <button onClick={() => handleModifyClick('recomm', place.placeId)}>다른 추천 받을래요</button>
+                      <button
+                        onClick={() =>
+                          handleModifyClick('recomm', place.placeId)
+                        }
+                      >
+                        다른 추천 받을래요
+                      </button>
                     </li>
                   </ul>
                 )}
@@ -706,9 +824,13 @@ const Produce = () => {
           {/* 직접 수정 */}
           {selectedOption.option === 'directly' && (
             <div className="directly">
-              <h3 className="size_lg weight_b">가고 싶은 곳을 검색해 주세요!</h3>
+              <h3 className="size_lg weight_b">
+                가고 싶은 곳을 검색해 주세요!
+              </h3>
               <Autocomplete
-                onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
+                onLoad={autocomplete =>
+                  (autocompleteRef.current = autocomplete)
+                }
                 onPlaceChanged={handlePlaceChanged}
                 options={{
                   bounds: seoulBounds, // 서울의 경계 설정
@@ -721,8 +843,9 @@ const Produce = () => {
                   type="text"
                   placeholder="검색어를 입력해 주세요"
                   aria-label="장소 검색 입력"
-                  onChange={(e) => {
-                    if (e.target.value.length < 3) { // 최소 3자 이상 입력
+                  onChange={e => {
+                    if (e.target.value.length < 3) {
+                      // 최소 3자 이상 입력
                       setAutocompleteSelectedPlace(null);
                     }
                   }}
@@ -732,7 +855,9 @@ const Produce = () => {
 
               {autocompleteSelectedPlace && (
                 <div className="selected_place">
-                  <h4 className="pt_blue size_sm weight_sb">{autocompleteSelectedPlace.name}</h4>
+                  <h4 className="pt_blue size_sm weight_sb">
+                    {autocompleteSelectedPlace.name}
+                  </h4>
                   <p className="size_xs">{autocompleteSelectedPlace.address}</p>
                 </div>
               )}
@@ -763,26 +888,36 @@ const Produce = () => {
               <h3 className="size_lg weight_b">추천 장소 선택하기</h3>
 
               <ul>
-                {ModifyData.place.map((place) => (
+                {ModifyData.place.map(place => (
                   <li
                     key={place.placeId}
-                    className={`flex ${selectedRecommendedPlace && selectedRecommendedPlace.placeId === place.placeId ? 'selected' : ''}`}
+                    className={`flex ${
+                      selectedRecommendedPlace &&
+                      selectedRecommendedPlace.placeId === place.placeId
+                        ? 'selected'
+                        : ''
+                    }`}
                     onClick={() => handleSelectRecommendedPlace(place)}
                   >
-                    {place.category === '음식점' && (
-                      place.image ? (
-                        <img src={place.image} alt={place.placeName} onError={onErrorImg} />
+                    {place.category === '음식점' &&
+                      (place.image ? (
+                        <img
+                          src={place.image}
+                          alt={place.placeName}
+                          onError={onErrorImg}
+                        />
                       ) : (
                         <img src={Restaurant} alt="noImage" />
-                      )
-                    )}
+                      ))}
                     <div className="place_info">
                       <h4 className="size_md weight_sb">{place.placeName}</h4>
                       <p className="pt_gy">{place.description}</p>
                     </div>
                     <div className="place_price">
                       <span className="size_xs weight_md">예상 금액</span>
-                      <strong className="pt_blue size_sm weight_b">{place.price.toLocaleString()}원</strong>
+                      <strong className="pt_blue size_sm weight_b">
+                        {place.price.toLocaleString()}원
+                      </strong>
                     </div>
                   </li>
                 ))}
@@ -813,7 +948,12 @@ const Produce = () => {
             <div className="choose">
               <h3 className="size_lg weight_b">수정 방법을 선택하세요</h3>
               <Button
-                onClick={() => setSelectedOption({ option: 'directly', placeId: selectedOption.placeId })}
+                onClick={() =>
+                  setSelectedOption({
+                    option: 'directly',
+                    placeId: selectedOption.placeId,
+                  })
+                }
                 size="xxl"
                 color="white"
                 className="weight_md"
@@ -821,7 +961,12 @@ const Produce = () => {
                 직접 검색
               </Button>
               <Button
-                onClick={() => setSelectedOption({ option: 'recomm', placeId: selectedOption.placeId })}
+                onClick={() =>
+                  setSelectedOption({
+                    option: 'recomm',
+                    placeId: selectedOption.placeId,
+                  })
+                }
                 size="xxl"
                 color="white"
                 className="weight_md"
@@ -835,47 +980,50 @@ const Produce = () => {
 
       {/* Google Map */}
       <GoogleMap
-				mapContainerStyle={mapContainerStyle}
-				center={center}
-				zoom={12}
-				options={options}
-				onLoad={onMapLoad}
-			>
-				{/* 마커 표시 */}
-				{filteredPlaces.map((place, index) =>
-					place.latitude && place.longitude ? (
-						<MarkerF
-							key={place.placeId}
-							position={{ lat: place.latitude, lng: place.longitude }}
-							onClick={() => setSelectedMarker(place)}
-							icon={{
-								url: MarkerBg,
-								scaledSize: new window.google.maps.Size(40, 50),
-							}}
-							label={{
-								text: `${index + 1}`,
-								color: "#FFFFFF",
-								fontWeight: "600",
-								fontSize: "13px",
-							}}
-						/>
-					) : null
-				)}
+        mapContainerStyle={mapContainerStyle}
+        center={center}
+        zoom={12}
+        options={options}
+        onLoad={onMapLoad}
+      >
+        {/* 마커 표시 */}
+        {filteredPlaces.map((place, index) =>
+          place.latitude && place.longitude ? (
+            <MarkerF
+              key={place.placeId}
+              position={{ lat: place.latitude, lng: place.longitude }}
+              onClick={() => setSelectedMarker(place)}
+              icon={{
+                url: MarkerBg,
+                scaledSize: new window.google.maps.Size(40, 50),
+              }}
+              label={{
+                text: `${index + 1}`,
+                color: '#FFFFFF',
+                fontWeight: '600',
+                fontSize: '13px',
+              }}
+            />
+          ) : null
+        )}
 
-				{/* 선택된 마커에 대한 인포윈도우 */}
-				{selectedMarker && (
-					<InfoWindow
-						position={{ lat: selectedMarker.latitude, lng: selectedMarker.longitude }}
-						onCloseClick={() => setSelectedMarker(null)}
-						onLoad={handleInfoWindowOpen} // 인포 윈도우가 열릴 때마다 체크
-					>
-						<div className="marker_desc">
-							<strong>{selectedMarker.placeName}</strong>
-							<p>주소: {selectedMarker.addr}</p>
-						</div>
-					</InfoWindow>
-				)}
-			</GoogleMap>
+        {/* 선택된 마커에 대한 인포윈도우 */}
+        {selectedMarker && (
+          <InfoWindow
+            position={{
+              lat: selectedMarker.latitude,
+              lng: selectedMarker.longitude,
+            }}
+            onCloseClick={() => setSelectedMarker(null)}
+            onLoad={handleInfoWindowOpen} // 인포 윈도우가 열릴 때마다 체크
+          >
+            <div className="marker_desc">
+              <strong>{selectedMarker.placeName}</strong>
+              <p>주소: {selectedMarker.addr}</p>
+            </div>
+          </InfoWindow>
+        )}
+      </GoogleMap>
     </PlanProduce>
   );
 };
