@@ -26,14 +26,16 @@ const ProfileEditStyles = createGlobalStyle`
   display: flex;
   flex-direction: column; /* 세로 정렬 */
   align-items: center;
+  cursor: pointer; /* 마우스를 올렸을 때 포인터 변경 */
 }
 
 .profile-image {
   width: 100%;
   max-width: 250px;
-  height: auto;
+  height: 250px; /* 고정 높이 추가 */
   border-radius: 50%;
   background-color: #fff;
+  object-fit: cover; /* 이미지를 컨테이너에 맞춰 자르면서 비율 유지 */
 }
 
 .profile-edit {

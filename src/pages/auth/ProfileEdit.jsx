@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ProfileEditStyles from '../../styles/auth/profileEdit'; // ProfileEditStyles import
 import Button from '../../components/Button';
-import profileImage from '../../assets/images/profile.png'; // 프로필 이미지를 불러오는 경로를 맞춰주세요
+import profileImage from '../../assets/images/profile.png'; // 기본 프로필 이미지 경로
 
 function ProfileEdit() {
   const currentYear = new Date().getFullYear();
@@ -10,12 +10,14 @@ function ProfileEdit() {
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
   const [days, setDays] = useState(Array.from({ length: 31 }, (_, i) => i + 1));
 
-  // 로그인된 사용자의 ID를 설정 (예시로 id: 1 사용)
   const loggedInUserId = 1;
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [isNameValid, setIsNameValid] = useState(null); // 이름 유효성 검사 상태 추가
+  const [imagePreview, setImagePreview] = useState(profileImage); // 이미지 미리보기 상태 추가
+
+  const navigate = useNavigate();  // 페이지 이동을 위한 훅
 
   useEffect(() => {
-    // member.json 파일을 public 폴더에서 불러오기
     fetch('/mock/member.json')
       .then((response) => response.json())
       .then((data) => {
@@ -38,8 +40,41 @@ function ProfileEdit() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState(""); // 비밀번호 확인 상태
 
-  // 생년월일 선택 변경 처리 함수
+  // 파일 선택 시 이미지 미리보기 함수
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result); // 이미지 미리보기 설정
+      };
+      reader.readAsDataURL(file); // 파일을 Data URL로 변환
+    }
+  };
+
+  const handleProfileDelete = () => {
+    // 기본 프로필 이미지로 변경
+    setImagePreview(profileImage); // profileImage는 기본 이미지 경로
+  };
+
+  const handleNameCheck = async () => {
+    const name = document.getElementById('name').value;
+
+    // 가짜 응답 사용
+    setTimeout(() => {
+      const fakeResponse = name.length > 0; // 이름 길이가 0보다 크면 사용 가능으로 설정 (가짜 논리)
+      setIsNameValid(fakeResponse);
+      if (fakeResponse) {
+        window.alert('사용 가능한 이름입니다.');
+      } else {
+        window.alert('이미 존재하는 이름입니다.');
+      }
+    }, 1000); // 1초 후에 가짜 응답 처리
+  };
+
+  // 생년월일 선택 변경 처리 함수 (비활성화되어 있음)
   const handleYearChange = (e) => {
     const year = e.target.value;
     setSelectedYear(year);
@@ -64,19 +99,46 @@ function ProfileEdit() {
     }
   };
 
-  // 성별 변경 처리 함수
+  // 성별 변경 처리 함수 (비활성화되어 있음)
   const handleGenderChange = (e) => {
     setGender(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 프로필 수정 처리 로직
+
+    // 이름 유효성 검사
+    if (isNameValid === false) {
+      window.alert('이름 유효성을 확인해주세요.');
+      return;
+    }
+
+    // 비밀번호가 입력된 경우에만 검사
+    if (password) {
+      // 비밀번호 유효성 검사 (예시: 특수문자 포함 8자 이상)
+      if (password.length < 8 || !/\W/.test(password)) {
+        window.alert('비밀번호는 8자 이상이어야 하며 특수문자가 포함되어야 합니다.');
+        return;
+      }
+
+      // 비밀번호와 비밀번호 확인란이 동일한지 확인
+      if (password !== passwordConfirm) {
+        window.alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+        return;
+      }
+    }
+
+    // 성공적으로 수정된 경우
+    window.alert('프로필 수정이 성공적으로 완료되었습니다!');
+    
+    // MyPage로 이동
+    navigate('/auth/mypage');
   };
 
   if (!loggedInUser) {
     return <div>Loading...</div>; // 데이터가 아직 로드되지 않았을 때 로딩 표시
   }
+
 
   return (
     <>
@@ -87,10 +149,18 @@ function ProfileEdit() {
         </div>
         <div className="edit-content">
           {/* 이미지 및 프로필 수정 입력 폼 */}
-
           <div className="profile-image-container">
-            <img src={profileImage} alt="프로필 이미지" className="profile-image" />
-            <Link to="/auth/profileEdit" className="size_xs profile-edit">프로필 삭제</Link>
+            <label htmlFor="profileImageInput">
+              <img src={imagePreview} alt="프로필 이미지" className="profile-image" />
+            </label>
+            <input
+              type="file"
+              id="profileImageInput"
+              accept="image/*"
+              style={{ display: 'none' }} // 파일 선택 input을 숨김
+              onChange={handleImageChange}
+            />
+            <Link to="#" className="size_xs profile-edit" onClick={handleProfileDelete}>프로필 삭제</Link>
           </div>
 
           <div className="edit-form">
@@ -100,8 +170,17 @@ function ProfileEdit() {
             </div>
 
             <div className="input-group">
-              <input type="text" id="name" className="input-small" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름" required />
-              <Button color="white" size="sm">확인</Button>
+              <input
+                type="text"
+                id="name"
+                className="input-small"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="이름"
+                required
+              />
+              <Button color="white" size="sm" onClick={handleNameCheck}>확인</Button>
+
             </div>
 
             <div className="input-group">
@@ -179,7 +258,7 @@ function ProfileEdit() {
             </div>
 
             {/* 확인 버튼 */}
-            <Button color="blue" size="lg">확인</Button>
+            <Button color="blue" size="lg" onClick={handleSubmit}>확인</Button>
           </div>
         </div>
       </div>
