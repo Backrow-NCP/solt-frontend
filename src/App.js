@@ -20,6 +20,7 @@ import MyPage from './pages/auth/MyPage';
 import ProfileEdit from './pages/auth/ProfileEdit.jsx';
 import MyBoard from './pages/auth/MyBoard.jsx';
 import GlobalStyles from '../src/styles/global.js';
+import MyPage2 from './pages/auth/MyPage2';
 
 function App() {
   const [isLoginPopupOpen, setLoginPopupOpen] = useState(false);
@@ -66,6 +67,7 @@ function App() {
               <Route path="/plan/survey" element={<Survey />} />
               <Route path="/plan/produce" element={<Produce />} />
               <Route path="/plan/complete" element={<Complete />} />
+              <Route path="/auth/mypage2" element={<MyPage2/>} />
               
 
             </Routes>

@@ -132,7 +132,7 @@ function ProfileEdit() {
     window.alert('프로필 수정이 성공적으로 완료되었습니다!');
     
     // MyPage로 이동
-    navigate('/auth/mypage');
+    navigate('/auth/mypage2');
   };
 
   if (!loggedInUser) {
