@@ -6,7 +6,6 @@ import Home from './pages/Home';
 import Survey from './pages/plan/Survey';
 import Produce from './pages/plan/Produce';
 import Complete from './pages/plan/Complete';
-import Test from './pages/plan/Test';
 import Write from './pages/board/Write';
 import Edit from './pages/board/Edit';
 import List from './pages/board/List';
@@ -56,20 +55,26 @@ function App() {
               <Route path="/board/write" element={<Write />} />
               <Route path="/board/edit" element={<Edit />} />
               <Route path="/board/list" element={<List />} />
-              <Route path="/board/detail/:boardId" element={<Detail />} /> {/* 게시글 ID를 가진 URL 설정 */}
-              <Route path="/auth/signup" element={<Signup />}/>{/* 회원가입 페이지 */}
-              <Route path="/auth/findpassword" element={<FindPassword />}/>{/* 비밀번호 찾기 페이지 */}              
-              <Route path="/auth/passwordreset" element={<PasswordReset />}/>{/* 비밀번호 재설정 페이지 */}
-              <Route path="/auth/mypage" element={<MyPage />}/>{/* 마이 페이지 */}              
-              <Route path="/auth/myplan" element={<MyPlan />}/>{/* 마이 플랜 페이지 */}
-              <Route path="/auth/myboard" element={<MyBoard />}/> {/*마이 보드 페이지*/}
-              <Route path="/auth/profileEdit" element={<ProfileEdit />}/>{/* 프로필 수정 페이지 */}    
+              <Route path="/board/detail/:boardId" element={<Detail />} />{' '}
+              {/* 게시글 ID를 가진 URL 설정 */}
+              <Route path="/auth/signup" element={<Signup />} />
+              {/* 회원가입 페이지 */}
+              <Route path="/auth/findpassword" element={<FindPassword />} />
+              {/* 비밀번호 찾기 페이지 */}
+              <Route path="/auth/passwordreset" element={<PasswordReset />} />
+              {/* 비밀번호 재설정 페이지 */}
+              <Route path="/auth/mypage" element={<MyPage />} />
+              {/* 마이 페이지 */}
+              <Route path="/auth/myplan" element={<MyPlan />} />
+              {/* 마이 플랜 페이지 */}
+              <Route path="/auth/myboard" element={<MyBoard />} />{' '}
+              {/*마이 보드 페이지*/}
+              <Route path="/auth/profileEdit" element={<ProfileEdit />} />
+              {/* 프로필 수정 페이지 */}
               <Route path="/plan/survey" element={<Survey />} />
               <Route path="/plan/produce" element={<Produce />} />
               <Route path="/plan/complete" element={<Complete />} />
-              <Route path="/auth/mypage2" element={<MyPage2/>} />
-              
-
+              <Route path="/auth/mypage2" element={<MyPage2 />} />
             </Routes>
           </main>
 
@@ -91,7 +96,6 @@ function App() {
           {isFindPasswordPopupOpen && (
             <FindPassword closePopup={closeFindPasswordPopup} />
           )}
-
         </div>
       </Router>
     </>
