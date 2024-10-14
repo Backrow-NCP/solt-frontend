@@ -32,9 +32,8 @@ export const DateAuthorContainer = styled.p`
 `;
 
 export const Image = styled.img`
-  width: 85%; /* 너비를 고정 */
-  max-height: 275px; /* 높이를 고정 */
-
+  max-width: 415px; /* 너비를 고정 */
+  height: 275px;
   border-radius: 5px;
 
   object-fit: contain; /* 이미지를 비율에 맞춰 고정 영역을 채우도록 설정 */
@@ -79,7 +78,7 @@ export const Button = styled.button`
 export const ThumbnailContainer = styled.div`
   display: flex; /* 썸네일을 가로로 배치 */
   justify-content: center; /* 중앙 정렬 */
-  margin: 10px 0; /* 여백 추가 */
+  margin-bottom: 20px;
 `;
 
 export const Thumbnail = styled.img`
