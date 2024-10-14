@@ -3,13 +3,13 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const BoardDetail = () => {
-  const { boardId } = useParams(); // URL에서 boardId를 가져옴
+  const { boardId } = useParams();
   const [board, setBoard] = useState(null);
 
   useEffect(() => {
     const fetchBoardData = async () => {
       try {
-        const response = await axios.get(`/sampleData.json`); // public 폴더 안에 있는 JSON 파일에서 데이터 가져오기
+        const response = await axios.get(`/sampleData.json`);
 
         const boardData = response.data.dtoList.find(
           item => item.boardId === parseInt(boardId)

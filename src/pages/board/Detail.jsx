@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import BoardDetail from '../../components/Board/BoardDetail';
+import BoardDetailContainer from '../../components/Board/BoardDetailContainer';
 import planData from '../../mock/planProduce.json';
 
 const mapContainerStyle = {
@@ -16,24 +16,13 @@ const Container = styled.div`
   position: relative;
 `;
 
-const OverlayContainer = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  z-index: 0; // 맵 위에 표시되도록
-`;
-
 const MapContainer = styled.div`
   flex: 1;
 `;
 
 const Detail = () => {
-  const [places, setPlaces] = useState([]); // 장소 목록 상태
-  const [center, setCenter] = useState({ lat: 0, lng: 0 }); // 중심 좌표 상태
+  const [places, setPlaces] = useState([]);
+  const [center, setCenter] = useState({ lat: 0, lng: 0 });
 
   useEffect(() => {
     const fetchPlanData = async () => {
@@ -87,7 +76,6 @@ const Detail = () => {
 
         setPlaces(placesWithCoordinates);
 
-        // 중심 좌표 계산 (유효한 장소들의 평균 좌표)
         const validPlaces = placesWithCoordinates.filter(
           place => place.latitude && place.longitude
         );
@@ -120,7 +108,6 @@ const Detail = () => {
             center={center}
             zoom={10}
           >
-            {/* 마커 표시 */}
             {places.map(
               (place, index) =>
                 place.latitude &&
@@ -136,22 +123,8 @@ const Detail = () => {
         </LoadScript>
       </MapContainer>
 
-      {/* 구글 맵 위에 오버레이로 표시할 내용 */}
-      <OverlayContainer
-        style={{
-          width: '568px',
-          height: '962px',
-          marginTop: '50px',
-          marginLeft: '10px',
-          backgroundColor: 'white',
-          borderRadius: '32px',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-          padding: '20px',
-          zIndex: 10,
-        }}
-      >
-        <BoardDetail /> {/* 여기에 BoardDetail을 포함 */}
-      </OverlayContainer>
+      {/* BoardDetailContainer로 분리된 오버레이 박스 */}
+      <BoardDetailContainer />
     </Container>
   );
 };
