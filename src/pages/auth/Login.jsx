@@ -126,27 +126,23 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // member.json 데이터를 이용해 이메일과 비밀번호 검증
-    const foundMember = members.find(
-      (member) => member.email === email && member.password === password
-    );
-
-    if (foundMember) {
-      // 로그인 성공: JWT 토큰 대신 가짜 토큰을 localStorage에 저장
-      const fakeToken = 'mock-jwt-token';
-      localStorage.setItem('token', fakeToken);
-
-      // 로그인 성공 알림 띄우기
-      window.alert('로그인에 성공했습니다!');
-
-      console.log('로그인 성공:', fakeToken);
-      closePopup(); // 팝업 닫기
-    } else {
-      // 로그인 실패 처리
-      setError('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
-    }
+  
+    // 로그인 로직 처리
+    fetch('/mock/member.json')
+      .then((response) => response.json())
+      .then((data) => {
+        const member = data.members.find((member) => member.email === email && member.password === password);
+        if (member) {
+          localStorage.setItem('token', 'mock-token');
+          alert('로그인 성공!'); // 로그인 성공 알림 추가
+          window.location.reload();  // 로그인 후 페이지 새로고침으로 헤더 업데이트
+        } else {
+          alert('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
+        }
+      });
   };
+  
+  
 
   return (
     <>

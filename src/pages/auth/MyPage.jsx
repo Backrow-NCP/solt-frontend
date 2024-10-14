@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import MyPageStyles from '../../styles/auth/myPage';
 import PlanContainer from '../../components/Board/PlanContainer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import profileImage from '../../assets/images/profile.png';
 import Button from '../../components/Button';
-//커밋테스트
+
 const MyPage = () => {
   const [name, setName] = useState('');
   const [plans, setPlans] = useState([]);
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
     fetch('/mock/member.json')
@@ -25,16 +26,22 @@ const MyPage = () => {
   }, []);
 
   const handleLogout = () => {
+    // 로그아웃 시 localStorage에서 토큰 제거
+    localStorage.removeItem('token');
     console.log('로그아웃 처리');
+  
+    // 메인 화면으로 이동
+    navigate('/');
+  
+    // 헤더 상태가 업데이트되어 로그인 상태가 초기화됨
   };
+  
 
   const handleEdit = planId => {
-    // 수정 로직 (예: 편집 페이지로 이동)
     console.log(`Plan ${planId} 수정`);
   };
 
   const handleDelete = planId => {
-    // 삭제 로직
     console.log(`Plan ${planId} 삭제`);
     setPlans(plans.filter(plan => plan.id !== planId)); // 상태에서 삭제
   };
@@ -80,24 +87,26 @@ const MyPage = () => {
             </div>
           </div>
           <div className="my-plan-container">
-            <h1>나의 플랜</h1>
+            <h1 style={{ marginBottom: '15px' }}>나의 플랜</h1> {/* h1과 PlanContainer 사이 간격 추가 */}
             {plans.map(plan => (
-              <PlanContainer key={plan.id} plan={plan}>
-                <Button
-                  color="blue"
-                  size="sm"
-                  onClick={() => handleEdit(plan.id)}
-                >
-                  수정
-                </Button>
-                <Button
-                  color="white"
-                  size="sm"
-                  onClick={() => handleDelete(plan.id)}
-                >
-                  삭제
-                </Button>
-              </PlanContainer>
+              <div key={plan.id} style={{ marginBottom: '15px' }}> {/* PlanContainer 사이 간격 */}
+                <PlanContainer plan={plan}>
+                  <Button
+                    color="blue"
+                    size="sm"
+                    onClick={() => handleEdit(plan.id)}
+                  >
+                    수정
+                  </Button>
+                  <Button
+                    color="white"
+                    size="sm"
+                    onClick={() => handleDelete(plan.id)}
+                  >
+                    삭제
+                  </Button>
+                </PlanContainer>
+              </div>
             ))}
           </div>
         </div>

@@ -11,7 +11,7 @@ export const PlanCard = styled.div`
   height: 150px;
   padding: 20px;
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 20px;
   margin-bottom: 0px;
   position: relative;
   overflow: hidden;

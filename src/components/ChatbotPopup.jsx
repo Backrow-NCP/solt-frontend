@@ -14,13 +14,29 @@ const ChatbotPopup = ({ isOpen, onClose }) => {
     if (message.trim() !== '') {
       const newMessages = [...messages, { text: message, isUser: true }];
       setMessages(newMessages);
-
+  
       setTimeout(() => {
-        const botReply = { text: '안녕하세요! 무엇을 도와드릴까요?', isUser: false };
-        setMessages((prevMessages) => [...prevMessages, botReply]);
+        const firstBotReply = { text: '안녕하세요! 무엇을 도와드릴까요?', isUser: false };
+        setMessages((prevMessages) => [...prevMessages, firstBotReply]);
       }, 1000);
-
+  
+      if (messages.length > 1) {
+        // 두 번째 메시지가 입력된 후에 답변
+        setTimeout(() => {
+          const secondBotReply = { text: '서울숲, 익선동, 경복궁, 남산타워 등이 많은 관광객들이 찾는 서울의 인기 여행지로 꼽힙니다.', isUser: false };
+          setMessages((prevMessages) => [...prevMessages, secondBotReply]);
+        }, 2000); // 두 번째 답변 타이밍
+      }
+  
       setMessage('');
+    }
+  };
+  
+  
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
     }
   };
 
@@ -51,6 +67,7 @@ const ChatbotPopup = ({ isOpen, onClose }) => {
           type="text" 
           value={message} 
           onChange={handleInputChange} 
+          onKeyPress={handleKeyPress} // Enter 키 입력 이벤트 추가
           placeholder="메시지를 입력하세요..."
           className="size_xs"
         />
