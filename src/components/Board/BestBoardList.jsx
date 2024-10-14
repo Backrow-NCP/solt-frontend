@@ -91,14 +91,10 @@ const BestBoardList = () => {
                 <br />
                 <div className="locationDurationContainer">
                   <div className="locationBox">
-                    {item.plan?.location || '위치 없음'}
+                    {item.location || '위치 없음'}
                   </div>
                   <div className="durationBox">
-                    {item.plan
-                      ? `${item.plan.startDate.join(
-                          '.'
-                        )} ~ ${item.plan.endDate.join('.')}`
-                      : '기간 없음'}
+                    {item.duration || '기간 없음'}
                   </div>
                 </div>
                 <h3 className="bestTitle size_xl">{item.title}</h3>

@@ -1,50 +1,29 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import {
+  TabsContainer,
+  Tab,
+  ContentContainer,
+  CombinedContainer, // 새로운 결합된 컨테이너 추가
+} from '../../styles/board/tabContainer';
 import BoardDetail from './BoardDetail';
-
-const TabsContainer = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-`;
-
-const Tab = styled.div`
-  flex: 1;
-  padding: 10px;
-  cursor: pointer;
-  text-align: center;
-  background-color: ${props => (props.isActive ? '#e0e0e0' : '#f0f0f0')};
-  border-radius: 5px;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #d0d0d0;
-  }
-`;
-
-const ContentContainer = styled.div`
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-`;
 
 const TabContainer = () => {
   const [activeTab, setActiveTab] = useState('게시글'); // 기본 활성 탭 설정
 
   return (
-    <div>
+    <CombinedContainer>
       <TabsContainer>
         <Tab
-          isActive={activeTab === '여행일정'}
+          $isActive={activeTab === '여행일정'}
           onClick={() => setActiveTab('여행일정')}
         >
-          여행일정
+          <b>여행일정</b>
         </Tab>
         <Tab
-          isActive={activeTab === '게시글'}
+          $isActive={activeTab === '게시글'}
           onClick={() => setActiveTab('게시글')}
         >
-          게시글
+          <b>게시글</b>
         </Tab>
       </TabsContainer>
 
@@ -55,7 +34,7 @@ const TabContainer = () => {
           <BoardDetail /> // 게시글 탭일 때 BoardDetail 컴포넌트 표시
         )}
       </ContentContainer>
-    </div>
+    </CombinedContainer>
   );
 };
 
