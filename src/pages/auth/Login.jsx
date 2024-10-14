@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // useNavigate import 추가
+import { useNavigate } from 'react-router-dom';
 import LoginStyles from '../../styles/auth/login';
 import Button from '../../components/Button';
 
@@ -8,32 +8,55 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/');
+    }
+  }, [navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);  // 로딩 시작
   
     try {
-      const response = await axios.post('/login', { email, password }, {
+      // GET 요청으로 서버에 이메일과 비밀번호를 쿼리 파라미터로 전달
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/login`, {
+        params: {
+          email, 
+          password
+        },
         headers: {
-          'Content-Type': 'application/json' // 요청 헤더 설정
+          'Content-Type': 'application/json'
         }
       });
   
-      const token = response.data.token;
-      localStorage.setItem('token', token);
-  
-      console.log('로그인 성공:', token);
-      closePopup(); 
-      navigate('/');
+      // 서버로부터 반환된 값이 true일 경우 로그인 성공
+      const isValid = response.data;  // 서버 응답이 true/false 값
+      if (isValid) {
+        // 로그인 성공 처리
+        localStorage.setItem('token', response.data.token);  // JWT 토큰 예시
+        closePopup();  // 팝업 닫기
+        navigate('/');  // 홈으로 리다이렉션
+      } else {
+        setError('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
+      }
     } catch (err) {
-      setError('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
       console.error(err);
+      setError('서버와의 통신에 실패했습니다.');
+    } finally {
+      setIsLoading(false);  // 로딩 종료
     }
   };
+  
+  
+  
   
 
   return (
@@ -89,7 +112,10 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
               </button>
             </div>
 
-            <Button color="blue" size="lg">확인</Button>
+            <Button color="blue" size="lg" disabled={isLoading}>
+              {isLoading ? '로그인 중...' : '확인'}
+            </Button>
+
           </form>
         </div>
       </div>
