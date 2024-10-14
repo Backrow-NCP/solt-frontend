@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import FindPasswordStyles from '../../styles/auth/findPassword'; // FindPasswordStyles import
+import FindPasswordStyles from '../../styles/auth/findPassword';
 import Button from '../../components/Button';
 
 const FindPassword = ({ closePopup }) => {

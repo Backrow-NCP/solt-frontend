@@ -79,7 +79,7 @@ export const SectionContainer = styled.div`
 
 export const PlanStyledBox = styled.div`
   width: 100%;
-  height: 150px; /* 플랜 박스 높이 */
+  min-height: 150px; /* 플랜 박스 높이 */
   line-height: 20px;
   border: 2px solid #9999; /* 테두리 색상 */
   border-radius: 5px;
@@ -92,8 +92,8 @@ export const PlanStyledBox = styled.div`
 
 export const ImageStyledBox = styled.div`
   width: 100%;
-  // height: ${props => (props.scrollable ? '122px' : '110px')};
-  line-height: 110px;
+  min-height: 110px;
+  
   border: 2px solid #9999;
   border-radius: 5px;
   margin-top: 20px;

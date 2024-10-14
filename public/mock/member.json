@@ -4,11 +4,11 @@
         "id": 1,
         "email": "yn819@naver.com",
         "name": "나나",
-        "password": "Superpower@",
+        "password": "Superpower2@",
         "birthdate": {
-          "year": 1998,
-          "month": 8,
-          "day": 19
+          "year": 2024,
+          "month": 1,
+          "day": 1
         },
         "gender": "female"
       },

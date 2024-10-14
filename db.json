@@ -570,6 +570,66 @@
           "ord": 0
         }
       ]
+    },
+    {
+      "id": "8e02",
+      "title": "안녕하세여",
+      "content": "테스트 123",
+      "memberId": 1,
+      "selectedPlan": {
+        "id": 5,
+        "startDate": "5/15",
+        "endDate": "5/20",
+        "area": "홍대",
+        "title": "홍대 여행"
+      },
+      "boardImages": [
+        {
+          "uuid": "blob:http://localhost:3000/db2cdb3f-8876-4dd0-af37-1bc14b912736",
+          "fileName": "123.jpg",
+          "ord": 0
+        }
+      ]
+    },
+    {
+      "id": "7451",
+      "title": "ㅛㅛㅗㅛ",
+      "content": "ㅛㅗㅛㅗㅛㅗ",
+      "memberId": 1,
+      "selectedPlan": {
+        "id": 2,
+        "startDate": "2/5",
+        "endDate": "2/15",
+        "area": "잠실",
+        "title": "잠실 여행"
+      },
+      "boardImages": [
+        {
+          "uuid": "blob:http://localhost:3000/8155a484-e06c-4add-9fd2-f8be12074368",
+          "fileName": "IMG_3133.jpg",
+          "ord": 0
+        }
+      ]
+    },
+    {
+      "id": "8ae9",
+      "title": "sacsac",
+      "content": "ascasc",
+      "memberId": 1,
+      "selectedPlan": {
+        "id": 1,
+        "startDate": "1/1",
+        "endDate": "1/10",
+        "area": "이태원",
+        "title": "이태원 여행"
+      },
+      "boardImages": [
+        {
+          "uuid": "blob:http://localhost:3000/a9a1b62b-4aa6-439c-a759-64ed0642176d",
+          "fileName": "IMG_3147.jpg",
+          "ord": 0
+        }
+      ]
     }
   ]
 }

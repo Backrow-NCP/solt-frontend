@@ -1,0 +1,361 @@
+{
+	"planId": 1,
+	"title": "서울배낭여행",
+	"area" : "서울특별시",
+	"confirm": true,
+	"member": {
+		"memberId": 101,
+		"name": "솔로천국"
+	},
+	"place": [
+		{
+			"placeId": 10,
+			"placeName": "무신사 스탠다드 강남",
+			"description": "무신사 스탠다드 강남점은 인기 의류 브랜드 무신사의 오프라인 매장으로, 다양한 캐주얼 패션 아이템을 직접 체험하고 구매할 수 있는 곳입니다.",
+			"price": 120000,
+			"addr": "서울특별시 서초구 서초대로77길 54",
+			"category": "쇼핑",
+			"startTime": "2024-10-15T10:00:00",
+			"endTime": "2024-10-15T11:40:00",
+			"checker": true
+		},
+		{
+			"placeId": 11,
+			"placeName": "만족오향족발 역삼점",
+			"description": "만족오향족발 역삼점은 부드럽고 풍미 깊은 오향족발로 유명한 맛집입니다.",
+			"price": 17000,
+			"addr": "역삼동 테헤란로25길 15-5 1층",
+			"category": "음식점",
+			"startTime": "2024-10-15T12:00:00",
+			"endTime": "2024-10-15T13:00:00",
+			"checker": true
+		},
+		{
+			"placeId": 12,
+			"placeName": "다이소 강남본점",
+			"description": "다이소는 다양한 생활용품을 저렴한 가격에 판매하는 한국의 대표적인 할인 매장입니다.",
+			"price": 15000,
+			"addr": "서울특별시 강남구 강남대로 372",
+			"category": "쇼핑",
+			"startTime": "2024-10-15T13:00:00",
+			"endTime": "2024-10-15T13:50:00",
+			"checker": true
+		},
+		{
+			"placeId": 13,
+			"placeName": "카페원더",
+			"description": "카페원더는 아늑한 분위기와 독특한 인테리어로 유명한 카페로, 다양한 음료와 디저트를 즐길 수 있는 공간입니다.",
+			"price": 7000,
+			"addr": "서울특별시 강남구 양재동 7-1 건화빌딩 1층",
+			"category": "음식점",
+			"startTime": "2024-10-15T13:50:00",
+			"endTime": "2024-10-15T15:30:00",
+			"checker": true
+		},
+		{
+			"placeId": 14,
+			"placeName": "스타필드 코엑스몰",
+			"description": "스타필드 코엑스몰은 극장, 수족관, 레스토랑 등이 있는 거대한 지하 쇼핑몰 및 컨벤션 센터입니다.",
+			"price": 74000,
+			"addr": "서울특별시 강남구 영동대로 513",
+			"category": "쇼핑",
+			"startTime": "2024-10-15T15:30:00",
+			"endTime": "2024-10-15T18:00:00",
+			"checker": true
+		},
+		{
+			"placeId": 15,
+			"placeName": "엠티티 게스트하우스",
+			"description": "엠티티 게스트하우스는 편안한 숙박을 제공하는 서울의 인기 게스트하우스입니다.",
+			"price": 60000,
+			"addr": "서울특별시 강남구 테헤란로22길 63-5 B02호",
+			"category": "숙박",
+			"startTime": "2024-10-15T18:00:00",
+			"endTime": "2024-10-15T24:00:00",
+			"checker": true
+		},
+		{
+			"placeId": 16,
+			"placeName": "덕수궁",
+			"description": "덕수궁은 서울 중심부에 위치한 조선 시대의 궁전으로, 아름다운 정원과 서양식 건물들이 조화를 이루는 곳입니다.",
+			"price": 5000,
+			"addr": "서울특별시 중구 세종대로 99",
+			"category": "관광지",
+			"startTime": "2024-10-16T10:00:00",
+			"endTime": "2024-10-16T11:40:00",
+			"checker": true
+		},
+		{
+			"placeId": 17,
+			"placeName": "서울타워",
+			"description": "서울타워는 남산 정상에 위치한 전망대로, 서울 시내를 한눈에 볼 수 있는 인기 명소입니다.",
+			"price": 21000,
+			"addr": "서울특별시 용산구 남산공원길 105",
+			"category": "관광지",
+			"startTime": "2024-10-16T11:40:00",
+			"endTime": "2024-10-16T13:00:00",
+			"checker": true
+		},
+		{
+			"placeId": 18,
+			"placeName": "남촌마당",
+			"description": "남촌마당은 남산과 가까운 로컬 아시아 레스토랑입니다.",
+			"price": 11000,
+			"addr": "서울특별시 중구 회현동1가 소공로3길 48",
+			"category": "음식점",
+			"startTime": "2024-10-16T13:00:00",
+			"endTime": "2024-10-16T14:30:00",
+			"checker": true
+		},
+		{
+			"placeId": 19,
+			"placeName": "남산골 한옥마을",
+			"description": "남산골 한옥마을은 전통 한옥들이 모여 있는 곳으로, 한국의 고유한 문화와 역사를 체험할 수 있는 공간입니다.",
+			"price": 0,
+			"addr": "서울특별시 중구 퇴계로34길 28",
+			"category": "관광지",
+			"startTime": "2024-10-16T14:30:00",
+			"endTime": "2024-10-16T17:00:00",
+			"checker": true
+		},
+		{
+			"placeId": 20,
+			"placeName": "종각 젊음의 거리",
+			"description": "종각 젊음의 거리는 다양한 쇼핑과 활동을 즐길 수 있는 활기찬 거리입니다.",
+			"price": 35000,
+			"addr": "서울특별시 종로구 관철동",
+			"category": "쇼핑",
+			"startTime": "2024-10-16T17:00:00",
+			"endTime": "2024-10-16T19:00:00",
+			"checker": true
+		},
+		{
+			"placeId": 21,
+			"placeName": "여의도 한강공원",
+			"description": "여의도 한강공원은 한강을 따라 조성된 공원으로, 피크닉, 자전거 타기, 산책 등 다양한 여가 활동을 즐길 수 있는 인기 장소입니다.",
+			"price": 0,
+			"addr": "서울특별시 영등포구 여의동로 330",
+			"category": "관광지",
+			"startTime": "2024-10-17T12:00:00",
+			"endTime": "2024-10-17T14:00:00",
+			"checker": true
+		},
+		{
+			"placeId": 22,
+			"placeName": "노량진 수산물 도매시장",
+			"description": "노량진 수산물 도매시장은 신선한 수산물을 직접 구매할 수 있는 대규모 시장으로, 다양한 해산물이 거래되는 곳입니다.",
+			"price": 17000,
+			"addr": "서울특별시 동작구 노들로 674",
+			"category": "음식점",
+			"startTime": "2024-10-17T14:00:00",
+			"endTime": "2024-10-17T16:00:00",
+			"checker": true
+		},
+		{
+			"placeId": 23,
+			"placeName": "가로수길",
+			"description": "가로수길은 패션, 미식, 문화가 어우러진 트렌디한 거리로, 독특한 상점과 카페가 즐비한 인기 명소입니다.",
+			"price": 35000,
+			"addr": "서울특별시 강남구 도산대로",
+			"category": "쇼핑",
+			"startTime": "2024-10-17T16:00:00",
+			"endTime": "2024-10-17T17:00:00",
+			"checker": true
+		},
+		{
+			"placeId": 24,
+			"placeName": "봉은사",
+			"description": "봉은사는 서울에 위치한 전통 사찰로, 고요한 분위기에서 한국 불교 문화를 체험할 수 있는 장소입니다.",
+			"price": 0,
+			"addr": "서울특별시 강남구 봉은사로 531",
+			"category": "관광지",
+			"startTime": "2024-10-17T17:00:00",
+			"endTime": "2024-10-17T19:00:00",
+			"checker": true
+		},
+		{
+			"placeId": 25,
+			"placeName": "롯데월드",
+			"description": "롯데월드는 놀이기구, 물미끄럼틀, 해양생물 전시관을 한 곳에서 즐길 수 있는 가족형 어드벤처 파크입니다.",
+			"price": 125000,
+			"addr": "서울특별시 송파구 올림픽로 240",
+			"category": "관광지",
+			"startTime": "2024-10-18T09:00:00",
+			"endTime": "2024-10-18T20:00:00",
+			"checker": true
+		}
+	],
+	"route": [
+		{
+			"startPlaceId": 10,
+			"endPlaceId": 11,
+			"price": 1500,
+			"transport": {
+				"id": 2,
+				"type": "버스"
+			},
+			"distance": 1.2,
+			"checker": true,
+			"travelTime": 12
+		}, {
+			"startPlaceId": 11,
+			"endPlaceId": 12,
+			"price": 1500,
+			"transport": {
+				"id": 1,
+				"type": "버스"
+			},
+			"distance": 1.1,
+			"checker": true,
+			"travelTime": 10
+		}, {
+			"startPlaceId": 12,
+			"endPlaceId": 13,
+			"price": 2400,
+			"transport": {
+				"id": 1,
+				"type": "지하철"
+			},
+			"distance": 2.0,
+			"checker": true,
+			"travelTime": 12
+		}, {
+			"startPlaceId": 13,
+			"endPlaceId": 14,
+			"price": 0,
+			"transport": {
+				"id": 1,
+				"type": "도보"
+			},
+			"distance": 0.1,
+			"checker": true,
+			"travelTime": 5
+		}, {
+			"startPlaceId": 14,
+			"endPlaceId": 15,
+			"price": 1500,
+			"transport": {
+				"id": 1,
+				"type": "버스"
+			},
+			"distance": 4.5,
+			"checker": true,
+			"travelTime": 27
+		}, {
+			"startPlaceId": 15,
+			"endPlaceId": 16,
+			"price": 1400,
+			"transport": {
+				"id": 1,
+				"type": "버스"
+			},
+			"distance": 3.2,
+			"checker": true,
+			"travelTime": 20
+		}, {
+			"startPlaceId": 16,
+			"endPlaceId": 17,
+			"price": 1500,
+			"transport": {
+				"id": 1,
+				"type": "버스"
+			},
+			"distance": 2.6,
+			"checker": true,
+			"travelTime": 46
+		}, {
+			"startPlaceId": 17,
+			"endPlaceId": 18,
+			"price": 1400,
+			"transport": {
+				"id": 1,
+				"type": "버스"
+			},
+			"distance": 1.4,
+			"checker": true,
+			"travelTime": 23
+		}, {
+			"startPlaceId": 18,
+			"endPlaceId": 19,
+			"price": 0,
+			"transport": {
+				"id": 1,
+				"type": "도보"
+			},
+			"distance": 1.6,
+			"checker": true,
+			"travelTime": 25
+		}, {
+			"startPlaceId": 19,
+			"endPlaceId": 20,
+			"price": 1500,
+			"transport": {
+				"id": 1,
+				"type": "버스"
+			},
+			"distance": 1.6,
+			"checker": true,
+			"travelTime": 21
+		}, {
+			"startPlaceId": 20,
+			"endPlaceId": 21,
+			"price": 1400,
+			"transport": {
+				"id": 1,
+				"type": "지하철"
+			},
+			"distance": 8.0,
+			"checker": true,
+			"travelTime": 30
+		}, {
+			"startPlaceId": 21,
+			"endPlaceId": 22,
+			"price": 1400,
+			"transport": {
+				"id": 1,
+				"type": "지하철"
+			},
+			"distance": 3.1,
+			"checker": true,
+			"travelTime": 18
+		}, {
+			"startPlaceId": 22,
+			"endPlaceId": 23,
+			"price": 1400,
+			"transport": {
+				"id": 1,
+				"type": "지하철"
+			},
+			"distance": 9.8,
+			"checker": true,
+			"travelTime": 31
+		}, {
+			"startPlaceId": 23,
+			"endPlaceId": 24,
+			"price": 1500,
+			"transport": {
+				"id": 1,
+				"type": "버스"
+			},
+			"distance": 4.2,
+			"checker": true,
+			"travelTime": 29
+		}
+	],
+	"regDate": "2024-10-15T10:00:00",
+	"modDate": "2024-10-15T13:20:00",
+	"themes": [
+		{
+			"id": "1",
+			"category": "널널한게 좋아요"
+		},
+		{
+			"id": "6",
+			"category": "쇼핑에 관심 있어요"
+		},
+		{
+			"id": "9",
+			"category": "가성비가 좋아요"
+		}
+	]
+} 

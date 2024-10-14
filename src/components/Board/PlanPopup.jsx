@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PopupContainer, CloseButton } from '../../styles/board/planPopup';
-import PlanContainer from '../PlanContainer';
+import PlanContainer from '../../components/Board/PlanContainer';
 import Button from '../Button';
 import axios from 'axios';
 
