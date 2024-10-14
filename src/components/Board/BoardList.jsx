@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BoardContainer } from '../../styles/board/boardList';
@@ -27,9 +26,14 @@ const BoardList = () => {
     };
 
     fetchData();
-  }, [currentPage, itemsPerPage]); // currentPage와 itemsPerPage 변경 시 fetchData 호출
+  }, [currentPage]); // currentPage 변경 시 fetchData 호출
 
   const totalPages = Math.ceil(items.length / itemsPerPage);
+
+  // 현재 페이지에 해당하는 게시글만 slice로 추출
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
 
   if (!Array.isArray(items) || items.length === 0) {
     return (
@@ -42,7 +46,7 @@ const BoardList = () => {
   return (
     <>
       <BoardContainer>
-        {items.map(item => (
+        {currentItems.map(item => (
           <BoardItem
             key={item.boardId}
             item={item}
@@ -67,4 +71,3 @@ const BoardList = () => {
 };
 
 export default BoardList;
-
