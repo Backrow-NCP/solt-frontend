@@ -28,8 +28,8 @@ const MyBoard = () => {
               </Link>
             </li>
             <li>
-              <Link to="/auth/myboard" className="size_sm weight_b pt_blue">
-                내가 쓴 게시글
+              <Link to="/auth/myboard" className="size_md weight_b pt_blue">
+                나의 게시글
               </Link>
             </li>
           </ul>

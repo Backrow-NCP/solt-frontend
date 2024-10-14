@@ -5,6 +5,7 @@ const MyBoardStyles = createGlobalStyle`
     display: flex;
     flex-direction: row;
     width: 80%;
+    height: 800px;
     gap: 20px;
     max-width: 1600px;
     margin: 80px auto 0;
