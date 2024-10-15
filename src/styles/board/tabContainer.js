@@ -30,3 +30,10 @@ export const ContentContainer = styled.div`
   background-color: #ffffff; // 콘텐츠 컨테이너 색상
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 `;
+
+export const CombinedDetailContainer = styled.div`
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;

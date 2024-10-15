@@ -13,7 +13,10 @@ export const DetailWrapper = styled.div`
   background-color: white;
   border-radius: 32px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  padding: 40px;
+  padding-top: 40px; /* 상단 패딩 */
+  padding-left: 40px; /* 좌측 패딩 */
+  padding-right: 40px; /* 우측 패딩 */
+  padding-bottom: 30px; /* 하단 패딩을 줄임 */
   z-index: 2;
 `;
 
@@ -32,4 +35,19 @@ export const HeartStyled = styled(Heart)`
   width: 24px; /* 원하는 너비로 설정 */
   height: 24px; /* 원하는 높이로 설정 */
   margin-left: 5px;
+`;
+
+export const TooltipContent = styled.div`
+  border: 1px solid black; /* Tooltip 테두리 */
+  background-color: white; /* Tooltip 배경색 */
+  padding: 10px; /* 여백 */
+`;
+
+export const TooltipButton = styled.button`
+  background-color: white; /* 배경색 */
+  color: black; /* 글자색 */
+  border: 1px solid black; /* 테두리 */
+  border-radius: 5px; /* 둥근 모서리 */
+  padding: 5px 10px; /* 여백 */
+  cursor: pointer; /* 포인터 커서 */
 `;

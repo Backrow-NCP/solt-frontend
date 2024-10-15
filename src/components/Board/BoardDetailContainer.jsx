@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Tooltip } from 'react-tooltip'; // Tooltip 임포트
+import { useParams, useNavigate } from 'react-router-dom'; // useNavigate 임포트
 import {
   DetailWrapper,
   BottomButtonContainer,
-  HeartStyled, // Heart 컴포넌트를 스타일로 사용
+  HeartStyled,
 } from '../../styles/board/boardDetailContainer';
 import TabContainer from './TabContainer';
 import Button from '../Button';
@@ -11,6 +12,7 @@ import axios from 'axios';
 
 const BoardDetailContainer = () => {
   const { boardId } = useParams();
+  const navigate = useNavigate(); // useNavigate 훅 사용
   const [boardData, setBoardData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
 
@@ -18,7 +20,7 @@ const BoardDetailContainer = () => {
   useEffect(() => {
     const fetchBoardData = async () => {
       try {
-        const response = await axios.get('/sampleData.json'); // GET 요청으로 데이터 가져오기
+        const response = await axios.get('/sampleData.json');
         const data = response.data;
 
         const boardItem = data.dtoList.find(
@@ -26,8 +28,8 @@ const BoardDetailContainer = () => {
         );
 
         if (boardItem) {
-          setBoardData(boardItem); // 게시글 데이터를 상태에 저장
-          setIsLiked(false); // 기본적으로 좋아요 상태를 선택 안된 상태로 설정
+          setBoardData(boardItem);
+          setIsLiked(false);
         } else {
           console.log(`게시글 ID ${boardId}에 해당하는 데이터가 없습니다.`);
         }
@@ -37,46 +39,79 @@ const BoardDetailContainer = () => {
     };
 
     if (boardId) {
-      fetchBoardData(); // boardId가 존재할 경우에만 fetch 요청을 실행
+      fetchBoardData();
     } else {
       console.log('boardId가 undefined입니다.');
     }
   }, [boardId]);
 
-  const handleSaveToMyPage = () => {
-    console.log('마이페이지에 저장됨');
-  };
-
   // 좋아요 핸들러
   const handleLike = () => {
     setIsLiked(prevState => {
-      const newLikedState = !prevState; // 현재 상태를 반전
+      const newLikedState = !prevState;
       setBoardData(prevData => ({
         ...prevData,
         likeCount: newLikedState
           ? prevData.likeCount + 1
-          : prevData.likeCount - 1, // 상태에 따라 좋아요 수 증가 또는 감소
+          : prevData.likeCount - 1,
       }));
-      return newLikedState; // 새로운 상태 반환
+      return newLikedState;
     });
+  };
+
+  // 마이페이지로 이동하는 핸들러
+  const handleNavigateToMyPage = () => {
+    navigate('/auth/mypage'); // 마이페이지로 이동
   };
 
   return (
     <DetailWrapper>
       <TabContainer boardData={boardData} />
       <BottomButtonContainer>
-        <Button size="lg" color="blue" onClick={handleSaveToMyPage}>
+        <Button
+          size="lg"
+          color="blue"
+          data-tooltip-id="my-tooltip-click" // 툴팁 ID 설정
+        >
           마이페이지에 저장
         </Button>
+        <Tooltip
+          id="my-tooltip-click"
+          border="1px solid black"
+          content={
+            <>
+              <p>
+                마이페이지에 저장되었습니다!
+                <br />
+              </p>
+              <button
+                onClick={handleNavigateToMyPage}
+                style={{
+                  backgroundColor: 'white', // 배경색
+                  color: 'black', // 글자색
+                  border: 'none',
+                  borderRadius: '5px',
+                  padding: '5px 10px',
+                  cursor: 'pointer',
+                }}
+              >
+                마이페이지로 이동
+              </button>
+            </>
+          }
+          events={['click']}
+          clickable
+        />
+
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <HeartStyled
-            width={24} // 너비 설정
-            height={24} // 높이 설정
-            active={isLiked} // 현재 좋아요 상태
-            onClick={handleLike} // 클릭 시 좋아요 핸들러
+            width={24}
+            height={24}
+            active={isLiked}
+            onClick={handleLike}
           />
           <span style={{ fontSize: '18px' }}>
-            {boardData ? boardData.likeCount : 0} {/* 좋아요 숫자 표시 */}
+            {boardData ? boardData.likeCount : 0}
           </span>
         </div>
       </BottomButtonContainer>
