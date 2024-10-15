@@ -32,10 +32,8 @@ export const DateAuthorContainer = styled.p`
 `;
 
 export const Image = styled.img`
-  max-width: 415px; /* 너비를 고정 */
+  max-width: 400px; /* 너비를 고정 */
   height: 275px;
-  border-radius: 5px;
-
   object-fit: contain; /* 이미지를 비율에 맞춰 고정 영역을 채우도록 설정 */
   display: block; /* 블록 요소로 설정하여 중앙 정렬 */
   margin-left: auto; /* 좌우 마진을 자동으로 설정하여 중앙 정렬 */
