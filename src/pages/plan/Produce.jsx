@@ -222,7 +222,6 @@ const Produce = () => {
   }, [selectedOption, places]);
 
   // ModifyContainer의 "이 장소로 선택" 버튼 클릭 시
-  // Produce.jsx 내 handleSelectClick 함수 수정
 	const handleSelectClick = useCallback(() => {
 		const { option, placeId } = selectedOption;
 
@@ -262,14 +261,14 @@ const Produce = () => {
 				}
 				return place;
 			});
-
+	
 			setPlaces(updatedPlaces);
-
+	
 			// 해당 장소와 연결된 경로(route) 제거
 			const updatedPlanRoute = plan.route.filter((route) => {
 				return route.startPlaceId !== placeId && route.endPlaceId !== placeId;
 			});
-
+	
 			setPlan({
 				...plan,
 				route: updatedPlanRoute,
@@ -278,16 +277,6 @@ const Produce = () => {
 			// 수정된 장소를 추적
 			setModifiedPlaces((prev) => [...prev, placeId]);
 
-			// 상태 초기화
-			setPlanConfirmed(false);
-			setSelectedOption({ option: null, placeId: null });
-			setSelectedRecommendedPlace(null);
-			setAutocompleteSelectedPlace(null);
-			setEditPlace((prev) => {
-				const updatedEditPlace = { ...prev };
-				delete updatedEditPlace[placeId];
-				return updatedEditPlace;
-			});
 		} else if (option === 'directly' && autocompleteSelectedPlace) {
 			// "직접 쓸래요"
 			const updatedPlaces = places.map((place) => {
@@ -299,7 +288,7 @@ const Produce = () => {
 						addr: autocompleteSelectedPlace.addr || autocompleteSelectedPlace.address || place.addr,
 						description: null,
 						isNew: false,
-						price: 0, // 직접 수정 시 가격 0으로 설정
+						price: 0, // 가격 0원
 					};
 				}
 				return place;
@@ -313,26 +302,26 @@ const Produce = () => {
 			});
 
 			setPlan({
-				...plan,
-				route: updatedPlanRoute,
-			});
-
-			// combinedList는 useEffect에서 자동으로 업데이트됨
+			...plan,
+			route: updatedPlanRoute,
+		});
 
 			// 수정된 장소를 추적
-			setModifiedPlaces((prev) => [...prev, placeId]);
+		setModifiedPlaces((prev) => [...prev, placeId]);
+	}
+		
+	setIsEditing(false);
+	setPlanConfirmed(false);
+	setSelectedOption({ option: null, placeId: null });
+	setSelectedRecommendedPlace(null);
+	setAutocompleteSelectedPlace(null);
+	setEditPlace((prev) => {
+		const updatedEditPlace = { ...prev };
+		delete updatedEditPlace[placeId];
+		return updatedEditPlace;
+	});
 
-			// 상태 초기화
-			setPlanConfirmed(false);
-			setSelectedOption({ option: null, placeId: null });
-			setSelectedRecommendedPlace(null);
-			setAutocompleteSelectedPlace(null);
-			setEditPlace((prev) => {
-				const updatedEditPlace = { ...prev };
-				delete updatedEditPlace[placeId];
-				return updatedEditPlace;
-			});
-		}
+		console.log('After setIsEditing:', isEditing);
 	}, [
 		selectedOption,
 		autocompleteSelectedPlace,
@@ -342,6 +331,7 @@ const Produce = () => {
 		setPlaces,
 		setPlan,
 		setModifiedPlaces,
+		isEditing, // 추가: isEditing을 useCallback 의존성에 추가
 	]);
 
   // 플랜 확정/수정 버튼 클릭 핸들러
