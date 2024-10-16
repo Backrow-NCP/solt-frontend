@@ -17,6 +17,7 @@ const PlaceItem = ({
   editPlace,
   toggleModifyPlace,
   handleModifyClick,
+  displayButtons,
 }) => {
 
   return (
@@ -29,7 +30,6 @@ const PlaceItem = ({
         <h3 className="size_md">{place.placeName}</h3>
         <span className="pt_gy size_xs">{place.category}</span>
 
-        {/* 이동수단 영역 */}
         {previousPlace && route && (
           <div className="size_xs weight_md">
             <img
@@ -54,39 +54,43 @@ const PlaceItem = ({
         <p className="desc pt_gy size_xs">{place.description}</p>
       </div>
 
+      
       <div className="place_price">
-        <p className="size_xs weight_md">예상 금액</p>
-        <div className="flex">
-          <input
-            type="number"
-            min="0"
-            value={place.price}
-            onChange={e =>
-              handlePriceChange(place.placeId, Number(e.target.value))
-            }
-            disabled={!editPrice[place.placeId] || isEditing}
-          />
-          <span className="pt_pink size_sm weight_b">원</span>
-        </div>
-        <button
-          onClick={() => toggleEditPrice(place.placeId)}
-          className="pt_gy size_xxs"
-          disabled={isEditing}
-        >
-          {editPrice[place.placeId] ? '확인' : '금액 수정'}
-        </button>
+				<p className="size_xs weight_md">예상 금액</p>
+				<div className="flex">
+					<input
+						type="number"
+						min="0"
+						value={place.price}
+						onChange={e =>
+							handlePriceChange(place.placeId, Number(e.target.value))
+						}
+						disabled={!editPrice[place.placeId] || isEditing}
+					/>
+					<span className="pt_pink size_sm weight_b">원</span>
+				</div>
+				{displayButtons && (
+          <button
+            onClick={() => toggleEditPrice(place.placeId)}
+            className="pt_gy size_xxs"
+            disabled={isEditing}
+          >
+            {editPrice[place.placeId] ? '확인' : '금액 수정'}
+          </button>
+        )}
       </div>
 
-      {/* 일정 수정 버튼 */}
-      <button onClick={() => toggleModifyPlace(place.placeId)}>
-        {editPlace[place.placeId] ? (
-          <img src={PlanModifyActiveBtn} alt="일정 수정" />
-        ) : (
-          <img src={PlanModifyBtn} alt="비활성화" />
-        )}
-      </button>
+      {/* 조건에 따라 수정 버튼 표시 */}
+      {displayButtons && (
+        <button onClick={() => toggleModifyPlace(place.placeId)}>
+          {editPlace[place.placeId] ? (
+            <img src={PlanModifyActiveBtn} alt="일정 수정" />
+          ) : (
+            <img src={PlanModifyBtn} alt="비활성화" />
+          )}
+        </button>
+      )}
 
-      {/* 수정 방법 */}
       {editPlace[place.placeId] && (
         <ul className="place_change">
           <li>

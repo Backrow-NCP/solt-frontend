@@ -14,6 +14,7 @@ const PlaceList = ({
   editPlace,
   toggleModifyPlace,
   handleModifyClick,
+  displayButtons= true,
 }) => {
 
   return (
@@ -38,6 +39,7 @@ const PlaceList = ({
             editPlace={editPlace}
             toggleModifyPlace={toggleModifyPlace}
             handleModifyClick={handleModifyClick}
+            displayButtons={displayButtons}
           />
         );
       })}

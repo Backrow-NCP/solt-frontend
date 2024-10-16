@@ -1,9 +1,11 @@
 {
 	"placeId": 1,
-	"confirm": true,
 	"member": {
 		"memberId": 101,
-		"name": "트래블보이"
+		"name": "솔로천국",
+		"birthYear": "2024-10-16T03:35:17.595Z",
+		"gender": true,
+		"fileName": "string"
 	},
 	"place": [
 		{
