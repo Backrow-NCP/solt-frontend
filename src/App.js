@@ -78,6 +78,11 @@ function App() {
               <Route path="/auth/myplan" element={<MyPlan />} />
               <Route path="/auth/myboard" element={<MyBoard />} />
               <Route path="/auth/profileEdit" element={<ProfileEdit />} />
+              {/* 프로필 수정 페이지 */}
+              <Route path="/plan/survey" element={<Survey />} />
+              <Route path="/plan/produce" element={<Produce />} />
+              <Route path="/plan/complete" element={<Complete />} />
+              <Route path="/auth/mypage2" element={<MyPage2 />} />
             </Routes>
           </main>
 
