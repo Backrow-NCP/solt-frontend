@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MyPageStyles from '../../styles/auth/myPage';
 import PlanContainer from '../../components/Board/PlanContainer';
 import { Link, useNavigate } from 'react-router-dom';
-import profileImage from '../../assets/images/profile.png';
+import profileImage from '../../assets/images/ico/profile.png';
 import Button from '../../components/Button';
 
 const MyPage = () => {

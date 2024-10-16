@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ProfileEditStyles from '../../styles/auth/profileEdit'; // ProfileEditStyles import
 import Button from '../../components/Button';
-import profileImage from '../../assets/images/profile.png'; // 기본 프로필 이미지 경로
+import profileImage from '../../assets/images/ico/profile.png'; // 기본 프로필 이미지 경로
 
 function ProfileEdit() {
   const currentYear = new Date().getFullYear();
