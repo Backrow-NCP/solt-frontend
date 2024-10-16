@@ -82,7 +82,6 @@ function App() {
               <Route path="/plan/survey" element={<Survey />} />
               <Route path="/plan/produce" element={<Produce />} />
               <Route path="/plan/complete" element={<Complete />} />
-              <Route path="/auth/mypage2" element={<MyPage2 />} />
             </Routes>
           </main>
 
