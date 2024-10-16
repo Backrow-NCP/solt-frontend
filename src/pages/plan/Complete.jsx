@@ -122,7 +122,7 @@ const Complete = () => {
 			{/* 슬라이드 */}
       <Slider {...settings}>
         {Object.entries(groupedPlaces).map(([date, dayPlaces], dayIndex) => (
-          <DaySlide key={dayIndex}>
+          <div key={dayIndex}>
             <h3 className="size_md">Day {dayIndex + 1}</h3>
             <p className="day_price pt_blue size_xs">총 예상 금액 {getDayTotalPrice(dayPlaces).toLocaleString()}원</p>
 
@@ -161,7 +161,7 @@ const Complete = () => {
                 );
               })}
             </ol>
-          </DaySlide>
+          </div>
         ))}
       </Slider>
 
@@ -179,7 +179,4 @@ const Complete = () => {
   );
 };
 
-const DaySlide = styled.div``;
-
 export default Complete;
-

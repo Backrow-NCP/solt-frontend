@@ -1,9 +1,9 @@
-import React from 'react';
+import styled from 'styled-components';
 
 // 날짜 탭
 const DayTab = ({ days, selectedDay, onTabClick }) => {
   return (
-    <ul className="tab_date flex pt_gy size_sm weight_b">
+    <Tab className="tab_date flex pt_gy size_sm weight_b">
       {days.map((day, index) => (
         <li
           key={index}
@@ -13,8 +13,22 @@ const DayTab = ({ days, selectedDay, onTabClick }) => {
           Day {index + 1}
         </li>
       ))}
-    </ul>
+    </Tab>
   );
 }
 
 export default DayTab;
+
+const Tab = styled.ul`
+  flex-wrap: nowrap;
+  gap: 32px;
+  margin: 40px 0 20px;
+
+  > li {
+    cursor: pointer;
+
+    &.active {
+      color: #121212;
+    }
+  }
+`;

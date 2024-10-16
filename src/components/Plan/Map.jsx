@@ -13,7 +13,6 @@ const Map = ({
   filteredPlaces,
   selectedMarker,
   setSelectedMarker,
-  handleInfoWindowOpen,
 }) => {
   const mapRef = useRef(null);
 
@@ -59,7 +58,6 @@ const Map = ({
             lng: selectedMarker.longitude,
           }}
           onCloseClick={() => setSelectedMarker(null)}
-          onLoad={handleInfoWindowOpen}
         >
           <div className="marker_desc">
             <strong>{selectedMarker.placeName}</strong>

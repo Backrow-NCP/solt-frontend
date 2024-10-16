@@ -1,11 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
 import transportBus from '../../assets/images/ico/transport_bus.svg';
 import transporRun from '../../assets/images/ico/transport_run.svg';
 
 const DayPlanItem = ({ dayIndex, dayPlaces, getDayTotalPrice, plan }) => {
   return (
-    <PlanItem>
+    <div>
       <h3 className="size_md">Day {dayIndex + 1}</h3>
       <p className="day_price pt_blue size_xs">총 예상 금액 {getDayTotalPrice(dayPlaces).toLocaleString()}원</p>
       <ol>
@@ -43,13 +41,9 @@ const DayPlanItem = ({ dayIndex, dayPlaces, getDayTotalPrice, plan }) => {
           );
         })}
       </ol>
-    </PlanItem>
+    </div>
   );
 };
-
-const PlanItem = styled.div`
-  /* 필요한 스타일 정의 */
-`;
 
 export default DayPlanItem;
 

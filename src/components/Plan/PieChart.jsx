@@ -40,7 +40,7 @@ const PieChart = ({ data }) => {
 
     // 카테고리별 색상 설정 (필요에 따라 색상 배열 조정)
     const backgroundColors = [
-      '#15B8FF', '#FFD600', '#6dd3ff', '#F78CA0', '#43A311', 
+      '#15B8FF', '#FFD600', '#927cff', '#F78CA0', '#43A311', 
       '#FF9E9E', '#121212', '#888', '#36E0C5', '#FEAE5E'
     ];
 
@@ -82,7 +82,7 @@ const PieChart = ({ data }) => {
   }, [data]);
 
   return (
-    <ChartContainer className={`graph ${active ? 'active' : ''}`}>
+    <Graph className={`graph ${active ? 'active': ''}`}>
       <span className="size_sm weight_sb">클릭해서 세부 내용을 확인하세요</span>
       <canvas ref={chartRef} />
       <ul className="info">
@@ -95,10 +95,93 @@ const PieChart = ({ data }) => {
           </li>
         ))}
       </ul>
-    </ChartContainer>
+    </Graph>
   );
 };
 
 export default PieChart;
 
-const ChartContainer = styled.div``;
+const Graph = styled.div`
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  width: 80px;
+
+  > span {
+    position: absolute;
+    top: -45px;
+    left: 40%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #ffd600;
+    color: #121212;
+    line-height: 1;
+    white-space: nowrap;
+    animation: float 2s ease-in-out infinite;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 12px;
+      border-top: 10px solid #ffd600;
+      border-left: 5px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 0px solid transparent;
+      border-radius: 10px;
+    }
+  }
+
+  &.active > span {
+    display: none;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(6px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  > canvas {
+    cursor: pointer;
+  }
+
+  > .info {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: -20px;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    transform: translateX(100%);
+
+    li {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 5px;
+      font-size: 12px;
+      white-space: nowrap;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .label {
+        color: #121212;
+      }
+    }
+  }
+
+  &.active > .info {
+    display: block;
+  }
+`;

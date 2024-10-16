@@ -1,13 +1,14 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import planData from '../../mock/planProduce.json'; // 임시 데이터
 import SurveyCommon from '../../styles/plan/survey';
 
-import SurveyCalendar from './SurveyCalendar';
-import SurveyArea from './SurveyArea';
-import SurveyKeyword from './SurveyKeyword';
-import SurveyPlace from './SurveyPlace';
+// 컴포넌트
+import SurveyCalendar from '../../components/Survey/SurveyCalendar';
+import SurveyArea from '../../components/Survey/SurveyArea';
+import SurveyKeyword from '../../components/Survey/SurveyKeyword';
+import SurveyPlace from '../../components/Survey/SurveyPlace';
 import Button from '../../components/Button';
 
 import PrevBtn from '../../assets/images/ico/btn_survey_prev.svg';
@@ -53,15 +54,15 @@ const Survey = () => {
 
   // 키워드 선택
    const handleKeywordSelect = useCallback(keywords => {
-      setAnswers(prevAnswers => ({
-         ...prevAnswers,
-         keywords: {
-            travelStyle: keywords.travelStyle,
-            theme: keywords.theme,
-            environment: keywords.environment,
-         },
-        }));
-      }, []);
+		setAnswers(prevAnswers => ({
+			...prevAnswers,
+			keywords: {
+				travelStyle: keywords.travelStyle,
+				theme: keywords.theme,
+				environment: keywords.environment,
+			},
+		}));
+	}, []);
 
   // 장소 선택 핸들러 추가
   const handlePlaceSelect = (places) => {
