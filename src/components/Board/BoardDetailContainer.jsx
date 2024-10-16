@@ -9,12 +9,19 @@ import {
 import TabContainer from './TabContainer';
 import Button from '../Button';
 import axios from 'axios';
+import PlanInfo from '../Plan/PlanInfo';
 
-const BoardDetailContainer = () => {
+const BoardDetailContainer = ({ planData }) => {
   const { boardId } = useParams();
   const navigate = useNavigate(); // useNavigate 훅 사용
   const [boardData, setBoardData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
+  const [planTime, setPlanTime] = useState(null); // 필요한 상태 추가
+  const [editPrice, setEditPrice] = useState(0); // 가격 상태 추가
+  const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태 추가
+  const [filteredPlaces, setFilteredPlaces] = useState([]); // 필터링된 장소 상태 추가
+
+  const placesData = planData.place;
 
   // 게시물 데이터를 가져오는 useEffect
   useEffect(() => {
@@ -45,6 +52,16 @@ const BoardDetailContainer = () => {
     }
   }, [boardId]);
 
+  // 필터링된 장소 설정 (예시)
+  useEffect(() => {
+    if (placesData) {
+      const places = placesData.filter(
+        place => place.latitude && place.longitude
+      );
+      setFilteredPlaces(places);
+    }
+  }, [placesData]);
+
   // 좋아요 핸들러
   const handleLike = () => {
     setIsLiked(prevState => {
@@ -64,15 +81,57 @@ const BoardDetailContainer = () => {
     navigate('/auth/mypage'); // 마이페이지로 이동
   };
 
+  // 필요한 함수들 추가 (예시)
+  const findRoute = () => {
+    // 경로 찾기 로직
+  };
+
+  const handlePriceChange = newPrice => {
+    setEditPrice(newPrice);
+  };
+
+  const toggleEditPrice = () => {
+    setIsEditing(prev => !prev);
+  };
+
+  const editPlace = placeId => {
+    // 장소 수정 로직
+  };
+
+  const toggleModifyPlace = () => {
+    // 장소 수정 토글 로직
+  };
+
+  const handleModifyClick = placeId => {
+    // 장소 수정 클릭 핸들러
+  };
+
+  const displayButtons = () => {
+    // 버튼 표시 로직
+  };
+
   return (
     <DetailWrapper>
-      <TabContainer boardData={boardData} />
+      <div>
+        <PlanInfo {...planData} />
+        <TabContainer
+          filteredPlaces={filteredPlaces}
+          planTime={planTime}
+          findRoute={findRoute}
+          handlePriceChange={handlePriceChange}
+          editPrice={editPrice}
+          isEditing={isEditing}
+          toggleEditPrice={toggleEditPrice}
+          editPlace={editPlace}
+          toggleModifyPlace={toggleModifyPlace}
+          handleModifyClick={handleModifyClick}
+          displayButtons={displayButtons}
+          boardData={boardData} // 필요에 따라 추가
+        />
+      </div>
+
       <BottomButtonContainer>
-        <Button
-          size="lg"
-          color="blue"
-          data-tooltip-id="my-tooltip-click" // 툴팁 ID 설정
-        >
+        <Button size="lg" color="blue" data-tooltip-id="my-tooltip-click">
           마이페이지에 저장
         </Button>
         <Tooltip
@@ -85,13 +144,11 @@ const BoardDetailContainer = () => {
                 마이페이지에 저장되었습니다!
               </p>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
-                {' '}
-                {/* 버튼을 중앙 정렬 */}
                 <button
                   onClick={handleNavigateToMyPage}
                   style={{
-                    backgroundColor: 'skyblue', // 배경색
-                    color: 'white', // 글자색
+                    backgroundColor: 'skyblue',
+                    color: 'white',
                     border: 'none',
                     borderRadius: '5px',
                     padding: '5px 10px',

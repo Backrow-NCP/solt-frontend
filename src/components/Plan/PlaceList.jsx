@@ -4,7 +4,7 @@ import { scrollbar } from '../../styles/scrollbar';
 
 // 일정 묶음
 const PlaceList = ({
-  filteredPlaces,
+  filteredPlaces = [],
   planTime,
   findRoute,
   handlePriceChange,
@@ -14,9 +14,11 @@ const PlaceList = ({
   editPlace,
   toggleModifyPlace,
   handleModifyClick,
-  displayButtons= true,
+  displayButtons = true,
 }) => {
-
+  if (filteredPlaces.length === 0) {
+    <div>목적지가 없습니다.</div>; // 또는 적절한 메시지
+  }
   return (
     <List>
       {filteredPlaces.map((place, index) => {
