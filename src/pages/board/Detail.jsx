@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import BoardDetailContainer from '../../components/Board/BoardDetailContainer';
 import MapComponent from '../../components/MapComponent';
+import Map from '../../components/Plan/Map';
 
 const Container = styled.div`
   display: flex;

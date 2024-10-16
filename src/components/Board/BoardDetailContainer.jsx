@@ -77,26 +77,30 @@ const BoardDetailContainer = () => {
         </Button>
         <Tooltip
           id="my-tooltip-click"
+          style={{ backgroundColor: 'rgb(255,255,255)', color: 'black' }}
           border="1px solid black"
           content={
             <>
-              <p>
+              <p style={{ marginBottom: '7px' }}>
                 마이페이지에 저장되었습니다!
-                <br />
               </p>
-              <button
-                onClick={handleNavigateToMyPage}
-                style={{
-                  backgroundColor: 'white', // 배경색
-                  color: 'black', // 글자색
-                  border: 'none',
-                  borderRadius: '5px',
-                  padding: '5px 10px',
-                  cursor: 'pointer',
-                }}
-              >
-                마이페이지로 이동
-              </button>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {' '}
+                {/* 버튼을 중앙 정렬 */}
+                <button
+                  onClick={handleNavigateToMyPage}
+                  style={{
+                    backgroundColor: 'skyblue', // 배경색
+                    color: 'white', // 글자색
+                    border: 'none',
+                    borderRadius: '5px',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  마이페이지로 이동
+                </button>
+              </div>
             </>
           }
           events={['click']}
