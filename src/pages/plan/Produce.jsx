@@ -455,16 +455,6 @@ const Produce = () => {
     setCombinedList(newCombinedList);
   }, [places, plan, setCombinedList]);
 
-  // 마커 일정 설명
-  const handleInfoWindowOpen = useCallback(() => {
-    const infoWindows = document.querySelectorAll('.gm-style-iw-tc');
-    infoWindows.forEach((window) => {
-      if (!window.innerHTML.trim() && !window.style.content) {
-        window.parentElement.remove();
-      }
-    });
-  }, []);
-
   // Render only when plan is loaded
   if (mapLoadError) return <div>Error loading maps</div>;
   if (!isLoaded || loading) return <Loading />;
@@ -551,7 +541,6 @@ const Produce = () => {
         filteredPlaces={filteredPlaces}
         selectedMarker={selectedMarker}
         setSelectedMarker={setSelectedMarker}
-        handleInfoWindowOpen={handleInfoWindowOpen}
       />
     </PlanProduce>
   );

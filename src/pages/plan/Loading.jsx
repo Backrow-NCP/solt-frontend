@@ -51,6 +51,7 @@ const Loading = () => {
   return (
     <PlanLoad>
       <div className="background"></div>
+			
       <div className="load_cont">
         <div>
 					<div className="load_icon"><img src={LoadingGIF} alt="로딩중" /></div>

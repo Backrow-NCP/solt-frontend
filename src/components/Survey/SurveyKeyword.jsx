@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 const SurveyKeyword = ({ onKeywordSelect, savedKeywords }) => {
   const travelStyles = [
@@ -26,7 +27,7 @@ const SurveyKeyword = ({ onKeywordSelect, savedKeywords }) => {
   const [selectedThemes, setSelectedThemes] = useState(savedKeywords?.theme || []);
   const [selectedEnvirons, setSelectedEnvirons] = useState(savedKeywords?.environment || []);
 
-  // 주제별로 최소 1개 선택 여부 확인
+  // 테마별 최소 1개 선택
   useEffect(() => {
     const isStylesSelected = selectedStyles.length > 0;
     const isThemesSelected = selectedThemes.length > 0;
@@ -38,7 +39,7 @@ const SurveyKeyword = ({ onKeywordSelect, savedKeywords }) => {
         theme: selectedThemes,
         environment: selectedEnvirons,
       };
-      onKeywordSelect(selectedKeywords); // 상태가 선택된 후 한 번만 호출 (여기 이슈 생김 !!)
+      onKeywordSelect(selectedKeywords);
     }
   }, [selectedStyles, selectedThemes, selectedEnvirons, onKeywordSelect]);
 
@@ -72,63 +73,107 @@ const SurveyKeyword = ({ onKeywordSelect, savedKeywords }) => {
   };
 
   return (
-    <>
-      <div className="survey_cont">
-        <div className="keyword_list flex">
-          {/* 여행 스타일 */}
-          <div className="keyword_styles">
-            <h3>여행 스타일</h3>
-            <ul>
-              {travelStyles.map((style) => (
-                <li key={style.id}>
-                  <button
-                    className={selectedStyles.some(s => s.id === style.id) ? "active" : ""}
-                    onClick={() => handleSelect("travelStyle", style)}
-                  >
-                    {style.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+		<>
+			<Keyword className="survey_cont">
+				<div className="keyword_list flex">
+						{/* 여행 스타일 */}
+						<div className="keyword_styles">
+						<h3>여행 스타일</h3>
+						<ul>
+								{travelStyles.map((style) => (
+								<li key={style.id}>
+										<button
+										className={selectedStyles.some(s => s.id === style.id) ? "active" : ""}
+										onClick={() => handleSelect("travelStyle", style)}
+										>
+										{style.name}
+										</button>
+								</li>
+								))}
+						</ul>
+						</div>
 
-          {/* 여행 테마 */}
-          <div className="keyword_themes">
-            <h3>테마</h3>
-            <ul>
-              {travelThemes.map((theme) => (
-                <li key={theme.id}>
-                  <button
-                    className={selectedThemes.some(t => t.id === theme.id) ? "active" : ""}
-                    onClick={() => handleSelect('theme', theme)}
-                  >
-                    {theme.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+						{/* 여행 테마 */}
+						<div className="keyword_themes">
+						<h3>테마</h3>
+						<ul>
+								{travelThemes.map((theme) => (
+								<li key={theme.id}>
+										<button
+										className={selectedThemes.some(t => t.id === theme.id) ? "active" : ""}
+										onClick={() => handleSelect('theme', theme)}
+										>
+										{theme.name}
+										</button>
+								</li>
+								))}
+						</ul>
+						</div>
 
-          {/* 여행 환경 */}
-          <div className="keyword_environ">
-            <h3>환경</h3>
-            <ul>
-              {travelEnvirons.map((env) => (
-                <li key={env.id}>
-                  <button
-                    className={selectedEnvirons.some(e => e.id === env.id) ? "active" : ""}
-                    onClick={() => handleSelect('environment', env)}
-                  >
-                    {env.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </>
+						{/* 여행 환경 */}
+						<div className="keyword_environ">
+						<h3>환경</h3>
+						<ul>
+								{travelEnvirons.map((env) => (
+								<li key={env.id}>
+										<button
+										className={selectedEnvirons.some(e => e.id === env.id) ? "active" : ""}
+										onClick={() => handleSelect('environment', env)}
+										>
+										{env.name}
+										</button>
+								</li>
+								))}
+						</ul>
+						</div>
+				</div>
+			</Keyword>
+
+			<span class="size_xs">거의 끝났어요!</span>
+		</>
   );
 };
 
 export default SurveyKeyword;
+
+const Keyword = styled.div`
+	.keyword_list {
+    padding: 32px 40px;
+    border-radius: 16px;
+    background: #fff;
+
+    > div {
+      flex: 1;
+      text-align: left;
+
+      h3 {
+        margin-bottom: 24px;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      li {
+        margin-bottom: 12px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        button {
+          padding: 10px 16px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          font-size: 18px;
+          line-height: 24px;
+
+          &.active {
+            border-color: #14B8FF;
+            background: rgba(20, 184, 255, 0.06);
+            font-weight: 600;  
+            color: #14B8FF;
+          }
+        }
+      }
+    }
+  }
+`;

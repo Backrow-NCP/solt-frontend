@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import styled from 'styled-components';
+
 import Area01 from '../../assets/images/bn/survey_area_01.jpg';
 import Area02 from '../../assets/images/bn/survey_area_02.jpg';
 import Area03 from '../../assets/images/bn/survey_area_03.jpg';
@@ -27,8 +29,9 @@ const SurveyArea = ({ onAreaSelect, selectedArea }) => {
 
   const [selectedAreaState, setSelectedArea] = useState(selectedArea || '서울특별시');
 
+	// 선택된 지역 초기화
   useEffect(() => {
-    setSelectedArea(selectedArea || '서울특별시'); // 선택된 지역이 있으면 초기화
+    setSelectedArea(selectedArea || '서울특별시');
   }, [selectedArea]);
 
   // 비활성화 안내
@@ -43,7 +46,7 @@ const SurveyArea = ({ onAreaSelect, selectedArea }) => {
   };
 
   return (
-    <div className="survey_cont">
+    <Area className="survey_cont">
       <ul className="area_list flex">
         {areas.map((area) => (
           <li key={area.id} className={selectedAreaState === area.name ? "active" : "disabled"}>
@@ -54,8 +57,41 @@ const SurveyArea = ({ onAreaSelect, selectedArea }) => {
           </li>
         ))}
       </ul>
-    </div>
+    </Area>
   );
 };
 
 export default SurveyArea;
+
+const Area = styled.div`
+  .area_list {
+    gap: 16px;
+
+    li {
+      flex-grow: 1;
+      flex-basis: calc(20% - 16px);
+      max-width: 20%;
+
+      button {
+        overflow: hidden;
+        display: block;
+        position: relative;
+        border-radius: 16px;
+
+        span {
+          position: absolute;
+          z-index: 1;
+          bottom: 16px;
+          left: 16px;
+          font-size: 20px;
+          font-weight: 700;
+          color: #fff;
+        }
+      }
+
+      &.disabled {
+        opacity: 0.5;
+      }
+    }
+  }
+`;

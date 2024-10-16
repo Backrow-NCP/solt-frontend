@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useLoadScript } from '@react-google-maps/api';
+import styled from 'styled-components';
 
 import Place01 from '../../assets/images/bn/survey_place_01.jpg';
 import Place02 from '../../assets/images/bn/survey_place_02.jpg';
@@ -92,7 +93,7 @@ const SurveyPlace = ({ onPlaceSelect }) => {
   }, [onPlaceSelect]);
 
   return (
-    <div className="survey_cont">
+    <Place className="survey_cont">
       <div className="place_search">
         <input
           ref={inputRef}
@@ -129,8 +130,88 @@ const SurveyPlace = ({ onPlaceSelect }) => {
           ))}
         </ul>
       </div>
-    </div>
+    </Place>
   );
 };
 
 export default SurveyPlace;
+
+const Place = styled.div`
+  .place_search {
+    width: 638px;
+    margin: 0 auto;
+
+    input {
+      width: 100%;
+      height: 72px;
+      padding: 0 40px;
+      border: 1px solid #ddd;
+      border-radius: 16px;
+      box-sizing: border-box;
+      font-size: 18px;
+      color: #121212;
+
+      &::placeholder {
+        color: #888;
+      }
+    }
+
+    ul {
+      gap: 12px;
+      justify-content: center;
+      margin-top: 16px;
+
+      li {
+        padding: 12px 16px;
+        border: 1px solid #14B8FF;
+        border-radius: 8px;
+        background: #fff;
+        font-size: 18px;
+        font-weight: 600;
+        color: #14B8FF;
+
+        button {
+          margin-left: 8px;
+          vertical-align: bottom;
+        }
+      }
+    }
+  }
+
+  .place_recomm {
+    margin-top: 40px;
+
+    h3 {
+      margin-bottom: 16px;
+    }
+
+    ul {
+      justify-content: center;
+      gap: 12px;
+
+      li {
+        button {
+          display: block;
+          overflow: hidden;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+
+          &.active {
+            border-color: #14B8FF;
+            color: #14B8FF;
+          }
+        }
+
+        img {
+          width: 100%;
+        }
+
+        span {
+          display: block;
+          padding: 12px 0;
+          background: #fff;
+        }
+      }
+    }
+  }
+`;

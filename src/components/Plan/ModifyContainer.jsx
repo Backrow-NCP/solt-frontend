@@ -1,8 +1,8 @@
-// ModifyContainer.jsx
-
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
 import Button from '../../components/Button';
+import styled from 'styled-components';
+import { scrollbar } from '../../styles/scrollbar';
 import ModifyData from '../../mock/planModify.json';
 import Restaurant from '../../assets/images/bn/plan_produce_restaurant.jpg';
 
@@ -13,6 +13,7 @@ const seoulBounds = {
   east: 127.179,
 };
 
+// 수정 선택 영역
 const ModifyContainer = ({
   option,
   placeId,
@@ -20,7 +21,7 @@ const ModifyContainer = ({
   selectedRecommendedPlace,
   handleCancelClick,
   handleSelectClick,
-  handlePlaceChanged, // 수정된 prop
+  handlePlaceChanged,
   handleSelectRecommendedPlace,
   handleSelectOption,
 }) => {
@@ -32,7 +33,7 @@ const ModifyContainer = ({
   };
 
   return (
-    <div className="plan_modify">
+    <Modify className="plan_modify">
       {/* 직접 수정 */}
       {option === 'directly' && (
         <div className="directly">
@@ -186,8 +187,132 @@ const ModifyContainer = ({
           </Button>
         </div>
       )}
-    </div>
+    </Modify>
   );
 };
 
 export default ModifyContainer;
+
+const Modify = styled.div`
+  position: fixed;
+  z-index: 1;
+  top: 50%;
+  left: 600px;
+  width: 500px;
+  padding: 40px 30px 40px 40px;
+  background: #fff;
+  border-radius: 32px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-50%);
+  transition: 0.3s ease;
+
+  h3 {
+    margin-bottom: 40px;
+  }
+
+  button {
+    width: 100%;
+
+    &:first-of-type {
+      margin: 40px 0 10px;
+    }
+  }
+
+  // 직접 수정
+  .directly {
+    input {
+      width: 100%;
+      height: 72px;
+      padding: 0 40px;
+      border: 1px solid #ddd;
+      border-radius: 16px;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      font-size: 18px;
+      color: #121212;
+
+      &::placeholder {
+        color: #888;
+      }
+    }
+
+    .selected_place {
+      margin-top: 10px;
+      padding: 16px;
+      border: 1px solid #14b8ff;
+      border-radius: 16px;
+      background: rgba(20, 184, 255, 0.06);
+
+      h4 {
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  // 추천 수정
+  .recomm {
+    ul {
+      overflow-y: auto;
+      height: 30vh;
+      padding-right: 10px;
+      ${scrollbar}
+
+      li {
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding: 16px;
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        background: #fff;
+        transition: 0.2s;
+        cursor: pointer;
+
+        &:last-child {
+          margin-bottom: 4px;
+        }
+        &:hover {
+          border-color: #14b8ff;
+        }
+        &.selected {
+          border-color: #14b8ff;
+          background: rgba(20, 184, 255, 0.06);
+        }
+
+        img {
+          width: 70px;
+          margin-right: 15px;
+          border-radius: 12px;
+        }
+
+        .place_info {
+          width: calc(100% - 185px);
+
+          p {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            height: 30px;
+            margin-top: 6px;
+            font-size: 13px;
+            line-height: 15px;
+            text-overflow: ellipsis;
+          }
+        }
+
+        .place_price {
+          width: 100px;
+          text-align: right;
+
+          strong {
+            display: block;
+            margin-top: 5px;
+          }
+        }
+      }
+    }
+  }
+`;
