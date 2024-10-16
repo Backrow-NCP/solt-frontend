@@ -132,7 +132,7 @@ const Graph = styled.div`
     }
   }
 
-  .active > span {
+  &.active > span {
     display: none;
   }
 
@@ -181,7 +181,7 @@ const Graph = styled.div`
     }
   }
 
-  .active > .info {
+  &.active > .info {
     display: block;
   }
 `;
