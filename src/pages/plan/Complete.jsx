@@ -104,14 +104,12 @@ const Complete = () => {
 
 						pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight);
 					} catch (error) {
-						console.error(`Error capturing day ${i + 1}:`, error);
 						alert(`일정 ${i + 1} 페이지를 PDF로 저장하는 중 오류가 발생했습니다.`);
 					}
 				}
 			}
 			pdf.save(`${planData.member.name}_plan.pdf`);
 		} catch (error) {
-			console.error('PDF 생성 오류:', error);
 			alert('PDF 생성 중 오류가 발생했습니다.');
 		}
 	};

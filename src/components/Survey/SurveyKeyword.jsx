@@ -129,7 +129,7 @@ const SurveyKeyword = ({ onKeywordSelect, savedKeywords }) => {
 				</div>
 			</Keyword>
 
-			<span class="size_xs">거의 끝났어요!</span>
+			<span className="size_xs">거의 끝났어요!</span>
 		</>
   );
 };

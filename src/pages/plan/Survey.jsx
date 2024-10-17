@@ -1,7 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import apiClient from '../../config/AxiosConfig';
 import { useNavigate } from 'react-router-dom';
-import planData from '../../mock/planProduce.json'; // 임시 데이터
 import SurveyCommon from '../../styles/plan/survey';
 
 // 컴포넌트
@@ -15,6 +14,30 @@ import PrevBtn from '../../assets/images/ico/btn_survey_prev.svg';
 
 const Survey = () => {
   const navigate = useNavigate();
+	const [username, setUsername] = useState('여행자');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	useEffect(() => {
+    checkLoginStatus();
+  }, []);
+
+	const checkLoginStatus = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+      fetch('/mock/member.json')
+        .then(response => response.json())
+        .then(data => {
+          const member = data.members.find(member => member.id === 1);
+          if (member) {
+            setUsername(member.name);
+          }
+        });
+    } else {
+      setIsLoggedIn(false);
+      setUsername('여행자');
+    }
+  };
 
   // 질문
   const questions = [
@@ -122,25 +145,58 @@ const Survey = () => {
       setQuestionIndex(questionIndex + 1);
     }
   };
+	
 	// 서버 전송
-  const handleFinish = async () => {
-    try {
-      const data = {
-        calendar: answers.calendar,
-        area: answers.area,
-        keywords: answers.keywords,
-        place: answers.place,
-      };
+	const handleFinish = async () => {
+		try {
+			// keywords 데이터 themes 병합
+			const themes = [
+				...answers.keywords.travelStyle.map(item => item.id),
+				...answers.keywords.theme.map(item => item.id),
+				...answers.keywords.environment.map(item => item.id),
+			];
 
-      const response = await apiClient.post('/api/survey', data);
-      console.log('응답: ', response.data);
+			// 전송할 데이터
+			const data = {
+				title: answers.area,
+				memberId: 0,
+				places: [
+					{
+						placeId: 0,
+						placeName: username,
+						addr: "",
+						price: 0,
+						startTime: "",
+						endTime: "",
+						checker: false
+					}
+				],
+				routes: [
+					{
+						routeId: 0,
+						startTime: "",
+						endTime: "",
+						price: 0,
+						transportationId: 0,
+						distance: 0,
+						travelTime: 0,
+						checker: false
+					}
+				],
+				themes: themes,
+				location: answers.area || "서울특별시",
+				startDate: answers.calendar[0],
+				endDate: answers.calendar[1],
+			};
 
-      navigate('/plan/produce');
-    } catch (error) {
-      console.error('서버 요청 오류 발생: ', error);
-      alert('오류가 발생했습니다. 다시 시도해 주세요.');
-    }
-  };
+			const response = await apiClient.post('/plans/recom', data);
+			// console.log('응답: ', response.data);
+
+			navigate('/plan/produce');
+		} catch (error) {
+			console.error('서버 요청 오류 발생: ', error);
+		}
+	};
 
   // 버튼 렌더링
   const renderButtons = () => {
@@ -189,7 +245,7 @@ const Survey = () => {
     <SurveyCommon className="inner">
       <div className="title">
         <h2>
-            {planData.member.name} 님을 위한<br />
+            {username} 님을 위한<br />
           <span className="pt_blue">맞춤 여행 일정</span>을 만들어 볼게요
         </h2>
         <p className="pt_gy size_md">막막한 계획 짜기, AI 소금이가 대신 해드릴게요!</p>
