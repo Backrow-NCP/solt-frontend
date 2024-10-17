@@ -27,7 +27,7 @@ const SurveyCalendar = ({ onDateSelect, selectedDates  }) => {
     }
 
     setDateRange(update);
-    if (newStartDate && newEndDate) {
+    if (newStartDate) {
       onDateSelect(update);
     }
   };

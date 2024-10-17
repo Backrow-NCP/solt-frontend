@@ -336,7 +336,7 @@ const Produce = () => {
 
       setPlaces(updatedPlaces);
 
-      // 해당 장소와 연결된 경로(route) 제거
+    // 해당 장소와 연결된 경로(route) 제거
       const updatedPlanRoute = plan.route.filter(route => {
         return route.startPlaceId !== placeId && route.endPlaceId !== placeId;
       });
@@ -434,7 +434,7 @@ const Produce = () => {
 
       newStartTime = lastEndTime.toISOString();
     } else {
-      // 해당 날짜에 장소가 없을 경우, 기본 시작 시간 설정 (예: 오전 9시)
+      // 해당 날짜에 장소가 없을 경우
       const selectedDate = new Date(days[selectedDay - 1]);
       selectedDate.setHours(9, 0, 0, 0); // 오전 9시로 설정
       newStartTime = selectedDate.toISOString();
@@ -463,7 +463,7 @@ const Produce = () => {
     // ModifyContainer를 열기 위해 modifyPlace 상태도 업데이트
     setEditPlace(prevState => ({
       ...prevState,
-      [newPlace.placeId]: true, // 새로운 장소의 modify 버튼을 활성화
+      [newPlace.placeId]: true,
     }));
   }, [places, days, selectedDay]);
 
@@ -496,7 +496,7 @@ const Produce = () => {
     setCombinedList(newCombinedList);
   }, [places, plan, setCombinedList]);
 
-  // Render only when plan is loaded
+  // 렌더링
   if (mapLoadError) return <div>Error loading maps</div>;
   if (!isLoaded || loading) return <Loading />;
   if (!plan) return <Loading />;
@@ -507,7 +507,7 @@ const Produce = () => {
         {/* 플랜 상단 */}
         <PlanInfo
           memberName={plan.member.name}
-          area={plan.area}
+          location={plan.location}
           totalPrice={totalPrice}
           pieChartData={pieChartData}
         />
@@ -555,7 +555,7 @@ const Produce = () => {
           color="blue"
           className="weight_md"
           disabled={isEditing}
-          onClick={handlePlanButtonClick} // 핸들러 추가
+          onClick={handlePlanButtonClick}
         >
           {planButtonText}
         </Button>
@@ -581,7 +581,7 @@ const Produce = () => {
         isLoaded={isLoaded}
         loadError={mapLoadError}
         mapContainerStyle={mapContainerStyle}
-        center={mapCenter} // 변경된 중심 좌표 상태 전달
+        center={mapCenter}
         options={options}
         filteredPlaces={filteredPlaces}
         selectedMarker={selectedMarker}
