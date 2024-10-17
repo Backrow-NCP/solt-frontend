@@ -1,7 +1,7 @@
 {
 	"planId": 1,
 	"title": "서울배낭여행",
-	"area" : "서울특별시",
+	"location" : "서울특별시",
 	"confirm": true,
 	"member": {
 		"memberId": 101,

@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import axios from 'axios';
+import apiClient from '../../config/AxiosConfig';
 import { useNavigate } from 'react-router-dom';
 import planData from '../../mock/planProduce.json'; // 임시 데이터
 import SurveyCommon from '../../styles/plan/survey';
@@ -27,7 +27,7 @@ const Survey = () => {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({
     calendar: null,
-    area: '서울특별시',
+    location: '서울특별시',
     keywords: {
       travelStyle: [],
       theme: [],
@@ -122,6 +122,7 @@ const Survey = () => {
       setQuestionIndex(questionIndex + 1);
     }
   };
+	// 서버 전송
   const handleFinish = async () => {
     try {
       const data = {
@@ -131,13 +132,13 @@ const Survey = () => {
         place: answers.place,
       };
 
-      const response = await axios.post('/api/survey', data);
-      console.log('응답 ', response.data);
+      const response = await apiClient.post('/api/survey', data);
+      console.log('응답: ', response.data);
 
       navigate('/plan/produce');
     } catch (error) {
-      console.log('데이터 오류 발생', error);
-      navigate('/plan/produce');
+      console.error('서버 요청 오류 발생: ', error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.');
     }
   };
 

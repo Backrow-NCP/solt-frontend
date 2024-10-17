@@ -288,7 +288,7 @@ const Produce = () => {
 						addr: autocompleteSelectedPlace.addr || autocompleteSelectedPlace.address || place.addr,
 						description: null,
 						isNew: false,
-						price: 0, // 가격 0원
+						price: 0,
 					};
 				}
 				return place;
@@ -306,7 +306,7 @@ const Produce = () => {
 			route: updatedPlanRoute,
 		});
 
-			// 수정된 장소를 추적
+		// 수정된 장소를 추적
 		setModifiedPlaces((prev) => [...prev, placeId]);
 	}
 		
@@ -331,7 +331,7 @@ const Produce = () => {
 		setPlaces,
 		setPlan,
 		setModifiedPlaces,
-		isEditing, // 추가: isEditing을 useCallback 의존성에 추가
+		isEditing,
 	]);
 
   // 플랜 확정/수정 버튼 클릭 핸들러
@@ -393,7 +393,7 @@ const Produce = () => {
 
       newStartTime = lastEndTime.toISOString();
     } else {
-      // 해당 날짜에 장소가 없을 경우, 기본 시작 시간 설정 (예: 오전 9시)
+      // 해당 날짜에 장소가 없을 경우
       const selectedDate = new Date(days[selectedDay - 1]);
       selectedDate.setHours(9, 0, 0, 0); // 오전 9시로 설정
       newStartTime = selectedDate.toISOString();
@@ -422,7 +422,7 @@ const Produce = () => {
     // ModifyContainer를 열기 위해 modifyPlace 상태도 업데이트
     setEditPlace((prevState) => ({
       ...prevState,
-      [newPlace.placeId]: true, // 새로운 장소의 modify 버튼을 활성화
+      [newPlace.placeId]: true,
     }));
   }, [places, days, selectedDay]);
 
@@ -455,7 +455,7 @@ const Produce = () => {
     setCombinedList(newCombinedList);
   }, [places, plan, setCombinedList]);
 
-  // Render only when plan is loaded
+  // 렌더링
   if (mapLoadError) return <div>Error loading maps</div>;
   if (!isLoaded || loading) return <Loading />;
   if (!plan) return <Loading />;
@@ -466,7 +466,7 @@ const Produce = () => {
         {/* 플랜 상단 */}
         <PlanInfo
           memberName={plan.member.name}
-          area={plan.area}
+          location={plan.location}
           totalPrice={totalPrice}
           pieChartData={pieChartData}
         />
@@ -510,7 +510,7 @@ const Produce = () => {
           color="blue"
           className="weight_md"
           disabled={isEditing}
-          onClick={handlePlanButtonClick} // 핸들러 추가
+          onClick={handlePlanButtonClick}
         >
           {planButtonText}
         </Button>
@@ -536,7 +536,7 @@ const Produce = () => {
         isLoaded={isLoaded}
         loadError={mapLoadError}
         mapContainerStyle={mapContainerStyle}
-        center={mapCenter} // 변경된 중심 좌표 상태 전달
+        center={mapCenter}
         options={options}
         filteredPlaces={filteredPlaces}
         selectedMarker={selectedMarker}

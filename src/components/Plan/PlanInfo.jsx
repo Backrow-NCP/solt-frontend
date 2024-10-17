@@ -3,14 +3,14 @@ import PieChart from "./PieChart";
 import serviceIcon01 from '../../assets/images/ico/service_ai.svg';
 
 // 플랜 정보
-const PlanInfo = ({ memberName, area, totalPrice, pieChartData }) => {
+const PlanInfo = ({ memberName, location, totalPrice, pieChartData }) => {
   return (
     <Info className="plan_info">
       <span className="size_sm weight_md pt_blue">솔트 AI 플래너</span>
       <h2>
         {memberName} 님의
         <br />
-        <span className="pt_blue">{area}</span> 여행 플랜
+        <span className="pt_blue">{location}</span> 여행 플랜
       </h2>
 
       <div className="price pt_pink">
