@@ -20,16 +20,16 @@ const PlanProduce = styled.div`
     transition: 0.3s ease;
 
     &.scroll {
-        top: 38%;
+      top: 38%;
     }
 
     > button {
-				width: 100%;
-				margin-top: 10px;
+      width: 100%;
+      margin-top: 10px;
 
-				&:first-of-type {
-				margin-top: 40px;
-			}
+      &:first-of-type {
+        margin-top: 40px;
+      }
     }
   }
 
