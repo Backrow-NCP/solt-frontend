@@ -1,0 +1,495 @@
+{
+  "page": 1,
+  "size": 10,
+  "total": 10,
+  "startPage": 1,
+  "endPage": 1,
+  "prev": false,
+  "next": false,
+  "dtoList": [
+    {
+      "boardId": 1,
+      "title": "첫번째 게시글인데 수정함",
+      "content": "수정된 내용입니다.",
+      "member": {
+        "memberId": 5,
+        "name": "test",
+        "birthYear": null,
+        "gender": false,
+        "fileName": null
+      },
+      "plan": {
+        "planId": 1,
+        "title": "서울 여행 일정",
+        "member": null,
+        "places": null,
+        "routes": null,
+        "themes": [
+          {
+            "themeId": 5,
+            "name": "맛집에 관심 있어요"
+          },
+          {
+            "themeId": 7,
+            "name": "액티비티를 즐겨요"
+          },
+          {
+            "themeId": 9,
+            "name": "쇼핑을 좋아해요"
+          },
+          {
+            "themeId": 1,
+            "name": "여유롭게 즐겨요"
+          }
+        ],
+        "location": "서울",
+        "startDate": [2024, 10, 9],
+        "endDate": [2024, 10, 10],
+        "regDate": null,
+        "modDate": null
+      },
+      "images": [
+        {
+          "uuid": "thisisuuid",
+          "fileName": "thisisfileName.png",
+          "ord": 1
+        }
+      ],
+      "likeCount": 0,
+      "regDate": [2024, 10, 10, 17, 3, 49, 873754000],
+      "modDate": [2024, 10, 10, 17, 8, 26, 56423000]
+    },
+    {
+      "boardId": 1,
+      "title": "첫번째 게시글인데 수정함",
+      "content": "수정된 내용입니다.",
+      "member": {
+        "memberId": 5,
+        "name": "test",
+        "birthYear": null,
+        "gender": false,
+        "fileName": null
+      },
+      "plan": {
+        "planId": 1,
+        "title": "서울 여행 일정",
+        "member": null,
+        "places": null,
+        "routes": null,
+        "themes": [
+          {
+            "themeId": 5,
+            "name": "맛집에 관심 있어요"
+          },
+          {
+            "themeId": 7,
+            "name": "액티비티를 즐겨요"
+          },
+          {
+            "themeId": 9,
+            "name": "쇼핑을 좋아해요"
+          },
+          {
+            "themeId": 1,
+            "name": "여유롭게 즐겨요"
+          }
+        ],
+        "location": "서울",
+        "startDate": [2024, 10, 9],
+        "endDate": [2024, 10, 10],
+        "regDate": null,
+        "modDate": null
+      },
+      "images": [
+        {
+          "uuid": "thisisuuid",
+          "fileName": "thisisfileName.png",
+          "ord": 1
+        }
+      ],
+      "likeCount": 0,
+      "regDate": [2024, 10, 10, 17, 3, 49, 873754000],
+      "modDate": [2024, 10, 10, 17, 8, 26, 56423000]
+    },
+    {
+      "boardId": 1,
+      "title": "첫번째 게시글인데 수정함",
+      "content": "수정된 내용입니다.",
+      "member": {
+        "memberId": 5,
+        "name": "test",
+        "birthYear": null,
+        "gender": false,
+        "fileName": null
+      },
+      "plan": {
+        "planId": 1,
+        "title": "서울 여행 일정",
+        "member": null,
+        "places": null,
+        "routes": null,
+        "themes": [
+          {
+            "themeId": 5,
+            "name": "맛집에 관심 있어요"
+          },
+          {
+            "themeId": 7,
+            "name": "액티비티를 즐겨요"
+          },
+          {
+            "themeId": 9,
+            "name": "쇼핑을 좋아해요"
+          },
+          {
+            "themeId": 1,
+            "name": "여유롭게 즐겨요"
+          }
+        ],
+        "location": "서울",
+        "startDate": [2024, 10, 9],
+        "endDate": [2024, 10, 10],
+        "regDate": null,
+        "modDate": null
+      },
+      "images": [
+        {
+          "uuid": "thisisuuid",
+          "fileName": "thisisfileName.png",
+          "ord": 1
+        }
+      ],
+      "likeCount": 0,
+      "regDate": [2024, 10, 10, 17, 3, 49, 873754000],
+      "modDate": [2024, 10, 10, 17, 8, 26, 56423000]
+    },
+    {
+      "boardId": 1,
+      "title": "첫번째 게시글인데 수정함",
+      "content": "수정된 내용입니다.",
+      "member": {
+        "memberId": 5,
+        "name": "test",
+        "birthYear": null,
+        "gender": false,
+        "fileName": null
+      },
+      "plan": {
+        "planId": 1,
+        "title": "서울 여행 일정",
+        "member": null,
+        "places": null,
+        "routes": null,
+        "themes": [
+          {
+            "themeId": 5,
+            "name": "맛집에 관심 있어요"
+          },
+          {
+            "themeId": 7,
+            "name": "액티비티를 즐겨요"
+          },
+          {
+            "themeId": 9,
+            "name": "쇼핑을 좋아해요"
+          },
+          {
+            "themeId": 1,
+            "name": "여유롭게 즐겨요"
+          }
+        ],
+        "location": "서울",
+        "startDate": [2024, 10, 9],
+        "endDate": [2024, 10, 10],
+        "regDate": null,
+        "modDate": null
+      },
+      "images": [
+        {
+          "uuid": "thisisuuid",
+          "fileName": "thisisfileName.png",
+          "ord": 1
+        }
+      ],
+      "likeCount": 0,
+      "regDate": [2024, 10, 10, 17, 3, 49, 873754000],
+      "modDate": [2024, 10, 10, 17, 8, 26, 56423000]
+    },
+    {
+      "boardId": 2,
+      "title": "두번째 게시글",
+      "content": "게시글 내용입니다.",
+      "member": {
+        "memberId": 5,
+        "name": "test",
+        "birthYear": null,
+        "gender": false,
+        "fileName": null
+      },
+      "plan": {
+        "planId": 2,
+        "title": "서울 여행 일정",
+        "member": null,
+        "places": null,
+        "routes": null,
+        "themes": [
+          {
+            "themeId": 5,
+            "name": "맛집에 관심 있어요"
+          },
+          {
+            "themeId": 7,
+            "name": "액티비티를 즐겨요"
+          },
+          {
+            "themeId": 9,
+            "name": "쇼핑을 좋아해요"
+          },
+          {
+            "themeId": 1,
+            "name": "여유롭게 즐겨요"
+          }
+        ],
+        "location": "서울",
+        "startDate": [2024, 10, 9],
+        "endDate": [2024, 10, 10],
+        "regDate": null,
+        "modDate": null
+      },
+      "images": [],
+      "likeCount": 0,
+      "regDate": [2024, 10, 10, 17, 3, 55, 353174000],
+      "modDate": [2024, 10, 10, 17, 3, 55, 353174000]
+    },
+    {
+      "boardId": 2,
+      "title": "두번째 게시글",
+      "content": "게시글 내용입니다.",
+      "member": {
+        "memberId": 5,
+        "name": "test",
+        "birthYear": null,
+        "gender": false,
+        "fileName": null
+      },
+      "plan": {
+        "planId": 2,
+        "title": "서울 여행 일정",
+        "member": null,
+        "places": null,
+        "routes": null,
+        "themes": [
+          {
+            "themeId": 5,
+            "name": "맛집에 관심 있어요"
+          },
+          {
+            "themeId": 7,
+            "name": "액티비티를 즐겨요"
+          },
+          {
+            "themeId": 9,
+            "name": "쇼핑을 좋아해요"
+          },
+          {
+            "themeId": 1,
+            "name": "여유롭게 즐겨요"
+          }
+        ],
+        "location": "서울",
+        "startDate": [2024, 10, 9],
+        "endDate": [2024, 10, 10],
+        "regDate": null,
+        "modDate": null
+      },
+      "images": [],
+      "likeCount": 0,
+      "regDate": [2024, 10, 10, 17, 3, 55, 353174000],
+      "modDate": [2024, 10, 10, 17, 3, 55, 353174000]
+    },
+    {
+      "boardId": 2,
+      "title": "두번째 게시글",
+      "content": "게시글 내용입니다.",
+      "member": {
+        "memberId": 5,
+        "name": "test",
+        "birthYear": null,
+        "gender": false,
+        "fileName": null
+      },
+      "plan": {
+        "planId": 2,
+        "title": "서울 여행 일정",
+        "member": null,
+        "places": null,
+        "routes": null,
+        "themes": [
+          {
+            "themeId": 5,
+            "name": "맛집에 관심 있어요"
+          },
+          {
+            "themeId": 7,
+            "name": "액티비티를 즐겨요"
+          },
+          {
+            "themeId": 9,
+            "name": "쇼핑을 좋아해요"
+          },
+          {
+            "themeId": 1,
+            "name": "여유롭게 즐겨요"
+          }
+        ],
+        "location": "서울",
+        "startDate": [2024, 10, 9],
+        "endDate": [2024, 10, 10],
+        "regDate": null,
+        "modDate": null
+      },
+      "images": [],
+      "likeCount": 0,
+      "regDate": [2024, 10, 10, 17, 3, 55, 353174000],
+      "modDate": [2024, 10, 10, 17, 3, 55, 353174000]
+    },
+    {
+      "boardId": 2,
+      "title": "두번째 게시글",
+      "content": "게시글 내용입니다.",
+      "member": {
+        "memberId": 5,
+        "name": "test",
+        "birthYear": null,
+        "gender": false,
+        "fileName": null
+      },
+      "plan": {
+        "planId": 2,
+        "title": "서울 여행 일정",
+        "member": null,
+        "places": null,
+        "routes": null,
+        "themes": [
+          {
+            "themeId": 5,
+            "name": "맛집에 관심 있어요"
+          },
+          {
+            "themeId": 7,
+            "name": "액티비티를 즐겨요"
+          },
+          {
+            "themeId": 9,
+            "name": "쇼핑을 좋아해요"
+          },
+          {
+            "themeId": 1,
+            "name": "여유롭게 즐겨요"
+          }
+        ],
+        "location": "서울",
+        "startDate": [2024, 10, 9],
+        "endDate": [2024, 10, 10],
+        "regDate": null,
+        "modDate": null
+      },
+      "images": [],
+      "likeCount": 0,
+      "regDate": [2024, 10, 10, 17, 3, 55, 353174000],
+      "modDate": [2024, 10, 10, 17, 3, 55, 353174000]
+    },
+    {
+      "boardId": 3,
+      "title": "세번째 게시글",
+      "content": "게시글 내용입니다.",
+      "member": {
+        "memberId": 5,
+        "name": "test",
+        "birthYear": null,
+        "gender": false,
+        "fileName": null
+      },
+      "plan": {
+        "planId": 3,
+        "title": "서울 여행 일정",
+        "member": null,
+        "places": null,
+        "routes": null,
+        "themes": [
+          {
+            "themeId": 5,
+            "name": "맛집에 관심 있어요"
+          },
+          {
+            "themeId": 7,
+            "name": "액티비티를 즐겨요"
+          },
+          {
+            "themeId": 9,
+            "name": "쇼핑을 좋아해요"
+          },
+          {
+            "themeId": 1,
+            "name": "여유롭게 즐겨요"
+          }
+        ],
+        "location": "서울",
+        "startDate": [2024, 10, 9],
+        "endDate": [2024, 10, 10],
+        "regDate": null,
+        "modDate": null
+      },
+      "images": [],
+      "likeCount": 0,
+      "regDate": [2024, 10, 10, 17, 3, 57, 657530000],
+      "modDate": [2024, 10, 10, 17, 3, 57, 657530000]
+    },
+    {
+      "boardId": 3,
+      "title": "세번째 게시글",
+      "content": "게시글 내용입니다.",
+      "member": {
+        "memberId": 5,
+        "name": "test",
+        "birthYear": null,
+        "gender": false,
+        "fileName": null
+      },
+      "plan": {
+        "planId": 3,
+        "title": "서울 여행 일정",
+        "member": null,
+        "places": null,
+        "routes": null,
+        "themes": [
+          {
+            "themeId": 5,
+            "name": "맛집에 관심 있어요"
+          },
+          {
+            "themeId": 7,
+            "name": "액티비티를 즐겨요"
+          },
+          {
+            "themeId": 9,
+            "name": "쇼핑을 좋아해요"
+          },
+          {
+            "themeId": 1,
+            "name": "여유롭게 즐겨요"
+          }
+        ],
+        "location": "서울",
+        "startDate": [2024, 10, 9],
+        "endDate": [2024, 10, 10],
+        "regDate": null,
+        "modDate": null
+      },
+      "images": [],
+      "likeCount": 0,
+      "regDate": [2024, 10, 10, 17, 3, 57, 657530000],
+      "modDate": [2024, 10, 10, 17, 3, 57, 657530000]
+    }
+  ]
+}
