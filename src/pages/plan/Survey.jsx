@@ -146,14 +146,14 @@ const Survey = () => {
     }
   };
 	
-	// 서버 전송
+	// Axios
 	const handleFinish = async () => {
 		try {
 			// keywords 데이터 themes 병합
 			const themes = [
-				...answers.keywords.travelStyle.map(item => item.id),
-				...answers.keywords.theme.map(item => item.id),
-				...answers.keywords.environment.map(item => item.id),
+				...answers.keywords.travelStyle.map(item => item.name),
+				...answers.keywords.theme.map(item => item.name),
+				...answers.keywords.environment.map(item => item.name),
 			];
 
 			// 전송할 데이터
@@ -189,9 +189,14 @@ const Survey = () => {
 				endDate: answers.calendar[1],
 			};
 
+			// 세션 스토리지에 저장
+			sessionStorage.setItem('planData', JSON.stringify(data));
+
+			// 서버에 전송
 			const response = await apiClient.post('/plans/recom', data);
 			// console.log('응답: ', response.data);
 
+			// 이동
 			navigate('/plan/produce');
 		} catch (error) {
 			console.error('서버 요청 오류 발생: ', error);
