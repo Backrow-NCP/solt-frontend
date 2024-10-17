@@ -16,9 +16,6 @@ const PlaceList = ({
   handleModifyClick,
   displayButtons = true,
 }) => {
-  if (filteredPlaces.length === 0) {
-    <div>목적지가 없습니다.</div>; // 또는 적절한 메시지
-  }
   return (
     <List>
       {filteredPlaces.map((place, index) => {

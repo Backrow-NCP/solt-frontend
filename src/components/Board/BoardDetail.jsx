@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   InfoTextTitleContainer,
-  BoardDetailContainer,
   DateAuthorContainer,
   Title,
   Content,
@@ -15,6 +14,9 @@ import {
 
 import PrevButton from '../../assets/images/prevButton.svg';
 import NextButton from '../../assets/images/nextButton.svg';
+
+import { scrollbar } from '../../styles/scrollbar';
+import styled from 'styled-components'; // styled-components를 가져옵니다.
 
 const BoardDetail = ({ boardData }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // 현재 이미지 인덱스 상태
@@ -46,7 +48,7 @@ const BoardDetail = ({ boardData }) => {
   }
 
   return (
-    <BoardDetailContainer>
+    <BoardContainer>
       <InfoTextTitleContainer>
         <InfoText>
           [{boardData.location}] [{boardData.duration}]
@@ -87,8 +89,22 @@ const BoardDetail = ({ boardData }) => {
       </ThumbnailContainer>
 
       <Content>{boardData.content}</Content>
-    </BoardDetailContainer>
+    </BoardContainer>
   );
 };
 
 export default BoardDetail;
+
+const BoardContainer = styled.div`
+  height: 48vh;
+  overflow-y: auto;
+  ${scrollbar}
+
+  display: flex;
+  flex-direction: column;
+  gap: 0px; // 각 요소 간의 간격 설정
+
+  > * {
+    padding-right: 10px; // 오른쪽 여백 설정
+  }
+`;
