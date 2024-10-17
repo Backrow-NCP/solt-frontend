@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-// import planData from '../../mock/planProduce.json'; // 임시 데이터
+import planData from '../../mock/planProduce.json'; // 임시 데이터
 import apiClient from '../../config/AxiosConfig'; // AxiosConfig 사용
 import PlanComplete from '../../styles/plan/complete';
 
@@ -17,29 +17,13 @@ const Complete = () => {
   const [places, setPlaces] = useState([]);
   const hiddenPageRef = useRef(null);
 
-	// 더미데이터
-  // useEffect(() => {
-  //   try {
-  //     setPlan(planData);
-  //     setPlaces(planData.place);
-  //   } catch (err) {
-  //     console.error('데이터 로딩 중 오류가 발생했습니다.');
-  //   }
-  // }, []);
-
-	useEffect(() => {
-    const fetchPlanData = async () => {
-      try {
-        const response = await apiClient.get('http://211.188.49.197/plans/6');
-				console.log('받아온 데이터:', response.data);
-        setPlan(response.data); // 받아온 데이터로 plan 설정
-        setPlaces(response.data.place); // 받아온 데이터에서 places 설정
-      } catch (error) {
-        console.error('데이터 로딩 중 오류가 발생했습니다.', error);
-      }
-    };
-
-    fetchPlanData();
+  useEffect(() => {
+    try {
+      setPlan(planData);
+      setPlaces(planData.place);
+    } catch (err) {
+      console.error('데이터 로딩 중 오류가 발생했습니다.');
+    }
   }, []);
 
   // 날짜별로 장소 그룹화
@@ -124,7 +108,7 @@ const Complete = () => {
 					}
 				}
 			}
-			pdf.save(`${plan?.member?.name}_plan.pdf`);
+			pdf.save(`${planData.member.name}_plan.pdf`);
 		} catch (error) {
 			alert('PDF 생성 중 오류가 발생했습니다.');
 		}
@@ -149,7 +133,7 @@ const Complete = () => {
     <>
       <PlanComplete id="plan_complete">
         <h2>
-					{plan?.member?.name} 님의 <span className="pt_blue">{plan?.area}</span> 여행 플랜이에요
+          {planData.member.name} 님의 <span className="pt_blue">{plan?.area}</span> 여행 플랜이에요
         </h2>
         <div className="price flex pt_pink">
           <span className="size_sm weight_sb">예상 총 금액</span>
