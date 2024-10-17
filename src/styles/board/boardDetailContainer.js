@@ -26,6 +26,7 @@ export const BottomButtonContainer = styled.div`
   justify-content: center;
   padding: 0px;
   background-color: #fff;
+  margin-bottom: 20px;
   z-index: 3; /* 상단 요소보다 우선 순위를 높임 */
 `;
 

@@ -15,12 +15,11 @@ const PlaceList = ({
   toggleModifyPlace,
   handleModifyClick,
   displayButtons = true,
+  isDetailPage,
 }) => {
-  if (filteredPlaces.length === 0) {
-    <div>목적지가 없습니다.</div>; // 또는 적절한 메시지
-  }
+  console.log('isDetailPage:', isDetailPage);
   return (
-    <List>
+    <List isDetailPage={isDetailPage}>
       {filteredPlaces.map((place, index) => {
         const previousPlace = filteredPlaces[index - 1]; // 이전 일정
         const route = previousPlace
@@ -53,9 +52,10 @@ export default PlaceList;
 
 const List = styled.ol`
   height: 40vh;
-  padding-right: 10px;
   overflow-y: auto;
   ${scrollbar}
+
+  padding: ${props => (props.isDetailPage ? '0 30px' : '0')}; // 좌우 패딩 설정
 
   > li {
     flex-wrap: nowrap;
@@ -79,4 +79,11 @@ const List = styled.ol`
       display: none;
     }
   }
+
+  // 오른쪽 패딩을 명시적으로 설정
+  ${props =>
+    !props.isDetailPage &&
+    `
+    padding-right: 10px; 
+  `}
 `;

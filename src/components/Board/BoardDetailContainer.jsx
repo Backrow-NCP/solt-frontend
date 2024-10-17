@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Tooltip } from 'react-tooltip'; // Tooltip 임포트
 import { useParams, useNavigate } from 'react-router-dom'; // useNavigate 임포트
 import {
@@ -10,18 +10,28 @@ import TabContainer from './TabContainer';
 import Button from '../Button';
 import axios from 'axios';
 import PlanInfo from '../Plan/PlanInfo';
+import planTime from '../../utils/plan/planTime';
 
-const BoardDetailContainer = ({ planData }) => {
+const BoardDetailContainer = ({
+  planData,
+  filteredPlaces,
+  data,
+  places,
+  totalPrice,
+  pieChartData,
+  isDetailPage,
+  days,
+}) => {
   const { boardId } = useParams();
   const navigate = useNavigate(); // useNavigate 훅 사용
   const [boardData, setBoardData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
-  const [planTime, setPlanTime] = useState(null); // 필요한 상태 추가
+
   const [editPrice, setEditPrice] = useState(0); // 가격 상태 추가
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태 추가
-  const [filteredPlaces, setFilteredPlaces] = useState([]); // 필터링된 장소 상태 추가
-
+  const [selectedDay, setSelectedDay] = useState(1); // 선택된 날짜 상태 추가
   const placesData = planData.place;
+  const [editPlace, setEditPlace] = useState({}); // 추가
 
   // 게시물 데이터를 가져오는 useEffect
   useEffect(() => {
@@ -51,16 +61,6 @@ const BoardDetailContainer = ({ planData }) => {
       console.log('boardId가 undefined입니다.');
     }
   }, [boardId]);
-
-  // 필터링된 장소 설정 (예시)
-  useEffect(() => {
-    if (placesData) {
-      const places = placesData.filter(
-        place => place.latitude && place.longitude
-      );
-      setFilteredPlaces(places);
-    }
-  }, [placesData]);
 
   // 좋아요 핸들러
   const handleLike = () => {
@@ -94,10 +94,6 @@ const BoardDetailContainer = ({ planData }) => {
     setIsEditing(prev => !prev);
   };
 
-  const editPlace = placeId => {
-    // 장소 수정 로직
-  };
-
   const toggleModifyPlace = () => {
     // 장소 수정 토글 로직
   };
@@ -109,13 +105,26 @@ const BoardDetailContainer = ({ planData }) => {
   const displayButtons = () => {
     // 버튼 표시 로직
   };
+  const handleTabClick = useCallback(index => {
+    setSelectedDay(index + 1);
+  }, []);
 
+  // console.log('places BDC', places);
+  console.log('필터링 플레이스 BDC', filteredPlaces);
+  // console.log('days:', days);
+  console.log('plan', planData);
   return (
     <DetailWrapper>
       <div>
-        <PlanInfo {...planData} />
+        <PlanInfo
+          memberName={planData.member.name}
+          location={planData.location}
+          totalPrice={totalPrice}
+          pieChartData={pieChartData}
+          isDetailPage={true}
+        />
         <TabContainer
-          filteredPlaces={filteredPlaces}
+          places={places && places.length > 0 ? places : []} // 안전하게 처리
           planTime={planTime}
           findRoute={findRoute}
           handlePriceChange={handlePriceChange}
@@ -123,10 +132,14 @@ const BoardDetailContainer = ({ planData }) => {
           isEditing={isEditing}
           toggleEditPrice={toggleEditPrice}
           editPlace={editPlace}
+          setEditPlace={setEditPlace}
           toggleModifyPlace={toggleModifyPlace}
           handleModifyClick={handleModifyClick}
           displayButtons={displayButtons}
-          boardData={boardData} // 필요에 따라 추가
+          boardData={boardData}
+          handleTabClick={handleTabClick}
+          isDetailPage={true}
+          filteredPlaces={filteredPlaces}
         />
       </div>
 

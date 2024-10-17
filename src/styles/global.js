@@ -94,6 +94,9 @@ const GlobalStyles = createGlobalStyle`
   .pt_pink {
     color: #F78C9F;
   }
+	.pt_black {
+    color: black;
+  }
 
   /* font */
   h2 {

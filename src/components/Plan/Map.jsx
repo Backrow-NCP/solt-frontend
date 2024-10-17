@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { GoogleMap, MarkerF, InfoWindow } from '@react-google-maps/api';
 import Loading from '../../pages/plan/Loading';
 import MarkerBg from '../../assets/images/ico/ico_plan_marker.png';
@@ -15,6 +15,13 @@ const Map = ({
   setSelectedMarker,
 }) => {
   const mapRef = useRef(null);
+
+  // filteredPlaces가 업데이트될 때마다 해당 장소들을 콘솔에 출력
+  useEffect(() => {
+    if (filteredPlaces.length > 0) {
+      console.log('Current Places Info:', filteredPlaces);
+    }
+  }, [filteredPlaces]); // filteredPlaces가 변경될 때 실행
 
   if (loadError) return <div>Error loading maps</div>;
   if (!isLoaded) return <Loading />;
@@ -35,7 +42,10 @@ const Map = ({
           <MarkerF
             key={place.placeId}
             position={{ lat: place.latitude, lng: place.longitude }}
-            onClick={() => setSelectedMarker(place)}
+            onClick={() => {
+              console.log('Selected Marker Info:', place); // 선택된 마커의 정보를 콘솔에 출력
+              setSelectedMarker(place);
+            }}
             icon={{
               url: MarkerBg,
               scaledSize: new window.google.maps.Size(40, 50),
