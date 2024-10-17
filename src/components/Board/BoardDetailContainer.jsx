@@ -17,7 +17,9 @@ const BoardDetailContainer = ({
   filteredPlaces,
   data,
   places,
-
+  totalPrice,
+  pieChartData,
+  isDetailPage,
   days,
 }) => {
   const { boardId } = useParams();
@@ -107,13 +109,20 @@ const BoardDetailContainer = ({
     setSelectedDay(index + 1);
   }, []);
 
-  console.log('places BDC', places);
+  // console.log('places BDC', places);
   console.log('필터링 플레이스 BDC', filteredPlaces);
-  console.log('days:', days);
+  // console.log('days:', days);
+  console.log('plan', planData);
   return (
     <DetailWrapper>
       <div>
-        <PlanInfo {...planData} />
+        <PlanInfo
+          memberName={planData.member.name}
+          location={planData.location}
+          totalPrice={totalPrice}
+          pieChartData={pieChartData}
+          isDetailPage={true}
+        />
         <TabContainer
           places={places && places.length > 0 ? places : []} // 안전하게 처리
           planTime={planTime}
@@ -127,8 +136,10 @@ const BoardDetailContainer = ({
           toggleModifyPlace={toggleModifyPlace}
           handleModifyClick={handleModifyClick}
           displayButtons={displayButtons}
-          boardData={boardData} // 필요에 따라 추가
+          boardData={boardData}
           handleTabClick={handleTabClick}
+          isDetailPage={true}
+          filteredPlaces={filteredPlaces}
         />
       </div>
 

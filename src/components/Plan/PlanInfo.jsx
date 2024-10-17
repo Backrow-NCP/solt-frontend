@@ -3,9 +3,14 @@ import PieChart from './PieChart';
 import serviceIcon01 from '../../assets/images/ico/service_ai.svg';
 
 // 플랜 정보
-const PlanInfo = ({ memberName, location, totalPrice, pieChartData }) => {
+const PlanInfo = ({
+  memberName,
+  location,
+  totalPrice,
+  pieChartData,
+  isDetailPage,
+}) => {
   // totalPrice와 pieChartData를 안전하게 처리
-
   const total = pieChartData
     ? pieChartData.reduce((acc, item) => acc + item.value, 0)
     : 0;
@@ -19,8 +24,10 @@ const PlanInfo = ({ memberName, location, totalPrice, pieChartData }) => {
         <span className="pt_blue">{location}</span> 여행 플랜
       </h2>
 
-      <div className="price pt_pink">
-        <span className="size_sm weight_sb">예상 총 금액</span>
+      <div className={`price pt_pink ${isDetailPage ? 'pt_black' : ''}`}>
+        <span className="size_sm weight_sb">
+          {isDetailPage ? '총 여행 경비' : '예상 총 금액'}
+        </span>
         <strong>
           <span>{totalPrice ? totalPrice.toLocaleString() : '0'}</span>원
         </strong>

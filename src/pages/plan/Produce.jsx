@@ -336,7 +336,7 @@ const Produce = () => {
 
       setPlaces(updatedPlaces);
 
-    // 해당 장소와 연결된 경로(route) 제거
+      // 해당 장소와 연결된 경로(route) 제거
       const updatedPlanRoute = plan.route.filter(route => {
         return route.startPlaceId !== placeId && route.endPlaceId !== placeId;
       });
@@ -510,6 +510,7 @@ const Produce = () => {
           location={plan.location}
           totalPrice={totalPrice}
           pieChartData={pieChartData}
+          isDetailPage={false}
         />
 
         {/* 날짜 탭 */}
@@ -523,6 +524,7 @@ const Produce = () => {
         <PlaceList
           filteredPlaces={filteredPlaces}
           planTime={planTime}
+          isDetailPage={false}
           findRoute={(currentPlaceId, nextPlaceId) =>
             plan.route.find(
               route =>

@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const libraries = ['places']; // 필요에 따라 라이브러리를 정의하세요
 
-const Detail = () => {
+const Detail = ({ isDetailPage }) => {
   const { plan, places, loading } = usePlanData();
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [selectedDay, setSelectedDay] = useState(1); // 선택된 날짜 상태 추가
@@ -44,6 +44,24 @@ const Detail = () => {
     libraries,
   });
 
+  const center = { lat: 37.5665, lng: 126.978 }; // 서울의 중심 좌표
+  const [mapCenter, setMapCenter] = useState(center); // 맵 중심
+  const mapContainerStyle = { width: '100%', height: '90vh' };
+  const [editPlace, setEditPlace] = useState({}); // 일정 수정 버튼
+  const [isEditing, setIsEditing] = useState(false); // 일정 수정 여부
+  const options = {
+    disableDefaultUI: true,
+    zoomControl: true,
+  };
+  const [selectedRecommendedPlace, setSelectedRecommendedPlace] =
+    useState(null); // ModifyContainer 선택된 장소
+  const [autocompleteSelectedPlace, setAutocompleteSelectedPlace] =
+    useState(null); // Autocomplete 선택된 장소
+  const [selectedOption, setSelectedOption] = useState({
+    option: null,
+    placeId: null,
+  }); // 플랜 수정 방법, 수정 아이디
+
   // 고유한 날짜 목록 생성
   const days = useMemo(
     () =>
@@ -70,11 +88,12 @@ const Detail = () => {
 
   const handleTabClick = useCallback(index => {
     setSelectedDay(index + 1);
+    setEditPlace({});
+    setIsEditing(false);
+    setSelectedOption({ option: null, placeId: null });
+    setSelectedRecommendedPlace(null);
+    setAutocompleteSelectedPlace(null);
   }, []);
-
-  const mapContainerStyle = { width: '100%', height: '400px' };
-  const center = { lat: 37.5665, lng: 126.978 }; // 중심 좌표 설정
-  const options = {}; // 필요한 옵션 설정
 
   if (loading) {
     return <div>Loading...</div>; // 로딩 중일 때 표시할 UI
@@ -92,11 +111,6 @@ const Detail = () => {
     return <div>No places available</div>; // 또는 원하는 UI
   }
 
-  console.log('places, 디테일페이지', places);
-  console.log('필터링 플레이스 디테일 페이지:', filteredPlaces);
-  console.log('days 디테일 페이지:', days);
-  console.log('plan 디테일 페이지', plan);
-
   return (
     <Container>
       {/* 지도 컴포넌트 */}
@@ -104,7 +118,7 @@ const Detail = () => {
         isLoaded={isLoaded}
         loadError={mapLoadError}
         mapContainerStyle={mapContainerStyle}
-        center={center}
+        center={mapCenter}
         options={options}
         filteredPlaces={filteredPlaces}
         selectedMarker={selectedMarker}
@@ -120,6 +134,9 @@ const Detail = () => {
         selectedDay={selectedDay} // 선택된 날짜도 전달
         setSelectedDay={setSelectedDay} // 선택된 날짜를 설정하는 함수도 전달
         handleTabClick={handleTabClick}
+        totalPrice={totalPrice}
+        pieChartData={pieChartData}
+        isDetailPage={isDetailPage}
       />
     </Container>
   );
