@@ -86,7 +86,7 @@ export const ReplyDate = styled.div`
 export const ReplyName = styled.div`
   font-size: 0.9em; /* 폰트 사이즈 조정 (원하는 사이즈로 변경 가능) */
   color: #999; /* 연한 색상으로 변경 (원하는 색상으로 수정 가능) */
-  margin-right: 10px; /* 날짜와의 간격 조정 (필요 시 수정) */
+  margin-right: 5px; /* 날짜와의 간격 조정 (필요 시 수정) */
 `;
 
 export const SubReplyButton = styled.button`
@@ -108,5 +108,33 @@ export const ReplySubmitContainer = styled.div`
 
   &.main-reply-submit {
     margin-left: 30px; /* 댓글 입력란에만 적용 */
+  }
+`;
+export const ReplyEditButton = styled.button`
+  font-size: 12px;
+  margin-right: 3px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: #28a745; /* 수정 버튼 색상: 초록색 */
+  text-decoration: none; /* 기본 밑줄 제거 */
+
+  &:hover {
+    color: #218838; /* 수정 버튼 호버 시 색상: 진한 초록색 */
+    text-decoration: underline; /* 수정 버튼 호버 시 밑줄 추가 */
+  }
+`;
+
+export const ReplyDeleteButton = styled.button`
+  font-size: 12px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: #dc3545; /* 삭제 버튼 색상: 빨간색 */
+  text-decoration: none; /* 기본 밑줄 제거 */
+
+  &:hover {
+    color: #c82333; /* 삭제 버튼 호버 시 색상: 진한 빨간색 */
+    text-decoration: underline; /* 삭제 버튼 호버 시 밑줄 추가 */
   }
 `;

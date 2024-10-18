@@ -14,6 +14,8 @@ import {
   ReplyName,
   SubReplyButton,
   ReplySubmitContainer,
+  ReplyEditButton,
+  ReplyDeleteButton,
 } from '../../styles/board/replySection'; // styled-components를 가져옵니다.
 import defaultProfileImage from '../../assets/images/ico/profile.png';
 
@@ -23,6 +25,8 @@ const ReplySection = ({ boardId }) => {
   const [visibleReplyInputs, setVisibleReplyInputs] = useState({}); // 각 댓글에 대한 답글 입력 가시성 관리
   const [replyInputValues, setReplyInputValues] = useState({}); // 각 답글 입력 상태 관리
   const [visibleSubReplies, setVisibleSubReplies] = useState({}); // 각 댓글의 가시적인 대댓글 수
+  const [isEditing, setIsEditing] = useState(false);
+  const [replyContent, setReplyContent] = useState(boardId.content); // 초기 댓글 내용
 
   const fetchReplies = async () => {
     try {
@@ -114,10 +118,9 @@ const ReplySection = ({ boardId }) => {
 
   // 댓글 렌더링
   const renderComments = () => {
-    // 부모 댓글과 대댓글을 통합하여 순서대로 렌더링
     const allReplies = comments.map(comment => ({
       ...comment,
-      isSubReply: comment.parentReplyId !== 0, // 대댓글 여부 표시
+      isSubReply: comment.parentReplyId !== 0,
     }));
 
     return allReplies.map((reply, index) => {
@@ -132,12 +135,43 @@ const ReplySection = ({ boardId }) => {
               <ReplyContent>
                 <ReplyMeta>
                   <ReplyName>{reply.member.name}</ReplyName>{' '}
+                  {/* 수정 및 삭제 버튼 추가 */}
+                  {reply.member.memberId === 1 && ( // memberId가 1인 경우에만 버튼 표시
+                    <div
+                      style={{
+                        marginRight: 'auto',
+                        marginTop: '-1px',
+                      }}
+                    >
+                      <ReplyEditButton
+                      // onClick={handleReplyEdit}
+                      >
+                        수정
+                      </ReplyEditButton>
+                      <ReplyDeleteButton onClick={handleReplyDelete}>
+                        삭제
+                      </ReplyDeleteButton>
+                    </div>
+                  )}
                   <ReplyDate>
                     {new Date(reply.regDate).toLocaleString()}
                   </ReplyDate>
                 </ReplyMeta>
-                {reply.content}
-                <br />
+
+                {isEditing ? (
+                  <ReplySubmitContainer>
+                    <ReplyInput
+                      value={replyContent}
+                      onChange={e => setReplyContent(e.target.value)} // 댓글 내용 변경 시 상태 업데이트
+                    />
+                    <SubmitButton onClick={submitEditedReply}>
+                      제출
+                    </SubmitButton>
+                  </ReplySubmitContainer>
+                ) : (
+                  <p>{replyContent}</p> // 댓글 내용 표시
+                )}
+
                 <SubReplyButton onClick={() => handleSubReplyClick(index)}>
                   답글달기
                 </SubReplyButton>
@@ -146,7 +180,7 @@ const ReplySection = ({ boardId }) => {
                   <ReplySubmitContainer>
                     <ReplyInput
                       type="text"
-                      value={replyInputValues[index] || ''} // 해당 답글 입력값 가져오기
+                      value={replyInputValues[index] || ''}
                       onChange={e => handleReplyInputChange(index, e)}
                       placeholder="답글을 입력하세요..."
                     />
@@ -161,7 +195,7 @@ const ReplySection = ({ boardId }) => {
           </>
         );
       } else {
-        return null; // 대댓글은 여기서 렌더링하지 않음
+        return null;
       }
     });
   };
@@ -179,8 +213,9 @@ const ReplySection = ({ boardId }) => {
         <ReplyItem
           key={subReply.replyId}
           style={{
-            marginLeft: '20px',
+            marginLeft: '30px',
             marginBottom: isLastReply ? '30px' : '20px', // 마지막 대댓글의 경우 마진을 더 줌
+            marginTop: '-5px',
           }}
         >
           <ProfileImage
@@ -190,6 +225,24 @@ const ReplySection = ({ boardId }) => {
           <ReplyContent>
             <ReplyMeta>
               <ReplyName>{subReply.member.name}</ReplyName>{' '}
+              {/* 수정 및 삭제 버튼 추가 */}
+              {subReply.member.memberId === 1 && ( // memberId가 1인 경우에만 버튼 표시
+                <div
+                  style={{
+                    marginRight: 'auto',
+                    marginTop: '-1px',
+                  }}
+                >
+                  <ReplyEditButton
+                  // onClick={handleReplyEdit}
+                  >
+                    수정
+                  </ReplyEditButton>
+                  <ReplyDeleteButton onClick={handleReplyDelete}>
+                    삭제
+                  </ReplyDeleteButton>
+                </div>
+              )}
               <ReplyDate>
                 {new Date(subReply.regDate).toLocaleString()}
               </ReplyDate>
@@ -199,6 +252,21 @@ const ReplySection = ({ boardId }) => {
         </ReplyItem>
       );
     });
+  };
+
+  // const handleReplyEdit = (boardId, content) => {
+  //   setIsEditing(boardId.replyId); // 클릭한 댓글의 ID로 수정 모드 활성화
+  //   setReplyContent(prev => ({ ...prev, [boardId.replyId]: content })); // 해당 댓글의 내용을 상태에 설정
+  // };
+
+  const submitEditedReply = replyId => {
+    // Axios PUT 요청으로 수정된 내용을 서버에 전송하는 코드 추가 예정
+    console.log('수정된 댓글 내용:', replyContent[replyId]);
+    setIsEditing(null); // 수정 모드 비활성화
+  };
+
+  const handleReplyDelete = () => {
+    // 삭제 기능 구현 예정
   };
 
   return (
