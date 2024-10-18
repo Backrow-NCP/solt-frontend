@@ -9,7 +9,7 @@ const MyPageStyles = createGlobalStyle`
     max-height: 800px;
   }
 
-  .main-container {
+  .main_container {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -40,7 +40,7 @@ const MyPageStyles = createGlobalStyle`
   }
 
   /* 프로필 및 메인 컨텐츠 */
-  .profile-container {
+  .profile_container {
     display: flex;
     align-items: center;
     gap: 50px;
@@ -50,13 +50,13 @@ const MyPageStyles = createGlobalStyle`
     margin-left: 50px;
   }
 
-  .profile-image-container {
+  .profile_image_container {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .profile-image {
+  .profile_image {
     width: 100%;
     max-width: 250px;
     height: 250px;
@@ -65,24 +65,24 @@ const MyPageStyles = createGlobalStyle`
     object-fit: cover;
   }
 
-  .profile-edit {
+  .profile_edit {
     margin-top: 10px;
     color: #000000;
     text-decoration: none;
   }
 
-  .profile-info {
+  .profile_info {
     display: flex;
     flex-direction: column;
     text-align: center;
   }
 
-  .profile-info h1 {
+  .profile_info h1 {
     font-size: 24px;
     font-weight: 600;
   }
 
-  .my-plan-container {
+  .my_plan_container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -114,7 +114,7 @@ const MyPageStyles = createGlobalStyle`
       flex-direction: column;
     }
 
-    .profile-container {
+    .profile_container {
       width: 100%;
       max-width: 800px;
       margin-left: 0;
@@ -122,45 +122,45 @@ const MyPageStyles = createGlobalStyle`
       margin: 0 auto;
     }
 
-    .profile-image {
+    .profile_image {
       width: 180px;
     }
 
-    .my-plan-container {
+    .my_plan_container {
       margin: 0;
       padding: 10px;
     }
 
-    .my-plan-container h1 {
+    .my_plan_container h1 {
       font-size: 18px;
     }
 
-    .plan-card {
+    .plan_card {
       margin-bottom: 15px;
     }
 
-    .plan-title {
+    .plan_title {
       font-size: 16px;
     }
   }
 
   @media (max-width: 780px) {
-    .profile-container {
+    .profile_container {
       flex-direction: column;
       gap: 30px;
     }
 
-    .logout-section {
+    .logout_section {
       margin-top: 10px;
       align-self: center;
     }
 
-    .profile-image {
+    .profile_image {
       width: 170px;
       height: 150px;
     }
 
-    .logout-btn {
+    .logout_btn {
       width: 100%;
       max-width: 200px;
     }

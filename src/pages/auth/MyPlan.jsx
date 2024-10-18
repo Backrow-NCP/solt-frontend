@@ -26,7 +26,7 @@ const MyPlan = () => {
   return (
     <>
       <MyPlanStyles />
-      <div className="main-container">
+      <div className="myplan">
         <nav className="sidebar">
           <Link to="/auth/mypage">
             <h2 className="size_lg weight_sb">마이페이지</h2>

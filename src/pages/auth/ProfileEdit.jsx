@@ -143,15 +143,15 @@ function ProfileEdit() {
   return (
     <>
       <ProfileEditStyles />
-      <div className="edit-container">
-        <div className="edit-header">
+      <div className="edit_container">
+        <div className="edit_header">
           <h2>프로필 수정</h2>
         </div>
-        <div className="edit-content">
+        <div className="edit_content">
           {/* 이미지 및 프로필 수정 입력 폼 */}
-          <div className="profile-image-container">
+          <div className="profile_image_container">
             <label htmlFor="profileImageInput">
-              <img src={imagePreview} alt="프로필 이미지" className="profile-image" />
+              <img src={imagePreview} alt="프로필 이미지" className="profile_image" />
             </label>
             <input
               type="file"
@@ -160,20 +160,20 @@ function ProfileEdit() {
               style={{ display: 'none' }} // 파일 선택 input을 숨김
               onChange={handleImageChange}
             />
-            <Link to="#" className="size_xs profile-edit" onClick={handleProfileDelete}>프로필 삭제</Link>
+            <Link to="#" className="size_xs profile_edit" onClick={handleProfileDelete}>프로필 삭제</Link>
           </div>
 
-          <div className="edit-form">
+          <div className="edit_form">
             {/* 이메일 비활성화 */}
-            <div className="input-group">
-              <input type="email" id="email" className="input-small" value={email} readOnly disabled />
+            <div className="input_group">
+              <input type="email" id="email" className="input_small" value={email} readOnly disabled />
             </div>
 
-            <div className="input-group">
+            <div className="input_group">
               <input
                 type="text"
                 id="name"
-                className="input-small"
+                className="input_small"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="이름"
@@ -183,11 +183,11 @@ function ProfileEdit() {
 
             </div>
 
-            <div className="input-group">
+            <div className="input_group">
               <input
                 type="password"
                 id="password"
-                className="input-large"
+                className="input_large"
                 placeholder="새 비밀번호(특수문자 포함 8~20자)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -195,12 +195,12 @@ function ProfileEdit() {
               />
             </div>
 
-            <div className="input-group">
-              <input type="password" id="passwordConfirm" className="input-large" placeholder="비밀번호 확인" required />
+            <div className="input_group">
+              <input type="password" id="passwordConfirm" className="input_large" placeholder="비밀번호 확인" required />
             </div>
 
             {/* 생년월일 비활성화 */}
-            <div className="input-group date-dropdown">
+            <div className="input_group date_dropdown">
               <select value={selectedYear} onChange={handleYearChange} required disabled>
                 <option value="" disabled>년도</option>
                 {years.map((year) => (
@@ -230,7 +230,7 @@ function ProfileEdit() {
             </div>
 
             {/* 성별 선택 비활성화 */}
-            <div className="input-group gender-group">
+            <div className="input_group gender_group">
               <div>
                 <input
                   type="radio"

@@ -18,12 +18,12 @@ const PasswordReset = ({ closePopup }) => {
   return (
     <>
       <PasswordResetStyles /> {/* 글로벌 스타일 적용 */}
-      <div className="password-reset-popup-overlay">
-        <div className="password-reset-popup">
-          <button className="close-button size_xxs pt_gy" onClick={closePopup}>닫기</button>
+      <div className="password_reset_popup_overlay">
+        <div className="password_reset_popup">
+          <button className="close_button size_xxs pt_gy" onClick={closePopup}>닫기</button>
           <h2>새 비밀번호</h2>
-          <form className="password-reset-form" onSubmit={handleSubmit}>
-            <div className="input-group">
+          <form className="password_reset_form" onSubmit={handleSubmit}>
+            <div className="input_group">
               <input
                 type="password"
                 id="newPassword"
@@ -34,7 +34,7 @@ const PasswordReset = ({ closePopup }) => {
               />
             </div>
 
-            <div className="input-group">
+            <div className="input_group">
               <input
                 type="password"
                 id="confirmPassword"

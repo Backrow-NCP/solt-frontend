@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 const LoginStyles = createGlobalStyle`
-  .login-popup-overlay {
+  .login_popup_overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -16,7 +16,7 @@ const LoginStyles = createGlobalStyle`
     animation: fadeIn 0.5s forwards; /* 팝업 배경 페이드인 */
   }
 
-  .login-popup {
+  .login_popup {
     background-color: #fff;
     padding: 30px;
     border-radius: 32px;
@@ -49,7 +49,7 @@ const LoginStyles = createGlobalStyle`
   }
 
   /* 닫기 버튼 */
-  .close-button {
+  .close_button {
     position: absolute;
     top: 15px;
     margin-right: 10px;  
@@ -66,23 +66,23 @@ const LoginStyles = createGlobalStyle`
     text-align: center;
   }
 
-  .login-form {
+  .login_form {
     display: flex;
     flex-direction: column;
   }
 
-  .input-group {
+  .input_group {
     margin-bottom: 15px;
   }
 
-  .input-group label {
+  .input_group label {
     display: block;
     margin-bottom: 5px;
     font-size: 16px;
     font-weight: 400;
   }
 
-  .input-group input {
+  .input_group input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -90,7 +90,7 @@ const LoginStyles = createGlobalStyle`
     font-size: 16px;
   }
 
-  .login-options {
+  .login_options {
     display: flex;
     justify-content: center;
     font-size: 14px;
@@ -99,11 +99,11 @@ const LoginStyles = createGlobalStyle`
 
   }
 
-  .login-options a {
+  .login_options a {
     margin: 0 5px; /* 각 링크 사이에 5px의 여백 추가 */
   }
 
-  .login-button {
+  .login_button {
     width: 100%;
     padding: 10px;
     background-color: #000;

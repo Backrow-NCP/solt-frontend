@@ -32,8 +32,9 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
         password
       });
 
+      const token = response.headers['authorization'];
+
       // 서버로부터 응답이 정상적일 경우
-      const { token } = response.data;  // 서버 응답에서 토큰 추출
       if (token) {
         localStorage.setItem('token', token);  // JWT 토큰 저장
         closePopup();  // 팝업 닫기
@@ -52,12 +53,12 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
   return (
     <>
       <LoginStyles />
-      <div className="login-popup-overlay">
-        <div className="login-popup">
-          <button className="close-button size_xxs pt_gy" onClick={closePopup}>닫기</button>
+      <div className="login_popup_overlay">
+        <div className="login_popup">
+          <button className="close_button size_xxs pt_gy" onClick={closePopup}>닫기</button>
           <h2>로그인</h2>
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="input-group">
+          <form className="login_form" onSubmit={handleSubmit}>
+            <div className="input_group">
               <input
                 type="email"
                 id="email"
@@ -68,7 +69,7 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
               />
             </div>
 
-            <div className="input-group">
+            <div className="input_group">
               <input
                 type="password"
                 id="password"
@@ -79,15 +80,15 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
               />
             </div>
 
-            {error && <p className="error-message" style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+            {error && <p className="error_message" style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
-            <div className="login-options">
+            <div className="login_options">
               <button
                 onClick={() => {
                   closePopup();
                   onFindPasswordClick();
                 }}
-                className="find-password-link"
+                className="find_password_link"
               >
                 비밀번호 찾기
               </button>
@@ -96,7 +97,7 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
                   closePopup();
                   onSignupClick();
                 }}
-                className="signup-link"
+                className="signup_link"
               >
                 회원가입
               </button>

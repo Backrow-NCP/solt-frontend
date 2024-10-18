@@ -3,7 +3,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 const MyPlanStyles = createGlobalStyle`
-  .main-container {
+  .myplan {
     display: flex;
     flex-direction: row;
     width: 80%;
@@ -13,14 +13,14 @@ const MyPlanStyles = createGlobalStyle`
     margin: 80px auto 0;
   }
 
-    .sidebar {
-      width: 200px;
-      background-color: #fff;
-      position: relative;
-      margin-top: 60px;
-      bottom: 0;
-      z-index: 1;
-    }
+  .sidebar {
+    width: 200px;
+    background-color: #fff;
+    position: relative;
+    margin-top: 60px;
+    bottom: 0;
+    z-index: 1;
+  }
 
   .sidebar h2 {
     margin-bottom: 20px;
