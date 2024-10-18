@@ -21,7 +21,7 @@ const SurveyPlace = ({ onPlaceSelect }) => {
   });
 
   // 자동 완성
-  useEffect(() => {
+	useEffect(() => {
     if (isLoaded && !loadError) {
       const initializeAutocomplete = () => {
         if (inputRef.current && window.google) {
@@ -29,7 +29,7 @@ const SurveyPlace = ({ onPlaceSelect }) => {
             componentRestrictions: { country: 'KR' },
             fields: ['place_id', 'name', 'geometry'],
           });
-
+  
           autocompleteRef.current.addListener('place_changed', () => {
             const place = autocompleteRef.current.getPlace();
             if (place && place.geometry) {
@@ -39,13 +39,13 @@ const SurveyPlace = ({ onPlaceSelect }) => {
                 latitude: place.geometry.location.lat(),
                 longitude: place.geometry.location.lng(),
               };
-
-              // 중복 체크
+  
+              // 중복 체크 후 상태 업데이트
               setSelectedPlaces((prevPlaces) => {
                 const isAlreadyAdded = prevPlaces.some(p => p.placeId === newPlace.placeId);
                 if (!isAlreadyAdded) {
                   const updatedPlaces = [...prevPlaces, newPlace];
-                  onPlaceSelect(updatedPlaces);
+                  onPlaceSelect(updatedPlaces); // 렌더링 후 상태 업데이트
                   return updatedPlaces;
                 }
                 return prevPlaces;
@@ -55,10 +55,10 @@ const SurveyPlace = ({ onPlaceSelect }) => {
           });
         }
       };
-
+  
       initializeAutocomplete();
     }
-  }, [isLoaded, loadError, onPlaceSelect]);
+  }, [isLoaded, loadError, onPlaceSelect]);  
 
   // 장소 삭제
   const handleClearPlace = useCallback((placeId) => {

@@ -4,8 +4,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import axios from 'axios';
 import planData from '../../mock/planProduce.json'; // 임시 데이터
+import apiClient from '../../config/AxiosConfig'; // AxiosConfig 사용
 import PlanComplete from '../../styles/plan/complete';
 
 import Button from '../../components/Button';
@@ -117,7 +117,7 @@ const Complete = () => {
   // 마이페이지 저장
   const handleSaveToMyPage = async () => {
     try {
-      const response = await axios.post('/api/savePlan', { planId: plan.planId });
+      const response = await apiClient.post('/api/savePlan', { planId: plan.planId }); // apiClient 사용
       if (response.status === 200) {
         alert('플랜이 마이페이지에 저장되었습니다!');
       } else {

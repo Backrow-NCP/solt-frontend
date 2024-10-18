@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MyPageStyles from '../../styles/auth/myPage';
+import Sidebar from '../../components/Sidebar';
 import PlanContainer from '../../components/Board/PlanContainer';
 import { Link, useNavigate } from 'react-router-dom';
 import profileImage from '../../assets/images/ico/profile.png';
@@ -48,7 +49,6 @@ const MyPage = () => {
     <>
       <MyPageStyles />
       <div className="mypage">
-        {/* 네비게이션 바에 isSidebarVisible 상태에 따라 show 클래스를 추가 */}
         <nav className={`sidebar ${isSidebarVisible ? 'show' : ''}`}>
           <h2 className="size_xl weight_b pt_blue">마이페이지</h2>
           <ul>
