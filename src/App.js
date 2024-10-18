@@ -54,7 +54,7 @@ function App() {
             onLoginClick={openLoginPopup}
             onSignupClick={openSignupPopup}
           />
-					
+
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -64,13 +64,13 @@ function App() {
               <Route path="/plan/produce" element={<Produce />} />
               <Route path="/plan/complete" element={<Complete />} />
 
-							{/* 게시물 관리 */}
+              {/* 게시물 관리 */}
               <Route path="/board/write" element={<Write />} />
-              <Route path="/board/edit" element={<Edit />} />
+              <Route path="/board/edit/:boardId" element={<Edit />} />
               <Route path="/board/list" element={<List />} />
               <Route path="/board/detail/:boardId" element={<Detail />} />
 
-							{/* 회원 관리 */}
+              {/* 회원 관리 */}
               <Route path="/auth/signup" element={<Signup />} />
               <Route path="/auth/findpassword" element={<FindPassword />} />
               <Route path="/auth/passwordreset" element={<PasswordReset />} />

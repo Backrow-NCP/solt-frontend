@@ -1,6 +1,6 @@
 // src/styles/boardDetail.js
 import styled from 'styled-components';
-
+import { scrollbar } from '../../styles/scrollbar';
 export const Title = styled.h2`
   font-size: 24px;
   color: #333;
@@ -9,7 +9,7 @@ export const Title = styled.h2`
 export const Content = styled.p`
   font-size: 16px;
   line-height: 1.5;
-  color: #666;
+  color: #222;
   padding: 0 30px;
 `;
 
@@ -23,7 +23,7 @@ export const DateAuthorContainer = styled.p`
   font-size: 12px;
   color: #999;
   text-align: right; // 우측 정렬
-  margin: 5px 0;
+  margin: 3px 10px 5px;
 `;
 
 export const InfoTextTitleContainer = styled.div`
@@ -90,4 +90,46 @@ export const Thumbnail = styled.img`
   &.active {
     border: 2px solid #007bff; /* 선택된 썸네일에 강조 테두리 */
   }
+`;
+
+export const ButtonContainerStyled = styled.div`
+  display: flex;
+  justify-content: flex-end; // 우측 정렬
+  margin-top: 3px; // 버튼과 콘텐츠 간의 간격
+  margin-right: 10px;
+`;
+
+export const EditButton = styled.button`
+  background: none;
+  border: none;
+  color: gray; // 회색 텍스트
+  font-size: 12px; // 작은 글자 크기
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline; // 마우스 오버 시 밑줄 추가
+  }
+`;
+
+export const DeleteButton = styled.button`
+  background: none;
+  border: none;
+  color: gray; // 회색 텍스트
+  font-size: 12px; // 작은 글자 크기
+  cursor: pointer;
+  margin-left: 5px; // 버튼 간의 간격
+
+  &:hover {
+    text-decoration: underline; // 마우스 오버 시 밑줄 추가
+    color: red;
+  }
+`;
+
+export const BoardContainer = styled.div`
+  height: 48vh;
+  overflow-y: auto;
+  ${scrollbar}
+
+  display: flex;
+  flex-direction: column;
 `;

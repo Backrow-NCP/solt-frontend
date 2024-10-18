@@ -110,10 +110,11 @@ const BoardDetailContainer = ({
     setSelectedDay(index + 1);
   }, []);
 
-  // console.log('places BDC', places);
-  console.log('필터링 플레이스 BDC', filteredPlaces);
-  // console.log('days:', days);
-  console.log('plan', planData);
+  // // console.log('places BDC', places);
+  // console.log('필터링 플레이스 BDC', filteredPlaces);
+  // // console.log('days:', days);
+  // console.log('plan', planData);
+  console.log('보드데이터 테스트중 BDC', boardData);
   return (
     <DetailWrapper>
       <div>

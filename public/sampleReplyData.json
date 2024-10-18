@@ -1,0 +1,41 @@
+{
+  "page": 1,
+  "size": 2,
+  "total": 2,
+  "startPage": 0,
+  "endPage": 1,
+  "prev": false,
+  "next": false,
+  "dtoList": [
+    {
+      "replyId": 1,
+      "content": "이 게시물 정말 유익해요!",
+      "boardId": 123,
+      "member": {
+        "memberId": 1,
+        "name": "홍길동",
+        "birthYear": "1990-01-01T00:00:00.000Z",
+        "gender": true,
+        "fileName": ""
+      },
+      "parentReplyId": 0,
+      "regDate": "2024-10-18T02:31:30.592Z",
+      "modDate": "2024-10-18T02:31:30.592Z"
+    },
+    {
+      "replyId": 2,
+      "content": "정말 좋은 내용입니다. 감사합니다!",
+      "boardId": 123,
+      "member": {
+        "memberId": 2,
+        "name": "김영희",
+        "birthYear": "1992-02-02T00:00:00.000Z",
+        "gender": false,
+        "fileName": ""
+      },
+      "parentReplyId": 0,
+      "regDate": "2024-10-18T03:00:00.000Z",
+      "modDate": "2024-10-18T03:00:00.000Z"
+    }
+  ]
+}

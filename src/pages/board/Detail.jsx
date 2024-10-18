@@ -124,7 +124,7 @@ const Detail = ({ isDetailPage }) => {
     return <div>Loading map...</div>; // 지도 로딩 중 UI
   }
 
-  console.log('필터링 플레이스 디테일 페이지', filteredPlaces);
+  // console.log('필터링 플레이스 디테일 페이지', filteredPlaces);
 
   return (
     <Container>

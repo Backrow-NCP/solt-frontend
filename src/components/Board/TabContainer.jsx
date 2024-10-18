@@ -81,9 +81,9 @@ const TabContainer = ({
   }, []); // 의존성 배열이 비어있으므로 한 번만 실행됨
 
   useEffect(() => {
-    console.log('Active Tab:', activeTab);
-    console.log('Filtered Places 탭 컨테이너:', filteredPlaces);
-    console.log('places 탭 컨테이너', places);
+    // console.log('Active Tab:', activeTab);
+    // console.log('Filtered Places 탭 컨테이너:', filteredPlaces);
+    // console.log('places 탭 컨테이너', places);
 
     if (!filteredPlaces || filteredPlaces.length === 0) {
       console.log('filteredPlaces가 비어 있습니다.');
