@@ -18,11 +18,11 @@ const FindPassword = ({ closePopup }) => {
   return (
     <>
       <FindPasswordStyles /> {/* 글로벌 스타일 적용 */}
-      <div className="find-password-popup-overlay">
-        <div className="find-password-popup">
-          <button className="close-button size_xxs pt_gy" onClick={closePopup}>닫기</button>
+      <div className="find_password_popup_overlay">
+        <div className="find_password_popup">
+          <button className="close_button size_xxs pt_gy" onClick={closePopup}>닫기</button>
           <h2>비밀번호 찾기</h2>
-          <form className="find-password-form" onSubmit={handleSubmit}>
+          <form className="find_password_form" onSubmit={handleSubmit}>
             <div className="input-group">
               <input
                 type="email"
@@ -35,7 +35,7 @@ const FindPassword = ({ closePopup }) => {
               <Button color="white" size="sm">확인</Button>
             </div>
 
-            <div className="input-group">
+            <div className="input_group">
               <input
                 type="text"
                 placeholder="인증번호를 입력해주세요."

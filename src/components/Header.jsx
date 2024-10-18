@@ -55,14 +55,14 @@ const Header = ({ onLoginClick, onSignupClick }) => {
         <div className="log">
           {isLoggedIn ? (
             <div
-              className="profile-section"
+              className="profile_section"
               style={{ display: 'flex', alignItems: 'center' }}
             >
               <Link to="/auth/mypage">
                 <img
                   src={profileImage} // 기본 프로필 이미지로 설정
                   alt="프로필"
-                  className="profile-image"
+                  className="profile_image"
                   style={{
                     width: '40px',
                     height: '40px',

@@ -64,28 +64,28 @@ const MyPage = () => {
             </li>
           </ul>
         </nav>
-        <div className="main-container">
-          <div className="profile-container">
-            <div className="profile-image-container">
+        <div className="main_container">
+          <div className="profile_container">
+            <div className="profile_image_container">
               <img
                 src={profileImage}
                 alt="프로필 이미지"
-                className="profile-image"
+                className="profile_image"
               />
-              <Link to="/auth/profileEdit" className="size_xs profile-edit">
+              <Link to="/auth/profileEdit" className="size_xs profile_edit">
                 프로필 관리 ⚙️
               </Link>
             </div>
-            <div className="profile-info">
+            <div className="profile_info">
               <h1>{name} 님만의 공간 :)</h1>
             </div>
-            <div className="logout-section">
-              <button className="logout-btn" onClick={handleLogout}>
+            <div className="logout_section">
+              <button className="logout_btn" onClick={handleLogout}>
                 로그아웃
               </button>
             </div>
           </div>
-          <div className="my-plan-container">
+          <div className="my_plan_container">
             <h1 style={{ marginBottom: '15px' }}>나의 플랜</h1> {/* h1과 PlanContainer 사이 간격 추가 */}
             {plans.map(plan => (
               <div key={plan.id} style={{ marginBottom: '15px' }}> {/* PlanContainer 사이 간격 */}

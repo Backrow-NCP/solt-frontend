@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 const SignupStyles = createGlobalStyle`
-  .signup-popup-overlay {
+  .signup_popup_overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -16,7 +16,7 @@ const SignupStyles = createGlobalStyle`
     animation: fadeIn 0.5s forwards; /* 팝업 배경 페이드인 */
   }
 
-  .signup-popup {
+  .signup_popup {
     background-color: #fff;
     padding: 30px;
     border-radius: 32px;
@@ -48,7 +48,7 @@ const SignupStyles = createGlobalStyle`
     }
   }
 
-  .close-button {
+  .close_button {
     position: absolute;
     top: 15px;
     margin-right: 10px;
@@ -66,19 +66,19 @@ const SignupStyles = createGlobalStyle`
     text-align: center;
   }
 
-  .signup-form {
+  .signup_form {
     display: flex;
     flex-direction: column;
   }
 
-  .input-group {
+  .input_group {
     margin-bottom: 15px;
     display: flex;
     align-items: center;
     justify-content: center; /* input-group을 수평 가운데 정렬 */
   }
 
-  .input-group input {
+  .input_group input {
     width: 100%;  /* 이메일, 이름, 비밀번호 입력란 */
     padding: 10px;
     border: 1px solid #ccc;
@@ -86,22 +86,22 @@ const SignupStyles = createGlobalStyle`
     font-size: 16px;
   }
 
-  .input-small {
+  .input_small {
     width: 70%;  /* 이메일, 이름 입력란 */
   }
 
-  .input-group button {
+  .input_group button {
     margin-left: 10px;
   }
 
   /* 드롭다운 (년도, 월, 일) 스타일 */
-  .date-dropdown {
+  .date_dropdown {
     display: flex;
     justify-content: space-between;
     width: 100%;  /* 드롭다운 전체 너비를 이메일/비밀번호 입력란과 동일하게 */
   }
 
-  .date-dropdown select {
+  .date_dropdown select {
     width: 32%;  /* 각 드롭다운 너비를 균등하게 설정하여 전체 너비가 100%에 맞도록 */
     padding: 10px;
     border: 1px solid #ccc;
@@ -118,23 +118,23 @@ const SignupStyles = createGlobalStyle`
     text-align: right;  /* 글씨를 우측 정렬 */
   }
 
-  .date-dropdown select option:first-child {
+  .date_dropdown select option:first-child {
     color: #888;  
   }
 
   /* 성별 선택 라디오 버튼 스타일 */
-  .gender-group {
+  .gender_group {
     display: flex;  /* 성별 라디오 버튼을 가로로 배치 */
     gap: 40px;  /* 남자, 여자 사이 간격 */
     align-items: center;
   }
 
-  .gender-group > div {
+  .gender_group > div {
     display: flex;
     align-items: center;  /* 라디오 버튼과 레이블을 나란히 정렬 */
   }
 
-  .gender-group label {
+  .gender_group label {
     margin-left: 5px;  /* 라디오 버튼과 레이블 간의 간격 */
     font-size: 16px;
   }

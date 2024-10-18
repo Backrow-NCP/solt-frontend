@@ -16,7 +16,7 @@ const MyBoard = () => {
   return (
     <>
       <MyPlanStyles />
-      <div className="main-container">
+      <div className="main_container">
         <nav className="sidebar">
           <Link to="/auth/mypage">
             <h2 className="size_lg weight_sb">마이페이지</h2>
@@ -35,9 +35,9 @@ const MyBoard = () => {
           </ul>
         </nav>
 
-        <div className="my-board-container">
+        <div className="my_board_container">
           <h1>나의 게시글</h1>
-          <div className="board-items-wrapper">
+          <div className="board_items_wrapper">
             {plans.map((plan) => (
               <BoardItem
                 key={plan.id}
