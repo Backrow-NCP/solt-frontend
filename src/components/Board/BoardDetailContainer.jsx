@@ -15,6 +15,7 @@ import planTime from '../../utils/plan/planTime';
 const BoardDetailContainer = ({
   planData,
   filteredPlaces,
+  setFilteredPlaces,
   data,
   places,
   totalPrice,
@@ -140,6 +141,7 @@ const BoardDetailContainer = ({
           handleTabClick={handleTabClick}
           isDetailPage={true}
           filteredPlaces={filteredPlaces}
+          setFilteredPlaces={setFilteredPlaces}
         />
       </div>
 

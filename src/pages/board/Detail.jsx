@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import BoardDetailContainer from '../../components/Board/BoardDetailContainer';
 import Map from '../../components/Plan/Map';
@@ -18,7 +18,7 @@ const Detail = ({ isDetailPage }) => {
   const { plan, places, loading } = usePlanData();
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [selectedDay, setSelectedDay] = useState(1); // 선택된 날짜 상태 추가
-
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
   const categories = [
     '숙박',
     '음식점',
@@ -37,6 +37,23 @@ const Detail = ({ isDetailPage }) => {
     totalRoutePrice,
     totalPrice,
   } = useCategoryTotals(places, categories, plan);
+
+  useEffect(() => {
+    // TabContainer에 첫 번째 날짜의 장소를 필터링하여 업데이트하는 로직
+    const initialDayIndex = 0; // 기본적으로 첫 번째 날짜의 인덱스
+    setFilteredPlaces(places => {
+      if (!places || places.length === 0) return [];
+
+      const filtered = places.filter(
+        place =>
+          new Date(place.startTime).toISOString().split('T')[0] ===
+          new Date(places[initialDayIndex].startTime)
+            .toISOString()
+            .split('T')[0]
+      );
+      return filtered;
+    });
+  }, []);
 
   // Google Maps API 로드
   const { isLoaded, loadError: mapLoadError } = useLoadScript({
@@ -76,15 +93,15 @@ const Detail = ({ isDetailPage }) => {
   );
 
   // 선택된 날짜에 따라 필터링된 장소 목록 생성
-  const filteredPlaces = useMemo(
-    () =>
-      places.filter(
-        place =>
-          new Date(place.startTime).toISOString().split('T')[0] ===
-          days[selectedDay - 1]
-      ),
-    [places, days, selectedDay]
-  );
+  // const filteredPlaces = useMemo(
+  //   () =>
+  //     places.filter(
+  //       place =>
+  //         new Date(place.startTime).toISOString().split('T')[0] ===
+  //         days[selectedDay - 1]
+  //     ),
+  //   [places, days, selectedDay]
+  // );
 
   const handleTabClick = useCallback(index => {
     setSelectedDay(index + 1);
@@ -107,9 +124,7 @@ const Detail = ({ isDetailPage }) => {
     return <div>Loading map...</div>; // 지도 로딩 중 UI
   }
 
-  if (filteredPlaces.length === 0) {
-    return <div>No places available</div>; // 또는 원하는 UI
-  }
+  console.log('필터링 플레이스 디테일 페이지', filteredPlaces);
 
   return (
     <Container>
@@ -121,6 +136,7 @@ const Detail = ({ isDetailPage }) => {
         center={mapCenter}
         options={options}
         filteredPlaces={filteredPlaces}
+        setFilteredPlaces={setFilteredPlaces}
         selectedMarker={selectedMarker}
         setSelectedMarker={setSelectedMarker}
       />
@@ -130,6 +146,7 @@ const Detail = ({ isDetailPage }) => {
         planData={plan}
         days={days}
         filteredPlaces={filteredPlaces}
+        setFilteredPlaces={setFilteredPlaces}
         places={places}
         selectedDay={selectedDay} // 선택된 날짜도 전달
         setSelectedDay={setSelectedDay} // 선택된 날짜를 설정하는 함수도 전달

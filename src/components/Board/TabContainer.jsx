@@ -21,10 +21,11 @@ const TabContainer = ({
   boardData,
   setEditPlace,
   isDetailPage,
+  filteredPlaces,
+  setFilteredPlaces,
 }) => {
   const [activeTab, setActiveTab] = useState('게시글'); // 기본 활성 탭 설정
   const [selectedDay, setSelectedDay] = useState(1); // 날짜 선택
-  const [filteredPlaces, setFilteredPlaces] = useState([]); // 선택된 날짜의 장소들
   const [localEditPlace, setLocalEditPlace] = useState({});
   const [isEditing, setIsEditing] = useState(false);
 
@@ -43,6 +44,17 @@ const TabContainer = ({
     [places]
   );
 
+  // 탭(여행일정, 게시글) 클릭 시 활성화
+  const handleTabChange = useCallback(
+    tabName => {
+      console.log(`Tab changed: ${tabName}`);
+      setActiveTab(tabName);
+      setLocalEditPlace({});
+      setIsEditing(false);
+    },
+    [setActiveTab, setLocalEditPlace, setIsEditing]
+  );
+
   // 날짜 클릭 시 선택된 날짜의 장소 필터링 및 filteredPlaces 업데이트
   const handleTabClick = useCallback(
     index => {
@@ -59,19 +71,14 @@ const TabContainer = ({
       setLocalEditPlace({});
       setIsEditing(false);
     },
-    [places, days]
+    [places, days, setFilteredPlaces]
   );
 
-  // 탭(여행일정, 게시글) 클릭 시 활성화
-  const handleTabChange = useCallback(
-    tabName => {
-      console.log(`Tab changed: ${tabName}`);
-      setActiveTab(tabName);
-      setLocalEditPlace({});
-      setIsEditing(false);
-    },
-    [setActiveTab, setLocalEditPlace, setIsEditing]
-  );
+  // 컴포넌트가 마운트될 때 "여행일정" 탭을 클릭
+  useEffect(() => {
+    handleTabChange('여행일정');
+    handleTabClick(0); // 첫 번째 날짜 클릭
+  }, []); // 의존성 배열이 비어있으므로 한 번만 실행됨
 
   useEffect(() => {
     console.log('Active Tab:', activeTab);
@@ -92,26 +99,21 @@ const TabContainer = ({
     }
   }, [activeTab, filteredPlaces]);
 
+  // 새로운 장소 설정
   let newStartTime;
-
   if (filteredPlaces.length > 0) {
-    // 마지막 장소의 endTime을 기준으로 새로운 startTime 설정
     const lastPlace = filteredPlaces[filteredPlaces.length - 1];
     const lastEndTime = new Date(lastPlace.endTime);
-
-    // 마지막 endTime에 1시간 추가
     lastEndTime.setHours(lastEndTime.getHours() + 1);
-
     newStartTime = lastEndTime.toISOString();
   } else {
-    // 해당 날짜에 장소가 없을 경우
     const selectedDate = new Date(days[selectedDay - 1]);
-    selectedDate.setHours(9, 0, 0, 0); // 오전 9시로 설정
+    selectedDate.setHours(9, 0, 0, 0);
     newStartTime = selectedDate.toISOString();
   }
 
   const newPlace = {
-    placeId: Date.now(), // 임시 ID, (서버에서 ID 생성해야할듯)
+    placeId: Date.now(),
     placeName: '새로운 장소',
     description: '',
     price: 0,
@@ -128,7 +130,10 @@ const TabContainer = ({
       <TabsContainer setEditPlace={setEditPlace}>
         <Tab
           $isActive={activeTab === '여행일정'}
-          onClick={() => handleTabChange('여행일정')}
+          onClick={() => {
+            handleTabChange('여행일정');
+            handleTabClick(0);
+          }}
         >
           <b>여행일정</b>
         </Tab>
@@ -153,7 +158,7 @@ const TabContainer = ({
         {activeTab === '여행일정' ? (
           <div>
             <PlaceList
-              filteredPlaces={filteredPlaces} // 필터링된 장소 전달
+              filteredPlaces={filteredPlaces}
               planTime={planTime}
               findRoute={findRoute}
               editPrice={editPrice}
