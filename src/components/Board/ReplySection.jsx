@@ -19,14 +19,15 @@ import defaultProfileImage from '../../assets/images/ico/profile.png';
 
 const ReplySection = ({ boardId }) => {
   const [mainInputValue, setMainInputValue] = useState(''); // 댓글 입력 상태
-  const [replies, setReplies] = useState([]);
+  const [comments, setComments] = useState([]); // 댓글 상태
   const [visibleReplyInputs, setVisibleReplyInputs] = useState({}); // 각 댓글에 대한 답글 입력 가시성 관리
   const [replyInputValues, setReplyInputValues] = useState({}); // 각 답글 입력 상태 관리
+  const [visibleSubReplies, setVisibleSubReplies] = useState({}); // 각 댓글의 가시적인 대댓글 수
 
   const fetchReplies = async () => {
     try {
       const response = await axios.get('/sampleReplyData.json');
-      setReplies(response.data.dtoList);
+      setComments(response.data.dtoList);
     } catch (error) {
       console.error('Error fetching replies:', error);
     }
@@ -43,7 +44,7 @@ const ReplySection = ({ boardId }) => {
   const handleMainSubmit = () => {
     if (mainInputValue.trim()) {
       const newReply = {
-        replyId: replies.length + 1,
+        replyId: comments.length + 1,
         content: mainInputValue,
         boardId: boardId,
         member: {
@@ -57,7 +58,7 @@ const ReplySection = ({ boardId }) => {
         regDate: new Date().toISOString(),
         modDate: new Date().toISOString(),
       };
-      setReplies([...replies, newReply]);
+      setComments([...comments, newReply]);
       setMainInputValue(''); // 메인 입력란 초기화
     }
   };
@@ -77,8 +78,8 @@ const ReplySection = ({ boardId }) => {
       return; // 빈 입력값인 경우 제출하지 않음
     }
 
-    const newReply = {
-      replyId: replies.length + 1,
+    const newSubReply = {
+      replyId: comments.length + 1, // 고유 ID 생성
       content: replyContent,
       boardId: boardId,
       member: {
@@ -88,12 +89,12 @@ const ReplySection = ({ boardId }) => {
         gender: true,
         fileName: 'defaultProfile.jpg',
       },
-      parentReplyId: replies[replyIndex].replyId,
+      parentReplyId: comments[replyIndex].replyId,
       regDate: new Date().toISOString(),
       modDate: new Date().toISOString(),
     };
 
-    setReplies([...replies, newReply]);
+    setComments(prevComments => [...prevComments, newSubReply]);
     setReplyInputValues(prev => ({
       ...prev,
       [replyIndex]: '', // 제출 후 답글 입력란 초기화
@@ -111,10 +112,99 @@ const ReplySection = ({ boardId }) => {
     }));
   };
 
+  // 댓글 렌더링
+  const renderComments = () => {
+    // 부모 댓글과 대댓글을 통합하여 순서대로 렌더링
+    const allReplies = comments.map(comment => ({
+      ...comment,
+      isSubReply: comment.parentReplyId !== 0, // 대댓글 여부 표시
+    }));
+
+    return allReplies.map((reply, index) => {
+      if (reply.parentReplyId === 0) {
+        return (
+          <>
+            <ReplyItem key={reply.replyId}>
+              <ProfileImage
+                src={defaultProfileImage}
+                alt={`${reply.member.name}의 프로필`}
+              />
+              <ReplyContent>
+                <ReplyMeta>
+                  <ReplyName>{reply.member.name}</ReplyName>{' '}
+                  <ReplyDate>
+                    {new Date(reply.regDate).toLocaleString()}
+                  </ReplyDate>
+                </ReplyMeta>
+                {reply.content}
+                <br />
+                <SubReplyButton onClick={() => handleSubReplyClick(index)}>
+                  답글달기
+                </SubReplyButton>
+
+                {visibleReplyInputs[index] && (
+                  <ReplySubmitContainer>
+                    <ReplyInput
+                      type="text"
+                      value={replyInputValues[index] || ''} // 해당 답글 입력값 가져오기
+                      onChange={e => handleReplyInputChange(index, e)}
+                      placeholder="답글을 입력하세요..."
+                    />
+                    <SubmitButton onClick={() => handleReplySubmit(index)}>
+                      등록
+                    </SubmitButton>
+                  </ReplySubmitContainer>
+                )}
+              </ReplyContent>
+            </ReplyItem>
+            {renderSubReplies(reply.replyId)}
+          </>
+        );
+      } else {
+        return null; // 대댓글은 여기서 렌더링하지 않음
+      }
+    });
+  };
+
+  // 대댓글 렌더링
+  const renderSubReplies = parentReplyId => {
+    const subReplies = comments.filter(
+      subReply => subReply.parentReplyId === parentReplyId
+    ); // 대댓글 필터링
+
+    return subReplies.map((subReply, index) => {
+      const isLastReply = index === subReplies.length - 1; // 마지막 대댓글 여부 확인
+
+      return (
+        <ReplyItem
+          key={subReply.replyId}
+          style={{
+            marginLeft: '20px',
+            marginBottom: isLastReply ? '30px' : '20px', // 마지막 대댓글의 경우 마진을 더 줌
+          }}
+        >
+          <ProfileImage
+            src={defaultProfileImage}
+            alt={`${subReply.member.name}의 프로필`}
+          />
+          <ReplyContent>
+            <ReplyMeta>
+              <ReplyName>{subReply.member.name}</ReplyName>{' '}
+              <ReplyDate>
+                {new Date(subReply.regDate).toLocaleString()}
+              </ReplyDate>
+            </ReplyMeta>
+            {subReply.content}
+          </ReplyContent>
+        </ReplyItem>
+      );
+    });
+  };
+
   return (
     <ReplyContainer>
       <ReplySubmitContainer className="main-reply-submit">
-        <ReplyCount>댓글 {replies.length}개</ReplyCount>
+        <ReplyCount>댓글 {comments.length}개</ReplyCount>
         <ReplyInput
           type="text"
           value={mainInputValue}
@@ -125,42 +215,7 @@ const ReplySection = ({ boardId }) => {
       </ReplySubmitContainer>
 
       <ReplyListContainer>
-        {replies.map((reply, index) => (
-          <ReplyItem key={index}>
-            <ProfileImage
-              src={defaultProfileImage}
-              alt={`${reply.member.name}의 프로필`}
-            />
-            <ReplyContent>
-              <ReplyMeta>
-                <ReplyName>{reply.member.name}</ReplyName>{' '}
-                <ReplyDate>
-                  {new Date(reply.regDate).toLocaleString()}
-                </ReplyDate>
-              </ReplyMeta>
-              {reply.content}
-              <br />
-              <SubReplyButton onClick={() => handleSubReplyClick(index)}>
-                답글달기
-              </SubReplyButton>
-
-              {visibleReplyInputs[index] && (
-                <ReplySubmitContainer>
-                  <ReplyInput
-                    // 대댓글태그
-                    type="text"
-                    value={replyInputValues[index] || ''} // 해당 답글 입력값 가져오기
-                    onChange={e => handleReplyInputChange(index, e)}
-                    placeholder="답글을 입력하세요..."
-                  />
-                  <SubmitButton onClick={() => handleReplySubmit(index)}>
-                    등록
-                  </SubmitButton>
-                </ReplySubmitContainer>
-              )}
-            </ReplyContent>
-          </ReplyItem>
-        ))}
+        {renderComments()} {/* 댓글과 대댓글 렌더링 */}
       </ReplyListContainer>
     </ReplyContainer>
   );
