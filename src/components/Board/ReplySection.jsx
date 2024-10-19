@@ -26,8 +26,9 @@ const ReplySection = ({ boardId }) => {
   const [replyInputValues, setReplyInputValues] = useState({}); // 각 답글 입력 상태 관리
   const [visibleSubReplies, setVisibleSubReplies] = useState({}); // 각 댓글의 가시적인 대댓글 수
   const [isEditing, setIsEditing] = useState(false);
-  const [replyContent, setReplyContent] = useState(boardId.content); // 초기 댓글 내용
+  const [replyContent, setReplyContent] = useState({}); // 초기 댓글 내용 및 수정 댓글 내용 저장
 
+  console.log('보드아이디. content', boardId.content);
   const fetchReplies = async () => {
     try {
       const response = await axios.get('/sampleReplyData.json');
@@ -98,6 +99,11 @@ const ReplySection = ({ boardId }) => {
       modDate: new Date().toISOString(),
     };
 
+    console.log(
+      '새로운 답글 테스트 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@:',
+      newSubReply
+    );
+
     setComments(prevComments => [...prevComments, newSubReply]);
     setReplyInputValues(prev => ({
       ...prev,
@@ -125,6 +131,7 @@ const ReplySection = ({ boardId }) => {
 
     return allReplies.map((reply, index) => {
       if (reply.parentReplyId === 0) {
+        console.log('리플라이 만', reply);
         return (
           <>
             <ReplyItem key={reply.replyId}>
@@ -144,7 +151,7 @@ const ReplySection = ({ boardId }) => {
                       }}
                     >
                       <ReplyEditButton
-                      // onClick={handleReplyEdit}
+                        onClick={() => handleReplyEdit(reply, reply.content)}
                       >
                         수정
                       </ReplyEditButton>
@@ -158,18 +165,28 @@ const ReplySection = ({ boardId }) => {
                   </ReplyDate>
                 </ReplyMeta>
 
-                {isEditing ? (
-                  <ReplySubmitContainer>
-                    <ReplyInput
-                      value={replyContent}
-                      onChange={e => setReplyContent(e.target.value)} // 댓글 내용 변경 시 상태 업데이트
-                    />
-                    <SubmitButton onClick={submitEditedReply}>
-                      제출
-                    </SubmitButton>
-                  </ReplySubmitContainer>
+                {isEditing === reply.replyId ? (
+                  <>
+                    {console.log('isEditing 모드 실행@@@@@', reply.replyId)}
+                    <ReplySubmitContainer>
+                      <ReplyInput
+                        value={replyContent[reply.replyId]} // 초기값 설정
+                        onChange={e =>
+                          setReplyContent(prev => ({
+                            ...prev,
+                            [reply.replyId]: e.target.value,
+                          }))
+                        } // 댓글 내용 변경 시 상태 업데이트
+                      />
+                      <SubmitButton
+                        onClick={() => submitEditedReply(reply.replyId)}
+                      >
+                        수정
+                      </SubmitButton>
+                    </ReplySubmitContainer>
+                  </>
                 ) : (
-                  <p>{replyContent}</p> // 댓글 내용 표시
+                  <p>{reply.content}</p>
                 )}
 
                 <SubReplyButton onClick={() => handleSubReplyClick(index)}>
@@ -234,7 +251,7 @@ const ReplySection = ({ boardId }) => {
                   }}
                 >
                   <ReplyEditButton
-                  // onClick={handleReplyEdit}
+                    onClick={() => handleReplyEdit(subReply, subReply.content)}
                   >
                     수정
                   </ReplyEditButton>
@@ -247,21 +264,52 @@ const ReplySection = ({ boardId }) => {
                 {new Date(subReply.regDate).toLocaleString()}
               </ReplyDate>
             </ReplyMeta>
-            {subReply.content}
+            {isEditing === subReply.replyId ? (
+              <>
+                <ReplySubmitContainer>
+                  <ReplyInput
+                    value={replyContent[subReply.replyId] || ''} // 초기값 설정
+                    onChange={
+                      e =>
+                        setReplyContent(prev => ({
+                          ...prev,
+                          [subReply.replyId]: e.target.value,
+                        })) // 대댓글 내용 변경 시 상태 업데이트
+                    }
+                  />
+                  <SubmitButton
+                    style={{
+                      padding: '6px 10px', // 패딩을 조정하여 버튼 크기 조절
+                      fontSize: '13px', // 글자 크기 조절
+                    }}
+                    onClick={() => submitEditedReply(subReply.replyId)}
+                  >
+                    수정
+                  </SubmitButton>
+                </ReplySubmitContainer>
+              </>
+            ) : (
+              <p>{subReply.content}</p>
+            )}
           </ReplyContent>
         </ReplyItem>
       );
     });
   };
 
-  // const handleReplyEdit = (boardId, content) => {
-  //   setIsEditing(boardId.replyId); // 클릭한 댓글의 ID로 수정 모드 활성화
-  //   setReplyContent(prev => ({ ...prev, [boardId.replyId]: content })); // 해당 댓글의 내용을 상태에 설정
-  // };
+  const handleReplyEdit = (reply, content) => {
+    if (isEditing === reply.replyId) {
+      setIsEditing(null); // 수정 모드 비활성화
+    } else {
+      setIsEditing(reply.replyId); // 클릭한 댓글의 ID로 수정 모드 활성화
+      setReplyContent(prev => ({ ...prev, [reply.replyId]: content })); // 해당 댓글의 내용을 상태에 설정
+    }
+  };
 
   const submitEditedReply = replyId => {
-    // Axios PUT 요청으로 수정된 내용을 서버에 전송하는 코드 추가 예정
-    console.log('수정된 댓글 내용:', replyContent[replyId]);
+    //실제 로직은 axios put
+    const updatedContent = replyContent[replyId]; // 수정된 내용 가져오기
+    console.log('수정된 댓글 내용:', updatedContent);
     setIsEditing(null); // 수정 모드 비활성화
   };
 
