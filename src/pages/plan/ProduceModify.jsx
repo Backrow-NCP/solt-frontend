@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
 import {
   GoogleMap,
   MarkerF,
@@ -98,13 +97,16 @@ const ProduceModify = () => {
       days[selectedDay - 1]
   );
 
+  // const { surveyId } = useParams();
+
   // 플랜 임시데이터 불러오기
   useEffect(() => {
     const fetchPlanData = async () => {
       try {
         // 실제 API 호출 시 주석 해제
         // const response = await axios.get('http://localhost/plans/' + surveyId);
-        const fetchedPlan = sessionStorage.getItem('plan');
+        // const fetchedPlan = response.data;
+        const fetchedPlan = JSON.parse(sessionStorage.getItem('plan'));
         console.log(fetchedPlan);
 
         // 지오코딩을 통해 위도와 경도 추가
@@ -589,7 +591,6 @@ const ProduceModify = () => {
 
   // 카테고리별 총 금액 계산
   const categoryTotals = categories.reduce((acc, category) => {
-    console.log(category);
     acc[category] = 0;
     return acc;
   }, {});
