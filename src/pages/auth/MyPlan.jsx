@@ -3,6 +3,7 @@ import MyPlanStyles from '../../styles/auth/myPlan';
 import PlanContainer from '../../components/Board/PlanContainer'; // PlanContainer import
 import { Link } from 'react-router-dom';
 import Button from '../../components/Button';
+import Sidebar from '../../components/Sidebar';
 
 const MyPlan = () => {
   const [plans, setPlans] = useState([]);
@@ -27,7 +28,8 @@ const MyPlan = () => {
     <>
       <MyPlanStyles />
       <div className="myplan">
-        <nav className="sidebar">
+        <Sidebar />
+        {/* <nav className="sidebar">
           <Link to="/auth/mypage">
             <h2 className="size_lg weight_sb">마이페이지</h2>
           </Link>
@@ -43,7 +45,7 @@ const MyPlan = () => {
               </Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
 
         <div className="my-plan-container">
           <h1>나의 플랜</h1>

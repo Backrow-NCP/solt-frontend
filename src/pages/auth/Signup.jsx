@@ -116,7 +116,10 @@ function Signup({ closePopup }) {
       birthYear: birthYear,
       gender: gender === 'male' ? true : false // Boolean으로 변환
     };
+
+    console.log(signupData); // 데이터 확인
   
+    
     try {
       await apiNoToken.post('/login/register', signupData, {
         withCredentials: true // 쿠키 기반 인증 정보를 요청에 포함
