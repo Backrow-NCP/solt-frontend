@@ -7,33 +7,40 @@ import profileImage from '../../assets/images/ico/profile.png';
 import Button from '../../components/Button';
 
 const MyPage = () => {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState(''); // 사용자 이름만 관리
   const [plans, setPlans] = useState([]);
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // 상태로 네비게이션 바 가시성 관리
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 상태 관리
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('/mock/member.json')
-      .then(response => response.json())
-      .then(data => {
-        const member = data.members.find(member => member.id === 1);
-        setName(member.name);
-      });
+    // 로그인한 사용자의 이름을 localStorage에서 가져옴
+    const storedUsername = localStorage.getItem('username');
 
+    if (storedUsername) {
+      setUsername(storedUsername); // 사용자 이름 설정
+    } else {
+      // 로그인 정보가 없을 경우 처리 (로그인 페이지로 이동)
+      navigate('/login');
+    }
+
+    // 플랜 데이터 불러오기 (임시 데이터 혹은 API 호출)
     fetch('/mock/plan.json')
       .then(response => response.json())
       .then(data => {
-        setPlans(data.slice(0, 2));
+        setPlans(data.slice(0, 2)); // 플랜 리스트 설정
       });
 
     // 네비게이션 바가 부드럽게 나타나도록 상태 업데이트
     setIsSidebarVisible(true);
-  }, []);
+  }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('token'); // 토큰 삭제
+    localStorage.removeItem('username'); // 사용자 이름 삭제
+    setIsLoggedIn(false);
     console.log('로그아웃 처리');
-    navigate('/');
+    navigate('/'); // 홈으로 이동
   };
 
   const handleEdit = planId => {
@@ -77,7 +84,7 @@ const MyPage = () => {
               </Link>
             </div>
             <div className="profile_info">
-              <h1>{name} 님만의 공간 :)</h1>
+              <h1>{username} 님만의 공간 :)</h1>
             </div>
             <div className="logout_section">
               <button className="logout_btn" onClick={handleLogout}>

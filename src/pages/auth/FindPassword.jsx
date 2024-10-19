@@ -23,7 +23,7 @@ const FindPassword = ({ closePopup }) => {
           <button className="close_button size_xxs pt_gy" onClick={closePopup}>닫기</button>
           <h2>비밀번호 찾기</h2>
           <form className="find_password_form" onSubmit={handleSubmit}>
-            <div className="input-group">
+            <div className="input_group">
               <input
                 type="email"
                 id="email"

@@ -11,26 +11,21 @@ const Header = ({ onLoginClick, onSignupClick }) => {
 
   useEffect(() => {
     checkLoginStatus();
-  }, [location]); // location 변경 시 실행되도록 수정
-
-  const checkLoginStatus = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
+  }, [location]);  // 페이지가 이동될 때마다 로그인 상태 확인
+  
+  const checkLoginStatus = async () => {
+    const token = localStorage.getItem('AccessToken');
+    const storedUsername = localStorage.getItem('username');
+  
+    if (token && storedUsername) {
       setIsLoggedIn(true);
-
-      fetch('/mock/member.json')
-        .then(response => response.json())
-        .then(data => {
-          const member = data.members.find(member => member.id === 1);
-          if (member) {
-            setUsername(member.name);
-          }
-        });
+      setUsername(storedUsername);  // 사용자 이름 설정
     } else {
       setIsLoggedIn(false);
       setUsername('');
     }
   };
+
 
   return (
     <header>
@@ -72,6 +67,7 @@ const Header = ({ onLoginClick, onSignupClick }) => {
                 />
               </Link>
               <span>{username}님</span>
+              
             </div>
           ) : (
             <div className="login flex">
