@@ -126,6 +126,21 @@
       "parentReplyId": 0,
       "regDate": "2024-10-18T06:30:00.000Z",
       "modDate": "2024-10-18T06:30:00.000Z"
+    },
+    {
+      "replyId": 9,
+      "content": "좋은 점 더 추가하고 싶어요.",
+      "boardId": 123,
+      "member": {
+        "memberId": 1,
+        "name": "홍길동1",
+        "birthYear": "1990-01-01T00:00:00.000Z",
+        "gender": true,
+        "fileName": ""
+      },
+      "parentReplyId": 2,
+      "regDate": "2024-10-18T07:00:00.000Z",
+      "modDate": "2024-10-18T07:00:00.000Z"
     }
   ]
 }

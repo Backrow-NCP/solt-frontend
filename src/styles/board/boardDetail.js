@@ -108,6 +108,7 @@ export const EditButton = styled.button`
 
   &:hover {
     text-decoration: underline; // 마우스 오버 시 밑줄 추가
+    color: #004d00;
   }
 `;
 
