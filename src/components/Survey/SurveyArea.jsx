@@ -94,4 +94,26 @@ const Area = styled.div`
       }
     }
   }
+
+  /* media size */
+  @media (max-width: 800px) {
+    .area_list {
+      gap: 8px;
+
+      li {
+        flex-grow: 1;
+        flex-basis: calc(33.333% - 8px);
+        max-width: 33.333%;
+
+        button {
+          span {
+            bottom: 7px;
+            left: 7px;
+            font-size: 13px;
+            font-weight: 600
+          }
+        }
+      }
+    }
+  }
 `;

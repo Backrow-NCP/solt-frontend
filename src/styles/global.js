@@ -420,6 +420,9 @@ const GlobalStyles = createGlobalStyle`
     .size_lg {
       font-size: 15px;
     }
+		h2 {
+			font-size: 28px;
+		}
 
     header {
       padding: 15px 0 6px;

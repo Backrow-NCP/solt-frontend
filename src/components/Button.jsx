@@ -143,6 +143,7 @@ const Button = styled.button`
           return '12px';
       }
     }};
+    border-radius: 10px;
   }
 `;
 

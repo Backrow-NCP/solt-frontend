@@ -214,4 +214,54 @@ const Place = styled.div`
       }
     }
   }
+
+  /* media size */
+  @media (max-width: 800px) {
+    .place_search {
+      width: 90%;
+
+      input {
+        height: 60px;
+        padding: 0 30px;
+        font-size: 16px;
+      }
+    }
+
+    .place_recomm ul {
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .place_search {
+      width: 90%;
+
+      input {
+        height: 50px;
+        padding: 0 25px;
+        border-radius: 12px;
+        font-size: 14px;
+      }
+    }
+
+    .place_recomm {
+      ul {
+        flex-wrap: wrap;
+
+        li {
+          width: calc(50% - 4px);
+
+          button {
+            margin: 0 auto;
+          }
+
+          span {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+  }
 `;

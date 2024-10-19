@@ -176,4 +176,41 @@ const Keyword = styled.div`
       }
     }
   }
+
+  /* media size */
+  @media (max-width: 850px) {
+    .keyword_list {
+      padding: 25px 35px 5px;
+
+      > div {
+        flex: auto;
+        width: 100%;
+
+        h3 {
+          margin-bottom: 15px;
+          font-size: 16px;
+        }
+
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+          margin-bottom: 20px;
+
+          li {
+            margin: 0 5px 8px 0;
+
+            &:last-child {
+              margin-right: 0;
+            }
+
+            button {
+              padding: 8px 12px;
+              font-size: 14px;
+              line-height: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
 `;
