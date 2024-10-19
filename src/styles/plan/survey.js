@@ -81,6 +81,25 @@ const SurveyCommon = styled.div`
   .survey_cont {
     margin-top: 32px;
   }
+
+	/* media size */
+  @media (max-width: 1650px) {
+		.survey_box {
+			width: 90%;
+		}
+	}
+
+	@media (max-width: 1215px) {
+		.btn_prev img {
+			height: 50px;
+		}
+	}
+
+	@media (max-width: 700px) {
+		.btn_prev img {
+			height: 42px;
+		}
+	}
 `;
 
 export default SurveyCommon;

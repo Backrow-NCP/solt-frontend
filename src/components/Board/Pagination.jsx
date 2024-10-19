@@ -9,55 +9,48 @@ import PrevButton from '../../assets/images/prevButton.svg';
 import DisabledNextButton from '../../assets/images/disabled-next.svg'; // 비활성화된 다음 버튼
 import DisabledPrevButton from '../../assets/images/disabled-prev.svg'; // 비활성화된 이전 버튼
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  const itemsPerPage = 10; // 페이지당 항목 수
-  const totalGroups = Math.ceil(totalPages / itemsPerPage); // 그룹 수
-  const currentGroup = Math.floor((currentPage - 1) / itemsPerPage); // 현재 그룹
-
-  const handleNext = () => {
-    if (currentGroup < totalGroups - 1) {
-      onPageChange((currentGroup + 1) * itemsPerPage + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentGroup > 0) {
-      onPageChange((currentGroup - 1) * itemsPerPage + 1);
-    }
-  };
-
-  const startPage = currentGroup * itemsPerPage + 1;
-  const endPage = Math.min(startPage + itemsPerPage - 1, totalPages);
+const Pagination = ({
+  page,
+  total, // 전체 페이지 수
+  startPage, // 현재 보여지는 첫 번째 페이지 번호
+  endPage, // 현재 보여지는 마지막 페이지 번호
+  prev, // 이전 버튼 활성화 여부
+  next, // 다음 버튼 활성화 여부
+  onPageChange, // 페이지 변경 핸들러
+  onNextGroup, // 다음 페이지 그룹으로 이동하는 함수
+  onPrevGroup, // 이전 페이지 그룹으로 이동하는 함수
+}) => {
+  // 총 페이지 수를 계산 (endPage와 startPage의 차이로)
+  const totalPages = endPage - startPage + 1;
 
   return (
     <PaginationContainer>
-      <PaginationButton onClick={handlePrevious} disabled={currentGroup === 0}>
+      {/* 이전 그룹 버튼 */}
+      <PaginationButton onClick={onPrevGroup} disabled={startPage === 1}>
         <img
-          src={currentGroup === 0 ? DisabledPrevButton : PrevButton}
+          src={startPage === 1 ? DisabledPrevButton : PrevButton}
           alt="왼쪽 화살표 아이콘"
           width={10}
           height={10}
         />
       </PaginationButton>
 
-      {[...Array(endPage - startPage + 1)].map((_, index) => (
-        <PaginationButton
-          key={startPage + index}
-          onClick={() => onPageChange(startPage + index)}
-          active={currentPage === startPage + index ? 'true' : 'false'}
-        >
-          {startPage + index}
-        </PaginationButton>
-      ))}
+      {/* 페이지 번호 렌더링 */}
+      {totalPages > 0 &&
+        [...Array(totalPages)].map((_, index) => (
+          <PaginationButton
+            key={startPage + index}
+            onClick={() => onPageChange(startPage + index)}
+            active={page === startPage + index ? 'true' : 'false'}
+          >
+            {startPage + index}
+          </PaginationButton>
+        ))}
 
-      <PaginationButton
-        onClick={handleNext}
-        disabled={currentGroup >= totalGroups - 1}
-      >
+      {/* 다음 그룹 버튼 */}
+      <PaginationButton onClick={onNextGroup} disabled={endPage >= total}>
         <img
-          src={
-            currentGroup >= totalGroups - 1 ? DisabledNextButton : NextButton
-          }
+          src={endPage >= total ? DisabledNextButton : NextButton}
           alt="오른쪽 화살표 아이콘"
           width={10}
           height={10}

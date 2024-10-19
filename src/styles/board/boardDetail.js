@@ -127,7 +127,7 @@ export const DeleteButton = styled.button`
 `;
 
 export const BoardContainer = styled.div`
-  height: 48vh;
+  max-height: 624px;
   overflow-y: auto;
   ${scrollbar}
 
