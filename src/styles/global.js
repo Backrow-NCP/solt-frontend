@@ -320,8 +320,8 @@ const GlobalStyles = createGlobalStyle`
       font-size: 14px;
     }
     .inner {
-		  max-width: 1200px;
-    }
+			max-width: 1200px;
+		}
     .size_xxs {
       font-size: 11px;
     }
@@ -339,6 +339,10 @@ const GlobalStyles = createGlobalStyle`
     }
     .size_xl {
       font-size: 20px;
+    }
+
+		.floating-wrapper {
+      right: 5vh;
     }
   }
 
@@ -381,7 +385,7 @@ const GlobalStyles = createGlobalStyle`
 
 			nav ul li {
 				a {
-					font-size: 15px;
+					font-size: 14px;
 					font-weight: 500;
 				}
 			}
@@ -401,8 +405,6 @@ const GlobalStyles = createGlobalStyle`
     }
 
     .floating-wrapper {
-      right: 5vh;
-
 			.floating img {
 				width: 38px;
 			}
@@ -464,12 +466,12 @@ const GlobalStyles = createGlobalStyle`
 				width: 100%;
 				margin: 20px 0 0;
 			}
-
-			.floating-wrapper {
-				right: 4%;
-				bottom: 60px;
-			}
     }
+		
+		.floating-wrapper {
+			right: 4%;
+			bottom: 60px;
+		}
   }
 `;
 

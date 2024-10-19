@@ -25,7 +25,7 @@ export default DayTab;
 const Tab = styled.ul`
   flex-wrap: nowrap;
   gap: 32px;
-  margin: 40px 0 20px ${props => (props.isDetailPage ? '30px' : '0')}; // isDetailPage에 따라 좌측 마진 설정
+  margin: 30px 0 10px ${props => (props.isDetailPage ? '30px' : '0')}; // isDetailPage에 따라 좌측 마진 설정
 
   > li {
     cursor: pointer;
@@ -33,5 +33,14 @@ const Tab = styled.ul`
     &.active {
       color: #121212;
     }
+  }
+
+  /* media size */
+  @media (max-width: 1400px) {
+    margin: 20px 0 5px ${props => (props.isDetailPage ? '30px' : '0')};
+  }
+
+  @media (max-width: 700px) {
+    margin: 14px 0 10px ${props => (props.isDetailPage ? '30px' : '0')};
   }
 `;

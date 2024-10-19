@@ -51,11 +51,10 @@ const PlaceList = ({
 export default PlaceList;
 
 const List = styled.ol`
-  height: 40vh;
+  height: 36vh;
   overflow-y: auto;
   ${scrollbar}
-
-  padding: ${props => (props.isDetailPage ? '0 30px' : '0')}; // 좌우 패딩 설정
+  padding: ${props => (props.isDetailPage ? '0 30px' : '0')};
 
   > li {
     flex-wrap: nowrap;
@@ -80,10 +79,15 @@ const List = styled.ol`
     }
   }
 
-  // 오른쪽 패딩을 명시적으로 설정
+  // isDetailPage 페이지
   ${props =>
     !props.isDetailPage &&
     `
     padding-right: 10px; 
   `}
+
+  /* media size */
+  @media (max-width: 700px) {
+    height: 22vh;
+  }
 `;

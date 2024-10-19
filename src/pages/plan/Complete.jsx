@@ -153,7 +153,7 @@ const Complete = () => {
 
         <button className="btn_view pt_gy size_md weight_md" onClick={handleFullView}>전체 화면 보기</button>
 
-        <div className="button_box flex">
+        <div className="button_box inner flex">
           <Button size="xxl" color="white" style={{ borderColor: '#eee' }} className="weight_md" onClick={handleDownloadPDF}>
             PDF로 저장
           </Button>

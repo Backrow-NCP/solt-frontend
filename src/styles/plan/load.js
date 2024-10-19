@@ -12,7 +12,7 @@ const PlanLoad = styled.div`
 
   // 백그라운드
   .background {
-    position: absolute;
+    position: fixed;
     z-index: 2;
     top: 0;
     left: 0;
@@ -24,7 +24,7 @@ const PlanLoad = styled.div`
 
   // 컨텐츠
   .load_cont {
-    position: absolute;
+    position: fixed;
     z-index: 3;
     top: 50%;
     left: 0;
@@ -112,7 +112,75 @@ const PlanLoad = styled.div`
   }
 
   .slide_desc {
-    margin-top: 15px;
+    margin: 15px 12px 0;
+  }
+
+  /* media size */
+  @media (max-width: 1000px) {
+    .load_cont {
+      > div {
+        padding: 20px 14px 40px;
+      }
+
+      .load_icon {
+        margin-bottom: 0;
+      }
+
+      h2 {
+        font-size: 26px;
+      }
+    }
+
+    .slick-prev {
+      left: -22%;
+    }
+
+    .slick-next {
+      right: -22%;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .load_cont {
+      > div {
+        min-width: 250px;
+        padding: 15px 12px 30px;
+      }
+
+      .load_icon {
+        height: 30px;
+
+        img {
+          width: 48px;
+        }
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+    }
+
+    .slick-slider {
+      margin-top: 15px;
+    }
+
+    .slick-prev,
+    .slick-next {
+      width: 28px;
+
+      &::before {
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    .slick-prev {
+      left: -26%;
+    }
+
+    .slick-next {
+      right: -22%;
+    }
   }
 `;
 

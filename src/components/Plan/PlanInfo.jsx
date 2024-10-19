@@ -82,4 +82,58 @@ const Info = styled.div`
       }
     }
   }
+
+  /* media size */
+  @media (max-width: 1400px) {
+    > span {
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 22px;
+    }
+
+    .price {
+      margin-top: 12px;
+
+      > strong {
+        font-size: 20px;
+
+        span {
+          font-size: 38px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 700px) {
+    > span {
+      margin-bottom: 4px;
+      padding-left: 22px;
+      line-height: 18px;
+      background-size: 18px auto;
+    }
+
+    h2 {
+      font-size: 17px;
+    }
+
+    .price {
+      > span {
+        padding: 4px 6px;
+        font-size: 10px;
+      }
+
+      > strong {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1;
+
+        span {
+          font-size: 25px;
+        }
+      }
+    }
+  }
 `;

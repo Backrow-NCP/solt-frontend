@@ -315,4 +315,81 @@ const Modify = styled.div`
       }
     }
   }
+
+  /* media size */
+  @media (max-width: 1400px) {
+    left: 40%;
+    width: 32%;
+    min-width: 300px;
+    padding: 30px 20px 30px 30px;
+  }
+
+  @media (max-width: 1020px) {
+    left: 420px;
+  }
+
+  @media (max-width: 700px) {
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    h3 {
+      margin-bottom: 20px;
+    }
+
+    .directly {
+      input {
+        height: 55px;
+        padding: 0 20px;
+        border-radius: 10px;
+        font-size: 13px;
+      }
+    }
+
+    .recomm {
+      ul {
+        height: 20vh;
+
+        li {
+          padding: 14px;
+          border-radius: 10px;
+
+          img {
+            width: 50px;
+            margin-right: 10px;
+            border-radius: 8px;
+          }
+
+          .place_info {
+            width: calc(100% - 100px);
+
+            p {
+              height: 27px;
+              margin-top: 3px;
+              font-size: 11px;
+              line-height: 13px;
+            }
+          }
+
+          .place_price {
+            width: 100px;
+            text-align: right;
+
+            strong {
+              display: block;
+              margin-top: 5px;
+            }
+          }
+
+        }
+      }
+    }
+
+    button {
+      white-space: nowrap;
+
+      &:first-of-type {
+        margin: 20px 0 5px;
+      }
+    }
+  }
 `;

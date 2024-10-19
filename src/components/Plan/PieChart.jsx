@@ -123,7 +123,8 @@ const Graph = styled.div`
   position: absolute;
   right: 10px;
   bottom: 0;
-  width: 80px;
+  width: 70px;
+  text-align: left;
 
   > span {
     position: absolute;
@@ -167,6 +168,8 @@ const Graph = styled.div`
   }
 
   > canvas {
+    width: 67px !important;
+    height: 67px !important;
     cursor: pointer;
   }
 
@@ -201,5 +204,48 @@ const Graph = styled.div`
 
   &.active > .info {
     display: block;
+  }
+
+  /* media size */
+  @media (max-width: 1300px) {
+    width: 42px;
+
+    > canvas {
+      width: 40px !important;
+      height: 40px !important;
+    }
+
+    > .info {
+    right: -10px;
+
+    li {
+      gap: 8px;
+      font-size: 11px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    > span {
+      display: none;
+    }
+
+    > .info {
+      top: 0;
+      right: 0;
+      left: -10px !important;
+      min-width: 100px;
+      padding: 8px 12px;
+      transform: translateX(-100%);
+
+      li {
+        gap: 8px;
+        font-size: 11px;
+
+        .value {
+          display: none;
+        }
+      }
+    }
+      
   }
 `;

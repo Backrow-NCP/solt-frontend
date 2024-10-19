@@ -127,4 +127,58 @@ const Complete = styled.div`
       margin-top: 8px;
     }
   }
+
+  /* media size */
+  @media (max-width: 700px) {
+    ol li {
+    gap: 5px;
+
+    > div {
+      box-sizing: border-box;
+    }
+
+    .place_info {
+      width: calc(100% - 110px);
+
+      .place_time {
+        display: block;
+        margin-bottom: 4px;
+        line-height: 20px;
+      }
+      
+      .place_category {
+        display: none;
+      }
+    }
+
+    .place_price {
+      width: 80px;
+      margin-top: 20px;
+    }
+
+    .transport_info {
+      span:last-child {
+        display: none;
+      }
+    }
+  }
+
+  @media (max-width: 470px) {
+    ol li {
+      flex-wrap: wrap;
+      gap: 0;
+
+      .place_info {
+        width: calc(100% - 30px)
+      }
+      .place_price {
+        width: 100%;
+        margin: 0;
+
+        p {
+          display: none;
+        }
+      }
+    }
+  }
 `;

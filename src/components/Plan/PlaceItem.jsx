@@ -235,4 +235,45 @@ const Item = styled.li`
       }
     }
   }
+
+  /* media size */
+  @media (max-width: 700px) {
+    .place_info {
+      width: calc(100% - 214px);
+
+      > span {
+        display: none;
+      }
+
+      > div {
+        span:last-of-type {
+          display: none;
+        }
+        
+        strong {
+          display: block;
+          margin: 2px 0 0;
+        }
+      }
+    }
+
+    .place_price {
+      width: 90px;
+
+      input {
+        width: 70px;
+        font-size: 14px;
+      }
+    }
+
+    .place_change {
+      width: 130px;
+
+      button,
+      button.active {
+        padding: 10px 0;
+        font-size: 13px;
+      }
+    }
+  }
 `;

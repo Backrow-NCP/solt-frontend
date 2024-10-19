@@ -8,7 +8,7 @@ const PlanProduce = styled.div`
   .plan_cont {
     position: fixed;
     z-index: 1;
-    top: 50%;
+    top: 54%;
     left: 20px;
     width: 568px;
     padding: 40px 30px 40px 40px;
@@ -34,7 +34,8 @@ const PlanProduce = styled.div`
   }
 
   // 지도 영역
-  .gmnoprint {
+  .gmnoprint,
+  .gm-style-moc {
     display: none;
   }
   .gm-style {
@@ -65,6 +66,43 @@ const PlanProduce = styled.div`
     width: 20px !important;
     height: 20px !important;
     margin: 0 !important;
+  }
+
+  /* media size */
+  @media (max-width: 1400px) {
+    .plan_cont {
+      width: 35%;
+      min-width: 380px;
+      padding: 30px 20px 30px 30px;
+    }
+  }
+
+  @media (max-width: 1215px) {
+    margin-bottom: -150px;
+  }
+
+  @media (max-width: 700px) {
+    margin-bottom: -100px;
+
+    .plan_cont {
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      transform: none;
+      border-radius: 25px 25px 0 0;
+      box-shadow: none;
+      padding: 20px 15px 20px 25px;
+
+      > button {
+        margin-top: 5px;
+
+        &:first-of-type {
+          margin-top: 15px;
+        }
+      }
+    }
   }
 `;
 

@@ -97,6 +97,36 @@ const PlanComplete = styled.div`
       padding: 20px 0;
     }
   }
+
+  /* media size */
+  @media (max-width: 700px) {
+    .price {
+      > strong {
+        font-size: 20px;
+
+        span {
+          font-size: 26px;
+        }
+      }
+    }
+
+    .slick-slider {
+      .slick-slide {
+        margin-right: 12px;
+        padding: 20px 15px;
+        border-radius: 12px;
+      }
+    }
+    
+    .button_box {
+      gap: 10px;
+
+      button {
+        padding: 15px 0;
+        font-size: 15px;
+      }
+    }
+  }
 `;
 
 export default PlanComplete;
