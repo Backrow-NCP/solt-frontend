@@ -193,7 +193,9 @@ const Survey = () => {
 			sessionStorage.setItem('planData', JSON.stringify(data));
 
 			// 서버에 전송
-			const response = await apiClient.post('/plans/recom', data);
+			const response = await apiClient.post('/plans/recom', data, {
+        withCredentials: false, // 인증 정보 없이 요청
+      });
 			// console.log('응답: ', response.data);
 
 			// 이동
