@@ -47,7 +47,7 @@ const BoardDetail = ({ boardData }) => {
 
   const handleEdit = async () => {
     try {
-      const response = await axios.get(`board/edit/${boardData.boardId}`);
+      const response = await axios.get(`/board/edit/${boardData.boardId}`);
       console.log('Edit Response:', response.data);
     } catch (error) {
       console.error('Error fetching edit data:', error);

@@ -24,7 +24,6 @@ const ReplySection = ({ boardId }) => {
   const [comments, setComments] = useState([]); // 댓글 상태
   const [visibleReplyInputs, setVisibleReplyInputs] = useState({}); // 각 댓글에 대한 답글 입력 가시성 관리
   const [replyInputValues, setReplyInputValues] = useState({}); // 각 답글 입력 상태 관리
-  const [visibleSubReplies, setVisibleSubReplies] = useState({}); // 각 댓글의 가시적인 대댓글 수
   const [isEditing, setIsEditing] = useState(false);
   const [replyContent, setReplyContent] = useState({}); // 초기 댓글 내용 및 수정 댓글 내용 저장
 

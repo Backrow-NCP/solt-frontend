@@ -1,39 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BoardContainer } from '../../styles/board/boardList';
-import Pagination from '../../components/Board/Pagination';
-import BoardItem from '../Board/BoardItem';
+import Pagination from './Pagination';
+import BoardItem from './BoardItem';
 
 const BoardList = () => {
   const [items, setItems] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const [pageData, setPageData] = useState({
+    page: 1,
+    size: 6,
+    total: 0,
+    startPage: 1,
+    endPage: 3, // 최대 10개 페이지 보여주도록 설정
+    prev: false,
+    next: true,
+  });
+  const { page, size, total, startPage, endPage, prev, next } = pageData;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const url = `${process.env.REACT_APP_API_URL}/board/list`;
-        // const params = `?page=${currentPage}&size=${itemsPerPage}`;
-        // const fullUrl = url + params; // 전체 URL 확인
-        // console.log('Fetching data from:', fullUrl); // 전체 URL 로그
-        // const response = await axios.get(fullUrl);
         const response = await axios.get('/sampledata.json');
-        console.log(response);
-        setItems(response.data.dtoList); // 데이터 배열을 상태에 저장
+        const data = response.data;
+
+        setItems(data.dtoList); // 게시글 목록 저장
+        setPageData(prevData => ({
+          ...prevData,
+          total: data.total,
+          prev: data.page > 1,
+          next: data.page * size < data.total,
+        }));
       } catch (error) {
         console.error('데이터를 가져오는 중 오류 발생:', error);
       }
     };
 
     fetchData();
-  }, [currentPage]); // currentPage 변경 시 fetchData 호출
-
-  const totalPages = Math.ceil(items.length / itemsPerPage);
+  }, []); // 처음 로드 시 데이터 가져오기
 
   // 현재 페이지에 해당하는 게시글만 slice로 추출
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const indexOfLastItem = page * size;
+  const indexOfFirstItem = indexOfLastItem - size;
   const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = newPage => {
+    setPageData(prevData => ({
+      ...prevData,
+      page: newPage,
+      startPage: Math.floor((newPage - 1) / 10) * 10 + 1, // 새로운 startPage 계산
+      endPage: Math.min(startPage + 9, Math.ceil(total / size)), // 새로운 endPage 계산
+    }));
+  };
+
+  const handleNextGroup = () => {
+    setPageData(prevData => ({
+      ...prevData,
+      startPage: prevData.startPage + 10,
+      endPage: Math.min(prevData.endPage + 10, Math.ceil(total / size)),
+    }));
+  };
+
+  const handlePrevGroup = () => {
+    setPageData(prevData => ({
+      ...prevData,
+      startPage: Math.max(prevData.startPage - 10, 1),
+      endPage: Math.max(prevData.endPage - 10, 10), // 최소 10으로 설정
+    }));
+  };
 
   if (!Array.isArray(items) || items.length === 0) {
     return (
@@ -61,10 +94,17 @@ const BoardList = () => {
           />
         ))}
       </BoardContainer>
+
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
+        page={page}
+        total={Math.ceil(total / size)} // 전체 페이지 수
+        startPage={startPage}
+        endPage={endPage}
+        prev={prev}
+        next={next}
+        onPageChange={handlePageChange} // 페이지 변경 핸들러
+        onNextGroup={handleNextGroup} // 다음 그룹 핸들러
+        onPrevGroup={handlePrevGroup} // 이전 그룹 핸들러
       />
     </>
   );
