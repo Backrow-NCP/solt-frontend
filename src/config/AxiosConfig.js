@@ -30,12 +30,11 @@ const setupInterceptors = (setLoading) => {
       if (token) {
         config.headers['Authorization'] = token;
       }
-
       return config;
     },
-    (error) => {
-      setLoading && setLoading(false); // 요청 실패 시 로딩 종료
-      return Promise.reject(error);
+      (error) => {
+        setLoading && setLoading(false); // 요청 실패 시 로딩 종료
+        return Promise.reject(error);
     }
   );
 
