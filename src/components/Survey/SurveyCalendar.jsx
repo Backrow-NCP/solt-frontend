@@ -8,7 +8,7 @@ import bottom from '../../assets/images/ico/arrow_bottom.svg'
 import left from '../../assets/images/ico/arrow_left.svg'
 import right from '../../assets/images/ico/arrow_right.svg'
 
-const SurveyCalendar = ({ onDateSelect, selectedDates  }) => {
+const SurveyCalendar = ({ onDateSelect, selectedDates, planDuration }) => {
   const [dateRange, setDateRange] = useState(selectedDates || [null, null]);
   const [startDate, endDate] = dateRange;
 
@@ -19,16 +19,23 @@ const SurveyCalendar = ({ onDateSelect, selectedDates  }) => {
 
   const handleDateChange = (update) => {
     const [newStartDate, newEndDate] = update;
-
-    // 최대 5일로 제한
-    if (newStartDate && newEndDate && differenceInDays(newEndDate, newStartDate) > 4) {
-      alert("최대 5일까지만 선택할 수 있습니다.");
-      return;
-    }
-
-    setDateRange(update);
-    if (newStartDate) {
-      onDateSelect(update);
+    
+    if (planDuration && planDuration > 1) {
+      const newEndDate = new Date(newStartDate);
+      newEndDate.setDate(newStartDate.getDate() + planDuration - 1); // 기존 일정의 기간만큼 날짜 설정
+      setDateRange([newStartDate, newEndDate]);
+      onDateSelect([newStartDate, newEndDate]);
+    } else {
+      // 최대 5일로 제한
+      if (newStartDate && newEndDate && differenceInDays(newEndDate, newStartDate) > 4) {
+        alert("최대 5일까지만 선택할 수 있습니다.");
+        return;
+      }
+  
+      setDateRange(update);
+      if (newStartDate) {
+        onDateSelect(update);
+      }
     }
   };
 
