@@ -9,6 +9,7 @@ import GlobalStyles from '../src/styles/global.js';
 import Survey from './pages/plan/Survey';
 import Produce from './pages/plan/Produce';
 import Complete from './pages/plan/Complete';
+import SurveyEdit from './pages/plan/modify/SurveyEdit.jsx';
 
 // 게시물 관리
 import Write from './pages/board/Write';
@@ -63,6 +64,7 @@ function App() {
               <Route path="/plan/survey" element={<Survey />} />
               <Route path="/plan/produce" element={<Produce />} />
               <Route path="/plan/complete" element={<Complete />} />
+              <Route path="/plan/survey/:planId" element={<SurveyEdit />} />
 
               {/* 게시물 관리 */}
               <Route path="/board/write" element={<Write />} />
