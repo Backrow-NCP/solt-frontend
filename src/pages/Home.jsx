@@ -9,30 +9,29 @@ import banner from '../assets/images/bn/main.jpg';
 import animationLogo from '../assets/images/ico/BannerObj.json';
 import service01 from '../assets/images/bn/service_01.jpg';
 import service02 from '../assets/images/bn/service_02.jpg';
-import sample from '../assets/images/bn/sample.jpg';
+import special01 from '../assets/images/bn/service_info_01.jpg';
+import special02 from '../assets/images/bn/service_info_02.jpg';
+import special03 from '../assets/images/bn/service_info_03.jpg';
 
 const Home = () => {
   const specialItems = [
     {
-      subtitle: '예산이 얼마나 필요할까?',
-      title: '사용자 일정에 따라<br />즉시 반영되는 총 예상 금액!',
-      imgSrc: sample,
-
-      imgAlt: 'sample',
-    },
-    {
-      subtitle: '솔트가 꼼꼼하게 따져드려요!',
-      title: '이번 여행, 어디에 제일 썼지?<br />경비 비율을 한눈에 확인하세요!',
-      imgSrc: sample,
-
-      imgAlt: 'sample',
-    },
-    {
       subtitle: '키워드 추천 해드려요',
       title: '내 취향과 라이프스타일에 딱!<br />맞춤형 키워드 추천',
-      imgSrc: sample,
-
-      imgAlt: 'sample',
+      imgSrc: special01,
+      imgAlt: '여행 테마 선택 이미지',
+    },
+    {
+      subtitle: '예산이 얼마나 필요할까?',
+      title: '이번 여행, 어디에 제일 썼지?<br />경비 비율을 한눈에 확인하세요!',
+      imgSrc: special02,
+      imgAlt: '일정 예상 금액 확인 이미지',
+    },
+    {
+      subtitle: '일정 소장하고 공유해요',
+      title: '완성된 나만의 일정,<br />파일로 소장하고, 공유하기도 가능!',
+      imgSrc: special03,
+      imgAlt: '일정 저장 이미지',
     },
   ];
 
