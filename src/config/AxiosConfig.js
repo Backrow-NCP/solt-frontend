@@ -29,13 +29,14 @@ const setupInterceptors = (setLoading) => {
       // 토큰이 있으면 요청 헤더에 Authorization 추가
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
+      }else {
+        console.error('토큰이 없습니다.');
       }
-
       return config;
     },
-    (error) => {
-      setLoading && setLoading(false); // 요청 실패 시 로딩 종료
-      return Promise.reject(error);
+      (error) => {
+        setLoading && setLoading(false); // 요청 실패 시 로딩 종료
+        return Promise.reject(error);
     }
   );
 
