@@ -240,9 +240,6 @@ const Calendar = styled.div`
     .react-datepicker__month-container:last-child {
       display: none;
     }
-    .react-datepicker button.react-datepicker__navigation {
-      display: none;
-    }
     .react-datepicker__month-dropdown-container select,
     .react-datepicker__year-dropdown-container select {
       font-size: 14px;

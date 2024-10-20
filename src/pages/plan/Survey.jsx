@@ -89,9 +89,14 @@ const Survey = () => {
 
   // 장소 선택 핸들러 추가
   const handlePlaceSelect = (places) => {
+    const formattedPlaces = places.map(place => ({
+      placeName: place.name,
+      addr: place.address,
+    }));
+  
     setAnswers(prevAnswers => ({
       ...prevAnswers,
-      place: places,
+      place: formattedPlaces,
     }));
   };
 
@@ -101,6 +106,8 @@ const Survey = () => {
 
       if (questionType === 'calendar') {
          return !answers.calendar;
+      } else if (questionType === 'area') {
+        return !answers.area;
       } else if (questionType === 'keywords') {
          const { travelStyle, theme, environment } = answers.keywords;
          return travelStyle.length === 0 || theme.length === 0 || environment.length === 0;
@@ -147,63 +154,48 @@ const Survey = () => {
   };
 	
 	// Axios
-	const handleFinish = async () => {
-		try {
-			// keywords 데이터 themes 병합
-			const themes = [
-				...answers.keywords.travelStyle.map(item => item.name),
-				...answers.keywords.theme.map(item => item.name),
-				...answers.keywords.environment.map(item => item.name),
-			];
-
-			// 전송할 데이터
-			const data = {
-				title: answers.area,
-				memberId: 0,
-				places: [
-					{
-						placeId: 0,
-						placeName: username,
-						addr: "",
-						price: 0,
-						startTime: "",
-						endTime: "",
-						checker: false
-					}
-				],
-				routes: [
-					{
-						routeId: 0,
-						startTime: "",
-						endTime: "",
-						price: 0,
-						transportationId: 0,
-						distance: 0,
-						travelTime: 0,
-						checker: false
-					}
-				],
-				themes: themes,
-				location: answers.area || "서울특별시",
-				startDate: answers.calendar[0],
-				endDate: answers.calendar[1],
-			};
-
-			// 세션 스토리지에 저장
-			sessionStorage.setItem('planData', JSON.stringify(data));
-
-			// 서버에 전송
-			const response = await apiClient.post('/plans/recom', data, {
-        withCredentials: false, // 인증 정보 없이 요청
-      });
-			// console.log('응답: ', response.data);
-
-			// 이동
-			navigate('/plan/produce');
-		} catch (error) {
-			console.error('서버 요청 오류 발생: ', error);
-		}
-	};
+  const handleFinish = async () => {
+    try {
+      const themes = [
+        ...answers.keywords.travelStyle.map(item => item.name),
+        ...answers.keywords.theme.map(item => item.name),
+        ...answers.keywords.environment.map(item => item.name),
+      ];
+  
+      const startDate = answers.calendar[0].toISOString().split('T')[0];
+      const endDate = answers.calendar[1].toISOString().split('T')[0];
+  
+      const data = {
+        title: answers.area || '맞춤 플랜',
+        memberId: 0,
+        places: answers.place.map(place => ({
+          placeName: place.placeName,
+          addr: place.addr,
+          price: 0,
+          description: "",
+          startTime: "",
+          endTime: "",
+          checker: false
+        })),
+        themes: themes,
+        location: answers.area || "서울특별시",
+        startDate,
+        endDate
+      };
+  
+      console.log('전송할 데이터: ', data);
+  
+      sessionStorage.setItem('planData', JSON.stringify(data));
+  
+      const response = await apiClient.post('/plans/recom', data);
+      console.log('응답: ', response.data);
+  
+      navigate('/plan/produce');
+    } catch (error) {
+      console.error('요청 오류: ', error);
+    }
+  };
+  
 
   // 버튼 렌더링
   const renderButtons = () => {

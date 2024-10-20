@@ -8,6 +8,13 @@ import Place03 from '../../assets/images/bn/survey_place_03.jpg';
 import Place04 from '../../assets/images/bn/survey_place_04.jpg';
 import DelBtn from '../../assets/images/ico/btn_survey_place_del.svg';
 
+const seoulBounds = {
+  north: 37.7015,
+  south: 37.4133,
+  west: 126.7342,
+  east: 127.179,
+};
+
 const SurveyPlace = ({ onPlaceSelect }) => {
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
@@ -20,45 +27,97 @@ const SurveyPlace = ({ onPlaceSelect }) => {
     libraries,
   });
 
+  // 장소 주소 가져오기
+  const getAddressFromComponents = (addressComponents) => {
+    // 번지, 도로명, 건물 번호, 구, 시/도, 국가
+    let streetNumber = '';
+    let route = '';
+    let subpremise = '';
+    let locality = '';
+    let administrativeAreaLevel1 = '';
+    let country = '';
+  
+    addressComponents.forEach(component => {
+      const types = component.types;
+  
+      if (types.includes('subpremise')) {
+        subpremise = component.long_name;
+      } else if (types.includes('premise')) {
+        streetNumber = component.long_name;
+      } else if (types.includes('route')) {
+        route = component.long_name;
+      } else if (types.includes('sublocality') || types.includes('sublocality_level_1')) {
+        locality = component.long_name;
+      } else if (types.includes('administrative_area_level_1')) {
+        administrativeAreaLevel1 = component.long_name;
+      } else if (types.includes('country')) {
+        country = component.long_name;
+      }
+    });
+  
+    // 최종 주소
+    let fullAddress = `${country} ${administrativeAreaLevel1} ${locality} ${route} ${streetNumber} ${subpremise}`.trim();
+  
+    // 공백 정리
+    return fullAddress.replace(/\s+/g, ' ').trim();
+  };
+  
   // 자동 완성
-	useEffect(() => {
+  useEffect(() => {
     if (isLoaded && !loadError) {
       const initializeAutocomplete = () => {
         if (inputRef.current && window.google) {
           autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
             componentRestrictions: { country: 'KR' },
-            fields: ['place_id', 'name', 'geometry'],
+            bounds: seoulBounds,
+            strictBounds: true,
+            fields: ['place_id', 'name', 'geometry', 'address_components'],
           });
-  
+
           autocompleteRef.current.addListener('place_changed', () => {
             const place = autocompleteRef.current.getPlace();
             if (place && place.geometry) {
+              // 서울특별시만 선택 가능
+              const isSeoul = place.address_components.some(
+                (component) => component.long_name === '서울특별시'
+              );
+          
+              if (!isSeoul) {
+                alert('서울특별시만 선택할 수 있습니다.');
+                return;
+              }
+          
+              const address = getAddressFromComponents(place.address_components);
               const newPlace = {
                 placeId: place.place_id,
                 name: place.name,
+                address: address || place.formatted_address, // 주소가 없으면 formatted_address 사용
                 latitude: place.geometry.location.lat(),
                 longitude: place.geometry.location.lng(),
               };
-  
+          
               // 중복 체크 후 상태 업데이트
               setSelectedPlaces((prevPlaces) => {
                 const isAlreadyAdded = prevPlaces.some(p => p.placeId === newPlace.placeId);
                 if (!isAlreadyAdded) {
                   const updatedPlaces = [...prevPlaces, newPlace];
-                  onPlaceSelect(updatedPlaces); // 렌더링 후 상태 업데이트
+                  onPlaceSelect(updatedPlaces);
                   return updatedPlaces;
                 }
                 return prevPlaces;
               });
+            } else {
+              alert('구글맵에서 현재 주소를 찾을 수 없습니다.');
             }
             inputRef.current.value = '';
           });
+          
         }
       };
-  
+
       initializeAutocomplete();
     }
-  }, [isLoaded, loadError, onPlaceSelect]);  
+  }, [isLoaded, loadError, onPlaceSelect]);
 
   // 장소 삭제
   const handleClearPlace = useCallback((placeId) => {
@@ -69,19 +128,19 @@ const SurveyPlace = ({ onPlaceSelect }) => {
 
   // 요즘 많이 찾아요
   const placeRecomms = [
-    { id: '1', name: '북촌 한옥마을', imgSrc: Place01 },
-    { id: '2', name: '국립중앙박물관', imgSrc: Place02 },
-    { id: '3', name: '동대문디자인플라자', imgSrc: Place03 },
-    { id: '4', name: '청계천', imgSrc: Place04 },
+    { id: '1', name: '북촌 한옥마을', imgSrc: Place01, placeId: 'ChIJT8H4r9qifDURmuXJ_6m6vM0' },
+    { id: '2', name: '국립중앙박물관', imgSrc: Place02, placeId: 'ChIJN2x0fu2ifDUR51BupseGYmE' },
+    { id: '3', name: '동대문디자인플라자', imgSrc: Place03, placeId:'ChIJ8xRYr29FezUR3AtFqx2pIlw' },
+    { id: '4', name: '청계천', imgSrc: Place04, placeId:'ChIJIwCT4-yifDUR1E63iG76hr0' },
   ];
 
   // 추천 장소 클릭
   const handleRecommendPlace = useCallback((place) => {
     setSelectedPlaces((prevPlaces) => {
-      const isAlreadyAdded = prevPlaces.some(p => p.placeId === place.id);
+      const isAlreadyAdded = prevPlaces.some(p => p.placeId === place.placeId);
       if (!isAlreadyAdded) {
         const newPlace = {
-          placeId: place.id,
+          placeId: place.placeId,
           name: place.name,
         };
         const updatedPlaces = [...prevPlaces, newPlace];
