@@ -18,6 +18,7 @@ import {
   ReplyDeleteButton,
 } from '../../styles/board/replySection'; // styled-components를 가져옵니다.
 import defaultProfileImage from '../../assets/images/ico/profile.png';
+import Pagination from './Pagination';
 
 const ReplySection = ({ boardId }) => {
   const [mainInputValue, setMainInputValue] = useState(''); // 댓글 입력 상태
@@ -26,20 +27,38 @@ const ReplySection = ({ boardId }) => {
   const [replyInputValues, setReplyInputValues] = useState({}); // 각 답글 입력 상태 관리
   const [isEditing, setIsEditing] = useState(false);
   const [replyContent, setReplyContent] = useState({}); // 초기 댓글 내용 및 수정 댓글 내용 저장
+  const [pageData, setPageData] = useState({});
+  const indexOfLastItem = pageData.page * pageData.size;
+  const indexOfFirstItem = indexOfLastItem - pageData.size;
+  // const currentItems = renderComments().slice(
+  //   indexOfFirstItem,
+  //   indexOfLastItem
+  // );
 
+  // console.log('커랜트 아이템', currentItems);
   console.log('보드아이디. content', boardId.content);
-  const fetchReplies = async () => {
-    try {
-      const response = await axios.get('/sampleReplyData.json');
-      setComments(response.data.dtoList);
-    } catch (error) {
-      console.error('Error fetching replies:', error);
-    }
-  };
-
   useEffect(() => {
+    const fetchReplies = async () => {
+      try {
+        const response = await axios.get('/sampleReplyData.json');
+        const data = response.data;
+
+        setComments(data.dtoList);
+        setPageData({
+          page: data.page,
+          size: data.size,
+          total: data.total,
+          startPage: data.startPage,
+          endPage: data.endPage,
+          prev: data.prev,
+          next: data.next,
+        });
+      } catch (error) {
+        console.error('Error fetching replies:', error);
+      }
+    };
     fetchReplies();
-  }, []);
+  }, [pageData.page]); // 페이지가 변경될 때마다 데이터 가져오기
 
   const handleMainInputChange = e => {
     setMainInputValue(e.target.value);
@@ -122,15 +141,18 @@ const ReplySection = ({ boardId }) => {
   };
 
   // 댓글 렌더링
-  const renderComments = () => {
+  const renderComments = size => {
     const allReplies = comments.map(comment => ({
       ...comment,
       isSubReply: comment.parentReplyId !== 0,
     }));
 
+    let count = 0;
+
     return allReplies.map((reply, index) => {
-      if (reply.parentReplyId === 0) {
-        console.log('리플라이 만', reply);
+      if (reply.parentReplyId === 0 && count < size) {
+        // 부모 댓글인 경우
+        count++;
         return (
           <>
             <ReplyItem key={reply.replyId}>
@@ -207,7 +229,7 @@ const ReplySection = ({ boardId }) => {
                 )}
               </ReplyContent>
             </ReplyItem>
-            {renderSubReplies(reply.replyId)}
+            {renderSubReplies(reply.replyId, size - count)}
           </>
         );
       } else {
@@ -217,54 +239,59 @@ const ReplySection = ({ boardId }) => {
   };
 
   // 대댓글 렌더링
-  const renderSubReplies = parentReplyId => {
+  const renderSubReplies = (parentReplyId, size) => {
     const subReplies = comments.filter(
       subReply => subReply.parentReplyId === parentReplyId
     ); // 대댓글 필터링
 
-    return subReplies.map((subReply, index) => {
-      const isLastReply = index === subReplies.length - 1; // 마지막 대댓글 여부 확인
+    let count = 0;
 
-      return (
-        <ReplyItem
-          key={subReply.replyId}
-          style={{
-            marginLeft: '30px',
-            marginBottom: isLastReply ? '30px' : '20px', // 마지막 대댓글의 경우 마진을 더 줌
-            marginTop: '-5px',
-          }}
-        >
-          <ProfileImage
-            src={defaultProfileImage}
-            alt={`${subReply.member.name}의 프로필`}
-          />
-          <ReplyContent>
-            <ReplyMeta>
-              <ReplyName>{subReply.member.name}</ReplyName>{' '}
-              {/* 수정 및 삭제 버튼 추가 */}
-              {subReply.member.memberId === 1 && ( // memberId가 1인 경우에만 버튼 표시
-                <div
-                  style={{
-                    marginRight: 'auto',
-                    marginTop: '-1px',
-                  }}
-                >
-                  <ReplyEditButton
-                    onClick={() => handleReplyEdit(subReply, subReply.content)}
+    return subReplies.map((subReply, index) => {
+      if (count < size) {
+        // 대댓글 출력 갯수 체크
+        count++;
+        const isLastReply = index === subReplies.length - 1;
+        return (
+          <ReplyItem
+            key={subReply.replyId}
+            style={{
+              marginLeft: '30px',
+              marginBottom: isLastReply ? '30px' : '20px', // 마지막 대댓글의 경우 마진을 더 줌
+              marginTop: '-5px',
+            }}
+          >
+            <ProfileImage
+              src={defaultProfileImage}
+              alt={`${subReply.member.name}의 프로필`}
+            />
+            <ReplyContent>
+              <ReplyMeta>
+                <ReplyName>{subReply.member.name}</ReplyName>{' '}
+                {/* 수정 및 삭제 버튼 추가 */}
+                {subReply.member.memberId === 1 && ( // memberId가 1인 경우에만 버튼 표시
+                  <div
+                    style={{
+                      marginRight: 'auto',
+                      marginTop: '-1px',
+                    }}
                   >
-                    수정
-                  </ReplyEditButton>
-                  <ReplyDeleteButton onClick={handleReplyDelete}>
-                    삭제
-                  </ReplyDeleteButton>
-                </div>
-              )}
-              <ReplyDate>
-                {new Date(subReply.regDate).toLocaleString()}
-              </ReplyDate>
-            </ReplyMeta>
-            {isEditing === subReply.replyId ? (
-              <>
+                    <ReplyEditButton
+                      onClick={() =>
+                        handleReplyEdit(subReply, subReply.content)
+                      }
+                    >
+                      수정
+                    </ReplyEditButton>
+                    <ReplyDeleteButton onClick={handleReplyDelete}>
+                      삭제
+                    </ReplyDeleteButton>
+                  </div>
+                )}
+                <ReplyDate>
+                  {new Date(subReply.regDate).toLocaleString()}
+                </ReplyDate>
+              </ReplyMeta>
+              {isEditing === subReply.replyId ? (
                 <ReplySubmitContainer>
                   <ReplyInput
                     value={replyContent[subReply.replyId] || ''} // 초기값 설정
@@ -286,13 +313,14 @@ const ReplySection = ({ boardId }) => {
                     수정
                   </SubmitButton>
                 </ReplySubmitContainer>
-              </>
-            ) : (
-              <p>{subReply.content}</p>
-            )}
-          </ReplyContent>
-        </ReplyItem>
-      );
+              ) : (
+                <p>{subReply.content}</p>
+              )}
+            </ReplyContent>
+          </ReplyItem>
+        );
+      }
+      return null; // 조건에 해당하지 않을 경우 null 반환
     });
   };
 
@@ -316,6 +344,40 @@ const ReplySection = ({ boardId }) => {
     // 삭제 기능 구현 예정
   };
 
+  const handlePageChange = newPage => {
+    setPageData(prevData => ({
+      ...prevData,
+      page: newPage,
+      startPage: Math.floor((newPage - 1) / 10) * 10 + 1, // 새로운 startPage 계산
+      endPage: Math.min(
+        prevData.startPage + 9,
+        Math.ceil(prevData.total / prevData.size)
+      ), // 새로운 endPage 계산
+    }));
+  };
+
+  const handleNextGroup = () => {
+    setPageData(prevData => ({
+      ...prevData,
+      startPage: prevData.startPage + 10,
+      endPage: Math.min(
+        prevData.startPage + 19, // endPage를 startPage + 19로 수정
+        Math.ceil(prevData.total / prevData.size)
+      ),
+    }));
+  };
+
+  const handlePrevGroup = () => {
+    setPageData(prevData => ({
+      ...prevData,
+      startPage: Math.max(prevData.startPage - 10, 1),
+      endPage: Math.max(prevData.endPage - 10, 10), // 최소 10으로 설정
+    }));
+  };
+  console.log(
+    'Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,',
+    renderComments(pageData.size)
+  );
   return (
     <ReplyContainer>
       <ReplySubmitContainer className="main-reply-submit">
@@ -330,7 +392,19 @@ const ReplySection = ({ boardId }) => {
       </ReplySubmitContainer>
 
       <ReplyListContainer>
-        {renderComments()} {/* 댓글과 대댓글 렌더링 */}
+        {renderComments(pageData.size)} {/* 댓글과 대댓글 렌더링 */}
+        <Pagination
+          page={pageData.page}
+          size={pageData.size}
+          total={pageData.total}
+          startPage={pageData.startPage}
+          endPage={pageData.endPage}
+          prev={pageData.prev} // JSON에서 가져온 prev 값
+          next={pageData.next} // JSON에서 가져온 next 값
+          onPageChange={handlePageChange} // 페이지 변경 핸들러
+          onNextGroup={handleNextGroup} // 다음 그룹 핸들러
+          onPrevGroup={handlePrevGroup} // 이전 그룹 핸들러
+        />
       </ReplyListContainer>
     </ReplyContainer>
   );

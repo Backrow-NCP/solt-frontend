@@ -6,16 +6,7 @@ import BoardItem from './BoardItem';
 
 const BoardList = () => {
   const [items, setItems] = useState([]);
-  const [pageData, setPageData] = useState({
-    page: 1,
-    size: 6,
-    total: 0,
-    startPage: 1,
-    endPage: 3, // 최대 10개 페이지 보여주도록 설정
-    prev: false,
-    next: true,
-  });
-  const { page, size, total, startPage, endPage, prev, next } = pageData;
+  const [pageData, setPageData] = useState({}); // 초기값 없이 설정
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,23 +15,26 @@ const BoardList = () => {
         const data = response.data;
 
         setItems(data.dtoList); // 게시글 목록 저장
-        setPageData(prevData => ({
-          ...prevData,
+        setPageData({
+          page: data.page,
+          size: data.size,
           total: data.total,
-          prev: data.page > 1,
-          next: data.page * size < data.total,
-        }));
+          startPage: data.startPage,
+          endPage: data.endPage,
+          prev: data.prev, // prev 값을 JSON에서 직접 가져오기
+          next: data.next, // next 값을 JSON에서 직접 가져오기
+        });
       } catch (error) {
         console.error('데이터를 가져오는 중 오류 발생:', error);
       }
     };
 
     fetchData();
-  }, []); // 처음 로드 시 데이터 가져오기
+  }, [pageData.page]);
 
   // 현재 페이지에 해당하는 게시글만 slice로 추출
-  const indexOfLastItem = page * size;
-  const indexOfFirstItem = indexOfLastItem - size;
+  const indexOfLastItem = pageData.page * pageData.size;
+  const indexOfFirstItem = indexOfLastItem - pageData.size;
   const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = newPage => {
@@ -48,7 +42,10 @@ const BoardList = () => {
       ...prevData,
       page: newPage,
       startPage: Math.floor((newPage - 1) / 10) * 10 + 1, // 새로운 startPage 계산
-      endPage: Math.min(startPage + 9, Math.ceil(total / size)), // 새로운 endPage 계산
+      endPage: Math.min(
+        prevData.startPage + 9,
+        Math.ceil(prevData.total / prevData.size)
+      ), // 새로운 endPage 계산
     }));
   };
 
@@ -56,7 +53,10 @@ const BoardList = () => {
     setPageData(prevData => ({
       ...prevData,
       startPage: prevData.startPage + 10,
-      endPage: Math.min(prevData.endPage + 10, Math.ceil(total / size)),
+      endPage: Math.min(
+        prevData.startPage + 19, // endPage를 startPage + 19로 수정
+        Math.ceil(prevData.total / prevData.size)
+      ),
     }));
   };
 
@@ -96,12 +96,13 @@ const BoardList = () => {
       </BoardContainer>
 
       <Pagination
-        page={page}
-        total={Math.ceil(total / size)} // 전체 페이지 수
-        startPage={startPage}
-        endPage={endPage}
-        prev={prev}
-        next={next}
+        page={pageData.page}
+        size={pageData.size}
+        total={pageData.total}
+        startPage={pageData.startPage}
+        endPage={pageData.endPage}
+        prev={pageData.prev} // JSON에서 가져온 prev 값
+        next={pageData.next} // JSON에서 가져온 next 값
         onPageChange={handlePageChange} // 페이지 변경 핸들러
         onNextGroup={handleNextGroup} // 다음 그룹 핸들러
         onPrevGroup={handlePrevGroup} // 이전 그룹 핸들러
