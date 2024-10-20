@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import apiClient, { setupInterceptors } from '../../../config/AxiosConfig';
+
+// 컴포넌트
 import SurveyCommon from '../../../styles/plan/survey';
 import SurveyCalendar from '../../../components/Survey/SurveyCalendar';
 import Button from '../../../components/Button';
 import PrevBtn from '../../../assets/images/ico/btn_survey_prev.svg';
+import Loading from '../Loading';
 
 const SurveyEdit = () => {
   const navigate = useNavigate();
@@ -13,12 +16,13 @@ const SurveyEdit = () => {
   const [answers, setAnswers] = useState({
     calendar: null,
   });
+  const [loading, setLoading] = useState(false);
   const [planDuration, setPlanDuration] = useState(0);
   const [planData, setPlanData] = useState(null);
   const { planId } = useParams();
 
   useEffect(() => {
-    setupInterceptors(setIsLoggedIn);
+    setupInterceptors(setLoading);
     getPlanData();
   }, []);
 
@@ -87,6 +91,8 @@ const SurveyEdit = () => {
       </>
     );
   };
+
+  if (loading) return <Loading />;
 
   return (
     <SurveyCommon className="inner">

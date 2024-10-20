@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
-import apiClient from '../../config/AxiosConfig';
 import { useNavigate } from 'react-router-dom';
-import SurveyCommon from '../../styles/plan/survey';
+import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
 
 // 컴포넌트
+import SurveyCommon from '../../styles/plan/survey';
 import SurveyCalendar from '../../components/Survey/SurveyCalendar';
 import SurveyArea from '../../components/Survey/SurveyArea';
 import SurveyKeyword from '../../components/Survey/SurveyKeyword';
 import SurveyPlace from '../../components/Survey/SurveyPlace';
 import Button from '../../components/Button';
+import Loading from './Loading';
 
 import PrevBtn from '../../assets/images/ico/btn_survey_prev.svg';
 
@@ -16,8 +17,10 @@ const Survey = () => {
   const navigate = useNavigate();
 	const [username, setUsername] = useState('여행자');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
+    setupInterceptors(setLoading);
     checkLoginStatus();
   }, []);
 
@@ -247,6 +250,8 @@ const Survey = () => {
       );
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <SurveyCommon className="inner">
