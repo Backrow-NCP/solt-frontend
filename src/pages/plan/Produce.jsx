@@ -301,7 +301,7 @@ const Produce = () => {
       setPlaces(updatedPlaces);
 
       // 해당 장소와 연결된 경로(route) 제거
-      const updatedPlanRoute = plan.route.filter(route => {
+      const updatedPlanRoute = plan.routes.filter(route => {
         return route.startPlaceId !== placeId && route.endPlaceId !== placeId;
       });
 
@@ -337,7 +337,7 @@ const Produce = () => {
       setPlaces(updatedPlaces);
 
       // 해당 장소와 연결된 경로(route) 제거
-      const updatedPlanRoute = plan.route.filter(route => {
+      const updatedPlanRoute = plan.routes.filter(route => {
         return route.startPlaceId !== placeId && route.endPlaceId !== placeId;
       });
 
@@ -483,7 +483,7 @@ const Produce = () => {
 
       const nextPlace = places[i + 1];
       if (nextPlace) {
-        const route = plan.route.find(
+        const route = plan.routes.find(
           r =>
             r.startPlaceId === place.placeId &&
             r.endPlaceId === nextPlace.placeId
@@ -525,12 +525,8 @@ const Produce = () => {
           filteredPlaces={filteredPlaces}
           planTime={planTime}
           isDetailPage={false}
-          findRoute={(currentPlaceId, nextPlaceId) =>
-            plan.route.find(
-              route =>
-                route.startPlaceId === currentPlaceId &&
-                route.endPlaceId === nextPlaceId
-            )
+          findRoute={(nextPlace) =>
+            plan.routes.find(route => route.endTime === nextPlace.startTime)
           }
           handlePriceChange={handlePriceChange}
           editPrice={editPrice}

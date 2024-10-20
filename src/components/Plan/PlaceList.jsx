@@ -21,16 +21,12 @@ const PlaceList = ({
   return (
     <List isDetailPage={isDetailPage}>
       {filteredPlaces.map((place, index) => {
-        const previousPlace = filteredPlaces[index - 1]; // 이전 일정
-        const route = previousPlace
-          ? findRoute(previousPlace.placeId, place.placeId)
-          : null; // 이전 일정과 현재 일정 간의 경로
+        const route = findRoute(place); // 이전 일정과 현재 일정 간의 경로
 
         return (
           <PlaceItem
             key={`place-${place.placeId}`}
             place={place}
-            previousPlace={previousPlace}
             route={route}
             planTime={planTime}
             handlePriceChange={handlePriceChange}
