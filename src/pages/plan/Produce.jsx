@@ -525,12 +525,8 @@ const Produce = () => {
           filteredPlaces={filteredPlaces}
           planTime={planTime}
           isDetailPage={false}
-          findRoute={(currentPlaceId, nextPlaceId) =>
-            plan.routes.find(
-              route =>
-                route.startPlaceId === currentPlaceId &&
-                route.endPlaceId === nextPlaceId
-            )
+          findRoute={(nextPlace) =>
+            plan.routes.find(route => route.endTime === nextPlace.startTime)
           }
           handlePriceChange={handlePriceChange}
           editPrice={editPrice}
