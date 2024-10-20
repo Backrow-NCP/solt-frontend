@@ -14,7 +14,7 @@ const useCategoryTotals = (places, categories, plan) => {
     });
 
     // 교통비 합산
-    const totalTransportCost = plan?.route.reduce((acc, route) => acc + (route.price || 0), 0) || 0;
+    const totalTransportCost = plan?.routes.reduce((acc, route) => acc + (route.price || 0), 0) || 0;
     totals['교통비'] = totalTransportCost;
 
     return totals;
@@ -35,7 +35,7 @@ const useCategoryTotals = (places, categories, plan) => {
   );
 
   const totalRoutePrice = useMemo(
-    () => plan?.route.reduce((acc, route) => acc + (route.price || 0), 0) || 0,
+    () => plan?.routes.reduce((acc, route) => acc + (route.price || 0), 0) || 0,
     [plan]
   );
 

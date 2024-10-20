@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import planData from '../../mock/planProduce.json';
+// import planData from '../../mock/planProduce.json';
 import geocodeAddress from '../../utils/plan/geocodeAddress';
 
 const usePlanData = () => {
@@ -14,11 +14,12 @@ useEffect(() => {
         // 실제 API 호출 시 주석 해제
         // const response = await axios.get('/api/getPlanData');
         // const fetchedPlan = response.data;
-        const fetchedPlan = planData; // 임시 데이터 사용
+        // const fetchedPlan = planData; // 임시 데이터 사용
+        const fetchedPlan = JSON.parse(sessionStorage.getItem('planData'));
 
         // 지오코딩을 통해 위도와 경도 추가
         const placesWithCoordinates = await Promise.all(
-        fetchedPlan.place.map(async (place) => {
+        fetchedPlan.places.map(async (place) => {
             if (!place.latitude || !place.longitude) {
             // Geocoding을 통한 주소 변환
             const location = await geocodeAddress(place.addr);
@@ -48,9 +49,9 @@ useEffect(() => {
 
         // combinedList 생성
         const newCombinedList = [];
-        fetchedPlan.place.forEach((place) => {
+        fetchedPlan.places.forEach((place) => {
         newCombinedList.push({ type: 'place', data: place });
-        const route = fetchedPlan.route.find((r) => r.startPlaceId === place.placeId);
+        const route = fetchedPlan.routes.find((r) => r.startPlaceId === place.placeId);
         if (route) {
             newCombinedList.push({ type: 'route', data: route });
         }
