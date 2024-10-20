@@ -14,6 +14,7 @@ const SurveyEdit = () => {
     calendar: null,
   });
   const [planDuration, setPlanDuration] = useState(0);
+  const [planData, setPlanData] = useState(null);
   const { planId } = useParams();
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const SurveyEdit = () => {
     if (planId) {
       apiClient.get(`/plans/${planId}`).then(res => {
         const fetchedData = res.data;
-        sessionStorage.setItem('plan', JSON.stringify(fetchedData));
+        setPlanData(fetchedData);
 
         const calculatedDuration =
           (new Date(fetchedData.endDate) - new Date(fetchedData.startDate)) /
@@ -53,26 +54,25 @@ const SurveyEdit = () => {
 
   // Axios
   const handleFinish = async () => {
-    try {
-      const data = {
-        startDate: answers.calendar[0],
-        endDate: answers.calendar[1],
-        memberId: 0,
-        title: "여행 일정",
-      };
+		try {
+      const newPlan = editPlanDays(planData, new Date(answers.calendar[0]));
 
-      console.log(data);
-      sessionStorage.setItem('surveyData', JSON.stringify(data));
+			// 전송할 데이터
+			const data = {
+        ...planData,
+				startDate: answers.calendar[0],
+				endDate: answers.calendar[1],
+			};
 
-      // const response = await apiClient.post('/plans/recom', data, {
-      //   withCredentials: false,
-      // });
+			// 세션 스토리지에 저장
+			sessionStorage.setItem('planData', JSON.stringify(data));
 
-      // navigate('/plan/produce');
-    } catch (error) {
-      console.error('서버 요청 오류 발생: ', error);
-    }
-  };
+			// 이동
+			navigate('/plan/produce');
+		} catch (error) {
+			console.error('서버 요청 오류 발생: ', error);
+		}
+	};
 
   // 버튼 렌더링
   const renderButtons = () => {
@@ -111,6 +111,54 @@ const SurveyEdit = () => {
       </div>
     </SurveyCommon>
   );
+};
+
+const editPlanDays = (plan, newStartDate) => { 
+  const originalStartDate = new Date(plan.startDate);
+  const dateDifferenceInDays = Math.floor((newStartDate - originalStartDate) / (1000 * 60 * 60 * 24));
+
+  const updatedPlaces = plan.places.map(place => {
+      const updatedStartTime = new Date(place.startTime);
+      updatedStartTime.setDate(updatedStartTime.getDate() + dateDifferenceInDays + 1);
+
+      const updatedEndTime = new Date(place.endTime);
+      updatedEndTime.setDate(updatedEndTime.getDate() + dateDifferenceInDays + 1);
+
+      return {
+          ...place,
+          startTime: formatToLocalISO(updatedStartTime),
+          endTime: formatToLocalISO(updatedEndTime),
+      };
+  });
+
+  const updatedRoutes = plan.routes.map(route => {
+      const updatedStartTime = new Date(route.startTime);
+      updatedStartTime.setDate(updatedStartTime.getDate() + dateDifferenceInDays);
+
+      const updatedEndTime = new Date(route.endTime);
+      updatedEndTime.setDate(updatedEndTime.getDate() + dateDifferenceInDays);
+
+      return {
+          ...route,
+          startTime: formatToLocalISO(updatedStartTime),
+          endTime: formatToLocalISO(updatedEndTime),
+      };
+  });
+
+  const newPlan = {
+      ...plan,
+      places: updatedPlaces,
+      routes: updatedRoutes,
+  };
+
+  return newPlan;
+};
+
+  /** 시간을 로컬 시간대로 ISO 형식으로 변환 **/
+const formatToLocalISO = (date) => {
+  const offset = date.getTimezoneOffset() * 60000; // 로컬 시간대 오프셋 계산
+  const localDate = new Date(date.getTime() - offset); // 오프셋 적용
+  return localDate.toISOString().slice(0, -1); // 마지막 'Z' 제거
 };
 
 export default SurveyEdit;
