@@ -13,7 +13,12 @@ const SidebarWrapper = styled.nav`
 
 const SidebarHeader = styled.h2`
   margin-bottom: 20px;
+
+  &:hover {
+    color: #14B8FF;
+  }
 `;
+
 
 const SidebarList = styled.ul`
   list-style: none;
@@ -38,7 +43,7 @@ const Sidebar = () => {
       </Link>
       <SidebarList>
         <SidebarListItem>
-          <SidebarLink to="/auth/myplan" className="size_md weight_b pt_blue">
+          <SidebarLink to="/auth/myplan" className="size_sm">
             나의 플랜
           </SidebarLink>
         </SidebarListItem>

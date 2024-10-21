@@ -3,6 +3,7 @@ import MyPlanStyles from '../../styles/auth/myBoard';
 import { Link } from 'react-router-dom';
 import BoardItem from '../../components/Board/BoardItem';
 import defaultImage from '../../assets/images/sample/nonImage.jpg';
+import Sidebar from '../../components/Sidebar';
 
 const MyBoard = () => {
   const [plans, setPlans] = useState([]);
@@ -16,8 +17,9 @@ const MyBoard = () => {
   return (
     <>
       <MyPlanStyles />
-      <div className="main_container">
-        <nav className="sidebar">
+      <div className="myboard">
+        <Sidebar/>
+        {/* <nav className="sidebar">
           <Link to="/auth/mypage">
             <h2 className="size_lg weight_sb">마이페이지</h2>
           </Link>
@@ -33,7 +35,7 @@ const MyBoard = () => {
               </Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
 
         <div className="my_board_container">
           <h1>나의 게시글</h1>
