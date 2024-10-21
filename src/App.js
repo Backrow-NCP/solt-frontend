@@ -69,7 +69,10 @@ function App() {
               {/* 플랜 서비스 */}
               <Route path="/plan/survey" element={<Survey />} />
               <Route path="/plan/produce" element={<Produce />} />
-              <Route path="/plan/complete" element={<Complete />} />
+              <Route
+                path="/plan/complete"
+                element={<Complete onLoginClick={openLoginPopup} />} 
+              />
               <Route path="/plan/survey/:planId" element={<SurveyEdit />} />
 
               {/* 게시물 관리 */}
