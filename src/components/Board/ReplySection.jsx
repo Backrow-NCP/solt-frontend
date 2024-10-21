@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
   ReplyContainer,
@@ -30,6 +31,7 @@ const ReplySection = ({ boardId }) => {
   const [pageData, setPageData] = useState({});
   const indexOfLastItem = pageData.page * pageData.size;
   const indexOfFirstItem = indexOfLastItem - pageData.size;
+
   // const currentItems = renderComments().slice(
   //   indexOfFirstItem,
   //   indexOfLastItem
@@ -40,7 +42,9 @@ const ReplySection = ({ boardId }) => {
   useEffect(() => {
     const fetchReplies = async () => {
       try {
-        const response = await axios.get('/sampleReplyData.json');
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/replies/list/${boardId}`
+        );
         const data = response.data;
 
         setComments(data.dtoList);
@@ -77,7 +81,7 @@ const ReplySection = ({ boardId }) => {
           gender: true,
           fileName: 'defaultProfile.jpg',
         },
-        parentReplyId: 0,
+        parentReplyId: null,
         regDate: new Date().toISOString(),
         modDate: new Date().toISOString(),
       };
@@ -142,15 +146,16 @@ const ReplySection = ({ boardId }) => {
 
   // 댓글 렌더링
   const renderComments = size => {
+    console.log('asdasdasdasdas', comments);
     const allReplies = comments.map(comment => ({
       ...comment,
-      isSubReply: comment.parentReplyId !== 0,
+      isSubReply: comment.parentReplyId !== null,
     }));
 
     let count = 0;
 
     return allReplies.map((reply, index) => {
-      if (reply.parentReplyId === 0 && count < size) {
+      if (reply.parentReplyId === null && count < size) {
         // 부모 댓글인 경우
         count++;
         return (
@@ -376,8 +381,9 @@ const ReplySection = ({ boardId }) => {
   };
   console.log(
     'Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,',
-    renderComments(pageData.size)
+    renderComments()
   );
+
   return (
     <ReplyContainer>
       <ReplySubmitContainer className="main-reply-submit">

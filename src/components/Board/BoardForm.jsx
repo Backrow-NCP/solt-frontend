@@ -20,7 +20,7 @@ import {
   RemoveAllButton,
 } from '../../styles/board/boardForm';
 
-const BoardForm = ({ onSubmit, buttonText, initialData }) => {
+const BoardForm = ({ onSubmit, buttonText, initialData, planData }) => {
   const [boardTitle, setBoardTitle] = useState(initialData?.title || '');
   const [boardContent, setBoardContent] = useState(initialData?.content || '');
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -112,6 +112,7 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
       }
     };
   }, []);
+  console.log('planData BoardForm', planData);
 
   return (
     <Container>
@@ -131,6 +132,7 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
                   top: '-5px',
                   left: '105%',
                 }}
+                planData={planData}
               />
             )}
           </div>
@@ -215,4 +217,3 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
 };
 
 export default BoardForm;
-
