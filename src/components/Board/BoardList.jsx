@@ -11,7 +11,9 @@ const BoardList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/sampledata.json');
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/boards/list`
+        );
         const data = response.data;
 
         setItems(data.dtoList); // 게시글 목록 저장
