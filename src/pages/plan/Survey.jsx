@@ -24,18 +24,14 @@ const Survey = () => {
     checkLoginStatus();
   }, []);
 
+	// 로그인 체크 (username)
 	const checkLoginStatus = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
+		const token = localStorage.getItem('token');
+    const storedUsername = localStorage.getItem('username');
+  
+    if (token && storedUsername) {
       setIsLoggedIn(true);
-      fetch('/mock/member.json')
-        .then(response => response.json())
-        .then(data => {
-          const member = data.members.find(member => member.id === 1);
-          if (member) {
-            setUsername(member.name);
-          }
-        });
+      setUsername(storedUsername);
     } else {
       setIsLoggedIn(false);
       setUsername('여행자');

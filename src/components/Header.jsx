@@ -47,10 +47,13 @@ const Header = ({ onLoginClick, onSignupClick }) => {
         <nav>
           <ul className="flex">
             <li>
-              <Link to="/plan/survey">여행 계획 만들기</Link>
+              <Link to="/plan/survey">여행 플랜 만들기</Link>
             </li>
             <li>
               <Link to="/board/list">플랜 공유하기</Link>
+            </li>
+            <li>
+            <Link to="">여행 유형 테스트</Link>
             </li>
           </ul>
         </nav>

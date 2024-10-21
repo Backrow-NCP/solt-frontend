@@ -80,10 +80,8 @@ function App() {
               <Route path="/auth/myplan" element={<MyPlan />} />
               <Route path="/auth/myboard" element={<MyBoard />} />
               <Route path="/auth/profileEdit" element={<ProfileEdit />} />
-              {/* 프로필 수정 페이지 */}
-              <Route path="/plan/survey" element={<Survey />} />
-              <Route path="/plan/produce" element={<Produce />} />
-              <Route path="/plan/complete" element={<Complete />} />
+
+              {/* 유형 테스트 */}
             </Routes>
           </main>
 
