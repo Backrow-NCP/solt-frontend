@@ -10,7 +10,6 @@ const Header = ({ onLoginClick, onSignupClick }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
-  // 1020 수정사항
   // 컴포넌트가 처음 로드될 때 로그인 상태를 확인
   useEffect(() => {
     checkLoginStatus();

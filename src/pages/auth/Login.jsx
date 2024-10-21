@@ -26,8 +26,6 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
     setIsLoading(true); // 로딩 시작
   
     try {
-      // 이메일, 비밀번호 확인 , 지워도 됨 ㅇㅇ
-      console.log("로그인 시도:", { email, password }); 
       // apiNoToken을 사용해 POST 요청으로 로그인 처리    
       const response = await apiNoToken.post('/login', {
         email,
@@ -48,7 +46,7 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
         console.log('Token saved:', token); 
 
         closePopup();  // 팝업 닫기
-        navigate('/');  // 홈으로 리다이렉션
+        navigate(0);  // 홈으로 리다이렉션
       } else {
         setError('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
       }
