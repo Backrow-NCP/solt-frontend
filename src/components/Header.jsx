@@ -9,7 +9,6 @@ const Header = ({ onLoginClick, onSignupClick }) => {
   const [username, setUsername] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
   // 1020 수정사항
   // 컴포넌트가 처음 로드될 때 로그인 상태를 확인
   useEffect(() => {
@@ -18,22 +17,20 @@ const Header = ({ onLoginClick, onSignupClick }) => {
 
   useEffect(() => {
     checkLoginStatus();
-  }, [location]);  // 페이지가 이동될 때마다 로그인 상태 확인
-  
+  }, [location]); // 페이지가 이동될 때마다 로그인 상태 확인
+
   const checkLoginStatus = async () => {
     const token = localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username');
-  
 
     if (token && storedUsername) {
       setIsLoggedIn(true);
-      setUsername(storedUsername);  // 사용자 이름 설정
+      setUsername(storedUsername); // 사용자 이름 설정
     } else {
       setIsLoggedIn(false);
       setUsername('');
     }
   };
-
 
   return (
     <header>
@@ -53,7 +50,7 @@ const Header = ({ onLoginClick, onSignupClick }) => {
               <Link to="/board/list">플랜 공유하기</Link>
             </li>
             <li>
-            <Link to="">여행 유형 테스트</Link>
+              <Link to="/personalityTest/test">여행 유형 테스트</Link>
             </li>
           </ul>
         </nav>
@@ -78,7 +75,6 @@ const Header = ({ onLoginClick, onSignupClick }) => {
                 />
               </Link>
               <span>{username}님</span>
-              
             </div>
           ) : (
             <div className="login flex">
