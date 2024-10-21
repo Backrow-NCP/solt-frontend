@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PersonalityTest from '../../styles/personality/personalityTest';
 import Button from '../../components/Button';
+import apiClient from '../../config/AxiosConfig';
 
 function PersonalityResult() {
   const { resultId } = useParams(); // URL에서 resultId를 가져옵니다.
@@ -16,10 +17,10 @@ function PersonalityResult() {
     if (!resultData) {
       // resultData가 없으면 백엔드에서 데이터를 가져옴
       setIsLoading(true);
-      fetch(`http://localhost/personalityTest/result/${resultId}`)
-        .then(response => response.json())
-        .then(data => {
-          setResultData(data);
+      apiClient
+        .get(`/personalityTest/result/${resultId}`)
+        .then(response => {
+          setResultData(response.data);
           setIsLoading(false);
         })
         .catch(error => {
@@ -51,7 +52,12 @@ function PersonalityResult() {
         {/* 시즈닝, 요약 */}
         <div className="result_title">
           <p className="size_xl weight_sb">{resultData.explainSeasoning}</p>
-          <h2 className="pt_blue weight_b">{resultData.seasoning}</h2>
+          <h2
+            className="pt_blue weight_b"
+            style={{ fontSize: '3rem', marginTop: '5px', marginBottom: '10px' }}
+          >
+            {resultData.seasoning}
+          </h2>
           <div className="test_result">
             <img
               src={`https://kr.object.ncloudstorage.com/solt-objectstorage/board/${resultData.image}`}
@@ -65,10 +71,12 @@ function PersonalityResult() {
           </div>
         </div>
         {/* 여행지 추천 */}
-        <div className="result_box">
-          <h2>추천 여행지</h2>
-          <br />
 
+        <h2 style={{ marginTop: '100px', marginBottom: '10px' }}>
+          추천 여행지
+        </h2>
+        <br />
+        <div className="result_box">
           <div className="test_flex">
             {resultData.spots.map((spot, index) => (
               <span key={index}>
@@ -92,7 +100,7 @@ function PersonalityResult() {
       </div>
       <br />
       {/* 여행 메이트 추천 */}
-      <h2>여행 메이트</h2>
+      <h2 style={{ marginTop: '100px', marginBottom: '10px' }}>여행 메이트</h2>
       <br />
       <div className="result_box">
         <div className="test_flex">
