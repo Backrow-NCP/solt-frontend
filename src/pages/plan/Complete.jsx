@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import apiClient from '../../config/AxiosConfig';
+import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
 import PlanComplete from '../../styles/plan/complete';
 
 import Button from '../../components/Button';
@@ -14,10 +14,12 @@ import Download from './Download';
 const Complete = ({ onLoginClick }) => {
   const [plan, setPlan] = useState(null);
   const [places, setPlaces] = useState([]);
+  const [loading, setLoading] = useState(false);
   const hiddenPageRef = useRef(null);
 
-	// 스토리지에 있는 planData 가져오기
-	useEffect(() => {
+  // 스토리지에 있는 planData 가져오기
+  useEffect(() => {
+    setupInterceptors(setLoading);
     try {
       const planData = sessionStorage.getItem('planData');
       if (planData) {
@@ -29,7 +31,10 @@ const Complete = ({ onLoginClick }) => {
         console.error('세션 스토리지에 planData 데이터가 없습니다.');
       }
     } catch (err) {
-      console.error('세션 스토리지에서 데이터를 가져오는 중 오류가 발생했습니다.', err);
+      console.error(
+        '세션 스토리지에서 데이터를 가져오는 중 오류가 발생했습니다.',
+        err
+      );
     }
   }, []);
 
@@ -42,7 +47,7 @@ const Complete = ({ onLoginClick }) => {
   }, {});
 
   // 날짜별 금액 계산
-  const getDayTotalPrice = (dayPlaces) => {
+  const getDayTotalPrice = dayPlaces => {
     return dayPlaces.reduce((acc, place) => acc + place.price, 0);
   };
 
@@ -57,14 +62,14 @@ const Complete = ({ onLoginClick }) => {
   const settings = {
     infinite: false,
     speed: 500,
-    slidesToShow: daysCount > 3 ? 4 : (daysCount || 1),
+    slidesToShow: daysCount > 3 ? 4 : daysCount || 1,
     slidesToScroll: 1,
     swipe: true,
     responsive: [
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow: daysCount > 3 ? 2 : (daysCount || 1),
+          slidesToShow: daysCount > 3 ? 2 : daysCount || 1,
           slidesToScroll: 1,
         },
       },
@@ -79,11 +84,11 @@ const Complete = ({ onLoginClick }) => {
 
   // PDF 저장
   const handleDownloadPDF = async () => {
-		// 로그인 여부
-		const token = localStorage.getItem('token');
+    // 로그인 여부
+    const token = localStorage.getItem('token');
     if (!token) {
-      alert("플랜 저장은 로그인 시 가능합니다.");
-			onLoginClick();
+      alert('플랜 저장은 로그인 시 가능합니다.');
+      onLoginClick();
       return;
     }
 
@@ -109,7 +114,11 @@ const Complete = ({ onLoginClick }) => {
         if (i % 2 === 0) {
           const dayElement = dayElements[i];
           try {
-            const canvas = await html2canvas(dayElement, { scale: 2, useCORS: true, willReadFrequently: true });
+            const canvas = await html2canvas(dayElement, {
+              scale: 2,
+              useCORS: true,
+              willReadFrequently: true,
+            });
             const imgData = canvas.toDataURL('image/jpeg', 1.0);
 
             if (i > 0) pdf.addPage();
@@ -119,7 +128,9 @@ const Complete = ({ onLoginClick }) => {
 
             pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight);
           } catch (error) {
-            alert(`일정 ${i + 1} 페이지를 PDF로 저장하는 중 오류가 발생했습니다.`);
+            alert(
+              `일정 ${i + 1} 페이지를 PDF로 저장하는 중 오류가 발생했습니다.`
+            );
           }
         }
       }
@@ -131,7 +142,7 @@ const Complete = ({ onLoginClick }) => {
 
   // 마이페이지 저장
   const handleSaveToMyPage = async () => {
-		// 로그인 여부 확인
+    // 로그인 여부 확인
     const token = localStorage.getItem('token');
     if (!token) {
       alert('플랜 저장은 로그인 시 가능합니다.');
@@ -146,11 +157,38 @@ const Complete = ({ onLoginClick }) => {
         return;
       }
 
-			console.log(planData);
-
       // 서버로 플랜 데이터 전송
-      const response = await apiClient.post('/plans/', planData);
-      if (response.status === 200) {
+      let response = null;
+      if (planData.planId) {
+        // PlanId가 있으면 PUT 요청
+        const newPlanData = {
+          ...planData,
+          themes: planData.themes.map(theme => theme.themeId),
+        };
+
+        response = await apiClient.put(
+          `/plans/${newPlanData.planId}`,
+          newPlanData
+        );
+      } else {
+        // 없으면 POST 요청
+        const newPlanData = {
+          ...planData,
+          places: planData.places.map(place => {
+            place.placeId = null;
+            return place;
+          }),
+          routes: planData.routes.map(route => {
+            route.routeId = null;
+            return route;
+          }),
+          themes: planData.themes.map(theme => theme.themeId),
+        };
+
+        response = await apiClient.post('/plans/', newPlanData);
+      }
+
+      if (response && response.status === 200) {
         alert('플랜이 마이페이지에 저장되었습니다!');
       } else {
         alert('저장에 실패했습니다.');
@@ -165,7 +203,8 @@ const Complete = ({ onLoginClick }) => {
     <>
       <PlanComplete id="plan_complete">
         <h2>
-          {plan?.member.name} 님의 <span className="pt_blue">{plan?.area}</span> 여행 플랜이에요
+          {plan?.member.name} 님의 <span className="pt_blue">{plan?.area}</span>{' '}
+          여행 플랜이에요
         </h2>
         <div className="price flex pt_pink">
           <span className="size_sm weight_sb">예상 총 금액</span>
@@ -178,25 +217,49 @@ const Complete = ({ onLoginClick }) => {
         <Slider {...settings}>
           {Object.entries(groupedPlaces).map(([date, dayPlaces], dayIndex) => (
             <div key={dayIndex}>
-              <PlaceComplete dayPlaces={dayPlaces} plan={plan} getDayTotalPrice={getDayTotalPrice} />
+              <PlaceComplete
+                dayPlaces={dayPlaces}
+                plan={plan}
+                getDayTotalPrice={getDayTotalPrice}
+              />
             </div>
           ))}
         </Slider>
 
-        <button className="btn_view pt_gy size_md weight_md" onClick={handleFullView}>전체 화면 보기</button>
+        <button
+          className="btn_view pt_gy size_md weight_md"
+          onClick={handleFullView}
+        >
+          전체 화면 보기
+        </button>
 
         <div className="button_box inner flex">
-          <Button size="xxl" color="white" style={{ borderColor: '#eee' }} className="weight_md" onClick={handleDownloadPDF}>
+          <Button
+            size="xxl"
+            color="white"
+            style={{ borderColor: '#eee' }}
+            className="weight_md"
+            onClick={handleDownloadPDF}
+          >
             PDF로 저장
           </Button>
-          <Button size="xxl" color="blue" className="weight_md" onClick={handleSaveToMyPage}>
+          <Button
+            size="xxl"
+            color="blue"
+            className="weight_md"
+            onClick={handleSaveToMyPage}
+          >
             마이페이지에 저장
           </Button>
         </div>
       </PlanComplete>
 
       {/* 캡쳐 영역 */}
-      <Download ref={hiddenPageRef} groupedPlaces={groupedPlaces} getDayTotalPrice={getDayTotalPrice} />
+      <Download
+        ref={hiddenPageRef}
+        groupedPlaces={groupedPlaces}
+        getDayTotalPrice={getDayTotalPrice}
+      />
     </>
   );
 };
