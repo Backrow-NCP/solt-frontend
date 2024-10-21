@@ -9,18 +9,18 @@ const SurveyKeyword = ({ onKeywordSelect, savedKeywords }) => {
     { id: 4, name: '🌙 저녁형 인간이에요' },
   ];
   const travelThemes = [
-    { id: 1, name: '😋 맛집에 관심 있어요' },
-    { id: 2, name: '☕ 카페를 좋아해요' },
-    { id: 3, name: '🏊 액티비티를 즐겨요' },
-    { id: 4, name: '🔎 역사에 관심 있어요' },
-    { id: 5, name: '🛍️ 쇼핑을 좋아해요' },
+    { id: 5, name: '😋 맛집에 관심 있어요' },
+    { id: 6, name: '☕ 카페를 좋아해요' },
+    { id: 7, name: '🏊 액티비티를 즐겨요' },
+    { id: 8, name: '🔎 역사에 관심 있어요' },
+    { id: 9, name: '🛍️ 쇼핑을 좋아해요' },
   ];
   const travelEnvirons = [
-    { id: 1, name: '💸 가성비가 중요해요' },
-    { id: 2, name: '🌆 풍경이 좋아요' },
-    { id: 3, name: '😌 조용한 곳이 좋아요' },
-    { id: 4, name: '🏙️ 도시가 좋아요' },
-    { id: 5, name: '⛰️ 자연이 좋아요' },
+    { id: 10, name: '💸 가성비가 중요해요' },
+    { id: 11, name: '🌆 풍경이 좋아요' },
+    { id: 12, name: '😌 조용한 곳이 좋아요' },
+    { id: 13, name: '🏙️ 도시가 좋아요' },
+    { id: 14, name: '⛰️ 자연이 좋아요' },
   ];
 
   const [selectedStyles, setSelectedStyles] = useState(savedKeywords?.travelStyle || []);

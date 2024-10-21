@@ -23,11 +23,13 @@ const PlaceComplete = ({ dayPlaces, plan, getDayTotalPrice }) => {
       </p>
 
       <ol>
-        {dayPlaces.map((place, index) => {
+			{dayPlaces.map((place, index) => {
           const nextPlace = dayPlaces[index + 1];
-          const route = nextPlace
-            ? plan.route.find(
-                (r) => r.startPlaceId === place.placeId && r.endPlaceId === nextPlace.placeId
+
+          // placeId와 routeId가 일치하는 경로 찾기
+          const route = nextPlace && Array.isArray(plan.routes)
+            ? plan.routes.find(
+                (r) => r.routeId === place.placeId // routeId와 placeId 비교
               )
             : null;
 
@@ -42,14 +44,17 @@ const PlaceComplete = ({ dayPlaces, plan, getDayTotalPrice }) => {
                 <span className="place_category size_xxs pt_gy">{place.category}</span>
 
                 {/* 이동수단 영역 */}
-                {route && (
-                  <div className="transport_info flex size_xxs pt_gy">
-                    <img src={route.transport.type === '도보' ? transportRun : transportBus} alt={route.transport.type} />
-                    <span>{route.transport.type}</span>
-                    <span>{route.travelTime}분</span>
-                    <span>({route.distance}km)</span>
-                  </div>
-                )}
+                {route && route.transportation && (
+									<div className="transport_info flex size_xxs pt_gy">
+										<img 
+											src={route.transportation.type === '도보' ? transportRun : transportBus} 
+											alt={route.transportation.type} 
+										/>
+										<span>{route.transportation.type}</span>
+										<span>{route.travelTime}분</span>
+										<span>({route.distance}km)</span>
+									</div>
+								)}
               </div>
               <div className="place_price">
                 <p className="size_xxs weight_md">예상 금액</p>

@@ -4,25 +4,32 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import planData from '../../mock/planProduce.json'; // 임시 데이터
-import apiClient from '../../config/AxiosConfig'; // AxiosConfig 사용
+import apiClient from '../../config/AxiosConfig';
 import PlanComplete from '../../styles/plan/complete';
 
 import Button from '../../components/Button';
 import PlaceComplete from '../../components/Plan/PlaceComplete';
 import Download from './Download';
 
-const Complete = () => {
+const Complete = ({ onLoginClick }) => {
   const [plan, setPlan] = useState(null);
   const [places, setPlaces] = useState([]);
   const hiddenPageRef = useRef(null);
 
-  useEffect(() => {
+	// 스토리지에 있는 planData 가져오기
+	useEffect(() => {
     try {
-      setPlan(planData);
-      setPlaces(planData.place);
+      const planData = sessionStorage.getItem('planData');
+      if (planData) {
+        const parsedPlan = JSON.parse(planData);
+        setPlan(parsedPlan);
+        setPlaces(parsedPlan.places);
+        console.log('세션 스토리지에서 데이터를 성공적으로 가져왔습니다.');
+      } else {
+        console.error('세션 스토리지에 planData 데이터가 없습니다.');
+      }
     } catch (err) {
-      console.error('데이터 로딩 중 오류가 발생했습니다.');
+      console.error('세션 스토리지에서 데이터를 가져오는 중 오류가 발생했습니다.', err);
     }
   }, []);
 
@@ -71,53 +78,78 @@ const Complete = () => {
   };
 
   // PDF 저장
-	const handleDownloadPDF = async () => {
-		const input = hiddenPageRef.current;
-		if (!input) {
-			alert('PDF 생성 중 오류가 발생했습니다. 다시 시도해 주세요.');
-			return;
-		}
+  const handleDownloadPDF = async () => {
+		// 로그인 여부
+		const token = localStorage.getItem('token');
+    if (!token) {
+      alert("플랜 저장은 로그인 시 가능합니다.");
+			onLoginClick();
+      return;
+    }
 
-		const dayElements = input.querySelectorAll('.plan_day');
-		if (dayElements.length === 0) {
-			alert('PDF에 추가할 일정이 없습니다.');
-			return;
-		}
+    const input = hiddenPageRef.current;
+    if (!input) {
+      alert('PDF 생성 중 오류가 발생했습니다. 다시 시도해 주세요.');
+      return;
+    }
 
-		const pdf = new jsPDF('p', 'mm', 'a4');
-		const pdfWidth = pdf.internal.pageSize.getWidth();
-		const availableWidth = pdfWidth - 20;
+    const dayElements = input.querySelectorAll('.plan_day');
+    if (dayElements.length === 0) {
+      alert('PDF에 추가할 일정이 없습니다.');
+      return;
+    }
 
-		try {
-			// 중복제거 (짝수 페이지 삭제)
-			for (let i = 0; i < dayElements.length; i++) {
-				if (i % 2 === 0) {
-					const dayElement = dayElements[i];
-					try {
-						const canvas = await html2canvas(dayElement, { scale: 2, useCORS: true, willReadFrequently: true });
-						const imgData = canvas.toDataURL('image/jpeg', 1.0);
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const availableWidth = pdfWidth - 20;
 
-						if (i > 0) pdf.addPage();
+    try {
+      // 중복제거 (짝수 페이지 삭제)
+      for (let i = 0; i < dayElements.length; i++) {
+        if (i % 2 === 0) {
+          const dayElement = dayElements[i];
+          try {
+            const canvas = await html2canvas(dayElement, { scale: 2, useCORS: true, willReadFrequently: true });
+            const imgData = canvas.toDataURL('image/jpeg', 1.0);
 
-						const imgWidth = availableWidth;
-						const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            if (i > 0) pdf.addPage();
 
-						pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight);
-					} catch (error) {
-						alert(`일정 ${i + 1} 페이지를 PDF로 저장하는 중 오류가 발생했습니다.`);
-					}
-				}
-			}
-			pdf.save(`${planData.member.name}_plan.pdf`);
-		} catch (error) {
-			alert('PDF 생성 중 오류가 발생했습니다.');
-		}
-	};
+            const imgWidth = availableWidth;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight);
+          } catch (error) {
+            alert(`일정 ${i + 1} 페이지를 PDF로 저장하는 중 오류가 발생했습니다.`);
+          }
+        }
+      }
+      pdf.save(`${plan.member.name}_plan.pdf`);
+    } catch (error) {
+      alert('PDF 생성 중 오류가 발생했습니다.');
+    }
+  };
 
   // 마이페이지 저장
   const handleSaveToMyPage = async () => {
+		// 로그인 여부 확인
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('플랜 저장은 로그인 시 가능합니다.');
+      onLoginClick();
+      return;
+    }
+
     try {
-      const response = await apiClient.post('/api/savePlan', { planId: plan.planId }); // apiClient 사용
+      const planData = JSON.parse(sessionStorage.getItem('planData'));
+      if (!planData) {
+        alert('플랜 데이터가 없습니다.');
+        return;
+      }
+
+			console.log(planData);
+
+      // 서버로 플랜 데이터 전송
+      const response = await apiClient.post('/plans/', planData);
       if (response.status === 200) {
         alert('플랜이 마이페이지에 저장되었습니다!');
       } else {
@@ -133,7 +165,7 @@ const Complete = () => {
     <>
       <PlanComplete id="plan_complete">
         <h2>
-          {planData.member.name} 님의 <span className="pt_blue">{plan?.area}</span> 여행 플랜이에요
+          {plan?.member.name} 님의 <span className="pt_blue">{plan?.area}</span> 여행 플랜이에요
         </h2>
         <div className="price flex pt_pink">
           <span className="size_sm weight_sb">예상 총 금액</span>

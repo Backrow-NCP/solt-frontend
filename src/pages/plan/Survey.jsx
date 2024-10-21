@@ -155,40 +155,51 @@ const Survey = () => {
 	// Axios
   const handleFinish = async () => {
     try {
-      const themes = [
-        ...answers.keywords.travelStyle.map(item => item.name),
-        ...answers.keywords.theme.map(item => item.name),
-        ...answers.keywords.environment.map(item => item.name),
+      // 테마 배열
+			const themes = [
+        ...answers.keywords.travelStyle.map(item => item.id),
+        ...answers.keywords.theme.map(item => item.id),
+        ...answers.keywords.environment.map(item => item.id),
       ];
   
-      const startDate = answers.calendar[0].toISOString().split('T')[0];
-      const endDate = answers.calendar[1].toISOString().split('T')[0];
+			// 날짜 선택
+			const startDate = answers.calendar && answers.calendar[0] 
+				? answers.calendar[0].toISOString().split('T')[0] 
+				: null;
+			const endDate = answers.calendar && answers.calendar[1] !== null 
+				? answers.calendar[1]?.toISOString().split('T')[0] 
+				: startDate;
   
       const data = {
-        title: answers.area || '맞춤 플랜',
-        memberId: 0,
-        places: answers.place.map(place => ({
-          placeName: place.placeName,
-          addr: place.addr,
-          price: 0,
-          description: "",
-          startTime: "",
-          endTime: "",
-          checker: false
-        })),
-        themes: themes,
-        location: answers.area || "서울특별시",
-        startDate,
-        endDate
-      };
+				"title": answers.area || '맞춤 플랜',
+				"places": answers.place.map(place => ({
+					"placeId": 0,
+					"placeName": place.placeName,
+					"addr": place.addr || "주소 정보 없음",
+					"price": 0,
+					"description": "",
+					"startTime": "",
+					"endTime": "",
+					"checker": false
+				})),
+				"themes": themes,
+				"location": answers.area || "서울특별시",
+				"startDate": startDate,
+				"endDate": endDate
+			};
   
       console.log('전송할 데이터: ', data);
   
-      sessionStorage.setItem('planData', JSON.stringify(data));
-  
-      const response = await apiClient.post('/plans/recom', data);
+			// 서버 전송
+      const response = await apiClient.post('/plans/recom', data, {
+				withCredentials: false,
+			}).then(response => {
+				// 세션 스토리지에 저장
+				sessionStorage.setItem('planData', JSON.stringify(data));
+			});
       console.log('응답: ', response.data);
   
+			// 이동
       navigate('/plan/produce');
     } catch (error) {
       console.error('요청 오류: ', error);

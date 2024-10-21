@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PersonalityTest from '../../styles/personality/personalityTest';
+import PersonalityTestStyle from '../../styles/personality/personalityTest';
 import Button from '../../components/Button';
 
-function PersonlityTest() {
+function PersonalityTest() {
   const [personalityTestData, setPersonalityTestData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [typeScores, setTypeScores] = useState({});
@@ -73,7 +73,7 @@ function PersonlityTest() {
     ((currentQuestionIndex + 1) / personalityTestData.questions.length) * 100;
 
   return (
-    <PersonalityTest>
+    <PersonalityTestStyle>
       <div className="test_inner">
         {/* 설문 진행 상황 표시 */}
         {isStarted && (
@@ -152,8 +152,8 @@ function PersonlityTest() {
           </div>
         )}
       </div>
-    </PersonalityTest>
+    </PersonalityTestStyle>
   );
 }
 
-export default PersonlityTest;
+export default PersonalityTest;
