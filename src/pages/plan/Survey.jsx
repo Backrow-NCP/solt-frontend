@@ -17,10 +17,10 @@ const Survey = () => {
   const navigate = useNavigate();
 	const [username, setUsername] = useState('여행자');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
-    setupInterceptors(setLoading);
+    setupInterceptors(setIsLoading);
     checkLoginStatus();
   }, []);
 
@@ -90,7 +90,7 @@ const Survey = () => {
   const handlePlaceSelect = (places) => {
     const formattedPlaces = places.map(place => ({
       placeName: place.name,
-      addr: place.address,
+      // addr: place.address,
     }));
   
     setAnswers(prevAnswers => ({
@@ -172,15 +172,10 @@ const Survey = () => {
   
       const data = {
 				"title": answers.area || '맞춤 플랜',
+				"memberId": 222 || null,
 				"places": answers.place.map(place => ({
-					"placeId": 0,
 					"placeName": place.placeName,
-					"addr": place.addr || "주소 정보 없음",
-					"price": 0,
-					"description": "",
-					"startTime": "",
-					"endTime": "",
-					"checker": false
+					// "addr": place.addr || "주소 정보 없음",
 				})),
 				"themes": themes,
 				"location": answers.area || "서울특별시",
@@ -193,10 +188,8 @@ const Survey = () => {
 			// 서버 전송
       const response = await apiClient.post('/plans/recom', data, {
 				withCredentials: false,
-			}).then(response => {
-				// 세션 스토리지에 저장
-				sessionStorage.setItem('planData', JSON.stringify(data));
-			});
+			})
+			sessionStorage.setItem('planData', JSON.stringify(response.data));
       console.log('응답: ', response.data);
   
 			// 이동
@@ -250,7 +243,7 @@ const Survey = () => {
     }
   };
 
-  if (loading) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <SurveyCommon className="inner">

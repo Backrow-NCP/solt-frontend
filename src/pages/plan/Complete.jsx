@@ -134,7 +134,7 @@ const Complete = ({ onLoginClick }) => {
           }
         }
       }
-      pdf.save(`${plan.member.name}_plan.pdf`);
+      pdf.save(`plan.pdf`);
     } catch (error) {
       alert('PDF 생성 중 오류가 발생했습니다.');
     }
@@ -203,7 +203,7 @@ const Complete = ({ onLoginClick }) => {
     <>
       <PlanComplete id="plan_complete">
         <h2>
-          {plan?.member.name} 님의 <span className="pt_blue">{plan?.area}</span>{' '}
+          {plan?.member.name || "여행자"} 님의 <span className="pt_blue">{plan?.area}</span>{' '}
           여행 플랜이에요
         </h2>
         <div className="price flex pt_pink">
