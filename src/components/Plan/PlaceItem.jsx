@@ -40,7 +40,13 @@ const PlaceItem = ({
             />
             <span>{route.transportation.type}</span>
             <span>{route.travelTime}분</span>
-            <span>({route.distance}km)</span>
+            <span>
+              (
+              {route.distance < 1000
+                ? route.distance + 'm'
+                : route.distance / 1000 + 'km'}
+              )
+            </span>
             {route.price !== 0 && (
               <strong className="pt_blue size_xs weight_sb">
                 약 {route.price.toLocaleString()}원
@@ -52,22 +58,21 @@ const PlaceItem = ({
         <p className="desc pt_gy size_xs">{place.description}</p>
       </div>
 
-      
       <div className="place_price">
-				<p className="size_xs weight_md">예상 금액</p>
-				<div className="flex">
-					<input
-						type="number"
-						min="0"
-						value={place.price}
-						onChange={e =>
-							handlePriceChange(place.placeId, Number(e.target.value))
-						}
-						disabled={!editPrice[place.placeId] || isEditing}
-					/>
-					<span className="pt_pink size_sm weight_b">원</span>
-				</div>
-				{displayButtons && (
+        <p className="size_xs weight_md">예상 금액</p>
+        <div className="flex">
+          <input
+            type="number"
+            min="0"
+            value={place.price}
+            onChange={e =>
+              handlePriceChange(place.placeId, Number(e.target.value))
+            }
+            disabled={!editPrice[place.placeId] || isEditing}
+          />
+          <span className="pt_pink size_sm weight_b">원</span>
+        </div>
+        {displayButtons && (
           <button
             onClick={() => toggleEditPrice(place.placeId)}
             className="pt_gy size_xxs"
@@ -93,19 +98,13 @@ const PlaceItem = ({
         <ul className="place_change">
           <li>
             <button
-              onClick={() =>
-                handleModifyClick('directly', place.placeId)
-              }
+              onClick={() => handleModifyClick('directly', place.placeId)}
             >
               직접 쓸래요
             </button>
           </li>
           <li>
-            <button
-              onClick={() =>
-                handleModifyClick('recomm', place.placeId)
-              }
-            >
+            <button onClick={() => handleModifyClick('recomm', place.placeId)}>
               다른 추천 받을래요
             </button>
           </li>
@@ -247,7 +246,7 @@ const Item = styled.li`
         span:last-of-type {
           display: none;
         }
-        
+
         strong {
           display: block;
           margin: 2px 0 0;
