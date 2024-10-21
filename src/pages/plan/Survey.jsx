@@ -172,7 +172,7 @@ const Survey = () => {
   
       const data = {
 				"title": answers.area || '맞춤 플랜',
-				"memberId": 222 || null,
+				"memberId": 222|| null,
 				"places": answers.place.map(place => ({
 					"placeName": place.placeName,
 					// "addr": place.addr || "주소 정보 없음",

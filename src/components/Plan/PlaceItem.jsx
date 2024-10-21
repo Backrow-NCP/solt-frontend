@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import transportBus from '../../assets/images/ico/transport_bus.svg';
 import transportRun from '../../assets/images/ico/transport_run.svg';
@@ -13,11 +14,16 @@ const PlaceItem = ({
   editPrice,
   isEditing,
   toggleEditPrice,
-  editPlace,
-  toggleModifyPlace,
   handleModifyClick,
   displayButtons,
 }) => {
+  const [isModified, setIsModified] = useState(false); // 개별 PlaceItem의 수정 상태를 관리
+
+  // 수정 버튼 클릭 시 수정 상태 변경
+  const toggleModify = () => {
+    setIsModified(!isModified);
+  };
+
   return (
     <Item key={`place-${place.placeId}`} className="flex">
       <span className="place_time pt_blue size_xs weight_b">
@@ -31,11 +37,7 @@ const PlaceItem = ({
         {route && (
           <div className="size_xs weight_md">
             <img
-              src={
-                route.transportation.type === '도보'
-                  ? transportRun
-                  : transportBus
-              }
+              src={route.transportation.type === '도보' ? transportRun : transportBus}
               alt={route.transportation.type}
             />
             <span>{route.transportation.type}</span>
@@ -44,7 +46,7 @@ const PlaceItem = ({
               (
               {route.distance < 1000
                 ? route.distance + 'm'
-                : route.distance / 1000 + 'km'}
+                : (route.distance / 1000).toFixed(2) + 'km'}
               )
             </span>
             {route.price !== 0 && (
@@ -65,9 +67,7 @@ const PlaceItem = ({
             type="number"
             min="0"
             value={place.price}
-            onChange={e =>
-              handlePriceChange(place.placeId, Number(e.target.value))
-            }
+            onChange={e => handlePriceChange(place.placeId, Number(e.target.value))}
             disabled={!editPrice[place.placeId] || isEditing}
           />
           <span className="pt_pink size_sm weight_b">원</span>
@@ -83,10 +83,10 @@ const PlaceItem = ({
         )}
       </div>
 
-      {/* 조건에 따라 수정 버튼 표시 */}
+      {/* 수정 버튼 */}
       {displayButtons && (
-        <button onClick={() => toggleModifyPlace(place.placeId)}>
-          {editPlace[place.placeId] ? (
+        <button onClick={toggleModify}>
+          {isModified ? (
             <img src={PlanModifyActiveBtn} alt="일정 수정" />
           ) : (
             <img src={PlanModifyBtn} alt="비활성화" />
@@ -94,12 +94,11 @@ const PlaceItem = ({
         </button>
       )}
 
-      {editPlace[place.placeId] && (
+      {/* 클릭된 곳만 수정 가능하도록 처리 */}
+      {isModified && (
         <ul className="place_change">
           <li>
-            <button
-              onClick={() => handleModifyClick('directly', place.placeId)}
-            >
+            <button onClick={() => handleModifyClick('directly', place.placeId)}>
               직접 쓸래요
             </button>
           </li>

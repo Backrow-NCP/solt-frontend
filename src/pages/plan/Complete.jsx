@@ -134,7 +134,7 @@ const Complete = ({ onLoginClick }) => {
           }
         }
       }
-      pdf.save(`plan.pdf`);
+      pdf.save(`plan_solt.pdf`);
     } catch (error) {
       alert('PDF 생성 중 오류가 발생했습니다.');
     }
