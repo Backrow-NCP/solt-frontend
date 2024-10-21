@@ -28,7 +28,7 @@ const MyPlan = () => {
     <>
       <MyPlanStyles />
       <div className="myplan">
-        <Sidebar />
+        <Sidebar className="sidebar" />
         {/* <nav className="sidebar">
           <Link to="/auth/mypage">
             <h2 className="size_lg weight_sb">마이페이지</h2>

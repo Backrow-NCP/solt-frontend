@@ -1,13 +1,13 @@
 import { createGlobalStyle } from 'styled-components';
 
 const MyBoardStyles = createGlobalStyle`
-  .main_container {
+  .myboard {
     display: flex;
     flex-direction: row;
     width: 80%;
-    height: 800px;
     gap: 20px;
     max-width: 1600px;
+    max-height: 1200px;
     margin: 80px auto 0;
   }  
 
@@ -78,6 +78,15 @@ const MyBoardStyles = createGlobalStyle`
       top: 0;
       left: 0;
       margin-bottom: 20px;
+    }
+
+    .my-board-container {
+      margin: 0;
+      padding: 10px;
+    }
+
+    .my-board-container h1 {
+      font-size: 18px;
     }
   }
   

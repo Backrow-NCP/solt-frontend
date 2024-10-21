@@ -4,9 +4,11 @@ const MyPageStyles = createGlobalStyle`
   .mypage {
     display: flex;
     flex-direction: row;
-    margin: 80px auto 0;
+    width: 80%;
+    gap: 20px;
     max-width: 1600px;
-    max-height: 800px;
+    max-height: 1200px;
+    margin: 80px auto 0;
   }
 
   .main_container {

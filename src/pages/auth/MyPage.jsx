@@ -56,7 +56,8 @@ const MyPage = () => {
     <>
       <MyPageStyles />
       <div className="mypage">
-        <nav className={`sidebar ${isSidebarVisible ? 'show' : ''}`}>
+        <Sidebar/>
+        {/* <nav className={`sidebar ${isSidebarVisible ? 'show' : ''}`}>
           <h2 className="size_xl weight_b pt_blue">마이페이지</h2>
           <ul>
             <li>
@@ -70,7 +71,7 @@ const MyPage = () => {
               </Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
         <div className="main_container">
           <div className="profile_container">
             <div className="profile_image_container">
