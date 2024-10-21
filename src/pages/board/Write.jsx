@@ -1,17 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate
 import BoardForm from '../../components/Board/BoardForm';
-import axios from 'axios';
+import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
+import { getMemberId } from '../../utils/token/tokenUtils';
 
 const Write = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
+  const [loading, setLoading] = useState(false);
+  const [planData, setPlanData] = useState(null); // 상태 관리
+
+  useEffect(() => {
+    setupInterceptors(setLoading);
+    const memberId = getMemberId(); // 회원 ID 가져오기
+    fetchPlanDetails(memberId); // 회원 ID를 사용하여 플랜 상세 정보를 요청
+    console.log(planData);
+  }, []);
+
+  const fetchPlanDetails = async memberId => {
+    try {
+      const response = await apiClient.get(`/plans/list/${memberId}`);
+      if (response.status === 200) {
+        const { dtoList } = response.data;
+        console.log('DTO List: ', dtoList);
+        console.log('현재 멤버아이디: ', memberId);
+        console.log('planData:', planData);
+        if (dtoList.length > 0) {
+          // dtoList의 모든 데이터 구조를 planData로 설정
+          const planDetails = dtoList.map(plan => ({
+            planId: plan.planId,
+            endDate: plan.endDate,
+            startDate: plan.startDate,
+            title: plan.title,
+            location: plan.location,
+          }));
+          setPlanData(planDetails); // 상태 업데이트
+        }
+      } else {
+        throw new Error('데이터를 가져오는 중 오류 발생');
+      }
+    } catch (error) {
+      console.error('플랜 상세 정보 가져오기 오류:', error);
+    }
+  };
 
   const handleSubmit = async formData => {
     try {
-      console.log(formData);
+      console.log('formData 받아오기 테스트', formData);
 
-      const url = `http://192.168.0.27:12000`;
-      const response = await axios.post(url + '/board', formData);
+      // 전역 변수로 API URL 관리
+      const response = await apiClient.post(
+        `${process.env.REACT_APP_API_URL}/boards`,
+        formData // formData를 POST 요청으로 전송
+      );
 
       console.log(response);
 
@@ -37,10 +77,17 @@ const Write = () => {
       >
         게시글 작성
       </h2>
-      <BoardForm onSubmit={handleSubmit} buttonText="작성완료" />
+      {planData ? (
+        <BoardForm
+          onSubmit={handleSubmit}
+          buttonText="작성완료"
+          planData={planData}
+        />
+      ) : (
+        <p>데이터를 불러오는 중입니다...</p>
+      )}
     </div>
   );
 };
 
 export default Write;
-

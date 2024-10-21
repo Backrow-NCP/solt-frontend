@@ -26,6 +26,12 @@ import MyPage from './pages/auth/MyPage';
 import MyPlan from './pages/auth/MyPlan';
 import MyBoard from './pages/auth/MyBoard.jsx';
 import ProfileEdit from './pages/auth/ProfileEdit.jsx';
+import MyTest from './pages/auth/MyTest.jsx'; // 나의 유형검사
+
+// 여행 유형 검사
+import PersonalityTest from './pages/personality/Test.jsx';
+import PersonalityResult from './pages/personality/Result.jsx';
+import PersonalityResultList from './pages/personality/ResultList.jsx';
 
 function App() {
   const [isLoginPopupOpen, setLoginPopupOpen] = useState(false);
@@ -82,9 +88,26 @@ function App() {
               <Route path="/auth/mypage" element={<MyPage />} />
               <Route path="/auth/myplan" element={<MyPlan />} />
               <Route path="/auth/myboard" element={<MyBoard />} />
+              <Route path="/auth/mytest" element={<MyTest />} />
               <Route path="/auth/profileEdit" element={<ProfileEdit />} />
 
               {/* 유형 테스트 */}
+              <Route
+                path="/personalityTest/test"
+                element={<PersonalityTest />}
+              />
+              <Route
+                path="/personalityTest/result"
+                element={<PersonalityResult />}
+              />
+              <Route
+                path="/personalityTest/result/:resultId"
+                element={<PersonalityResult />}
+              />
+              <Route
+                path="/personalityTest/getAllResults"
+                element={<PersonalityResultList />}
+              />
             </Routes>
           </main>
 

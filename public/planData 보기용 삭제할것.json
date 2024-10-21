@@ -1,0 +1,36 @@
+{
+  "title": "string",
+  "memberId": 0,
+  "places": [
+    {
+      "placeId": 0,
+      "placeName": "string",
+      "addr": "string",
+      "price": 0,
+      "description": "string",
+      "category": "string",
+      "startTime": "2024-10-21T05:42:37",
+      "endTime": "2024-10-21T05:42:37",
+      "checker": true
+    }
+  ],
+  "routes": [
+    {
+      "routeId": 0,
+      "startTime": "2024-10-21T05:42:37",
+      "endTime": "2024-10-21T05:42:37",
+      "price": 0,
+      "transportation": {
+        "id": 0,
+        "type": "string"
+      },
+      "distance": 0,
+      "travelTime": 0,
+      "checker": true
+    }
+  ],
+  "themes": [0],
+  "location": "string",
+  "startDate": "2024-10-21",
+  "endDate": "2024-10-21"
+}
