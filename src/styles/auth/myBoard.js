@@ -1,17 +1,17 @@
 import { createGlobalStyle } from 'styled-components';
 
 const MyBoardStyles = createGlobalStyle`
-  .main-container {
+  .myboard {
     display: flex;
     flex-direction: row;
     width: 80%;
-    height: 800px;
     gap: 20px;
     max-width: 1600px;
+    max-height: 1200px;
     margin: 80px auto 0;
   }  
 
-  .board-items-wrapper {
+  .board_items_wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 두 개의 그리드로 고정 */
     gap: 20px; /* 각 박스 사이의 간격 */
@@ -20,7 +20,7 @@ const MyBoardStyles = createGlobalStyle`
     align-items: stretch; /* 모든 그리드 아이템의 높이를 동일하게 맞춤 */
   }
 
-  .board-item {
+  .board_item {
     flex: 0 1 calc(50% - 10px); /* 각 BoardItem의 너비를 50%로 설정 (간격 포함) */
     box-sizing: border-box;
   }
@@ -51,7 +51,7 @@ const MyBoardStyles = createGlobalStyle`
     color: #14B8FF;
   }
 
-  .my-board-container {
+  .my_board_container {
     flex-grow: 1;
     margin: 20px;
     max-width: 1200px;
@@ -59,7 +59,7 @@ const MyBoardStyles = createGlobalStyle`
     margin-right: auto;
   }
 
-  .my-board-container h1 {
+  .my_board_container h1 {
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
@@ -78,6 +78,15 @@ const MyBoardStyles = createGlobalStyle`
       top: 0;
       left: 0;
       margin-bottom: 20px;
+    }
+
+    .my-board-container {
+      margin: 0;
+      padding: 10px;
+    }
+
+    .my-board-container h1 {
+      font-size: 18px;
     }
   }
   

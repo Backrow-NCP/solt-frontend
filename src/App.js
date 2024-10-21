@@ -9,6 +9,7 @@ import GlobalStyles from '../src/styles/global.js';
 import Survey from './pages/plan/Survey';
 import Produce from './pages/plan/Produce';
 import Complete from './pages/plan/Complete';
+import SurveyEdit from './pages/plan/modify/SurveyEdit.jsx';
 
 // 게시물 관리
 import Write from './pages/board/Write';
@@ -54,7 +55,7 @@ function App() {
             onLoginClick={openLoginPopup}
             onSignupClick={openSignupPopup}
           />
-					
+
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -63,14 +64,15 @@ function App() {
               <Route path="/plan/survey" element={<Survey />} />
               <Route path="/plan/produce" element={<Produce />} />
               <Route path="/plan/complete" element={<Complete />} />
+              <Route path="/plan/survey/:planId" element={<SurveyEdit />} />
 
-							{/* 게시물 관리 */}
+              {/* 게시물 관리 */}
               <Route path="/board/write" element={<Write />} />
-              <Route path="/board/edit" element={<Edit />} />
+              <Route path="/board/edit/:boardId" element={<Edit />} />
               <Route path="/board/list" element={<List />} />
               <Route path="/board/detail/:boardId" element={<Detail />} />
 
-							{/* 회원 관리 */}
+              {/* 회원 관리 */}
               <Route path="/auth/signup" element={<Signup />} />
               <Route path="/auth/findpassword" element={<FindPassword />} />
               <Route path="/auth/passwordreset" element={<PasswordReset />} />
@@ -78,10 +80,8 @@ function App() {
               <Route path="/auth/myplan" element={<MyPlan />} />
               <Route path="/auth/myboard" element={<MyBoard />} />
               <Route path="/auth/profileEdit" element={<ProfileEdit />} />
-              {/* 프로필 수정 페이지 */}
-              <Route path="/plan/survey" element={<Survey />} />
-              <Route path="/plan/produce" element={<Produce />} />
-              <Route path="/plan/complete" element={<Complete />} />
+
+              {/* 유형 테스트 */}
             </Routes>
           </main>
 

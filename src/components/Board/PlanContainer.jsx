@@ -1,12 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  PlanCard,
-  PlanDetails,
-  PlanName,
-  PlanActions,
-} from '../../styles/board/planContainer';
+import {PlanCard,PlanDetails,PlanName,PlanActions,} from '../../styles/board/planContainer';
 import itaewonImage from '../../assets/images/bn/area1.jpg';
 import jamsilImage from '../../assets/images/bn/area2.jpg';
 import gangnamImage from '../../assets/images/bn/area3.jpg';
@@ -35,11 +30,11 @@ const PlanContainer = ({ plan, children }) => {
   return (
     <PlanCard style={{ backgroundImage: `url(${getImageForArea(plan.area)})` }}>
       <PlanDetails>
-        <p className="plan-date weight_sb">{`${plan.startDate} ~ ${plan.endDate}`}</p>
-        <p className="plan-area weight_sb">{plan.area}</p>
+        <p className="plan_date weight_sb">{`${plan.startDate} ~ ${plan.endDate}`}</p>
+        <p className="plan_area weight_sb">{plan.area}</p>
       </PlanDetails>
       <PlanName>
-        <h2 className="plan-title weight_sb">{plan.title}</h2>
+        <h2 className="plan_title weight_sb">{plan.title}</h2>
       </PlanName>
       <PlanActions>{children}</PlanActions>
     </PlanCard>

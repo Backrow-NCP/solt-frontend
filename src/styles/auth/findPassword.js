@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 const FindPasswordStyles = createGlobalStyle`
-  .find-password-popup-overlay {
+  .find_password_popup_overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -16,7 +16,7 @@ const FindPasswordStyles = createGlobalStyle`
     animation: fadeIn 0.5s forwards; /* 팝업 배경 페이드인 */
   }
 
-  .find-password-popup {
+  .find_password_popup {
     background-color: #fff;
     padding: 30px;
     border-radius: 32px;
@@ -48,7 +48,7 @@ const FindPasswordStyles = createGlobalStyle`
     }
   }
 
-  .close-button {
+  .close_button {
     position: absolute;
     top: 15px;
     margin-right: 10px;
@@ -66,18 +66,18 @@ const FindPasswordStyles = createGlobalStyle`
     text-align: center;
   }
 
-  .find-password-form {
+  .find_password_form {
     display: flex;
     flex-direction: column;
   }
 
-  .input-group {
+  .input_group {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
   }
 
-  .input-group input {
+  .input_group input {
     flex: 1;
     width: 70%; /* 이메일 입력란의 너비를 줄임 */
     padding: 10px;
@@ -86,7 +86,7 @@ const FindPasswordStyles = createGlobalStyle`
     font-size: 14px;
   }
 
-  .input-group button {
+  .input_group button {
     margin-left: 10px; /* 이메일 입력란과 버튼 사이의 간격을 늘림 */
   }
 `;

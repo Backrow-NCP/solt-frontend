@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 
 // 날짜 탭
-const DayTab = ({ days, selectedDay, onTabClick }) => {
+const DayTab = ({ days, selectedDay, onTabClick, isDetailPage }) => {
   return (
-    <Tab className="tab_date flex pt_gy size_sm weight_b">
+    <Tab
+      isDetailPage={isDetailPage}
+      className="tab_date flex pt_gy size_sm weight_b"
+    >
       {days.map((day, index) => (
         <li
           key={index}
@@ -15,14 +18,14 @@ const DayTab = ({ days, selectedDay, onTabClick }) => {
       ))}
     </Tab>
   );
-}
+};
 
 export default DayTab;
 
 const Tab = styled.ul`
   flex-wrap: nowrap;
   gap: 32px;
-  margin: 40px 0 20px;
+  margin: 30px 0 10px ${props => (props.isDetailPage ? '30px' : '0')}; // isDetailPage에 따라 좌측 마진 설정
 
   > li {
     cursor: pointer;
@@ -30,5 +33,14 @@ const Tab = styled.ul`
     &.active {
       color: #121212;
     }
+  }
+
+  /* media size */
+  @media (max-width: 1400px) {
+    margin: 20px 0 5px ${props => (props.isDetailPage ? '30px' : '0')};
+  }
+
+  @media (max-width: 700px) {
+    margin: 14px 0 10px ${props => (props.isDetailPage ? '30px' : '0')};
   }
 `;

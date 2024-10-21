@@ -1,20 +1,42 @@
-import { useState, useCallback } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import planData from '../../mock/planProduce.json'; // 임시 데이터
-import SurveyCommon from '../../styles/plan/survey';
+import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
 
 // 컴포넌트
+import SurveyCommon from '../../styles/plan/survey';
 import SurveyCalendar from '../../components/Survey/SurveyCalendar';
 import SurveyArea from '../../components/Survey/SurveyArea';
 import SurveyKeyword from '../../components/Survey/SurveyKeyword';
 import SurveyPlace from '../../components/Survey/SurveyPlace';
 import Button from '../../components/Button';
+import Loading from './Loading';
 
 import PrevBtn from '../../assets/images/ico/btn_survey_prev.svg';
 
 const Survey = () => {
   const navigate = useNavigate();
+	const [username, setUsername] = useState('여행자');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+    setupInterceptors(setLoading);
+    checkLoginStatus();
+  }, []);
+
+	// 로그인 체크 (username)
+	const checkLoginStatus = () => {
+		const token = localStorage.getItem('token');
+    const storedUsername = localStorage.getItem('username');
+  
+    if (token && storedUsername) {
+      setIsLoggedIn(true);
+      setUsername(storedUsername);
+    } else {
+      setIsLoggedIn(false);
+      setUsername('여행자');
+    }
+  };
 
   // 질문
   const questions = [
@@ -27,7 +49,7 @@ const Survey = () => {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({
     calendar: null,
-    area: '서울특별시',
+    location: '서울특별시',
     keywords: {
       travelStyle: [],
       theme: [],
@@ -66,9 +88,14 @@ const Survey = () => {
 
   // 장소 선택 핸들러 추가
   const handlePlaceSelect = (places) => {
+    const formattedPlaces = places.map(place => ({
+      placeName: place.name,
+      addr: place.address,
+    }));
+  
     setAnswers(prevAnswers => ({
       ...prevAnswers,
-      place: places,
+      place: formattedPlaces,
     }));
   };
 
@@ -78,6 +105,8 @@ const Survey = () => {
 
       if (questionType === 'calendar') {
          return !answers.calendar;
+      } else if (questionType === 'area') {
+        return !answers.area;
       } else if (questionType === 'keywords') {
          const { travelStyle, theme, environment } = answers.keywords;
          return travelStyle.length === 0 || theme.length === 0 || environment.length === 0;
@@ -122,24 +151,50 @@ const Survey = () => {
       setQuestionIndex(questionIndex + 1);
     }
   };
+	
+	// Axios
   const handleFinish = async () => {
     try {
+      const themes = [
+        ...answers.keywords.travelStyle.map(item => item.name),
+        ...answers.keywords.theme.map(item => item.name),
+        ...answers.keywords.environment.map(item => item.name),
+      ];
+  
+      const startDate = answers.calendar[0].toISOString().split('T')[0];
+      const endDate = answers.calendar[1].toISOString().split('T')[0];
+  
       const data = {
-        calendar: answers.calendar,
-        area: answers.area,
-        keywords: answers.keywords,
-        place: answers.place,
+        title: answers.area || '맞춤 플랜',
+        memberId: 0,
+        places: answers.place.map(place => ({
+          placeName: place.placeName,
+          addr: place.addr,
+          price: 0,
+          description: "",
+          startTime: "",
+          endTime: "",
+          checker: false
+        })),
+        themes: themes,
+        location: answers.area || "서울특별시",
+        startDate,
+        endDate
       };
-
-      const response = await axios.post('/api/survey', data);
-      console.log('응답 ', response.data);
-
+  
+      console.log('전송할 데이터: ', data);
+  
+      sessionStorage.setItem('planData', JSON.stringify(data));
+  
+      const response = await apiClient.post('/plans/recom', data);
+      console.log('응답: ', response.data);
+  
       navigate('/plan/produce');
     } catch (error) {
-      console.log('데이터 오류 발생', error);
-      navigate('/plan/produce');
+      console.error('요청 오류: ', error);
     }
   };
+  
 
   // 버튼 렌더링
   const renderButtons = () => {
@@ -184,11 +239,13 @@ const Survey = () => {
     }
   };
 
+  if (loading) return <Loading />;
+
   return (
     <SurveyCommon className="inner">
       <div className="title">
         <h2>
-            {planData.member.name} 님을 위한<br />
+            {username} 님을 위한<br />
           <span className="pt_blue">맞춤 여행 일정</span>을 만들어 볼게요
         </h2>
         <p className="pt_gy size_md">막막한 계획 짜기, AI 소금이가 대신 해드릴게요!</p>

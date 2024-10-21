@@ -9,28 +9,31 @@ const Header = ({ onLoginClick, onSignupClick }) => {
   const [username, setUsername] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+
+  // 1020 수정사항
+  // 컴포넌트가 처음 로드될 때 로그인 상태를 확인
   useEffect(() => {
     checkLoginStatus();
-  }, [location]); // location 변경 시 실행되도록 수정
+  }, []);
 
-  const checkLoginStatus = () => {
+  useEffect(() => {
+    checkLoginStatus();
+  }, [location]);  // 페이지가 이동될 때마다 로그인 상태 확인
+  
+  const checkLoginStatus = async () => {
     const token = localStorage.getItem('token');
-    if (token) {
-      setIsLoggedIn(true);
+    const storedUsername = localStorage.getItem('username');
+  
 
-      fetch('/mock/member.json')
-        .then(response => response.json())
-        .then(data => {
-          const member = data.members.find(member => member.id === 1);
-          if (member) {
-            setUsername(member.name);
-          }
-        });
+    if (token && storedUsername) {
+      setIsLoggedIn(true);
+      setUsername(storedUsername);  // 사용자 이름 설정
     } else {
       setIsLoggedIn(false);
       setUsername('');
     }
   };
+
 
   return (
     <header>
@@ -44,10 +47,13 @@ const Header = ({ onLoginClick, onSignupClick }) => {
         <nav>
           <ul className="flex">
             <li>
-              <Link to="/plan/survey">여행 계획 만들기</Link>
+              <Link to="/plan/survey">여행 플랜 만들기</Link>
             </li>
             <li>
               <Link to="/board/list">플랜 공유하기</Link>
+            </li>
+            <li>
+            <Link to="">여행 유형 테스트</Link>
             </li>
           </ul>
         </nav>
@@ -55,14 +61,14 @@ const Header = ({ onLoginClick, onSignupClick }) => {
         <div className="log">
           {isLoggedIn ? (
             <div
-              className="profile-section"
+              className="profile_section"
               style={{ display: 'flex', alignItems: 'center' }}
             >
               <Link to="/auth/mypage">
                 <img
                   src={profileImage} // 기본 프로필 이미지로 설정
                   alt="프로필"
-                  className="profile-image"
+                  className="profile_image"
                   style={{
                     width: '40px',
                     height: '40px',
@@ -72,6 +78,7 @@ const Header = ({ onLoginClick, onSignupClick }) => {
                 />
               </Link>
               <span>{username}님</span>
+              
             </div>
           ) : (
             <div className="login flex">

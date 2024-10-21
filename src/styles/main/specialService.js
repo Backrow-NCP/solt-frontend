@@ -16,11 +16,12 @@ const SpecialService = styled.section`
     li {
       flex: 1;
       overflow: hidden;
+      border: 1px solid #eee;
       border-radius: 32px;
 
       .cont {
         padding: 30px 40px;
-        border: 1px solid #eee;
+        border-bottom: 1px solid #eee;
         border-radius: 32px 32px 0 0;
 
         h3 {

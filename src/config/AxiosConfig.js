@@ -22,11 +22,19 @@ const setupInterceptors = (setLoading) => {
   apiClient.interceptors.request.use(
     (config) => {
       setLoading && setLoading(true); // 로딩 상태 시작 (필요할 경우)
+
+      // 로컬 스토리지에서 JWT 토큰 가져오기
+      const token = localStorage.getItem('token');
+      
+      // 토큰이 있으면 요청 헤더에 Authorization 추가
+      if (token) {
+        config.headers['Authorization'] = token;
+      }
       return config;
     },
-    (error) => {
-      setLoading && setLoading(false); // 요청 실패 시 로딩 종료
-      return Promise.reject(error);
+      (error) => {
+        setLoading && setLoading(false); // 요청 실패 시 로딩 종료
+        return Promise.reject(error);
     }
   );
 
@@ -40,12 +48,14 @@ const setupInterceptors = (setLoading) => {
       setLoading && setLoading(false); // 응답 실패 시 로딩 종료
       // 세션이 만료된 경우 (401 응답)
       if (error.response && error.response.status === 401) {
-        // 로그아웃 처리 등을 여기서 할 수 있음
-        window.location.href = '/auth/Login'; // 로그인 페이지로 리다이렉트
+        console.log('401 에러 발생, 로그아웃 처리'); 
+        localStorage.removeItem('token'); // 로그아웃처리, 토큰 삭제
+        window.location.href = '/auth/login'; // 로그인 페이지로 리다이렉트
       }
       return Promise.reject(error);
     }
   );
+  
 };
 
 export { setupInterceptors };

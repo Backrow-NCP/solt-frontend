@@ -7,7 +7,6 @@ import PlanModifyActiveBtn from '../../assets/images/ico/btn_plan_modify_active.
 // 일정
 const PlaceItem = ({
   place,
-  previousPlace,
   route,
   planTime,
   handlePriceChange,
@@ -19,7 +18,6 @@ const PlaceItem = ({
   handleModifyClick,
   displayButtons,
 }) => {
-
   return (
     <Item key={`place-${place.placeId}`} className="flex">
       <span className="place_time pt_blue size_xs weight_b">
@@ -30,17 +28,17 @@ const PlaceItem = ({
         <h3 className="size_md">{place.placeName}</h3>
         <span className="pt_gy size_xs">{place.category}</span>
 
-        {previousPlace && route && (
+        {route && (
           <div className="size_xs weight_md">
             <img
               src={
-                route.transport.type === '도보'
+                route.transportation.type === '도보'
                   ? transportRun
                   : transportBus
               }
-              alt={route.transport.type}
+              alt={route.transportation.type}
             />
-            <span>{route.transport.type}</span>
+            <span>{route.transportation.type}</span>
             <span>{route.travelTime}분</span>
             <span>({route.distance}km)</span>
             {route.price !== 0 && (
@@ -232,6 +230,47 @@ const Item = styled.li`
       &:hover {
         background: #14b8ff;
         color: #fff;
+      }
+    }
+  }
+
+  /* media size */
+  @media (max-width: 700px) {
+    .place_info {
+      width: calc(100% - 214px);
+
+      > span {
+        display: none;
+      }
+
+      > div {
+        span:last-of-type {
+          display: none;
+        }
+        
+        strong {
+          display: block;
+          margin: 2px 0 0;
+        }
+      }
+    }
+
+    .place_price {
+      width: 90px;
+
+      input {
+        width: 70px;
+        font-size: 14px;
+      }
+    }
+
+    .place_change {
+      width: 130px;
+
+      button,
+      button.active {
+        padding: 10px 0;
+        font-size: 13px;
       }
     }
   }

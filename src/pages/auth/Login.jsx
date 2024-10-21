@@ -26,16 +26,27 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
     setIsLoading(true); // 로딩 시작
   
     try {
-      // apiNoToken을 사용해 POST 요청으로 로그인 처리
+      // 이메일, 비밀번호 확인 , 지워도 됨 ㅇㅇ
+      console.log("로그인 시도:", { email, password }); 
+      // apiNoToken을 사용해 POST 요청으로 로그인 처리    
       const response = await apiNoToken.post('/login', {
         email,
         password
       });
 
+      // 서버 응답 확인 , 지워도 됨 ㅇㅇ
+      console.log("로그인 응답:", response); 
+      const token = response.headers['authorization'];
+      const name = response.data.name;  // 서버에서 받은 사용자 이름
+      const memberId = response.data.memberId; // 서버에서 받은 memberId
+
       // 서버로부터 응답이 정상적일 경우
-      const { token } = response.data;  // 서버 응답에서 토큰 추출
       if (token) {
         localStorage.setItem('token', token);  // JWT 토큰 저장
+        localStorage.setItem('username', name);  // 사용자 이름 저장
+        // 저장된 토큰 콘솔 출력, 지워도 됨ㅇㅇ 
+        console.log('Token saved:', token); 
+
         closePopup();  // 팝업 닫기
         navigate('/');  // 홈으로 리다이렉션
       } else {
@@ -52,12 +63,12 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
   return (
     <>
       <LoginStyles />
-      <div className="login-popup-overlay">
-        <div className="login-popup">
-          <button className="close-button size_xxs pt_gy" onClick={closePopup}>닫기</button>
+      <div className="login_popup_overlay">
+        <div className="login_popup">
+          <button className="close_button size_xxs pt_gy" onClick={closePopup}>닫기</button>
           <h2>로그인</h2>
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="input-group">
+          <form className="login_form" onSubmit={handleSubmit}>
+            <div className="input_group">
               <input
                 type="email"
                 id="email"
@@ -68,7 +79,7 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
               />
             </div>
 
-            <div className="input-group">
+            <div className="input_group">
               <input
                 type="password"
                 id="password"
@@ -79,24 +90,26 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
               />
             </div>
 
-            {error && <p className="error-message" style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+            {error && <p className="error_message" style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
-            <div className="login-options">
+            <div className="login_options">
               <button
+                type="button"
                 onClick={() => {
                   closePopup();
                   onFindPasswordClick();
                 }}
-                className="find-password-link"
+                className="find_password_link"
               >
                 비밀번호 찾기
               </button>
               <button
+                type="button"
                 onClick={() => {
                   closePopup();
                   onSignupClick();
                 }}
-                className="signup-link"
+                className="signup_link"
               >
                 회원가입
               </button>

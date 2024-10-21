@@ -22,6 +22,11 @@ const ChatbotPopup = ({ isOpen, onClose }) => {
       try {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/clovaX/chat`, {
           message: message,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_CLOVA_X_API_KEY}`, // 인증 토큰 추가
+          },
         });
         const botReply = { text: response.data.reply, isUser: false };
         setMessages((prevMessages) => [...prevMessages, botReply]);

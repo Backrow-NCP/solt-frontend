@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Tooltip } from 'react-tooltip'; // Tooltip 임포트
 import { useParams, useNavigate } from 'react-router-dom'; // useNavigate 임포트
 import {
@@ -9,12 +9,30 @@ import {
 import TabContainer from './TabContainer';
 import Button from '../Button';
 import axios from 'axios';
+import PlanInfo from '../Plan/PlanInfo';
+import planTime from '../../utils/plan/planTime';
 
-const BoardDetailContainer = () => {
+const BoardDetailContainer = ({
+  planData,
+  filteredPlaces,
+  setFilteredPlaces,
+  data,
+  places,
+  totalPrice,
+  pieChartData,
+  isDetailPage,
+  days,
+}) => {
   const { boardId } = useParams();
   const navigate = useNavigate(); // useNavigate 훅 사용
   const [boardData, setBoardData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
+
+  const [editPrice, setEditPrice] = useState(0); // 가격 상태 추가
+  const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태 추가
+  const [selectedDay, setSelectedDay] = useState(1); // 선택된 날짜 상태 추가
+  const placesData = planData.place;
+  const [editPlace, setEditPlace] = useState({}); // 추가
 
   // 게시물 데이터를 가져오는 useEffect
   useEffect(() => {
@@ -64,15 +82,72 @@ const BoardDetailContainer = () => {
     navigate('/auth/mypage'); // 마이페이지로 이동
   };
 
+  // 필요한 함수들 추가 (예시)
+  const findRoute = () => {
+    // 경로 찾기 로직
+  };
+
+  const handlePriceChange = newPrice => {
+    setEditPrice(newPrice);
+  };
+
+  const toggleEditPrice = () => {
+    setIsEditing(prev => !prev);
+  };
+
+  const toggleModifyPlace = () => {
+    // 장소 수정 토글 로직
+  };
+
+  const handleModifyClick = placeId => {
+    // 장소 수정 클릭 핸들러
+  };
+
+  const displayButtons = () => {
+    // 버튼 표시 로직
+  };
+  const handleTabClick = useCallback(index => {
+    setSelectedDay(index + 1);
+  }, []);
+
+  // // console.log('places BDC', places);
+  // console.log('필터링 플레이스 BDC', filteredPlaces);
+  // // console.log('days:', days);
+  // console.log('plan', planData);
+  console.log('보드데이터 테스트중 BDC', boardData);
   return (
     <DetailWrapper>
-      <TabContainer boardData={boardData} />
+      <div>
+        <PlanInfo
+          memberName={planData.member.name}
+          location={planData.location}
+          totalPrice={totalPrice}
+          pieChartData={pieChartData}
+          isDetailPage={true}
+        />
+        <TabContainer
+          places={places && places.length > 0 ? places : []} // 안전하게 처리
+          planTime={planTime}
+          findRoute={findRoute}
+          handlePriceChange={handlePriceChange}
+          editPrice={editPrice}
+          isEditing={isEditing}
+          toggleEditPrice={toggleEditPrice}
+          editPlace={editPlace}
+          setEditPlace={setEditPlace}
+          toggleModifyPlace={toggleModifyPlace}
+          handleModifyClick={handleModifyClick}
+          displayButtons={displayButtons}
+          boardData={boardData}
+          handleTabClick={handleTabClick}
+          isDetailPage={true}
+          filteredPlaces={filteredPlaces}
+          setFilteredPlaces={setFilteredPlaces}
+        />
+      </div>
+
       <BottomButtonContainer>
-        <Button
-          size="lg"
-          color="blue"
-          data-tooltip-id="my-tooltip-click" // 툴팁 ID 설정
-        >
+        <Button size="lg" color="blue" data-tooltip-id="my-tooltip-click">
           마이페이지에 저장
         </Button>
         <Tooltip
@@ -85,13 +160,11 @@ const BoardDetailContainer = () => {
                 마이페이지에 저장되었습니다!
               </p>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
-                {' '}
-                {/* 버튼을 중앙 정렬 */}
                 <button
                   onClick={handleNavigateToMyPage}
                   style={{
-                    backgroundColor: 'skyblue', // 배경색
-                    color: 'white', // 글자색
+                    backgroundColor: 'skyblue',
+                    color: 'white',
                     border: 'none',
                     borderRadius: '5px',
                     padding: '5px 10px',

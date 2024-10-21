@@ -4,7 +4,7 @@ import { scrollbar } from '../../styles/scrollbar';
 
 // 일정 묶음
 const PlaceList = ({
-  filteredPlaces,
+  filteredPlaces = [],
   planTime,
   findRoute,
   handlePriceChange,
@@ -14,22 +14,19 @@ const PlaceList = ({
   editPlace,
   toggleModifyPlace,
   handleModifyClick,
-  displayButtons= true,
+  displayButtons = true,
+  isDetailPage,
 }) => {
-
+  console.log('isDetailPage:', isDetailPage);
   return (
-    <List>
+    <List isDetailPage={isDetailPage}>
       {filteredPlaces.map((place, index) => {
-        const previousPlace = filteredPlaces[index - 1]; // 이전 일정
-        const route = previousPlace
-          ? findRoute(previousPlace.placeId, place.placeId)
-          : null; // 이전 일정과 현재 일정 간의 경로
+        const route = findRoute(place); // 이전 일정과 현재 일정 간의 경로
 
         return (
           <PlaceItem
             key={`place-${place.placeId}`}
             place={place}
-            previousPlace={previousPlace}
             route={route}
             planTime={planTime}
             handlePriceChange={handlePriceChange}
@@ -50,10 +47,10 @@ const PlaceList = ({
 export default PlaceList;
 
 const List = styled.ol`
-  height: 40vh;
-  padding-right: 10px;
+  height: 36vh;
   overflow-y: auto;
   ${scrollbar}
+  padding: ${props => (props.isDetailPage ? '0 30px' : '0')};
 
   > li {
     flex-wrap: nowrap;
@@ -76,5 +73,17 @@ const List = styled.ol`
     &:last-child::after {
       display: none;
     }
+  }
+
+  // isDetailPage 페이지
+  ${props =>
+    !props.isDetailPage &&
+    `
+    padding-right: 10px; 
+  `}
+
+  /* media size */
+  @media (max-width: 700px) {
+    height: 22vh;
   }
 `;
