@@ -5,7 +5,6 @@ export const PlanCard = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  display: flex;
   justify-content: flex-start; /* 혹은 center, space-around */
   width: 100%;
   height: 150px;

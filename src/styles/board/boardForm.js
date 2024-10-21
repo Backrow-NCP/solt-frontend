@@ -93,7 +93,7 @@ export const PlanStyledBox = styled.div`
 export const ImageStyledBox = styled.div`
   width: 100%;
   min-height: 110px;
-  
+
   border: 2px solid #9999;
   border-radius: 5px;
   margin-top: 20px;
