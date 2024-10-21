@@ -1,0 +1,111 @@
+{
+    "planId": 1,
+    "title": "서울배낭여행",
+    "member": {
+      "memberId": 101,
+      "name": "솔로천국",
+      "birthYear": "2024-10-21",
+      "gender": true,
+      "fileName": "string"
+    },
+    "places": [
+      {
+        "placeId": 10,
+        "placeName": "무신사 스탠다드 강남",
+        "addr": "서울특별시 서초구 서초대로77길 54",
+        "price": 120000,
+        "description": "무신사 스탠다드 강남점은 인기 의류 브랜드 무신사의 오프라인 매장으로, 다양한 캐주얼 패션 아이템을 직접 체험하고 구매할 수 있는 곳입니다.",
+        "startTime": "2024-10-21",
+        "endTime": "2024-10-21",
+        "checker": true
+      },
+      {
+        "placeId": 11,
+        "placeName": "만족오향족발 역삼점",
+        "addr": "서울특별시 역삼동 테헤란로25길 15-5 1층",
+        "price": 17000,
+        "description": "만족오향족발 역삼점은 부드럽고 풍미 깊은 오향족발로 유명한 맛집입니다.",
+        "startTime": "2024-10-21",
+        "endTime": "2024-10-21",
+        "checker": true
+      },
+      {
+        "placeId": 12,
+        "placeName": "다이소 강남본점",
+        "addr": "서울특별시 강남구 강남대로 372",
+        "price": 15000,
+        "description": "다이소는 다양한 생활용품을 저렴한 가격에 판매하는 한국의 대표적인 할인 매장입니다.",
+        "startTime": "2024-10-22",
+        "endTime": "2024-10-22",
+        "checker": true
+      },
+      {
+        "placeId": 13,
+        "placeName": "롯데월드",
+        "addr": "서울특별시 송파구 올림픽로 240",
+        "price": 125000,
+        "description": "롯데월드는 놀이기구, 물미끄럼틀, 해양생물 전시관을 한 곳에서 즐길 수 있는 가족형 어드벤처 파크입니다.",
+        "startTime": "2024-10-23",
+        "endTime": "2024-10-23",
+        "checker": true
+      }
+    ],
+    "routes": [
+      {
+        "routeId": 10,
+        "startTime": "2024-10-21",
+        "endTime": "2024-10-21",
+        "price": 1500,
+        "transportation": {
+          "id": 1,
+          "type": "버스"
+        },
+        "distance": 1.2,
+        "travelTime": 12,
+        "checker": true
+      },
+      {
+        "routeId": 11,
+        "startTime": "2024-10-21",
+        "endTime": "2024-10-21",
+        "price": 1500,
+        "transportation": {
+          "id": 1,
+          "type": "지하철"
+        },
+        "distance": 1.2,
+        "travelTime": 12,
+        "checker": true
+      },
+      {
+        "routeId": 12,
+        "startTime": "2024-10-22",
+        "endTime": "2024-10-22",
+        "price": 0,
+        "transportation": {
+          "id": 1,
+          "type": "도보"
+        },
+        "distance": 0.1,
+        "travelTime": 5,
+        "checker": true
+      },
+      {
+        "routeId": 13,
+        "startTime": "2024-10-23",
+        "endTime": "2024-10-23",
+        "price": 0,
+        "transportation": {
+          "id": 1,
+          "type": "도보"
+        },
+        "distance": 0.2,
+        "travelTime": 10,
+        "checker": true
+      }
+    ],
+    "themes": [1, 4, 10],
+    "location": "서울특별시",
+    "startDate": "2024-10-21",
+    "endDate": "2024-10-23"
+  }

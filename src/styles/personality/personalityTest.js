@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const PersonalityTest = styled.div`
+const PersonalityTestStyle = styled.div`
   flex-wrap: nowrap !important;
   align-items: stretch;
   justify-content: space-between;
@@ -26,8 +26,8 @@ const PersonalityTest = styled.div`
     background: rgba(20, 184, 255, 0.04);
 
     /* 블러 처리 */
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(50px); /* 사파리 호환성 */
+    // backdrop-filter: blur(50px);
+    // -webkit-backdrop-filter: blur(50px); /* 사파리 호환성 */
   }
 
   @media (max-width: 768px) {
@@ -160,7 +160,10 @@ const PersonalityTest = styled.div`
   }
 
   .bar p {
+    margin-left: auto; /* p 요소를 우측으로 정렬 */
     margin-top: 12px;
+    text-align: center;
+    margin-bottom: 5px;
   }
 
   .answerBtn {
@@ -229,23 +232,23 @@ const PersonalityTest = styled.div`
   }
 
   .test_size_xxs {
-    font-size: 22px;
+    font-size: 18px;
   }
   .test_size_xs {
-    font-size: 24px;
+    font-size: 20px;
   }
   .test_size_sm {
-    font-size: 26px;
+    font-size: 22px;
   }
   .test_size_md {
-    font-size: 28px;
+    font-size: 24px;
   }
   .test_size_lg {
-    font-size: 30px;
+    font-size: 26px;
   }
   .test_size_xl {
-    font-size: 34px;
+    font-size: 28px;
   }
 `;
 
-export default PersonalityTest;
+export default PersonalityTestStyle;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ResultList from '../../styles/personality/resultList';
+import apiClient from '../../config/AxiosConfig';
 
 const PersonalityResultList = () => {
   const [results, setResults] = useState([]);
@@ -8,9 +9,9 @@ const PersonalityResultList = () => {
 
   useEffect(() => {
     // DB에서 데이터를 가져오는 API 호출 부분
-    fetch('http://localhost/personalityTest/getAllResults')
-      .then(response => response.json())
-      .then(data => setResults(data))
+    apiClient
+      .get('/personalityTest/getAllResults')
+      .then(response => setResults(response.data))
       .catch(error => console.error('Error fetching data:', error));
   }, []);
 

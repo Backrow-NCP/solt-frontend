@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-// import planData from '../../mock/planProduce.json';
+import planData from '../../mock/planProduce.json';
 import geocodeAddress from '../../utils/plan/geocodeAddress';
 
 const usePlanData = () => {

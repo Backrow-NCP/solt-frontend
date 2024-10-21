@@ -3,8 +3,8 @@ import { PopupContainer, CloseButton } from '../../styles/board/planPopup';
 import PlanContainer from '../../components/Board/PlanContainer';
 import Button from '../Button';
 import axios from 'axios';
-
-const PlanPopup = ({ onClose, onSelect, style }) => {
+import { getMemberId } from '../../utils/token/tokenUtils';
+const PlanPopup = ({ onClose, onSelect, style, planData }) => {
   // onSelect prop 추가
   const popupRef = useRef(null);
   const [plans, setPlans] = useState([]);
@@ -31,6 +31,7 @@ const PlanPopup = ({ onClose, onSelect, style }) => {
     };
   }, [onClose]);
 
+  console.log('planPopup', planData);
   return (
     <PopupContainer
       ref={popupRef}
@@ -40,9 +41,9 @@ const PlanPopup = ({ onClose, onSelect, style }) => {
       <CloseButton onClick={onClose}>×</CloseButton>
       <div>
         <h2 style={{ padding: 10 }}>공유할 플랜을 선택해 주세요.</h2>
-        {plans.length > 0 ? (
-          plans.map(plan => (
-            <PlanContainer key={plan.id} plan={plan}>
+        {planData ? (
+          planData.map(plan => (
+            <PlanContainer key={plan.planId} plan={plan}>
               <Button
                 color="blue"
                 size="sm"

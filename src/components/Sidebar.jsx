@@ -15,10 +15,9 @@ const SidebarHeader = styled.h2`
   margin-bottom: 20px;
 
   &:hover {
-    color: #14B8FF;
+    color: #14b8ff;
   }
 `;
-
 
 const SidebarList = styled.ul`
   list-style: none;
@@ -31,7 +30,7 @@ const SidebarListItem = styled.li`
 
 const SidebarLink = styled(Link)`
   &:hover {
-    color: #14B8FF;
+    color: #14b8ff;
   }
 `;
 
@@ -50,6 +49,11 @@ const Sidebar = () => {
         <SidebarListItem>
           <SidebarLink to="/auth/myboard" className="size_sm">
             나의 게시글
+          </SidebarLink>
+        </SidebarListItem>
+        <SidebarListItem>
+          <SidebarLink to="/auth/mytest" className="size_sm">
+            나의 유형 검사
           </SidebarLink>
         </SidebarListItem>
       </SidebarList>

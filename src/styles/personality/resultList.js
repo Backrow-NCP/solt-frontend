@@ -63,11 +63,11 @@ const ResultList = styled.div`
     }
   }
 
-  @media (max-width: 600px) {
-    .result-container {
-      grid-template-columns: 1fr;
-    }
-  }
+  // @media (max-width: 600px) {
+  //   .result-container {
+  //     grid-template-columns: 1fr;
+  //   }
+  // }
 `;
 
 export default ResultList;
