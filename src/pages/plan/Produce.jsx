@@ -256,134 +256,131 @@ const Produce = () => {
 
   // ModifyContainer의 "이 장소로 선택" 버튼 클릭 시
   const handleSelectClick = useCallback(() => {
-    const { option, placeId } = selectedOption;
-    const selectedPlace = placeId;
+		const { option, placeId } = selectedOption;
+		const selectedPlace = placeId;
+	
+		console.log('handleSelectClick called with:', { option, selectedPlace });
+	
+		if (option === 'directly' && autocompleteSelectedPlace) {
+			// Autocomplete로 직접 선택한 장소를 수정 반영
+			const updatedPlaces = places.map(place => {
+				if (place.startTime === selectedPlace.startTime) {
+					console.log('Updating place with new selected data:', autocompleteSelectedPlace);
+					return {
+						...place,
+						placeName: autocompleteSelectedPlace.name || autocompleteSelectedPlace.placeName, // 여기에서 name 또는 placeName을 사용
+						latitude: autocompleteSelectedPlace.latitude,
+						longitude: autocompleteSelectedPlace.longitude,
+						addr: autocompleteSelectedPlace.address,
+						isNew: false,
+						price: 0,
+					};
+				}
+				return place;
+			});
 
-    console.log('handleSelectClick called with:', { option, selectedPlace });
+			setPlaces(updatedPlaces);
+			console.log('Updated places:', updatedPlaces);
+		} else if (option === 'directly' && autocompleteSelectedPlace) {
+			// "직접 쓸래요" 옵션으로 장소 반영
+			const updatedPlaces = places.map(place => {
+				if (place.startTime === selectedOption.startTime) {
+					console.log('Updating place with new selected data:', autocompleteSelectedPlace);
+					return {
+						...place,
+						placeName: autocompleteSelectedPlace.name, // name 값을 placeName으로 업데이트
+						latitude: autocompleteSelectedPlace.latitude,
+						longitude: autocompleteSelectedPlace.longitude,
+						addr: autocompleteSelectedPlace.address,
+						description: null,
+						isNew: false,
+						price: 0, // 직접 수정 시 가격 0으로 설정
+					};
+				}
+				return place;
+			});
+		
+			setPlaces(updatedPlaces);
+		
+			// 경로(route) 업데이트
+			const updatedPlanRoute = plan.routes.filter(route => {
+				return (
+					route.startTime !== selectedOption.endTime &&
+					route.endTime !== selectedOption.startTime
+				);
+			});
+		
+			setPlan({
+				...plan,
+				routes: updatedPlanRoute,
+			});
+		
+			// 수정된 장소를 추적
+			setModifiedPlaces(prev => [...prev, selectedOption.startTime]);
+			console.log('Updated Plan and Places:', updatedPlaces);
+		}
 
-    if (option === 'directly' && autocompleteSelectedPlace) {
-      const updatedPlaces = places.map(place => {
-        if (place.startTime === selectedPlace.startTime) {
-          return {
-            ...place,
-            latitude: autocompleteSelectedPlace.latitude,
-            longitude: autocompleteSelectedPlace.longitude,
-            addr: autocompleteSelectedPlace.address,
-            isNew: false,
-            price: 0, // 직접 수정 시 가격 0으로 설정
-          };
-        }
-        return place;
-      });
-
-      setPlaces(updatedPlaces);
-    }
-
-    if (option === 'recomm' && selectedRecommendedPlace) {
-      // 추천 수정
-      const updatedPlaces = places.map(place => {
-        if (place.startTime === selectedPlace.startTime) {
-          return {
-            ...place,
-            placeName:
-              selectedRecommendedPlace.placeName ||
-              selectedRecommendedPlace.name,
-            startTime: place.startTime, // startTime 유지
-            addr:
-              selectedRecommendedPlace.addr ||
-              selectedRecommendedPlace.address ||
-              place.addr,
-            description:
-              selectedRecommendedPlace.description || place.description, // 필요 시 수정
-            isNew: false, // 수정 완료 후 isNew 플래그 제거
-            price: selectedRecommendedPlace.price || place.price, // 추천 수정 시 가격 업데이트
-          };
-        }
-        return place;
-      });
-
-      setPlaces(updatedPlaces);
-
-      // 해당 장소와 연결된 경로(route) 제거
-      const updatedPlanRoute = plan.routes.filter(route => {
-        return (
-          route.startTime !== selectedPlace.endTime &&
-          route.endTime !== selectedPlace.startTime
-        );
-      });
-
-      setPlan({
-        ...plan,
-        routes: updatedPlanRoute,
-      });
-
-      // 수정된 장소를 추적
-      setModifiedPlaces(prev => [...prev, selectedPlace.startTime]);
-    } else if (option === 'directly' && autocompleteSelectedPlace) {
-      // "직접 쓸래요"
-      const updatedPlaces = places.map(place => {
-        if (place.startTime === selectedPlace.startTime) {
-          return {
-            ...place,
-            placeName:
-              autocompleteSelectedPlace.placeName ||
-              autocompleteSelectedPlace.name,
-            startTime: place.startTime,
-            addr:
-              autocompleteSelectedPlace.addr ||
-              autocompleteSelectedPlace.address ||
-              place.addr,
-            description: null,
-            isNew: false,
-            price: 0, // 가격 0원
-          };
-        }
-        return place;
-      });
-
-      setPlaces(updatedPlaces);
-
-      // 해당 장소와 연결된 경로(route) 제거
-      const updatedPlanRoute = plan.routes.filter(route => {
-        return (
-          route.startTime !== selectedPlace.endTime &&
-          route.endTime !== selectedPlace.startTime
-        );
-      });
-
-      setPlan({
-        ...plan,
-        routes: updatedPlanRoute,
-      });
-
-      // 수정된 장소를 추적
-      setModifiedPlaces(prev => [...prev, selectedPlace.startTime]);
-    }
-
-    setIsEditing(false);
-    setPlanConfirmed(false);
-    setSelectedOption({ option: null, placeId: null });
-    setSelectedRecommendedPlace(null);
-    setAutocompleteSelectedPlace(null);
-    setEditPlace(prev => {
-      const updatedEditPlace = { ...prev };
-      delete updatedEditPlace[selectedPlace.startTime];
-      return updatedEditPlace;
-    });
-
-    console.log('After setIsEditing:', isEditing);
-  }, [
-    selectedOption,
-    autocompleteSelectedPlace,
-    selectedRecommendedPlace,
-    places,
-    plan,
-    setPlaces,
-    setPlan,
-    setModifiedPlaces,
-    isEditing, // 추가: isEditing을 useCallback 의존성에 추가
-  ]);
-
+		if (option === 'recomm' && selectedRecommendedPlace) {
+			// 추천받은 장소로 수정 반영
+			const updatedPlaces = places.map(place => {
+				if (place.startTime === selectedPlace.startTime) {
+					return {
+						...place,
+						placeName: selectedRecommendedPlace.placeName || selectedRecommendedPlace.name,
+						startTime: place.startTime, // startTime 유지
+						addr: selectedRecommendedPlace.addr || selectedRecommendedPlace.address || place.addr,
+						description: selectedRecommendedPlace.description || place.description, // 필요 시 수정
+						isNew: false, // 수정 완료 후 isNew 플래그 제거
+						price: selectedRecommendedPlace.price || place.price, // 추천 수정 시 가격 업데이트
+					};
+				}
+				return place;
+			});
+	
+			setPlaces(updatedPlaces);
+	
+			// 해당 장소와 연결된 경로(route) 제거
+			const updatedPlanRoute = plan.routes.filter(route => {
+				return (
+					route.startTime !== selectedPlace.endTime &&
+					route.endTime !== selectedPlace.startTime
+				);
+			});
+	
+			setPlan({
+				...plan,
+				routes: updatedPlanRoute,
+			});
+	
+			// 수정된 장소를 추적
+			setModifiedPlaces(prev => [...prev, selectedPlace.startTime]);
+		}
+	
+		// 상태 리셋 및 수정 모드 종료
+		setIsEditing(false);
+		setPlanConfirmed(false);
+		setSelectedOption({ option: null, placeId: null });
+		setSelectedRecommendedPlace(null);
+		setAutocompleteSelectedPlace(null);
+		setEditPlace(prev => {
+			const updatedEditPlace = { ...prev };
+			delete updatedEditPlace[selectedPlace.startTime];
+			return updatedEditPlace;
+		});
+	
+		console.log('After setIsEditing:', isEditing);
+	}, [
+		selectedOption,
+		autocompleteSelectedPlace,
+		selectedRecommendedPlace,
+		places,
+		plan,
+		setPlaces,
+		setPlan,
+		setModifiedPlaces,
+		isEditing
+	]);
+	
   // 플랜 확정/수정 버튼 클릭 핸들러
   const handlePlanButtonClick = useCallback(async () => {
     if (planConfirmed) {
@@ -393,53 +390,39 @@ const Produce = () => {
       // 수정이 있을 때 서버로 데이터 전송
       try {
         setIsLoading(true); // 로딩 시작
-        const themes = plan.themes.map(theme => theme.themeId);
-        // const updatedPlan = {
-        // 		...plan,
-        // 		themes,
-        // };
 
-        const updatedPlan = {
-          title: plan.title || '맞춤 플랜',
-          memberId: plan?.member?.memberId || null,
-          places: plan.places.map(place => ({
-            placeName: place.placeName,
-          })),
-          themes: themes,
-          location: plan.location || '서울특별시',
-          startDate: plan.startDate,
-          endDate: plan.endDate,
-        };
+      const updatedPlan = {
+        title: plan.title || '맞춤 플랜',
+        memberId: plan?.member?.memberId || null,
+        places: plan.places.map(place => ({
+          placeName: place.placeName,
+        })),
+        themes: plan.themes.map(theme => theme.themeId),
+        location: plan.location || '서울특별시',
+        startDate: plan.startDate,
+        endDate: plan.endDate,
+      };
 
-        console.log('업데이트 플랜:', updatedPlan);
+      console.log('Final plan to be sent to server:', updatedPlan);
 
-        // 서버로 전송
-        const response = await apiClient.post('/plans/recom', updatedPlan, {
-          withCredentials: false,
-        });
+      const response = await apiClient.post('/plans/recom', updatedPlan, {
+        withCredentials: false,
+      });
 
-        console.log('서버 응답:', response.data);
+      console.log('서버 응답:', response.data);
 
-        response.data.planId = plan.planId;
-        // 서버 응답 데이터를 세션 스토리지에 저장
-        response.data.places.sort(
-          (a, b) => new Date(a.startTime) - new Date(b.startTime)
-        );
-        response.data.routes.sort(
-          (a, b) => new Date(a.startTime) - new Date(b.startTime)
-        );
-        sessionStorage.setItem('planData', JSON.stringify(response.data));
-
-        alert('플랜이 수정되었습니다.');
-
-        // 페이지 새로고침
-        window.location.reload();
-      } catch (error) {
-        console.error('저장 오류:', error);
-        alert('저장 중 오류가 발생했습니다.');
-      } finally {
-        setIsLoading(false); // 로딩 종료
-      }
+      // 데이터 업데이트 후 저장
+      response.data.planId = plan.planId;
+      sessionStorage.setItem('planData', JSON.stringify(response.data));
+      alert('플랜이 수정되었습니다.');
+      
+      window.location.reload();
+			} catch (error) {
+				console.error('저장 오류:', error);
+				alert('저장 중 오류가 발생했습니다.');
+			} finally {
+				setIsLoading(false); // 로딩 종료
+			}
     }
   }, [planConfirmed, plan, places, combinedList, navigate]);
 
