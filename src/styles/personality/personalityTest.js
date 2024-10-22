@@ -49,6 +49,7 @@ const PersonalityTestStyle = styled.div`
     user-drag: none;
     -webkit-user-drag: none;
     width: 40%;
+    min-width: 250px;
     height: auto;
   }
 
@@ -58,14 +59,28 @@ const PersonalityTestStyle = styled.div`
     height: 10px;
     width: 50%;
     margin-bottom: 20px;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative; /* p 요소가 이 요소를 기준으로 고정되도록 설정 */
+  }
+
+  .progress-container p {
+    position: absolute; /* progress-container 내에서 절대 위치 */
+    top: -25px; /* 위로 약간의 여백 설정 */
+    right: 0; /* 우측에 고정 */
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
   }
 
   .progress-bar {
     background-color: #14b8ff;
     height: 100%;
     border-radius: 8px;
-    transition: width 0.3s ease-in-out; /* 부드러운 애니메이션 */
+    transition: width 0.3s ease-in-out;
+  }
+  .bar {
+    margin: 80px 0 32px;
   }
 
   // 결과 시즈닝 이미지
@@ -155,17 +170,6 @@ const PersonalityTestStyle = styled.div`
   //   z-index: -10; /* 스크롤에 따라 우선순위가 달라지도록 */
   // }
 
-  .bar {
-    margin: 80px 0 32px;
-  }
-
-  .bar p {
-    margin-left: auto; /* p 요소를 우측으로 정렬 */
-    margin-top: 12px;
-    text-align: center;
-    margin-bottom: 5px;
-  }
-
   .answerBtn {
     display: flex;
     flex-direction: column;
@@ -207,21 +211,22 @@ const PersonalityTestStyle = styled.div`
     position: relative;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, 0%); /* 이미지 중앙 정렬 */
-    width: 400px; /* 원하는 이미지 크기 */
+    transform: translate(-50%, 0%);
+    width: 400px;
     height: auto;
-    opacity: 0.1; /* 이미지 투명도 */
-    z-index: -1; /* 배경으로 설정 */
+    opacity: 0.1;
+    z-index: -1;
   }
 
   .overlay-text {
-    position: relative; /* relative로 텍스트를 이미지 위에 배치 */
-    top: -100px; /* 이미지와 겹치는 위치로 조정 */
-    color: black; /* 텍스트 색상 (배경과 대비되는 색으로 설정) */
-    font-size: 24px; /* 적절한 글씨 크기 설정 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    z-index: 1; /* 텍스트가 이미지 위에 표시되도록 z-index 설정 */
-    margin-top: -100px; /* 텍스트 위치 추가 조정 */
+    position: relative;
+    font-weight: 500;
+    top: -100px;
+    color: black;
+    font-size: 24px;
+    text-align: center;
+    z-index: 1;
+    margin-top: -100px;
   }
 
   .question-image img {

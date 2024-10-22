@@ -36,7 +36,7 @@ const PlanComplete = styled.div`
   .slick-slider {
     overflow: hidden;
     position: relative;
-    height: 40vh;
+    height: 20vh;
     margin-left: 17%;
 
     &.full {
