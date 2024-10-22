@@ -29,16 +29,6 @@ const setupInterceptors = (setLoading) => {
     (config) => {
       if (setLoading) setLoading(true); // 로딩 상태 시작
 
-<<<<<<< HEAD
-      const token = localStorage.getItem('token'); // 로컬스토리지에서 JWT 토큰 가져오기
-      if (token) {
-        config.headers['Authorization'] = token; // Authorization 헤더에 토큰 추가
-      }
-      return config;
-    },
-    (error) => {
-      if (setLoading) setLoading(false); // 요청 실패 시 로딩 종료
-=======
       // 로컬 스토리지에서 JWT 토큰 가져오기
       const token = localStorage.getItem('token');
       console.log(token); // 토큰 출력 (디버깅용)
@@ -46,29 +36,20 @@ const setupInterceptors = (setLoading) => {
       // 토큰이 있으면 요청 헤더에 Authorization 추가
       if (token) {
         config.headers['Authorization'] = token;
-        console.log(
-          'Authorization 헤더에 포함된 토큰:',
-          config.headers['Authorization']
-        );
+        console.log('Authorization 헤더에 포함된 토큰:', config.headers['Authorization']);
       }
       return config;
     },
-    error => {
-      setLoading && setLoading(false); // 요청 실패 시 로딩 종료
->>>>>>> 944ea95ec49154ff13da7054d78678391aaf83d1
+    (error) => {
+      if (setLoading) setLoading(false); // 요청 실패 시 로딩 종료
       return Promise.reject(error);
     }
   );
 
   // 응답 인터셉터
   apiClient.interceptors.response.use(
-<<<<<<< HEAD
     (response) => {
       if (setLoading) setLoading(false); // 응답 성공 시 로딩 종료
-=======
-    response => {
-      setLoading && setLoading(false); // 응답 성공 시 로딩 종료
->>>>>>> 944ea95ec49154ff13da7054d78678391aaf83d1
       return response;
     },
     (error) => {
@@ -76,13 +57,8 @@ const setupInterceptors = (setLoading) => {
 
       // 401 Unauthorized 에러 시 토큰 만료 처리
       if (error.response && error.response.status === 401) {
-<<<<<<< HEAD
-        console.error('토큰 만료: 로그아웃 처리');
-        handleLogout(); // 토큰 만료 시 로그아웃 처리
-=======
         console.log('401 에러 발생, 로그아웃 처리');
-        handleLogout(); // 로그아웃 처리
->>>>>>> 944ea95ec49154ff13da7054d78678391aaf83d1
+        handleLogout(); // 토큰 만료 시 로그아웃 처리
       }
       return Promise.reject(error);
     }
