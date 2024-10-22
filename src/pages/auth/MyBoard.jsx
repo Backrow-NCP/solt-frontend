@@ -35,7 +35,10 @@ const MyBoard = () => {
             title: board.title,
             image: board.images,
             location: board.plan?.location,
-            // 필요한 필드 추가
+            regDate: board.regDate,
+            plan: board.plan,
+            likeCount: board.likeCount,
+            modDate: board.modDate,
           }));
           setBoardData(boardDetails); // 상태 업데이트
         }
