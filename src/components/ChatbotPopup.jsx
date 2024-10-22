@@ -7,6 +7,7 @@ const ChatbotPopup = ({ isOpen, onClose }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false); // 추가
+  const [hasStarted, setHasStarted] = useState(false); // 첫 번째 메시지가 로드되었는지 여부 체크
 
 
   const handleInputChange = (e) => {
@@ -18,6 +19,8 @@ const ChatbotPopup = ({ isOpen, onClose }) => {
       setLoading(true); // 로딩 시작
       const newMessages = [...messages, { text: message, isUser: true }];
       setMessages(newMessages);
+
+      const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰을 가져옴
   
       try {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/clovaX/chat`, {
@@ -25,7 +28,7 @@ const ChatbotPopup = ({ isOpen, onClose }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_CLOVA_X_API_KEY}`, // 인증 토큰 추가
+            Authorization: token, // 인증 토큰 추가
           },
         });
         const botReply = { text: response.data.reply, isUser: false };
@@ -46,6 +49,7 @@ const ChatbotPopup = ({ isOpen, onClose }) => {
     if (isOpen) {
       // 팝업이 열릴 때 첫 번째 자동 답변
       setMessages([{ text: '안녕하세요! 무엇을 도와드릴까요?', isUser: false }]);
+      setHasStarted(true); // 첫 번째 메시지가 로드되었음을 표시
     }
   }, [isOpen]);
 

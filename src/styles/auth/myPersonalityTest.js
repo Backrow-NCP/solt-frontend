@@ -16,6 +16,29 @@ const MyPersonalityTestStyles = createGlobalStyle`
     padding: 20px;
   }
 
+.mytest_main {
+  display: flex;
+  justify-content: center; /* 가로 가운데 정렬 */
+  align-items: center; /* 세로 가운데 정렬 (필요 시) */
+}
+
+.mytest_main img {
+  border-radius: 32px;
+  user-drag: none;
+  -webkit-user-drag: none;
+  width: 30%;
+  height: auto;
+}
+  .delete-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
     .my-test-container {
     flex-grow: 1;
     margin: 20px;

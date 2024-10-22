@@ -48,7 +48,7 @@ const PersonalityTestStyle = styled.div`
     border-radius: 32px;
     user-drag: none;
     -webkit-user-drag: none;
-    width: 70%;
+    width: 40%;
     height: auto;
   }
 
