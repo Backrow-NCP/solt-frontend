@@ -11,6 +11,25 @@ const BoardList = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(pageData.currentPage || 1);
 
+  console.log('보드데이터 뭐지', boardData);
+  console.log('페이지데이터 뭐지', pageData);
+
+  const boardDetails = boardData.map(board => ({
+    boardId: board.boardId,
+    endDate: board.plan.endDate,
+    startDate: board.plan.startDate,
+    member: board.member,
+    title: board.title,
+    image: board.images,
+    location: board.plan?.location,
+    regDate: board.regDate,
+    plan: board.plan,
+    likeCount: board.likeCount,
+    modDate: board.modDate,
+  }));
+
+  console.log('나 보드디테일 ^^', boardDetails);
+
   // 페이지 변경 핸들러
   const onPageChange = newPage => {
     setCurrentPage(newPage);
@@ -32,7 +51,7 @@ const BoardList = ({
   return (
     <>
       <BoardContainer>
-        {boardData.map(board => (
+        {boardDetails.map(board => (
           <BoardItem key={board.boardId} board={board} />
         ))}
       </BoardContainer>

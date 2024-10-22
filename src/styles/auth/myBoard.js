@@ -68,29 +68,32 @@ const MyBoardStyles = createGlobalStyle`
 
   /* 반응형 설정 */
   @media (max-width: 1024px) {
-    .main-container {
-      flex-direction: column;
+    .myboard {
+      flex-direction: column; /* 화면이 좁아졌을 때, 컨텐츠를 수직 배치 */
     }
 
     .sidebar {
       width: 100%;
+      margin-bottom: 20px; /* 사이드바 아래 여백 추가 */
       position: relative;
-      top: 0;
-      left: 0;
-      margin-bottom: 20px;
+      margin-top: 0;
     }
 
-    .my-board-container {
+    .my_board_container {
       margin: 0;
       padding: 10px;
     }
 
-    .my-board-container h1 {
+    .my_board_container h1 {
       font-size: 18px;
     }
   }
-  
 
+  @media (max-width: 600px) {
+    .board_items_wrapper {
+      grid-template-columns: 1fr; /* 작은 화면에서는 한 개의 열로 배치 */
+    }
+  }
 `;
 
 export default MyBoardStyles;
