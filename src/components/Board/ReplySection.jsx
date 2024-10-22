@@ -38,16 +38,17 @@ const ReplySection = ({ boardId }) => {
   // );
 
   // console.log('커랜트 아이템', currentItems);
-  console.log('보드아이디. content', boardId.content);
   useEffect(() => {
+    console.log('BoardId:', boardId);
     const fetchReplies = async () => {
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/replies/list/${boardId}`
         );
         const data = response.data;
+        console.log('불러온 댓글 데이터', data);
 
-        setComments(data.dtoList);
+        setComments(data?.dtoList || []);
         setPageData({
           page: data.page,
           size: data.size,
@@ -146,7 +147,7 @@ const ReplySection = ({ boardId }) => {
 
   // 댓글 렌더링
   const renderComments = size => {
-    console.log('asdasdasdasdas', comments);
+    console.log('댓글 목록:', comments);
     const allReplies = comments.map(comment => ({
       ...comment,
       isSubReply: comment.parentReplyId !== null,
@@ -379,11 +380,6 @@ const ReplySection = ({ boardId }) => {
       endPage: Math.max(prevData.endPage - 10, 10), // 최소 10으로 설정
     }));
   };
-  console.log(
-    'Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,Test,',
-    renderComments()
-  );
-
   return (
     <ReplyContainer>
       <ReplySubmitContainer className="main-reply-submit">
@@ -400,13 +396,7 @@ const ReplySection = ({ boardId }) => {
       <ReplyListContainer>
         {renderComments(pageData.size)} {/* 댓글과 대댓글 렌더링 */}
         <Pagination
-          page={pageData.page}
-          size={pageData.size}
-          total={pageData.total}
-          startPage={pageData.startPage}
-          endPage={pageData.endPage}
-          prev={pageData.prev} // JSON에서 가져온 prev 값
-          next={pageData.next} // JSON에서 가져온 next 값
+          pageData={pageData}
           onPageChange={handlePageChange} // 페이지 변경 핸들러
           onNextGroup={handleNextGroup} // 다음 그룹 핸들러
           onPrevGroup={handlePrevGroup} // 이전 그룹 핸들러

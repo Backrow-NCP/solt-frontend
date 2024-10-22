@@ -26,20 +26,23 @@ const BoardItem = ({ board }) => {
 
   // board에서 필요한 데이터 추출
   const {
-    boardId,
+    // boardId,
     title,
     content,
-    images,
+    image,
     location,
     regDate,
     member,
     duration,
+    startDate,
+    endDate,
   } = board;
 
+  console.log('image:', image);
   // .env 파일에서 관리하는 이미지 저장소 URL을 사용하여 이미지 URL 생성
   const imageUrl =
-    images.length > 0
-      ? `${process.env.REACT_APP_IMAGE_STORAGE_URL}${images[0].fileName}`
+    image?.length > 0
+      ? `${process.env.REACT_APP_IMAGE_STORAGE_URL}${image[0].fileName}`
       : defaultImage; // 기본 이미지 설정
   console.log('이미지 url 테스트', imageUrl);
 
@@ -64,7 +67,7 @@ const BoardItem = ({ board }) => {
 
     return `${nights}박 ${days}일`;
   };
-
+  console.log('이거 board임', board);
   return (
     <BoardBox onClick={handleClick}>
       <Thumbnail src={imageUrl} alt="게시글 이미지" />
@@ -72,17 +75,15 @@ const BoardItem = ({ board }) => {
         <div className="info">
           <div className="locationDurationContainer">
             <div className="locationBox">
-              <span>{board.plan.location}</span>
+              <span>{location}</span>
             </div>
             <div className="durationBox">
-              <span>
-                {calculateDuration(board.plan.startDate, board.plan.endDate)}
-              </span>
+              <span>{calculateDuration(startDate, endDate)}</span>
             </div>
           </div>
           <div className="dateAuthorContainer">
             <p>{date}</p>
-            <p>작성자: {member.name}</p> {/* 작성자 이름 */}
+            <p>작성자: {member?.name}</p> {/* 작성자 이름 */}
           </div>
         </div>
 

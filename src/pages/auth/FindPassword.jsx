@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate 훅 추가
 import axios from 'axios';
 import FindPasswordStyles from '../../styles/auth/findPassword';
 import Button from '../../components/Button';
 
-const FindPassword = ({ closePopup, onPasswordResetClick  }) => {
+const FindPassword = ({ closePopup, onPasswordResetClick }) => {
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false); // 인증번호 전송 여부 상태 관리
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState(''); // 성공 메시지 상태 추가
-  
-  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handleCodeChange = (e) => setCode(e.target.value);
@@ -33,6 +30,7 @@ const FindPassword = ({ closePopup, onPasswordResetClick  }) => {
       setErrorMessage('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
     }
   };
+
   // 인증번호 확인 함수
   const verifyCode = async () => {
     try {
@@ -41,14 +39,19 @@ const FindPassword = ({ closePopup, onPasswordResetClick  }) => {
       });
       if (response.status === 200 && response.data.result) {
         console.log('인증 성공:', response.data);
-        // 인증 성공 시 PasswordReset.jsx로 이동
-        closePopup();
-        navigate('/auth/passwordreset');
         
+        // 이메일 인증 성공 후 사용자 정보를 가져옴 (토큰 없이 요청)
+        const memberResponse = await axios.get(`${process.env.REACT_APP_API_URL}/members`, {
+          params: { email }, // 이메일로 회원 정보 조회         
+        });
+  
+        if (memberResponse.status === 200) {
+          const userId = memberResponse.data.id; // 사용자 ID 가져오기
+          onPasswordResetClick(userId); // ID를 PasswordReset 팝업으로 전달
+        }
       }
     } catch (error) {
       console.error('인증 실패:', error);
-      setErrorMessage('인증에 실패했습니다. 인증번호를 다시 확인해주세요.');
     }
   };
 
@@ -61,8 +64,7 @@ const FindPassword = ({ closePopup, onPasswordResetClick  }) => {
   // "재설정" 버튼 눌렀을 때 인증번호 확인
   const handleSubmit = (e) => {
     e.preventDefault();
-    verifyCode(); // 인증번호 확인
-    window.alert('비밀번호를 재설정해주세요.');
+    verifyCode(); // 인증번호 확인 후 PasswordReset 팝업 열기
   };
 
   return (
@@ -90,7 +92,7 @@ const FindPassword = ({ closePopup, onPasswordResetClick  }) => {
             </div>
           </form>
 
-          {/* 인증번호 입력 칸 (항상 표시됨) */}
+          {/* 인증번호 입력 칸 */}
           <form className="find_password_form" onSubmit={handleSubmit}>
             <div className="input_group">
               <input

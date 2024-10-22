@@ -16,30 +16,32 @@ const MyPersonalityTestStyles = createGlobalStyle`
     padding: 20px;
   }
 
-.mytest_main {
-  display: flex;
-  justify-content: center; /* 가로 가운데 정렬 */
-  align-items: center; /* 세로 가운데 정렬 (필요 시) */
-}
+  .mytest_main {
+    display: flex;
+    justify-content: center; /* 가로 가운데 정렬 */
+    align-items: center; /* 세로 가운데 정렬 (필요 시) */
+  }
 
-.mytest_main img {
-  border-radius: 32px;
-  user-drag: none;
-  -webkit-user-drag: none;
-  width: 30%;
-  height: auto;
-}
+  .mytest_main img {
+    border-radius: 32px;
+    user-drag: none;
+    min-width: 250px;
+    -webkit-user-drag: none;
+    width: 30%;
+    height: auto;
+  }
+
   .delete-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-}
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
 
-    .my-test-container {
+  .my-test-container {
     flex-grow: 1;
     margin: 20px;
     max-width: 1200px;
@@ -47,7 +49,7 @@ const MyPersonalityTestStyles = createGlobalStyle`
     margin-right: auto;
   }
 
-    .my-test-container h2 {
+  .my-test-container h2 {
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
@@ -96,7 +98,7 @@ const MyPersonalityTestStyles = createGlobalStyle`
     }
   }
 
-   .mytest {
+  .mytest {
     display: flex;
     flex-direction: row;
     width: 80%;
@@ -149,26 +151,26 @@ const MyPersonalityTestStyles = createGlobalStyle`
 
   /* 반응형 설정 */
   @media (max-width: 1024px) {
-    .main-container {
-      flex-direction: column;
+    .mytest {
+      flex-direction: column; /* 사이드바와 컨텐츠가 수직으로 배치되도록 변경 */
     }
 
     .sidebar {
       width: 100%;
-      position: relative;
-      top: 0;
-      left: 0;
-      margin-bottom: 20px;
+      margin-bottom: 20px; /* 사이드바 아래에 여유 공간 추가 */
+      position: relative; /* 상단으로 이동 */
+      margin-top: 0; /* 사이드바가 위쪽으로 붙도록 */
     }
 
-    .my-plan-container {
+    .my-test-container {
       margin: 0;
       padding: 10px;
     }
 
-    .my-plan-container h1 {
+    .my-test-container h2 {
       font-size: 18px;
     }
   }
 `;
+
 export default MyPersonalityTestStyles;

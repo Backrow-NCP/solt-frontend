@@ -63,7 +63,7 @@ function App() {
         <div
           className={`App ${
             isLoginPopupOpen || isSignupPopupOpen || isFindPasswordPopupOpen || isPasswordResetPopupOpen
-              ? 'blur-background'
+             ? 'blur-background'
               : ''
           }`}
         >
@@ -139,14 +139,13 @@ function App() {
           {isFindPasswordPopupOpen && (
             <FindPassword
               closePopup={(callback) => closeFindPasswordPopup(callback)}
-              openFindPasswordClick={openPasswordResetPopup}
+              onPasswordResetClick={openPasswordResetPopup}
             />
           )}
 
           {/* 비밀번호 재설정 팝업 조건부 렌더링 */}
-          {isPasswordResetPopupOpen && (
-            <PasswordReset closePopup={closePasswordResetPopup} />
-          )}
+          {isPasswordResetPopupOpen && 
+            <PasswordReset closePopup={closePasswordResetPopup} />}
         </div>
       </Router>
     </>

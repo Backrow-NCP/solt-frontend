@@ -23,28 +23,28 @@ const PlaceComplete = ({ dayPlaces, plan, getDayTotalPrice }) => {
       </p>
 
       <ol>
-			{dayPlaces.map((place, index) => {
-          const nextPlace = dayPlaces[index + 1];
+				{dayPlaces.map((place, index) => {
+					const nextPlace = dayPlaces[index + 1];
 
-          // placeId와 routeId가 일치하는 경로 찾기
-          const route = nextPlace && Array.isArray(plan.routes)
-            ? plan.routes.find(
-                (r) => r.routeId === place.placeId // routeId와 placeId 비교
-              )
-            : null;
+					// placeId와 routeId가 일치하는 경로 찾기
+					const route = nextPlace && Array.isArray(plan.routes)
+						? plan.routes.find(
+								(r) => r.routeId === index // routeId와 placeId 비교하지 않음, index로 비교
+							)
+						: null;
 
-          return (
-            <li key={place.placeId} className="flex">
-              <div className="place_number size_xxs">{index + 1}</div>
-              <div className="place_info">
-                <span className="place_time pt_blue size_xxs weight_sb">
-                  {new Date(place.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </span>
-                <strong className="place_name size_sm weight_sb">{place.placeName}</strong>
-                <span className="place_category size_xxs pt_gy">{place.category}</span>
+					return (
+						<li key={index} className="flex">
+							<div className="place_number size_xxs">{index + 1}</div>
+							<div className="place_info">
+								<span className="place_time pt_blue size_xxs weight_sb">
+									{new Date(place.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+								</span>
+								<strong className="place_name size_sm weight_sb">{place.placeName}</strong>
+								<span className="place_category size_xxs pt_gy">{place.category}</span>
 
-                {/* 이동수단 영역 */}
-                {route && route.transportation && (
+								{/* 이동수단 영역 */}
+								{route && route.transportation && (
 									<div className="transport_info flex size_xxs pt_gy">
 										<img 
 											src={route.transportation.type === '도보' ? transportRun : transportBus} 
@@ -55,14 +55,14 @@ const PlaceComplete = ({ dayPlaces, plan, getDayTotalPrice }) => {
 										<span>({route.distance}km)</span>
 									</div>
 								)}
-              </div>
-              <div className="place_price">
-                <p className="size_xxs weight_md">예상 금액</p>
-                <span className="pt_pink size_sm weight_sb">{place.price.toLocaleString()}원</span>
-              </div>
-            </li>
-          );
-        })}
+							</div>
+							<div className="place_price">
+								<p className="size_xxs weight_md">예상 금액</p>
+								<span className="pt_pink size_sm weight_sb">{place.price.toLocaleString()}원</span>
+							</div>
+						</li>
+					);
+				})}
       </ol>
     </Complete>
   );
