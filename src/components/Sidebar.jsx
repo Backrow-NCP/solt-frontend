@@ -22,10 +22,21 @@ const SidebarHeader = styled.h2`
 const SidebarList = styled.ul`
   list-style: none;
   padding: 0;
+
+  @media (max-width: 1024px) {
+    display: flex;
+    flex-direction: row; /* 가로로 나열 */
+    justify-content: space-between; /* 요소들 간 간격 */
+  }
 `;
 
 const SidebarListItem = styled.li`
   margin-bottom: 20px;
+
+  @media (max-width: 1024px) {
+    margin-bottom: 0;
+    margin-right: 10px; /* 가로로 나열될 때 간격 추가 */
+  }
 `;
 
 const SidebarLink = styled(Link)`
