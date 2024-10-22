@@ -214,12 +214,12 @@ const Produce = () => {
   }, []);
 
   // 일정 수정 버튼 클릭 시 상태 변경
-  const toggleModifyPlace = useCallback(placeId => {
-    setEditPlace(prevState => ({
-      ...prevState,
-      [placeId]: !prevState[placeId],
-    }));
-  }, []);
+  const toggleModifyPlace = useCallback((placeId) => {
+		setEditPlace(prevState => ({
+			...prevState,
+			[placeId]: !prevState[placeId],
+		}));
+	}, []);
 
   // 각 플랜 수정
   const handleModifyClick = useCallback((option, placeId) => {
@@ -382,33 +382,49 @@ const Produce = () => {
 		} else {
 			// 수정이 있을 때 서버로 데이터 전송
 			try {
+				setIsLoading(true); // 로딩 시작
 				const themes = plan.themes.map(theme => theme.themeId);
-	
+				// const updatedPlan = {
+				// 		...plan,
+				// 		themes,
+				// };
+
 				const updatedPlan = {
-					...plan,
-					themes,
+					"title": plan.title || "맞춤 플랜",
+					"memberId": plan.member.memberId || null,
+					"places": plan.places.map(place => ({
+							placeName: place.placeName,
+					})),
+					"themes": themes,
+					"location": plan.location || "서울특별시",
+					"startDate": plan.startDate,
+					"endDate": plan.endDate
 				};
-	
+
+				console.log('업데이트 플랜:', updatedPlan);
+
 				// 서버로 전송
 				const response = await apiClient.post('/plans/recom', updatedPlan, {
-					withCredentials: false,
+						withCredentials: false,
 				});
-	
+
 				console.log('서버 응답:', response.data);
-	
+
 				// 서버 응답 데이터를 세션 스토리지에 저장
 				sessionStorage.setItem('planData', JSON.stringify(response.data));
-	
+
 				alert('플랜이 수정되었습니다.');
-				
+
 				// 페이지 새로고침
 				window.location.reload();
 			} catch (error) {
 				console.error('저장 오류:', error);
 				alert('저장 중 오류가 발생했습니다.');
+			} finally {
+				setIsLoading(false); // 로딩 종료
 			}
-		}
-	}, [planConfirmed, plan, places, combinedList, navigate]);
+    }
+}, [planConfirmed, plan, places, combinedList, navigate]);
 
   // 플랜 확정 버튼 내용 결정
   const planButtonText = useMemo(
@@ -535,20 +551,20 @@ const Produce = () => {
 
         {/* 장소 목록 */}
         <PlaceList
-          filteredPlaces={filteredPlaces}
-          planTime={planTime}
-          isDetailPage={false}
-          findRoute={(nextPlace) =>
-            plan.routes.find(route => route.endTime === nextPlace.startTime)
-          }
-          handlePriceChange={handlePriceChange}
-          editPrice={editPrice}
-          isEditing={isEditing}
-          toggleEditPrice={toggleEditPrice}
-          editPlace={editPlace}
-          toggleModifyPlace={toggleModifyPlace}
-          handleModifyClick={handleModifyClick}
-        />
+					filteredPlaces={filteredPlaces}
+					planTime={planTime}
+					isDetailPage={false}
+					findRoute={(nextPlace) =>
+						plan.routes.find(route => route.endTime === nextPlace.startTime)
+					}
+					handlePriceChange={handlePriceChange}
+					editPrice={editPrice}
+					isEditing={isEditing}
+					toggleEditPrice={toggleEditPrice}
+					editPlace={editPlace}
+					toggleModifyPlace={toggleModifyPlace}
+					handleModifyClick={handleModifyClick}
+				/>
 
         <Button
           size="xxl"
