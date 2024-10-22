@@ -28,10 +28,12 @@ const BoardDetailContainer = ({
   const [boardData, setBoardData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
 
+  // console.log('planData 확인용 BDC', places); => null 값 나옴
+
   const [editPrice, setEditPrice] = useState(0); // 가격 상태 추가
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태 추가
   const [selectedDay, setSelectedDay] = useState(1); // 선택된 날짜 상태 추가
-  const placesData = planData.place;
+  const placesData = planData.places;
   const [editPlace, setEditPlace] = useState({}); // 추가
 
   // 게시물 데이터를 가져오는 useEffect
@@ -40,7 +42,6 @@ const BoardDetailContainer = ({
       try {
         const response = await axios.get('/sampleData.json');
         const data = response.data;
-
         const boardItem = data.dtoList.find(
           item => item.boardId === parseInt(boardId, 10)
         );
@@ -115,6 +116,7 @@ const BoardDetailContainer = ({
   // // console.log('days:', days);
   // console.log('plan', planData);
   console.log('보드데이터 테스트중 BDC', boardData);
+
   return (
     <DetailWrapper>
       <div>

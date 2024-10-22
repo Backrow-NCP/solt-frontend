@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 us
 import BoardForm from '../../components/Board/BoardForm';
 import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
 import { getMemberId } from '../../utils/token/tokenUtils';
+import { FoodBank } from '@mui/icons-material';
 
 const Write = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -52,6 +53,7 @@ const Write = () => {
         `${process.env.REACT_APP_API_URL}/boards`,
         formData // formData를 POST 요청으로 전송
       );
+      console.log(formData);
 
       console.log(response);
 
@@ -61,6 +63,7 @@ const Write = () => {
 
       alert('게시글 작성이 완료되었습니다.');
       navigate('/board/List'); // 게시글 메인 페이지로 이동
+      console.log('작성 완료된 formData', formData);
     } catch (error) {
       console.error('게시글 작성 중 오류 발생:', error);
       alert('게시글 작성에 실패했습니다. 다시 시도해주세요.');
