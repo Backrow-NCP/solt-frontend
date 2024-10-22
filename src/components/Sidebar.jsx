@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 const SidebarWrapper = styled.nav`
@@ -40,30 +40,52 @@ const SidebarListItem = styled.li`
 `;
 
 const SidebarLink = styled(Link)`
+  color: ${props => (props.active ? '#14b8ff' : '#000')};
+  font-weight: ${props =>
+    props.active ? 600 : 400}; /* 중간 굵기 설정 (500) */
+
   &:hover {
     color: #14b8ff;
   }
 `;
 
 const Sidebar = () => {
+  const location = useLocation(); // 현재 경로 가져오기
   return (
     <SidebarWrapper>
       <Link to="/auth/mypage">
-        <SidebarHeader className="size_lg weight_sb">마이페이지</SidebarHeader>
+        <SidebarHeader
+          className="size_xl weight_sb"
+          style={{ marginBottom: '40px' }}
+        >
+          마이페이지
+        </SidebarHeader>
       </Link>
       <SidebarList>
         <SidebarListItem>
-          <SidebarLink to="/auth/myplan" className="size_sm">
+          <SidebarLink
+            to="/auth/myplan"
+            className="size_sm"
+            active={location.pathname === '/auth/myplan'} // 경로 비교
+          >
             나의 플랜
           </SidebarLink>
         </SidebarListItem>
         <SidebarListItem>
-          <SidebarLink to="/auth/myboard" className="size_sm">
+          <SidebarLink
+            to="/auth/myboard"
+            className="size_sm"
+            active={location.pathname === '/auth/myboard'} // 경로 비교
+          >
             나의 게시글
           </SidebarLink>
         </SidebarListItem>
         <SidebarListItem>
-          <SidebarLink to="/auth/mytest" className="size_sm">
+          <SidebarLink
+            to="/auth/mytest"
+            className="size_sm"
+            active={location.pathname === '/auth/mytest'} // 경로 비교
+          >
             나의 여행 유형
           </SidebarLink>
         </SidebarListItem>
