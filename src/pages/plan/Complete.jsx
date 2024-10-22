@@ -165,7 +165,7 @@ const Complete = ({ onLoginClick }) => {
           ...planData,
           themes: planData.themes.map(theme => theme.themeId),
         };
-
+        console.log('수정 중...', newPlanData);
         response = await apiClient.put(
           `/plans/${newPlanData.planId}`,
           newPlanData
@@ -184,7 +184,7 @@ const Complete = ({ onLoginClick }) => {
           }),
           themes: planData.themes.map(theme => theme.themeId),
         };
-
+        console.log('저장 중...', newPlanData);
         response = await apiClient.post('/plans/', newPlanData);
       }
 
