@@ -45,7 +45,11 @@ const PlaceItem = ({
               alt={route.transportation.type}
             />
             <span>{route.transportation.type}</span>
-            <span>{route.travelTime}분</span>
+            <span>
+								{route.travelTime >= 60
+                ? Math.floor(route.travelTime / 60) + '시간' + (route.travelTime % 60) + '분'
+                : route.travelTime + '분'}
+            </span>
             <span>
               (
               {route.distance < 1000

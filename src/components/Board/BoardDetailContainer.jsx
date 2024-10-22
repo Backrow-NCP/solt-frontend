@@ -21,11 +21,11 @@ const BoardDetailContainer = ({
   totalPrice,
   pieChartData,
   isDetailPage,
+  boardData,
   days,
 }) => {
   const { boardId } = useParams();
   const navigate = useNavigate(); // useNavigate 훅 사용
-  const [boardData, setBoardData] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
 
   // console.log('planData 확인용 BDC', places); => null 값 나옴
@@ -33,32 +33,32 @@ const BoardDetailContainer = ({
   const [editPrice, setEditPrice] = useState(0); // 가격 상태 추가
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태 추가
   const [selectedDay, setSelectedDay] = useState(1); // 선택된 날짜 상태 추가
-  const placesData = planData.places;
+  const placesData = planData?.places;
   const [editPlace, setEditPlace] = useState({}); // 추가
 
   // 게시물 데이터를 가져오는 useEffect
   useEffect(() => {
-    const fetchBoardData = async () => {
-      try {
-        const response = await axios.get('/sampleData.json');
-        const data = response.data;
-        const boardItem = data.dtoList.find(
-          item => item.boardId === parseInt(boardId, 10)
-        );
+    // const fetchBoardData = async () => {
+    //   try {
+    //     const response = await axios.get('/sampleData.json');
+    //     const data = response.data;
+    //     const boardItem = data.dtoList.find(
+    //       item => item.boardId === parseInt(boardId, 10)
+    //     );
 
-        if (boardItem) {
-          setBoardData(boardItem);
-          setIsLiked(false);
-        } else {
-          console.log(`게시글 ID ${boardId}에 해당하는 데이터가 없습니다.`);
-        }
-      } catch (error) {
-        console.error('게시글 데이터를 가져오는 중 오류 발생:', error);
-      }
-    };
+    //     if (boardItem) {
+    //       setBoardData(boardItem);
+    //       setIsLiked(false);
+    //     } else {
+    //       console.log(`게시글 ID ${boardId}에 해당하는 데이터가 없습니다.`);
+    //     }
+    //   } catch (error) {
+    //     console.error('게시글 데이터를 가져오는 중 오류 발생:', error);
+    //   }
+    // };
 
     if (boardId) {
-      fetchBoardData();
+      // fetchBoardData();
     } else {
       console.log('boardId가 undefined입니다.');
     }
@@ -68,12 +68,12 @@ const BoardDetailContainer = ({
   const handleLike = () => {
     setIsLiked(prevState => {
       const newLikedState = !prevState;
-      setBoardData(prevData => ({
-        ...prevData,
-        likeCount: newLikedState
-          ? prevData.likeCount + 1
-          : prevData.likeCount - 1,
-      }));
+      // setBoardData(prevData => ({
+      //   ...prevData,
+      //   likeCount: newLikedState
+      //     ? prevData.likeCount + 1
+      //     : prevData.likeCount - 1,
+      // }));
       return newLikedState;
     });
   };
@@ -121,7 +121,7 @@ const BoardDetailContainer = ({
     <DetailWrapper>
       <div>
         <PlanInfo
-          memberName={planData.member.name}
+          memberName={planData.member?.name || '여행자'}
           location={planData.location}
           totalPrice={totalPrice}
           pieChartData={pieChartData}
