@@ -23,8 +23,9 @@ function ProfileEdit() {
   const [imageFile, setImageFile] = useState(null); // 이미지 파일 상태 추가
 
   const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState(''); // 새로운 비밀번호
   const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [currentPassword, setCurrentPassword] = useState(''); // 기존 비밀번호
 
   // 사용자 정보 불러오기
   useEffect(() => {
@@ -64,6 +65,9 @@ function ProfileEdit() {
           setGender(user.gender ? 'male' : 'female');
           setName(user.name);
 
+          // 기존 비밀번호 저장 (기존 비밀번호는 서버로부터 받아옴)
+          setCurrentPassword(user.password);
+
           // 프로필 이미지 URL을 로컬스토리지에 저장
           localStorage.setItem('profileImage', profileImageUrl); 
         } else {
@@ -80,42 +84,6 @@ function ProfileEdit() {
 
     fetchMemberData();
   }, [navigate]);
-
-  // 이미지 리사이즈 함수
-  const resizeImage = (file, maxWidth, maxHeight) => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const img = new Image();
-        img.src = event.target.result;
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          let width = img.width;
-          let height = img.height;
-
-          if (width > height) {
-            if (width > maxWidth) {
-              height = Math.round((height *= maxWidth / width));
-              width = maxWidth;
-            }
-          } else {
-            if (height > maxHeight) {
-              width = Math.round((width *= maxHeight / height));
-              height = maxHeight;
-            }
-          }
-
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-
-          resolve(canvas.toDataURL('image/jpeg', 0.7)); // 리사이즈된 이미지를 base64로 반환
-        };
-      };
-      reader.readAsDataURL(file);
-    });
-  };
 
   // 파일 선택 시 이미지 미리보기 함수
   const handleImageChange = (e) => {
@@ -184,27 +152,29 @@ function ProfileEdit() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (isNameValid === false) {
       window.alert('이름 유효성을 확인해주세요.');
       return;
     }
-
+  
+    // 비밀번호가 있을 경우만 유효성 검사
     if (password) {
       if (password.length < 8 || !/\W/.test(password)) {
         window.alert('비밀번호는 8자 이상이어야 하며 특수문자가 포함되어야 합니다.');
         return;
       }
-
+  
       if (password !== passwordConfirm) {
         window.alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
         return;
       }
     }
-
+  
     try {
+      const token = localStorage.getItem('token'); // 토큰을 가져옴
+  
       // 이미지 파일이 있을 경우 서버로 전송
-      let updatedProfileImage = profileImage;
       if (imageFile) {
         const formData = new FormData();
         formData.append('image', imageFile);
@@ -225,32 +195,54 @@ function ProfileEdit() {
   
         window.alert('프로필 이미지가 성공적으로 업데이트되었습니다!');
       }
-
+  
+      // 비어있는 password인 경우 기존 비밀번호로 설정
+      const finalPassword = password ? password : currentPassword; // 비어있으면 currentPassword를 사용
+  
       // 회원 정보 수정 요청 (이름과 비밀번호)
-      const modifyResponse = await apiClient.put('/members', {
-        memberId: loggedInUser.memberId,
+      const payload = {
         name: name,
-        password: password || undefined, // password가 없으면 undefined로 처리
-      }, {
+        password: finalPassword, // 비어있을 경우 currentPassword가 전송됨
+      };
+  
+      const modifyResponse = await apiClient.put('/members', payload, {
         headers: {
-          Authorization: localStorage.getItem('token'),
+          'Content-Type': 'application/json',
+          Authorization: token,
         },
       });
-
+  
       if (modifyResponse.status === 200) {
         window.alert('회원 정보가 성공적으로 수정되었습니다.');
       } else {
         window.alert('회원 정보 수정 중 오류가 발생했습니다.');
       }
   
-      // 나머지 프로필 수정 작업 진행 가능
-      window.alert('프로필 수정이 성공적으로 완료되었습니다!');
       navigate('/auth/mypage');
     } catch (error) {
-      console.error('프로필 수정 오류:', error);
+      if (error.response) {
+        // 서버에서 반환한 응답 상태와 데이터 출력
+        console.error('서버 상태 코드:', error.response.status);
+        console.error('서버 응답 데이터:', error.response.data);
+        console.error('서버 헤더:', error.response.headers);
+      } else if (error.request) {
+        // 요청이 서버에 도달했지만 응답을 받지 못한 경우 (네트워크 문제 등)
+        console.error('요청은 서버로 전송되었으나 응답 없음:', error.request);
+      } else {
+        // 요청을 만들다가 발생한 오류
+        console.error('요청 설정 중 오류 발생:', error.message);
+      }
+      console.error('전체 오류 정보:', error.config);  // 전체 오류 설정 정보
       window.alert('프로필 수정 중 오류가 발생했습니다.');
     }
   };
+  
+  
+
+  
+  
+  
+  
 
   if (isLoading) {
     return <div>Loading...</div>; // 로딩 중일 때 표시

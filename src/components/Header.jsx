@@ -2,18 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/images/logo.svg';
 import Button from '../components/Button';
-import profileImage from '../assets/images/ico/profile.png';
+import profileImageDefault from '../assets/images/ico/profile.png';
+import apiClient from '../config/AxiosConfig'; // axios 클라이언트 추가
 
 const Header = ({ onLoginClick, onSignupClick }) => {
   const location = useLocation(); // 현재 경로 확인
   const [username, setUsername] = useState('');
+  const [profileImage, setProfileImage] = useState(profileImageDefault); // 기본 프로필 이미지
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 8c71f9cbf0c4051ecfa569d9e5e6dec5c4edf6e2
-  // 컴포넌트가 처음 로드될 때 로그인 상태를 확인
   useEffect(() => {
     checkLoginStatus();
   }, []);
@@ -24,11 +21,28 @@ const Header = ({ onLoginClick, onSignupClick }) => {
 
   const checkLoginStatus = async () => {
     const token = localStorage.getItem('token');
-    const storedUsername = localStorage.getItem('username');
+    
+    if (token) {
+      try {
+        const response = await apiClient.get('/members', {
+          headers: {
+            Authorization: token, // JWT 토큰을 헤더에 추가
+          },
+        });
+        const memberData = response.data;
 
-    if (token && storedUsername) {
-      setIsLoggedIn(true);
-      setUsername(storedUsername); // 사용자 이름 설정
+        // 사용자 이름 및 프로필 이미지 업데이트
+        setUsername(memberData.name);
+        const profileImageUrl = memberData.fileName
+          ? `${process.env.REACT_APP_PROFILE_IMAGE_BASE_URL}${memberData.fileName}`
+          : profileImageDefault;
+
+        setProfileImage(profileImageUrl); // 프로필 이미지 설정
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error('Error fetching member data:', error);
+        setIsLoggedIn(false);
+      }
     } else {
       setIsLoggedIn(false);
       setUsername('');
@@ -60,13 +74,10 @@ const Header = ({ onLoginClick, onSignupClick }) => {
 
         <div className="log">
           {isLoggedIn ? (
-            <div
-              className="profile_section"
-              style={{ display: 'flex', alignItems: 'center' }}
-            >
+            <div className="profile_section" style={{ display: 'flex', alignItems: 'center' }}>
               <Link to="/auth/mypage">
                 <img
-                  src={profileImage} // 기본 프로필 이미지로 설정
+                  src={profileImage} // 서버에서 불러온 프로필 이미지
                   alt="프로필"
                   className="profile_image"
                   style={{
@@ -81,20 +92,10 @@ const Header = ({ onLoginClick, onSignupClick }) => {
             </div>
           ) : (
             <div className="login flex">
-              <Button
-                size="sm"
-                color="black"
-                onClick={onSignupClick}
-                className="btn_blk"
-              >
+              <Button size="sm" color="black" onClick={onSignupClick} className="btn_blk">
                 회원가입
               </Button>
-              <Button
-                size="sm"
-                color="white"
-                onClick={onLoginClick}
-                className="btn_wht"
-              >
+              <Button size="sm" color="white" onClick={onLoginClick} className="btn_wht">
                 로그인
               </Button>
             </div>
