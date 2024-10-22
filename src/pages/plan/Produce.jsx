@@ -404,7 +404,7 @@ const Produce = () => {
 
         const updatedPlan = {
           title: plan.title || '맞춤 플랜',
-          memberId: plan.member.memberId || null,
+          memberId: plan?.member?.memberId || null,
           places: plan.places.map(place => ({
             placeName: place.placeName,
           })),
@@ -555,7 +555,7 @@ const Produce = () => {
       <div className="plan_cont">
         {/* 플랜 상단 */}
         <PlanInfo
-          memberName={plan.member.name}
+          memberName={plan?.member?.name || '여행자'}
           location={plan.location}
           totalPrice={totalPrice}
           pieChartData={pieChartData}
