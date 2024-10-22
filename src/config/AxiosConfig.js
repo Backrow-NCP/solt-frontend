@@ -34,40 +34,26 @@ const setupInterceptors = setLoading => {
 
       // 로컬 스토리지에서 JWT 토큰 가져오기
       const token = localStorage.getItem('token');
-<<<<<<< HEAD
       console.log(token); // 토큰 출력 (디버깅용)
-=======
->>>>>>> 8c71f9cbf0c4051ecfa569d9e5e6dec5c4edf6e2
 
       // 토큰이 있으면 요청 헤더에 Authorization 추가
       if (token) {
         config.headers['Authorization'] = token;
-        console.log('Authorization 헤더에 포함된 토큰:', config.headers['Authorization']);
+        console.log(
+          'Authorization 헤더에 포함된 토큰:',
+          config.headers['Authorization']
+        );
       }
       return config;
     },
-<<<<<<< HEAD
-    (error) => {
-=======
     error => {
->>>>>>> 8c71f9cbf0c4051ecfa569d9e5e6dec5c4edf6e2
       setLoading && setLoading(false); // 요청 실패 시 로딩 종료
       return Promise.reject(error);
     }
   );
 
   // 응답 인터셉터
-  // Axios Interceptor for Refresh Token
-  // 인터셉터 설정 함수
   apiClient.interceptors.response.use(
-<<<<<<< HEAD
-    (response) => response, // 응답 성공 시 그대로 처리
-    (error) => {
-      // 401 에러인 경우 처리
-      if (error.response && error.response.status === 401) {
-        console.error('토큰 만료: 로그아웃 처리');
-        handleLogout(); // 로그아웃 처리
-=======
     response => {
       setLoading && setLoading(false); // 응답 성공 시 로딩 종료
       return response;
@@ -77,22 +63,12 @@ const setupInterceptors = setLoading => {
       // 세션이 만료된 경우 (401 응답)
       if (error.response && error.response.status === 401) {
         console.log('401 에러 발생, 로그아웃 처리');
-        localStorage.removeItem('token'); // 로그아웃처리, 토큰 삭제
-        window.location.href = '/auth/login'; // 로그인 페이지로 리다이렉트
->>>>>>> 8c71f9cbf0c4051ecfa569d9e5e6dec5c4edf6e2
+        handleLogout(); // 로그아웃 처리
       }
       return Promise.reject(error);
     }
   );
-<<<<<<< HEAD
-
-
 };
 
 export { setupInterceptors, handleLogout };
-=======
-};
-
-export { setupInterceptors };
->>>>>>> 8c71f9cbf0c4051ecfa569d9e5e6dec5c4edf6e2
 export default apiClient;
