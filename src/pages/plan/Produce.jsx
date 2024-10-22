@@ -317,7 +317,7 @@ const Produce = () => {
 
       setPlan({
         ...plan,
-        route: updatedPlanRoute,
+        routes: updatedPlanRoute,
       });
 
       // 수정된 장소를 추적
@@ -356,7 +356,7 @@ const Produce = () => {
 
       setPlan({
         ...plan,
-        route: updatedPlanRoute,
+        routes: updatedPlanRoute,
       });
 
       // 수정된 장소를 추적
@@ -423,6 +423,7 @@ const Produce = () => {
 
         console.log('서버 응답:', response.data);
 
+        response.data.planId = plan.planId;
         // 서버 응답 데이터를 세션 스토리지에 저장
         response.data.places.sort(
           (a, b) => new Date(a.startTime) - new Date(b.startTime)
