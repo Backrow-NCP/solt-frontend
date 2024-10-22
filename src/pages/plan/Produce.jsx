@@ -309,7 +309,7 @@ const groupedPlaces = useMemo(() => {
 
       setPlan({
         ...plan,
-        route: updatedPlanRoute,
+        routes: updatedPlanRoute,
       });
 
       // 수정된 장소를 추적
@@ -348,7 +348,7 @@ const groupedPlaces = useMemo(() => {
 
       setPlan({
         ...plan,
-        route: updatedPlanRoute,
+        routes: updatedPlanRoute,
       });
 
       // 수정된 장소를 추적
@@ -396,7 +396,7 @@ const groupedPlaces = useMemo(() => {
 
         const updatedPlan = {
           title: plan.title || '맞춤 플랜',
-          memberId: plan.member.memberId || null,
+          memberId: plan?.member?.memberId || null,
           places: plan.places.map(place => ({
             placeName: place.placeName,
           })),
@@ -415,6 +415,7 @@ const groupedPlaces = useMemo(() => {
 
         console.log('서버 응답:', response.data);
 
+        response.data.planId = plan.planId;
         // 서버 응답 데이터를 세션 스토리지에 저장
         response.data.places.sort(
           (a, b) => new Date(a.startTime) - new Date(b.startTime)
@@ -546,7 +547,7 @@ const groupedPlaces = useMemo(() => {
       <div className="plan_cont">
         {/* 플랜 상단 */}
         <PlanInfo
-          memberName={plan.member.name}
+          memberName={plan?.member?.name || '여행자'}
           location={plan.location}
           totalPrice={totalPrice}
           pieChartData={pieChartData}
