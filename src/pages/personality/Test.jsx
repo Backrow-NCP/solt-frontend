@@ -101,7 +101,7 @@ function PersonalityTest() {
 
   // 진행률 바
   const progressPercentage =
-    ((currentQuestionIndex + 1) / personalityTestData.questions.length) * 100;
+    ((currentQuestionIndex + 0) / personalityTestData.questions.length) * 100;
 
   return (
     <PersonalityTestStyle>
@@ -109,11 +109,11 @@ function PersonalityTest() {
         {/* 설문 진행 상황 표시 */}
         {isStarted && (
           <div className="bar">
-            <p>
-              {currentQuestionIndex + 1} /{' '}
-              {personalityTestData.questions.length}
-            </p>
             <div className="progress-container">
+              <p className="weight_sb">
+                <span className="pt_blue">{currentQuestionIndex + 1}</span> /{' '}
+                {personalityTestData.questions.length}
+              </p>
               <div
                 className="progress-bar"
                 style={{ width: `${progressPercentage}%` }} // 동적으로 너비 설정
@@ -156,7 +156,7 @@ function PersonalityTest() {
           <div>
             <div className="question">
               <p className="test_size_lg weight_b">
-                Q{currentQuestion.questionId}
+                Q {currentQuestion.questionId}
               </p>
 
               <div class="question-image">
