@@ -21,7 +21,7 @@ const Header = ({ onLoginClick, onSignupClick }) => {
 
   const checkLoginStatus = async () => {
     const token = localStorage.getItem('token');
-    
+
     if (token) {
       try {
         const response = await apiClient.get('/members', {
@@ -74,7 +74,10 @@ const Header = ({ onLoginClick, onSignupClick }) => {
 
         <div className="log">
           {isLoggedIn ? (
-            <div className="profile_section" style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+              className="profile_section"
+              style={{ display: 'flex', alignItems: 'center' }}
+            >
               <Link to="/auth/mypage">
                 <img
                   src={profileImage} // 서버에서 불러온 프로필 이미지
@@ -92,10 +95,20 @@ const Header = ({ onLoginClick, onSignupClick }) => {
             </div>
           ) : (
             <div className="login flex">
-              <Button size="sm" color="black" onClick={onSignupClick} className="btn_blk">
+              <Button
+                size="sm"
+                color="black"
+                onClick={onSignupClick}
+                className="btn_blk"
+              >
                 회원가입
               </Button>
-              <Button size="sm" color="white" onClick={onLoginClick} className="btn_wht">
+              <Button
+                size="sm"
+                color="white"
+                onClick={onLoginClick}
+                className="btn_wht"
+              >
                 로그인
               </Button>
             </div>
