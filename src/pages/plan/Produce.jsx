@@ -179,9 +179,9 @@ const Produce = () => {
 
   // 금액 변경 처리
   const handlePriceChange = useCallback(
-    (placeId, newPrice) => {
+    (selectedPlace, newPrice) => {
       const updatedPlaces = places.map(place => {
-        if (place.placeId === placeId) {
+        if (place.startTime === selectedPlace.startTime) {
           // 금액 변경
           return { ...place, price: newPrice };
         }
@@ -193,7 +193,10 @@ const Produce = () => {
 
       // combinedList 업데이트
       const updatedCombinedList = combinedList.map(item => {
-        if (item.type === 'place' && item.data.placeId === placeId) {
+        if (
+          item.type === 'place' &&
+          item.data.startTime === selectedPlace.startTime
+        ) {
           return {
             ...item,
             data: { ...item.data, price: newPrice },
@@ -225,6 +228,7 @@ const Produce = () => {
 
   // 각 플랜 수정
   const handleModifyClick = useCallback((option, placeId) => {
+    console.log('플랜 수정!!!!', placeId);
     setIsEditing(true);
     setSelectedOption({ option, placeId });
   }, []);
@@ -256,12 +260,13 @@ const Produce = () => {
   // ModifyContainer의 "이 장소로 선택" 버튼 클릭 시
   const handleSelectClick = useCallback(() => {
     const { option, placeId } = selectedOption;
+    const selectedPlace = placeId;
 
-    console.log('handleSelectClick called with:', { option, placeId });
+    console.log('handleSelectClick called with:', { option, selectedPlace });
 
     if (option === 'directly' && autocompleteSelectedPlace) {
       const updatedPlaces = places.map(place => {
-        if (place.placeId === placeId) {
+        if (place.startTime === selectedPlace.startTime) {
           return {
             ...place,
             latitude: autocompleteSelectedPlace.latitude,
@@ -280,7 +285,7 @@ const Produce = () => {
     if (option === 'recomm' && selectedRecommendedPlace) {
       // 추천 수정
       const updatedPlaces = places.map(place => {
-        if (place.placeId === placeId) {
+        if (place.startTime === selectedPlace.startTime) {
           return {
             ...place,
             placeName:
@@ -304,7 +309,10 @@ const Produce = () => {
 
       // 해당 장소와 연결된 경로(route) 제거
       const updatedPlanRoute = plan.routes.filter(route => {
-        return route.startPlaceId !== placeId && route.endPlaceId !== placeId;
+        return (
+          route.startTime !== selectedPlace.endTime &&
+          route.endTime !== selectedPlace.startTime
+        );
       });
 
       setPlan({
@@ -313,11 +321,11 @@ const Produce = () => {
       });
 
       // 수정된 장소를 추적
-      setModifiedPlaces(prev => [...prev, placeId]);
+      setModifiedPlaces(prev => [...prev, selectedPlace.startTime]);
     } else if (option === 'directly' && autocompleteSelectedPlace) {
       // "직접 쓸래요"
       const updatedPlaces = places.map(place => {
-        if (place.placeId === placeId) {
+        if (place.startTime === selectedPlace.startTime) {
           return {
             ...place,
             placeName:
@@ -340,7 +348,10 @@ const Produce = () => {
 
       // 해당 장소와 연결된 경로(route) 제거
       const updatedPlanRoute = plan.routes.filter(route => {
-        return route.startPlaceId !== placeId && route.endPlaceId !== placeId;
+        return (
+          route.startTime !== selectedPlace.endTime &&
+          route.endTime !== selectedPlace.startTime
+        );
       });
 
       setPlan({
@@ -349,7 +360,7 @@ const Produce = () => {
       });
 
       // 수정된 장소를 추적
-      setModifiedPlaces(prev => [...prev, placeId]);
+      setModifiedPlaces(prev => [...prev, selectedPlace.startTime]);
     }
 
     setIsEditing(false);
@@ -359,7 +370,7 @@ const Produce = () => {
     setAutocompleteSelectedPlace(null);
     setEditPlace(prev => {
       const updatedEditPlace = { ...prev };
-      delete updatedEditPlace[placeId];
+      delete updatedEditPlace[selectedPlace.startTime];
       return updatedEditPlace;
     });
 
@@ -495,7 +506,7 @@ const Produce = () => {
 
     // 수정 모드 활성화 및 새로운 장소 선택
     setIsEditing(true);
-    setSelectedOption({ option: 'choose', placeId: newPlace.placeId });
+    setSelectedOption({ option: 'choose', placeId: newPlace });
 
     // ModifyContainer를 열기 위해 modifyPlace 상태도 업데이트
     setEditPlace(prevState => ({

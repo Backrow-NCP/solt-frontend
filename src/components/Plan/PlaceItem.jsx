@@ -25,7 +25,7 @@ const PlaceItem = ({
   };
 
   return (
-    <Item key={`place-${place.placeId}`} className="flex">
+    <Item key={`place-${place.startTime}`} className="flex">
       <span className="place_time pt_blue size_xs weight_b">
         {planTime(place.startTime)}
       </span>
@@ -37,7 +37,11 @@ const PlaceItem = ({
         {route && (
           <div className="size_xs weight_md">
             <img
-              src={route.transportation.type === '도보' ? transportRun : transportBus}
+              src={
+                route.transportation.type === '도보'
+                  ? transportRun
+                  : transportBus
+              }
               alt={route.transportation.type}
             />
             <span>{route.transportation.type}</span>
@@ -67,7 +71,7 @@ const PlaceItem = ({
             type="number"
             min="0"
             value={place.price}
-            onChange={e => handlePriceChange(place.placeId, Number(e.target.value))}
+            onChange={e => handlePriceChange(place, Number(e.target.value))}
             disabled={!editPrice[place.placeId] || isEditing}
           />
           <span className="pt_pink size_sm weight_b">원</span>
@@ -98,12 +102,12 @@ const PlaceItem = ({
       {isModified && (
         <ul className="place_change">
           <li>
-            <button onClick={() => handleModifyClick('directly', place.placeId)}>
+            <button onClick={() => handleModifyClick('directly', place)}>
               직접 쓸래요
             </button>
           </li>
           <li>
-            <button onClick={() => handleModifyClick('recomm', place.placeId)}>
+            <button onClick={() => handleModifyClick('recomm', place)}>
               다른 추천 받을래요
             </button>
           </li>
