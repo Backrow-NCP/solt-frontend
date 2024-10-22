@@ -145,7 +145,6 @@ function PersonalityTest() {
               <img
                 src="https://kr.object.ncloudstorage.com/solt-objectstorage/board/e6cad11c-36f0-455a-9860-242a14f6ae08"
                 alt="여행유형검사"
-                style={{ width: '40%', height: 'auto' }} // 이미지 크기 조정
               />
             </div>
             <br />
