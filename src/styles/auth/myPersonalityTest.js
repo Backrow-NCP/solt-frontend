@@ -31,15 +31,6 @@ const MyPersonalityTestStyles = createGlobalStyle`
     height: auto;
   }
 
-  .delete-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
 
   .my-test-container {
     flex-grow: 1;
@@ -56,17 +47,34 @@ const MyPersonalityTestStyles = createGlobalStyle`
     color: #333;
   }
 
-  .result-item {
-    background-color: rgba(20, 184, 255, 0.04);
-    border-radius: 32px;
-    padding: 15px;
-    text-align: center;
-    transition: transform 0.2s ease-in-out;
-  }
+.result-item {
+  position: relative; /* 부모 요소에 상대적 위치를 부여 */
+  background-color: rgba(20, 184, 255, 0.04);
+  border-radius: 32px;
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
 
-  .result-item:hover {
-    transform: scale(1.05);
-  }
+.delete-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: none; /* 기본적으로 숨김 처리 */
+}
+
+.result-item:hover .delete-button {
+  display: block; /* 호버 시에만 보이도록 설정 */
+}
+
+.result-item:hover {
+  transform: scale(1.05); /* 호버 시 확대 효과는 유지 */
+}
+
 
   .result-item h3 {
     font-size: 1.2em;

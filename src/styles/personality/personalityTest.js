@@ -142,9 +142,10 @@ const PersonalityTestStyle = styled.div`
   }
 
   @media (max-width: 768px) {
-    /* 화면 너비가 768px 이하일 때에도 두 개의 요소가 가로로 유지되도록 */
+    /* 화면 너비가 768px 이하일 때 */
     .test_flex {
-      flex-wrap: nowrap; /* 줄바꿈을 허용하지 않음 */
+      flex-direction: column; /* 세로로 나열 */
+      align-items: center; /* 세로로 배치 시 중앙 정렬 */
     }
   }
   /* 각 섹션 너비 설정 */
