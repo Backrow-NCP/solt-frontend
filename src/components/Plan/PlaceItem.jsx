@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import transportBus from '../../assets/images/ico/transport_bus.svg';
 import transportRun from '../../assets/images/ico/transport_run.svg';
@@ -13,13 +14,18 @@ const PlaceItem = ({
   editPrice,
   isEditing,
   toggleEditPrice,
-  editPlace,
-  toggleModifyPlace,
   handleModifyClick,
   displayButtons,
 }) => {
+  const [isModified, setIsModified] = useState(false); // 개별 PlaceItem의 수정 상태를 관리
+
+  // 수정 버튼 클릭 시 수정 상태 변경
+  const toggleModify = () => {
+    setIsModified(!isModified);
+  };
+
   return (
-    <Item key={`place-${place.placeId}`} className="flex">
+    <Item key={`place-${place.startTime}`} className="flex">
       <span className="place_time pt_blue size_xs weight_b">
         {planTime(place.startTime)}
       </span>
@@ -40,7 +46,13 @@ const PlaceItem = ({
             />
             <span>{route.transportation.type}</span>
             <span>{route.travelTime}분</span>
-            <span>({route.distance}km)</span>
+            <span>
+              (
+              {route.distance < 1000
+                ? route.distance + 'm'
+                : (route.distance / 1000).toFixed(2) + 'km'}
+              )
+            </span>
             {route.price !== 0 && (
               <strong className="pt_blue size_xs weight_sb">
                 약 {route.price.toLocaleString()}원
@@ -52,22 +64,19 @@ const PlaceItem = ({
         <p className="desc pt_gy size_xs">{place.description}</p>
       </div>
 
-      
       <div className="place_price">
-				<p className="size_xs weight_md">예상 금액</p>
-				<div className="flex">
-					<input
-						type="number"
-						min="0"
-						value={place.price}
-						onChange={e =>
-							handlePriceChange(place.placeId, Number(e.target.value))
-						}
-						disabled={!editPrice[place.placeId] || isEditing}
-					/>
-					<span className="pt_pink size_sm weight_b">원</span>
-				</div>
-				{displayButtons && (
+        <p className="size_xs weight_md">예상 금액</p>
+        <div className="flex">
+          <input
+            type="number"
+            min="0"
+            value={place.price}
+            onChange={e => handlePriceChange(place, Number(e.target.value))}
+            disabled={!editPrice[place.placeId] || isEditing}
+          />
+          <span className="pt_pink size_sm weight_b">원</span>
+        </div>
+        {displayButtons && (
           <button
             onClick={() => toggleEditPrice(place.placeId)}
             className="pt_gy size_xxs"
@@ -78,10 +87,10 @@ const PlaceItem = ({
         )}
       </div>
 
-      {/* 조건에 따라 수정 버튼 표시 */}
+      {/* 수정 버튼 */}
       {displayButtons && (
-        <button onClick={() => toggleModifyPlace(place.placeId)}>
-          {editPlace[place.placeId] ? (
+        <button onClick={toggleModify}>
+          {isModified ? (
             <img src={PlanModifyActiveBtn} alt="일정 수정" />
           ) : (
             <img src={PlanModifyBtn} alt="비활성화" />
@@ -89,23 +98,16 @@ const PlaceItem = ({
         </button>
       )}
 
-      {editPlace[place.placeId] && (
+      {/* 클릭된 곳만 수정 가능하도록 처리 */}
+      {isModified && (
         <ul className="place_change">
           <li>
-            <button
-              onClick={() =>
-                handleModifyClick('directly', place.placeId)
-              }
-            >
+            <button onClick={() => handleModifyClick('directly', place)}>
               직접 쓸래요
             </button>
           </li>
           <li>
-            <button
-              onClick={() =>
-                handleModifyClick('recomm', place.placeId)
-              }
-            >
+            <button onClick={() => handleModifyClick('recomm', place)}>
               다른 추천 받을래요
             </button>
           </li>
@@ -130,11 +132,11 @@ const Item = styled.li`
 
     h3 {
       display: inline-block;
+      margin-right: 5px;
     }
 
     > span {
       display: inline-block;
-      margin-left: 8px;
       vertical-align: text-top;
     }
 
@@ -247,7 +249,7 @@ const Item = styled.li`
         span:last-of-type {
           display: none;
         }
-        
+
         strong {
           display: block;
           margin: 2px 0 0;

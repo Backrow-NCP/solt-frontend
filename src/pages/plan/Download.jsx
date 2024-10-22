@@ -7,7 +7,7 @@ const Download = React.forwardRef(({ groupedPlaces, getDayTotalPrice }, ref) => 
 
   useEffect(() => {
     // 세션 스토리지에서 'planTest' 데이터를 가져오기
-    const storedPlan = sessionStorage.getItem('planTest');
+    const storedPlan = sessionStorage.getItem('planData');
     if (storedPlan) {
       const parsedPlan = JSON.parse(storedPlan);
       setPlan(parsedPlan);

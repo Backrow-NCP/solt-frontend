@@ -14,8 +14,8 @@ const usePlanData = () => {
         // 실제 API 호출 시 주석 해제
         // const response = await axios.get('/api/getPlanData');
         // const fetchedPlan = response.data;
-        const fetchedPlan = planData; // 임시 데이터 사용
-        // const fetchedPlan = JSON.parse(sessionStorage.getItem('planData'));
+        // const fetchedPlan = planData; // 임시 데이터 사용
+        const fetchedPlan = JSON.parse(sessionStorage.getItem('planData'));
 
         // 지오코딩을 통해 위도와 경도 추가
         const placesWithCoordinates = await Promise.all(

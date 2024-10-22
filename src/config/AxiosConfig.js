@@ -16,46 +16,54 @@ const apiClient = axios.create({
   withCredentials: true, // 세션 유지 (쿠키 전송)
 });
 
+// 로그아웃 함수
+const handleLogout = () => {
+  localStorage.clear(); // 로컬스토리지에 저장된 모든 데이터를 삭제
+  window.location.href = '/login'; // 로그아웃 후 로그인 페이지로 리다이렉트
+};
+
 // 인터셉터 설정 함수
-const setupInterceptors = setLoading => {
+const setupInterceptors = (setLoading) => {
   // 요청 인터셉터
   apiClient.interceptors.request.use(
-    config => {
-      setLoading && setLoading(true); // 로딩 상태 시작 (필요할 경우)
+    (config) => {
+      if (setLoading) setLoading(true); // 로딩 상태 시작
 
       // 로컬 스토리지에서 JWT 토큰 가져오기
       const token = localStorage.getItem('token');
+      console.log(token); // 토큰 출력 (디버깅용)
 
       // 토큰이 있으면 요청 헤더에 Authorization 추가
       if (token) {
         config.headers['Authorization'] = token;
+        console.log('Authorization 헤더에 포함된 토큰:', config.headers['Authorization']);
       }
       return config;
     },
-    error => {
-      setLoading && setLoading(false); // 요청 실패 시 로딩 종료
+    (error) => {
+      if (setLoading) setLoading(false); // 요청 실패 시 로딩 종료
       return Promise.reject(error);
     }
   );
 
   // 응답 인터셉터
   apiClient.interceptors.response.use(
-    response => {
-      setLoading && setLoading(false); // 응답 성공 시 로딩 종료
+    (response) => {
+      if (setLoading) setLoading(false); // 응답 성공 시 로딩 종료
       return response;
     },
-    async error => {
-      setLoading && setLoading(false); // 응답 실패 시 로딩 종료
-      // 세션이 만료된 경우 (401 응답)
+    (error) => {
+      if (setLoading) setLoading(false); // 응답 실패 시 로딩 종료
+
+      // 401 Unauthorized 에러 시 토큰 만료 처리
       if (error.response && error.response.status === 401) {
         console.log('401 에러 발생, 로그아웃 처리');
-        localStorage.removeItem('token'); // 로그아웃처리, 토큰 삭제
-        window.location.href = '/auth/login'; // 로그인 페이지로 리다이렉트
+        handleLogout(); // 토큰 만료 시 로그아웃 처리
       }
       return Promise.reject(error);
     }
   );
 };
 
-export { setupInterceptors };
+export { setupInterceptors, handleLogout };
 export default apiClient;

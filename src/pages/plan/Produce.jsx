@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLoadScript } from '@react-google-maps/api';
 import PlanProduce from '../../styles/plan/produce';
 import planTime from '../../utils/plan/planTime';
+import apiClient from '../../config/AxiosConfig';
 
 // 훅
 import usePlanData from '../../hooks/plan/usePlanData';
@@ -87,6 +88,7 @@ const Produce = () => {
   const [modifiedPlaces, setModifiedPlaces] = useState([]); // 수정된 장소
   const [selectedMarker, setSelectedMarker] = useState(null); // 구글맵 마커 선택
   const [mapCenter, setMapCenter] = useState(center); // 맵 중심
+  const [isLoading, setIsLoading] = useState(false); // 렌더링
 
   const inputRef = useRef(null); // Autocomplete 입력 필드
   const autocompleteRef = useRef(null); // Autocomplete 객체
@@ -177,9 +179,9 @@ const Produce = () => {
 
   // 금액 변경 처리
   const handlePriceChange = useCallback(
-    (placeId, newPrice) => {
+    (selectedPlace, newPrice) => {
       const updatedPlaces = places.map(place => {
-        if (place.placeId === placeId) {
+        if (place.startTime === selectedPlace.startTime) {
           // 금액 변경
           return { ...place, price: newPrice };
         }
@@ -191,7 +193,10 @@ const Produce = () => {
 
       // combinedList 업데이트
       const updatedCombinedList = combinedList.map(item => {
-        if (item.type === 'place' && item.data.placeId === placeId) {
+        if (
+          item.type === 'place' &&
+          item.data.startTime === selectedPlace.startTime
+        ) {
           return {
             ...item,
             data: { ...item.data, price: newPrice },
@@ -223,6 +228,7 @@ const Produce = () => {
 
   // 각 플랜 수정
   const handleModifyClick = useCallback((option, placeId) => {
+    console.log('플랜 수정!!!!', placeId);
     setIsEditing(true);
     setSelectedOption({ option, placeId });
   }, []);
@@ -254,12 +260,13 @@ const Produce = () => {
   // ModifyContainer의 "이 장소로 선택" 버튼 클릭 시
   const handleSelectClick = useCallback(() => {
     const { option, placeId } = selectedOption;
+    const selectedPlace = placeId;
 
-    console.log('handleSelectClick called with:', { option, placeId });
+    console.log('handleSelectClick called with:', { option, selectedPlace });
 
     if (option === 'directly' && autocompleteSelectedPlace) {
       const updatedPlaces = places.map(place => {
-        if (place.placeId === placeId) {
+        if (place.startTime === selectedPlace.startTime) {
           return {
             ...place,
             latitude: autocompleteSelectedPlace.latitude,
@@ -278,7 +285,7 @@ const Produce = () => {
     if (option === 'recomm' && selectedRecommendedPlace) {
       // 추천 수정
       const updatedPlaces = places.map(place => {
-        if (place.placeId === placeId) {
+        if (place.startTime === selectedPlace.startTime) {
           return {
             ...place,
             placeName:
@@ -302,7 +309,10 @@ const Produce = () => {
 
       // 해당 장소와 연결된 경로(route) 제거
       const updatedPlanRoute = plan.routes.filter(route => {
-        return route.startPlaceId !== placeId && route.endPlaceId !== placeId;
+        return (
+          route.startTime !== selectedPlace.endTime &&
+          route.endTime !== selectedPlace.startTime
+        );
       });
 
       setPlan({
@@ -311,11 +321,11 @@ const Produce = () => {
       });
 
       // 수정된 장소를 추적
-      setModifiedPlaces(prev => [...prev, placeId]);
+      setModifiedPlaces(prev => [...prev, selectedPlace.startTime]);
     } else if (option === 'directly' && autocompleteSelectedPlace) {
       // "직접 쓸래요"
       const updatedPlaces = places.map(place => {
-        if (place.placeId === placeId) {
+        if (place.startTime === selectedPlace.startTime) {
           return {
             ...place,
             placeName:
@@ -338,7 +348,10 @@ const Produce = () => {
 
       // 해당 장소와 연결된 경로(route) 제거
       const updatedPlanRoute = plan.routes.filter(route => {
-        return route.startPlaceId !== placeId && route.endPlaceId !== placeId;
+        return (
+          route.startTime !== selectedPlace.endTime &&
+          route.endTime !== selectedPlace.startTime
+        );
       });
 
       setPlan({
@@ -347,7 +360,7 @@ const Produce = () => {
       });
 
       // 수정된 장소를 추적
-      setModifiedPlaces(prev => [...prev, placeId]);
+      setModifiedPlaces(prev => [...prev, selectedPlace.startTime]);
     }
 
     setIsEditing(false);
@@ -357,7 +370,7 @@ const Produce = () => {
     setAutocompleteSelectedPlace(null);
     setEditPlace(prev => {
       const updatedEditPlace = { ...prev };
-      delete updatedEditPlace[placeId];
+      delete updatedEditPlace[selectedPlace.startTime];
       return updatedEditPlace;
     });
 
@@ -375,27 +388,62 @@ const Produce = () => {
   ]);
 
   // 플랜 확정/수정 버튼 클릭 핸들러
-  const handlePlanButtonClick = useCallback(() => {
+  const handlePlanButtonClick = useCallback(async () => {
     if (planConfirmed) {
-      // 수정이 없는 경우, 서버에 플랜 확정 메시지를 보내고 /plan/complete로 리디렉션
-      /*
-      try {
-        await axios.post('/api/confirmPlan', { planId: plan.planId }); // API 엔드포인트에 맞게 조정
-        navigate('/plan/complete');
-      } catch (error) {
-        console.error('플랜 확정 실패:', error);
-        alert('플랜 확정에 실패했습니다. 다시 시도해 주세요.');
-      }
-      */
-
-      // 대신, Axios 요청을 주석 처리하고 리디렉션 수행
+      // 수정 없이 확정하기
       navigate('/plan/complete');
     } else {
-      // 수정이 있는 경우, 이미 서버로 데이터가 전송되었으므로 알림만
-      alert('플랜이 수정되었습니다. 플랜을 다시 확정해 주세요.');
-      setPlanConfirmed(true);
+      // 수정이 있을 때 서버로 데이터 전송
+      try {
+        setIsLoading(true); // 로딩 시작
+        const themes = plan.themes.map(theme => theme.themeId);
+        // const updatedPlan = {
+        // 		...plan,
+        // 		themes,
+        // };
+
+        const updatedPlan = {
+          title: plan.title || '맞춤 플랜',
+          memberId: plan.member.memberId || null,
+          places: plan.places.map(place => ({
+            placeName: place.placeName,
+          })),
+          themes: themes,
+          location: plan.location || '서울특별시',
+          startDate: plan.startDate,
+          endDate: plan.endDate,
+        };
+
+        console.log('업데이트 플랜:', updatedPlan);
+
+        // 서버로 전송
+        const response = await apiClient.post('/plans/recom', updatedPlan, {
+          withCredentials: false,
+        });
+
+        console.log('서버 응답:', response.data);
+
+        // 서버 응답 데이터를 세션 스토리지에 저장
+        response.data.places.sort(
+          (a, b) => new Date(a.startTime) - new Date(b.startTime)
+        );
+        response.data.routes.sort(
+          (a, b) => new Date(a.startTime) - new Date(b.startTime)
+        );
+        sessionStorage.setItem('planData', JSON.stringify(response.data));
+
+        alert('플랜이 수정되었습니다.');
+
+        // 페이지 새로고침
+        window.location.reload();
+      } catch (error) {
+        console.error('저장 오류:', error);
+        alert('저장 중 오류가 발생했습니다.');
+      } finally {
+        setIsLoading(false); // 로딩 종료
+      }
     }
-  }, [planConfirmed, navigate]);
+  }, [planConfirmed, plan, places, combinedList, navigate]);
 
   // 플랜 확정 버튼 내용 결정
   const planButtonText = useMemo(
@@ -458,7 +506,7 @@ const Produce = () => {
 
     // 수정 모드 활성화 및 새로운 장소 선택
     setIsEditing(true);
-    setSelectedOption({ option: 'choose', placeId: newPlace.placeId });
+    setSelectedOption({ option: 'choose', placeId: newPlace });
 
     // ModifyContainer를 열기 위해 modifyPlace 상태도 업데이트
     setEditPlace(prevState => ({
@@ -498,7 +546,7 @@ const Produce = () => {
 
   // 렌더링
   if (mapLoadError) return <div>Error loading maps</div>;
-  if (!isLoaded || loading) return <Loading />;
+  if (!isLoaded || isLoading || loading) return <Loading />;
   if (!plan) return <Loading />;
 
   return (
@@ -525,7 +573,7 @@ const Produce = () => {
           filteredPlaces={filteredPlaces}
           planTime={planTime}
           isDetailPage={false}
-          findRoute={(nextPlace) =>
+          findRoute={nextPlace =>
             plan.routes.find(route => route.endTime === nextPlace.startTime)
           }
           handlePriceChange={handlePriceChange}
