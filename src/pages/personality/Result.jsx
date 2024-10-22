@@ -20,7 +20,7 @@ function PersonalityResult() {
       apiClient
         .get(`/personalityTest/result/${resultId}`)
         .then(response => {
-          setResultData(response);
+          setResultData(response.data);
           setIsLoading(false);
         })
         .catch(error => {
