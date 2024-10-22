@@ -53,7 +53,7 @@ const Sidebar = () => {
         </SidebarListItem>
         <SidebarListItem>
           <SidebarLink to="/auth/mytest" className="size_sm">
-            나의 유형 검사
+            나의 여행 유형
           </SidebarLink>
         </SidebarListItem>
       </SidebarList>
