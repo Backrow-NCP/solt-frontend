@@ -19,7 +19,7 @@ const PlanInfo = ({
     <Info className="plan_info">
       <span className="size_sm weight_md pt_blue">솔트 AI 플래너</span>
       <h2>
-        {memberName} 님의
+        {memberName || "여행자"} 님의
         <br />
         <span className="pt_blue">{location}</span> 여행 플랜
       </h2>

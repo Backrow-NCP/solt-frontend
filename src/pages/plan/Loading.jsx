@@ -41,6 +41,8 @@ const Loading = () => {
   const settings = {
     infinite: true,
     speed: 500,
+		autoplay: true,
+    autoplaySpeed: 2500,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,

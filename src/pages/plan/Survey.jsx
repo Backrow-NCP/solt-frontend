@@ -17,25 +17,46 @@ const Survey = () => {
   const navigate = useNavigate();
 	const [username, setUsername] = useState('여행자');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+	const [memberId, setMemberId] = useState(null);
 
 	useEffect(() => {
-    setupInterceptors(setLoading);
+    setupInterceptors(setIsLoading);
     checkLoginStatus();
   }, []);
 
 	// 로그인 체크 (username)
-	const checkLoginStatus = () => {
+	const checkLoginStatus = async () => {
 		const token = localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username');
-  
+
     if (token && storedUsername) {
       setIsLoggedIn(true);
       setUsername(storedUsername);
+
+      try {
+        const response = await apiClient.get('/members', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // 서버에서 받은 memberId가 있는지 확인
+				if (response.data && response.data.memberId) {
+					setMemberId(response.data.memberId);
+				} else {
+					console.error('memberId를 찾을 수 없습니다.');
+				}
+
+      } catch (error) {
+        console.error('memberId를 가져오는 중 오류가 발생했습니다:', error);
+      }
     } else {
       setIsLoggedIn(false);
       setUsername('여행자');
+      setMemberId(null);
     }
+    setIsLoading(false);
   };
 
   // 질문
@@ -90,7 +111,7 @@ const Survey = () => {
   const handlePlaceSelect = (places) => {
     const formattedPlaces = places.map(place => ({
       placeName: place.name,
-      addr: place.address,
+      // addr: place.address,
     }));
   
     setAnswers(prevAnswers => ({
@@ -172,15 +193,10 @@ const Survey = () => {
   
       const data = {
 				"title": answers.area || '맞춤 플랜',
+				"memberId": memberId  || 0,
 				"places": answers.place.map(place => ({
-					"placeId": 0,
 					"placeName": place.placeName,
-					"addr": place.addr || "주소 정보 없음",
-					"price": 0,
-					"description": "",
-					"startTime": "",
-					"endTime": "",
-					"checker": false
+					// "addr": place.addr || "주소 정보 없음",
 				})),
 				"themes": themes,
 				"location": answers.area || "서울특별시",
@@ -193,10 +209,8 @@ const Survey = () => {
 			// 서버 전송
       const response = await apiClient.post('/plans/recom', data, {
 				withCredentials: false,
-			}).then(response => {
-				// 세션 스토리지에 저장
-				sessionStorage.setItem('planData', JSON.stringify(data));
-			});
+			})
+			sessionStorage.setItem('planData', JSON.stringify(response.data));
       console.log('응답: ', response.data);
   
 			// 이동
@@ -250,7 +264,7 @@ const Survey = () => {
     }
   };
 
-  if (loading) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <SurveyCommon className="inner">

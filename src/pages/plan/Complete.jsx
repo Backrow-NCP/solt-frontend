@@ -134,7 +134,7 @@ const Complete = ({ onLoginClick }) => {
           }
         }
       }
-      pdf.save(`${plan.member.name}_plan.pdf`);
+      pdf.save(`plan_solt.pdf`);
     } catch (error) {
       alert('PDF 생성 중 오류가 발생했습니다.');
     }
@@ -203,8 +203,8 @@ const Complete = ({ onLoginClick }) => {
     <>
       <PlanComplete id="plan_complete">
         <h2>
-          {plan?.member.name} 님의 <span className="pt_blue">{plan?.area}</span>{' '}
-          여행 플랜이에요
+          {plan?.member.name || '여행자'} 님의{' '}
+          <span className="pt_blue">{plan?.area}</span> 여행 플랜이에요
         </h2>
         <div className="price flex pt_pink">
           <span className="size_sm weight_sb">예상 총 금액</span>
@@ -214,24 +214,60 @@ const Complete = ({ onLoginClick }) => {
         </div>
 
         {/* 날짜별 일정 표시 */}
-        <Slider {...settings}>
-          {Object.entries(groupedPlaces).map(([date, dayPlaces], dayIndex) => (
-            <div key={dayIndex}>
-              <PlaceComplete
-                dayPlaces={dayPlaces}
-                plan={plan}
-                getDayTotalPrice={getDayTotalPrice}
-              />
-            </div>
-          ))}
-        </Slider>
+        {daysCount > 1 ? (
+          <Slider {...settings}>
+            {Object.entries(groupedPlaces).map(
+              ([date, dayPlaces], dayIndex) => (
+                <div key={dayIndex}>
+                  <PlaceComplete
+                    dayPlaces={dayPlaces}
+                    plan={plan}
+                    getDayTotalPrice={getDayTotalPrice}
+                  />
+                </div>
+              )
+            )}
+          </Slider>
+        ) : (
+          //[영훈 수정] 일정이 하루면 슬라이드 없게 수정
+          <div
+            style={{
+              maxWidth: '800px',
+              minWidth: '300px',
+              width: '50%',
+              margin: '0 auto',
+            }}
+          >
+            {Object.entries(groupedPlaces).map(
+              ([date, dayPlaces], dayIndex) => (
+                <div key={dayIndex}>
+                  <PlaceComplete
+                    dayPlaces={dayPlaces}
+                    plan={plan}
+                    getDayTotalPrice={getDayTotalPrice}
+                  />
+                </div>
+              )
+            )}
+          </div>
+        )}
 
-        <button
+        {/* [영훈 수정] 일정이 하루일 때 전체보기 안보이게 수정 */}
+        {daysCount > 1 && (
+          <button
+            className="btn_view pt_gy size_md weight_md"
+            onClick={handleFullView}
+          >
+            전체 화면 보기
+          </button>
+        )}
+
+        {/* <button
           className="btn_view pt_gy size_md weight_md"
           onClick={handleFullView}
         >
           전체 화면 보기
-        </button>
+        </button> */}
 
         <div className="button_box inner flex">
           <Button
