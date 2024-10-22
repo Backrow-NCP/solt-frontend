@@ -26,7 +26,7 @@ const BoardItem = ({ board }) => {
 
   // board에서 필요한 데이터 추출
   const {
-    boardId,
+    // boardId,
     title,
     content,
     images,
