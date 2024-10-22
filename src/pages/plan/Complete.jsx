@@ -141,22 +141,23 @@ const Complete = ({ onLoginClick }) => {
   };
 
   // 마이페이지 저장
-  const handleSaveToMyPage = async () => {
-    // 로그인 여부 확인
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('플랜 저장은 로그인 시 가능합니다.');
-      onLoginClick();
-      return;
-    }
+	const handleSaveToMyPage = async () => {
+		// 로그인 여부 확인
+		const token = localStorage.getItem('token');
+		if (!token) {
+			alert('플랜 저장은 로그인 시 가능합니다.');
+			onLoginClick();
+			return;
+		}
 
-    try {
-      const planData = JSON.parse(sessionStorage.getItem('planData'));
-      if (!planData) {
-        alert('플랜 데이터가 없습니다.');
-        return;
-      }
+		try {
+			const planData = JSON.parse(sessionStorage.getItem('planData'));
+			if (!planData) {
+				alert('플랜 데이터가 없습니다.');
+				return;
+			}
 
+<<<<<<< HEAD
       // 서버로 플랜 데이터 전송
       let response = null;
       if (planData.planId) {
@@ -187,17 +188,34 @@ const Complete = ({ onLoginClick }) => {
         console.log('저장 중...', newPlanData);
         response = await apiClient.post('/plans/', newPlanData);
       }
+=======
+			// themes 배열에서 themeId만 추출
+			const themeIds = planData.themes.map(theme => theme.themeId);
 
-      if (response && response.status === 200) {
-        alert('플랜이 마이페이지에 저장되었습니다!');
-      } else {
-        alert('저장에 실패했습니다.');
-      }
-    } catch (error) {
-      console.error('저장 오류:', error);
-      alert('저장 중 오류가 발생했습니다.');
-    }
-  };
+			// themeIds만 남긴 상태로 새로운 planData를 생성
+			const updatedPlanData = {
+				...planData,
+				themes: themeIds,  // themeId 배열로 교체
+			};
+
+			console.log('저장한 플랜', updatedPlanData);
+
+			// 서버로 플랜 데이터 전송 (세션에 저장된 데이터를 그대로 사용)
+			const response = await apiClient.post('/plans/', updatedPlanData);
+
+			if (response && response.status === 200) {
+				alert('플랜이 마이페이지에 저장되었습니다!');
+			} else {
+				alert('저장에 실패했습니다.');
+				console.error("서버 응답 오류:", response);
+			}
+		} catch (error) {
+			console.error('저장 오류:', error);
+			alert('저장 중 오류가 발생했습니다.');
+		}
+	};
+>>>>>>> 33b926d9474a9cf2d8fc601ed0f54eae2fc503c6
+
 
   return (
     <>

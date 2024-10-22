@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Axios를 사용하여 API 요청을 보냅니다.
 import PlanPopup from './PlanPopup';
 import Button from '../../components/Button';
 import PlanSelectBox from './PlanSelectBox'; // PlanSelectBox 임포트
+import apiClient from '../../config/AxiosConfig';
 import {
   Form,
   InputGroup,
@@ -29,16 +32,62 @@ const BoardForm = ({ onSubmit, buttonText, initialData, planData }) => {
     initialData?.selectedPlan || null
   ); // 초기 선택된 플랜
   const imageContainerRef = useRef(null);
+  const navigate = useNavigate();
+  const [boardImages, setBoardImages] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
-  const handleFileChange = e => {
-    const files = Array.from(e.target.files);
-    const validFiles = files.filter(file => file.type.startsWith('image/'));
+  const handleFileChange = async e => {
+    const newFiles = Array.from(e.target.files);
+    const validFiles = newFiles.filter(file => file.type.startsWith('image/'));
 
-    if (validFiles.length !== files.length) {
+    if (validFiles.length !== newFiles.length) {
       alert('이미지 파일만 업로드 가능합니다.');
+      return;
     }
 
-    setSelectedFiles(prevFiles => [...prevFiles, ...validFiles]);
+    // 중복된 파일을 걸러내기 위해 기존 선택된 파일과 비교
+    const newUniqueFiles = validFiles.filter(
+      newFile =>
+        !selectedFiles.some(
+          file => file.name === newFile.name && file.size === newFile.size
+        )
+    );
+    console.log(newFiles);
+    console.log(validFiles);
+    console.log(newUniqueFiles);
+
+    if (newUniqueFiles.length > 0) {
+      const formData = new FormData();
+      newUniqueFiles.forEach(file => {
+        formData.append('files', file);
+      });
+
+      try {
+        // 파일 업로드 요청
+        const uploadResponse = await apiClient.post(
+          `${process.env.REACT_APP_API_URL}/files`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        // 업로드 응답에서 uuid 값을 추출하여 배열에 담음
+        const uploadedUUids = uploadResponse.data.filenames;
+        console.log('파일 업로드 응답:', uploadedUUids);
+        // uploadedFiles 상태에 새로 업로드된 파일들의 uuid를 추가
+        setUploadedFiles(prevFiles => [...prevFiles, ...uploadedUUids]);
+        console.log('업로디드 파일:', uploadedFiles);
+        // 기존 파일 배열에 새로 선택한 파일 추가
+        setSelectedFiles(prevFiles => [...prevFiles, ...newUniqueFiles]);
+        console.log('셀렉티드 파일:', selectedFiles);
+      } catch (error) {
+        console.error('파일 업로드 실패:', error);
+      }
+    } else {
+      alert('중복된 파일은 업로드할 수 없습니다.');
+    }
   };
 
   const handleRemoveFile = indexToRemove => {
@@ -65,6 +114,7 @@ const BoardForm = ({ onSubmit, buttonText, initialData, planData }) => {
 
   const handlePlanSelect = plan => {
     setSelectedPlan(plan); // 선택된 플랜 상태 업데이트
+    console.log('팝업에서 선택한 플랜 데이터', plan);
     closePopup();
   };
 
@@ -74,11 +124,10 @@ const BoardForm = ({ onSubmit, buttonText, initialData, planData }) => {
       title: boardTitle,
       content: boardContent,
       memberId: 1, // 임시 사용자 ID
-      planId: selectedPlan.id,
+      planId: selectedPlan.planId,
       // selectedPlan, // 선택된 플랜 추가
-      boardImages: selectedFiles.map((file, index) => ({
-        uuid: URL.createObjectURL(file),
-        fileName: file.name,
+      boardImages: uploadedFiles.map((file, index) => ({
+        fileName: file,
         ord: index,
       })),
     };
@@ -112,7 +161,6 @@ const BoardForm = ({ onSubmit, buttonText, initialData, planData }) => {
       }
     };
   }, []);
-  console.log('planData BoardForm', planData);
 
   return (
     <Container>
@@ -204,7 +252,12 @@ const BoardForm = ({ onSubmit, buttonText, initialData, planData }) => {
           )}
         </ImageStyledBox>
         <ButtonGroup>
-          <Button type="button" color="white" size="lg">
+          <Button
+            type="button"
+            color="white"
+            size="lg"
+            onClick={() => navigate(-1)}
+          >
             취소
           </Button>
           <Button type="submit" color="blue" size="lg">

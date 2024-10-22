@@ -1,10 +1,17 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom'; // useParams 훅 임포트
 import BoardDetailContainer from '../../components/Board/BoardDetailContainer';
 import Map from '../../components/Plan/Map';
-import usePlanData from '../../hooks/plan/usePlanData';
 import useCategoryTotals from '../../hooks/plan/useCategoryTotals';
 import { useLoadScript } from '@react-google-maps/api';
+import axios from 'axios'; // axios 임포트
 
 const Container = styled.div`
   display: flex;
@@ -15,10 +22,35 @@ const Container = styled.div`
 const libraries = ['places']; // 필요에 따라 라이브러리를 정의하세요
 
 const Detail = ({ isDetailPage }) => {
-  const { plan, places, loading } = usePlanData();
+  const url = process.env.REACT_APP_API_URL;
+  const { boardId } = useParams(); // URL에서 boardId 가져오기
+  const [boardData, setBoardData] = useState(null); // boardData 상태 추가
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const plan = useRef(null);
+  const places = useRef([]);
+
+  useEffect(() => {
+    const fetchBoardData = async () => {
+      try {
+        const response = await axios.get(`${url}/boards/${boardId}`); // API 요청
+        setBoardData(response.data); // 응답 데이터 상태로 저장
+        console.log('응답 데이터 @@@@@@@@', response.data);
+        setLoading(false); // 로딩 완료
+        plan.current = response.data?.plan || null;
+        places.current = response.data?.plan?.places || [];
+      } catch (error) {
+        console.error('게시글 데이터를 가져오는 데 실패했습니다:', error);
+        setLoading(false); // 로딩 완료
+      }
+    };
+
+    fetchBoardData(); // 데이터 가져오기 호출
+  }, [url, boardId]); // 의존성 배열에 url과 boardId 추가
+
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [selectedDay, setSelectedDay] = useState(1); // 선택된 날짜 상태 추가
   const [filteredPlaces, setFilteredPlaces] = useState([]);
+
   const categories = [
     '숙박',
     '음식점',
@@ -36,14 +68,13 @@ const Detail = ({ isDetailPage }) => {
     totalPlacePrice,
     totalRoutePrice,
     totalPrice,
-  } = useCategoryTotals(places, categories, plan);
+  } = useCategoryTotals(places.current, categories, plan.current);
 
   useEffect(() => {
     // TabContainer에 첫 번째 날짜의 장소를 필터링하여 업데이트하는 로직
     const initialDayIndex = 0; // 기본적으로 첫 번째 날짜의 인덱스
     setFilteredPlaces(places => {
       if (!places || places.length === 0) return [];
-
       const filtered = places.filter(
         place =>
           new Date(place.startTime).toISOString().split('T')[0] ===
@@ -53,7 +84,7 @@ const Detail = ({ isDetailPage }) => {
       );
       return filtered;
     });
-  }, []);
+  }, [places]);
 
   // Google Maps API 로드
   const { isLoaded, loadError: mapLoadError } = useLoadScript({
@@ -84,24 +115,13 @@ const Detail = ({ isDetailPage }) => {
     () =>
       Array.from(
         new Set(
-          places.map(
+          places.current.map(
             place => new Date(place.startTime).toISOString().split('T')[0]
           )
         )
       ).sort((a, b) => new Date(a) - new Date(b)),
     [places]
   );
-
-  // 선택된 날짜에 따라 필터링된 장소 목록 생성
-  // const filteredPlaces = useMemo(
-  //   () =>
-  //     places.filter(
-  //       place =>
-  //         new Date(place.startTime).toISOString().split('T')[0] ===
-  //         days[selectedDay - 1]
-  //     ),
-  //   [places, days, selectedDay]
-  // );
 
   const handleTabClick = useCallback(index => {
     setSelectedDay(index + 1);
@@ -143,17 +163,18 @@ const Detail = ({ isDetailPage }) => {
 
       {/* BoardDetailContainer로 분리된 오버레이 박스 */}
       <BoardDetailContainer
-        planData={plan}
+        planData={plan.current}
         days={days}
         filteredPlaces={filteredPlaces}
         setFilteredPlaces={setFilteredPlaces}
-        places={places}
+        places={places.current}
         selectedDay={selectedDay} // 선택된 날짜도 전달
         setSelectedDay={setSelectedDay} // 선택된 날짜를 설정하는 함수도 전달
         handleTabClick={handleTabClick}
         totalPrice={totalPrice}
         pieChartData={pieChartData}
         isDetailPage={isDetailPage}
+        boardData={boardData} // 보드 데이터도 전달
       />
     </Container>
   );

@@ -100,29 +100,21 @@ const Produce = () => {
     e.target.src = Restaurant;
   };
 
-  // 날짜별 일정 (ISO 형식으로 일관성 유지 및 정렬)
-  const days = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          places.map(
-            place => new Date(place.startTime).toISOString().split('T')[0]
-          )
-        )
-      ).sort((a, b) => new Date(a) - new Date(b)),
-    [places]
-  );
-
-  // 선택한 날짜 일정만 필터링
-  const filteredPlaces = useMemo(
-    () =>
-      places.filter(
-        place =>
-          new Date(place.startTime).toISOString().split('T')[0] ===
-          days[selectedDay - 1]
-      ),
-    [places, days, selectedDay]
-  );
+  // 날짜별로 장소를 그룹화하는 로직 추가
+const groupedPlaces = useMemo(() => {
+    return places.reduce((acc, place) => {
+      const date = new Date(place.startTime).toLocaleDateString(); // 날짜 형식 지정
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(place);
+      return acc;
+    }, {});
+  }, [places]);
+  
+  // days 배열을 groupedPlaces의 키값으로 생성
+  const days = useMemo(() => Object.keys(groupedPlaces), [groupedPlaces]);
+  
+  // 날짜 선택에 따라 필터된 장소 반환
+  const filteredPlaces = useMemo(() => groupedPlaces[days[selectedDay - 1]] || [], [groupedPlaces, days, selectedDay]);
 
   // 구글맵 로드
   const { isLoaded, loadError: mapLoadError } = useLoadScript({
