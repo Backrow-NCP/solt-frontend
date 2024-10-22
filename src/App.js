@@ -37,13 +37,23 @@ function App() {
   const [isLoginPopupOpen, setLoginPopupOpen] = useState(false);
   const [isSignupPopupOpen, setSignupPopupOpen] = useState(false);
   const [isFindPasswordPopupOpen, setFindPasswordPopupOpen] = useState(false);
+  const [isPasswordResetPopupOpen, setPasswordResetPopupOpen] = useState(false);
 
   const openLoginPopup = () => setLoginPopupOpen(true);
   const closeLoginPopup = () => setLoginPopupOpen(false);
   const openSignupPopup = () => setSignupPopupOpen(true);
   const closeSignupPopup = () => setSignupPopupOpen(false);
+
   const openFindPasswordPopup = () => setFindPasswordPopupOpen(true);
-  const closeFindPasswordPopup = () => setFindPasswordPopupOpen(false);
+  const closeFindPasswordPopup = (callback) => {
+    setFindPasswordPopupOpen(false);
+    if (callback) {
+      setTimeout(() => callback(), 300); // FindPassword 팝업이 닫힌 후 PasswordReset 팝업 열기
+    }
+  };
+
+  const openPasswordResetPopup = () => setPasswordResetPopupOpen(true);
+  const closePasswordResetPopup = () => setPasswordResetPopupOpen(false);
 
   return (
     <>
@@ -52,7 +62,7 @@ function App() {
       <Router>
         <div
           className={`App ${
-            isLoginPopupOpen || isSignupPopupOpen || isFindPasswordPopupOpen
+            isLoginPopupOpen || isSignupPopupOpen || isFindPasswordPopupOpen || isPasswordResetPopupOpen
               ? 'blur-background'
               : ''
           }`}
@@ -71,7 +81,7 @@ function App() {
               <Route path="/plan/produce" element={<Produce />} />
               <Route
                 path="/plan/complete"
-                element={<Complete onLoginClick={openLoginPopup} />} 
+                element={<Complete onLoginClick={openLoginPopup} />}
               />
               <Route path="/plan/survey/:planId" element={<SurveyEdit />} />
 
@@ -127,7 +137,15 @@ function App() {
 
           {/* 비밀번호 찾기 팝업 조건부 렌더링 */}
           {isFindPasswordPopupOpen && (
-            <FindPassword closePopup={closeFindPasswordPopup} />
+            <FindPassword
+              closePopup={(callback) => closeFindPasswordPopup(callback)}
+              openFindPasswordClick={openPasswordResetPopup}
+            />
+          )}
+
+          {/* 비밀번호 재설정 팝업 조건부 렌더링 */}
+          {isPasswordResetPopupOpen && (
+            <PasswordReset closePopup={closePasswordResetPopup} />
           )}
         </div>
       </Router>

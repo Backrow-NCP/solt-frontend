@@ -18,38 +18,23 @@ const MyBoard = () => {
     <>
       <MyPlanStyles />
       <div className="myboard">
-        <Sidebar/>
-        {/* <nav className="sidebar">
-          <Link to="/auth/mypage">
-            <h2 className="size_lg weight_sb">마이페이지</h2>
-          </Link>
-          <ul>
-            <li>
-              <Link to="/auth/myplan" className="size_sm">
-                나의 플랜
-              </Link>
-            </li>
-            <li>
-              <Link to="/auth/myboard" className="size_md weight_b pt_blue">
-                나의 게시글
-              </Link>
-            </li>
-          </ul>
-        </nav> */}
-
+        <Sidebar />
         <div className="my_board_container">
           <h1>나의 게시글</h1>
           <div className="board_items_wrapper">
             {plans.map((plan) => (
               <BoardItem
                 key={plan.id}
-                title={plan.title}
-                content={plan.content}
-                imageUrl={plan.imageUrl ? require(`../../assets/images/sample/${plan.imageUrl}`) : defaultImage}
-                location={plan.location}
-                date={new Date(plan.date).toLocaleDateString()}
-                author={plan.author}
-                duration={plan.duration}
+                board={{
+                  boardId: plan.id,
+                  title: plan.title,
+                  content: plan.content,
+                  images: plan.imageUrl ? [plan.imageUrl] : [],
+                  location: plan.location,
+                  regDate: plan.date,
+                  member: { name: plan.author },
+                  duration: plan.duration,
+                }}
               />
             ))}
           </div>
