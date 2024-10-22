@@ -11,10 +11,6 @@ const Header = ({ onLoginClick, onSignupClick }) => {
   const [profileImage, setProfileImage] = useState(profileImageDefault); // 기본 프로필 이미지
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-<<<<<<< HEAD
-=======
-  // 컴포넌트가 처음 로드될 때 로그인 상태를 확인
->>>>>>> 04c1ee673e6b2c9e80e6c8d965fee1b1383abd7a
   useEffect(() => {
     checkLoginStatus();
   }, []);
