@@ -128,11 +128,11 @@ const Item = styled.li`
 
     h3 {
       display: inline-block;
+      margin-right: 5px;
     }
 
     > span {
       display: inline-block;
-      margin-left: 8px;
       vertical-align: text-top;
     }
 
