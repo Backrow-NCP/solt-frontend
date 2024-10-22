@@ -18,6 +18,7 @@ const Survey = () => {
 	const [username, setUsername] = useState('여행자');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+	const [memberId, setMemberId] = useState(null);
 
 	useEffect(() => {
     setupInterceptors(setIsLoading);
@@ -25,17 +26,37 @@ const Survey = () => {
   }, []);
 
 	// 로그인 체크 (username)
-	const checkLoginStatus = () => {
+	const checkLoginStatus = async () => {
 		const token = localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username');
-  
+
     if (token && storedUsername) {
       setIsLoggedIn(true);
       setUsername(storedUsername);
+
+      try {
+        const response = await apiClient.get('/members', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // 서버에서 받은 memberId가 있는지 확인
+				if (response.data && response.data.memberId) {
+					setMemberId(response.data.memberId);
+				} else {
+					console.error('memberId를 찾을 수 없습니다.');
+				}
+
+      } catch (error) {
+        console.error('memberId를 가져오는 중 오류가 발생했습니다:', error);
+      }
     } else {
       setIsLoggedIn(false);
       setUsername('여행자');
+      setMemberId(null);
     }
+    setIsLoading(false);
   };
 
   // 질문
@@ -172,7 +193,7 @@ const Survey = () => {
   
       const data = {
 				"title": answers.area || '맞춤 플랜',
-				"memberId": 222|| null,
+				"memberId": memberId  || 0,
 				"places": answers.place.map(place => ({
 					"placeName": place.placeName,
 					// "addr": place.addr || "주소 정보 없음",
