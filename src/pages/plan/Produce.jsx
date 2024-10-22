@@ -101,7 +101,7 @@ const Produce = () => {
   };
 
   // 날짜별로 장소를 그룹화하는 로직 추가
-const groupedPlaces = useMemo(() => {
+  const groupedPlaces = useMemo(() => {
     return places.reduce((acc, place) => {
       const date = new Date(place.startTime).toLocaleDateString(); // 날짜 형식 지정
       if (!acc[date]) acc[date] = [];
@@ -109,12 +109,15 @@ const groupedPlaces = useMemo(() => {
       return acc;
     }, {});
   }, [places]);
-  
+
   // days 배열을 groupedPlaces의 키값으로 생성
   const days = useMemo(() => Object.keys(groupedPlaces), [groupedPlaces]);
-  
+
   // 날짜 선택에 따라 필터된 장소 반환
-  const filteredPlaces = useMemo(() => groupedPlaces[days[selectedDay - 1]] || [], [groupedPlaces, days, selectedDay]);
+  const filteredPlaces = useMemo(
+    () => groupedPlaces[days[selectedDay - 1]] || [],
+    [groupedPlaces, days, selectedDay]
+  );
 
   // 구글맵 로드
   const { isLoaded, loadError: mapLoadError } = useLoadScript({
@@ -228,7 +231,9 @@ const groupedPlaces = useMemo(() => {
   // 플랜 수정 취소
   const handleCancelClick = useCallback(() => {
     const { placeId } = selectedOption;
+    console.log('플랜 수정 취소:', placeId);
     const place = places.find(p => p.placeId === placeId);
+    console.log('플랜 수정 취소:', place);
 
     // 일정 추가 place 삭제 (isNew 플래그 사용)
     if (place && place.isNew) {
@@ -457,10 +462,14 @@ const groupedPlaces = useMemo(() => {
   // 일정 추가
   const handleAddPlace = useCallback(() => {
     // 선택한 날짜에 해당하는 장소들 필터링
+    const formattedThisDate = days[selectedDay - 1]
+      .replace(/\s/g, '')
+      .replace(/\./g, '-')
+      .slice(0, -1);
     const placesOnSelectedDay = places.filter(
       place =>
         new Date(place.startTime).toISOString().split('T')[0] ===
-        days[selectedDay - 1]
+        formattedThisDate
     );
 
     let newStartTime;
