@@ -14,7 +14,7 @@ const MyBoard = () => {
   useEffect(() => {
     setupInterceptors(setLoading);
     const memberId = getMemberId(); // 회원 ID 가져오기
-    fetchBoardDetails(memberId); // 회원 ID를 사용하여 플랜 상세 정보를 요청
+    fetchBoardDetails(memberId); // 회원 ID를 사용하여 게시글 상세 정보를 요청
   }, []); // 빈 배열을 주면 컴포넌트가 처음 마운트될 때만 실행됨
 
   const fetchBoardDetails = async memberId => {
@@ -46,7 +46,7 @@ const MyBoard = () => {
         throw new Error('데이터를 가져오는 중 오류 발생');
       }
     } catch (error) {
-      console.error('플랜 상세 정보 가져오기 오류:', error);
+      console.error('게시글 상세 정보 가져오기 오류:', error);
     } finally {
       setLoading(false); // 로딩 종료
     }
@@ -62,18 +62,18 @@ const MyBoard = () => {
         <div className="my_board_container">
           <h1>나의 게시글</h1>
           <div className="board_items_wrapper">
-            {loading ? (
-              <p>로딩 중...</p> // 로딩 중 상태 표시
-            ) : (
-              boardData.map(board => {
-                return (
-                  <BoardItem
-                    key={board.boardId} // 고유 ID 사용
-                    board={board}
-                  />
-                );
-              })
-            )}
+            {boardData.map((plan) => (
+              <BoardItem
+                key={plan.boardId}
+                title={plan.title}
+                content={plan.plan.content}
+                imageUrl={plan.image ? require(`../../assets/images/sample/${plan.image}`) : defaultImage}
+                location={plan.location}
+                date={new Date(plan.regDate).toLocaleDateString()}
+                author={plan.member.name}
+                duration={`${plan.startDate} - ${plan.endDate}`}
+              />
+            ))}
           </div>
         </div>
       </div>

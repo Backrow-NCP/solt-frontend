@@ -203,8 +203,8 @@ const Complete = ({ onLoginClick }) => {
     <>
       <PlanComplete id="plan_complete">
         <h2>
-          {plan?.member.name || '여행자'} 님의{' '}
-          <span className="pt_blue">{plan?.area}</span> 여행 플랜이에요
+				{(plan && plan.member && plan.member.name) ? plan.member.name : '여행자'} 님의{' '}
+				<span className="pt_blue">{plan?.area || '서울특별시'}</span> 여행 플랜이에요
         </h2>
         <div className="price flex pt_pink">
           <span className="size_sm weight_sb">예상 총 금액</span>
