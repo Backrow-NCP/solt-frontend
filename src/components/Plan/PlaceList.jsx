@@ -25,7 +25,7 @@ const PlaceList = ({
 
         return (
           <PlaceItem
-            key={`place-${place.startTime}`}
+            key={`place-${place.placeName}-${place.startTime}`}
             place={place}
             route={route}
             planTime={planTime}
