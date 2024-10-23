@@ -31,6 +31,61 @@ function PersonalityResult() {
     }
   }, [resultId, resultData]);
 
+  useEffect(() => {
+    // Kakao SDK 스크립트 초기화
+    const script = document.createElement('script');
+    script.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js';
+    script.integrity =
+      'sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4';
+    script.crossOrigin = 'anonymous';
+    script.onload = () => {
+      if (window.Kakao) {
+        window.Kakao.init('f8c87e98b1681fdfebc8b2c91e9da7ff'); // 카카오 JavaScript 키
+      }
+    };
+    document.head.appendChild(script);
+  }, []);
+
+  const initializeKakaoButton = () => {
+    if (window.Kakao) {
+      window.Kakao.Share.createDefaultButton({
+        container: '#kakaotalk-sharing-btn',
+        objectType: 'feed',
+        content: {
+          title: '여행 유형 테스트',
+          description: `${resultData.seasoning} - ${resultData.description}`,
+          imageUrl: `https://kr.object.ncloudstorage.com/solt-objectstorage/board/${resultData.image}`,
+          link: {
+            mobileWebUrl: 'http://localhost:3000',
+            webUrl: 'http://localhost:3000',
+          },
+        },
+        buttons: [
+          {
+            title: '자세히 보기',
+            link: {
+              mobileWebUrl: `http://localhost:3000/personalityTest/result/${resultData.resultId}`,
+              webUrl: `http://localhost:3000/personalityTest/result/${resultData.resultId}`,
+            },
+          },
+          {
+            title: '나도 해보기',
+            link: {
+              mobileWebUrl: 'http://localhost:3000/personalityTest/test',
+              webUrl: 'http://localhost:3000/personalityTest/test',
+            },
+          },
+        ],
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (resultData) {
+      initializeKakaoButton();
+    }
+  }, [resultData]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -48,7 +103,7 @@ function PersonalityResult() {
   };
 
   const handleShare = () => {
-    const shareLink = window.location.href; // 현재 페이지 링크
+    const shareLink = 'http://localhost:3000'; // 현재 페이지 링크
     navigator.clipboard.writeText(shareLink).then(() => {
       setShowModal(true); // 링크 복사 후 모달 창 표시
       setTimeout(() => setShowModal(false), 2000); // 2초 후 모달 자동 닫기
@@ -80,7 +135,6 @@ function PersonalityResult() {
           </div>
         </div>
         {/* 여행지 추천 */}
-
         <h2 style={{ marginTop: '100px', marginBottom: '10px' }}>
           추천 여행지
         </h2>
@@ -94,7 +148,6 @@ function PersonalityResult() {
                 </span>
                 {''}
                 <span className="size_lg weight_sb"> {spot.country}</span>
-
                 <br />
                 <br />
                 <div className="spot">
@@ -119,7 +172,6 @@ function PersonalityResult() {
               {resultData.matchPersonality.seasoning}💕
             </p>
             <br />
-
             <div className="test_match">
               <img
                 src={`https://kr.object.ncloudstorage.com/solt-objectstorage/board/${resultData.matchPersonality.image}`}
@@ -156,6 +208,16 @@ function PersonalityResult() {
             alt="ShareButton"
           />
         </Button>
+        <a
+          id="kakaotalk-sharing-btn"
+          href="javascript:;"
+          style={{ marginLeft: '10px' }}
+        >
+          <img
+            src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+            alt="카카오톡 공유 보내기 버튼"
+          />
+        </a>
       </div>
       {showModal && (
         <div className="modal">
