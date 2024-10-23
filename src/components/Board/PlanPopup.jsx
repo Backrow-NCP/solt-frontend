@@ -3,7 +3,7 @@ import { PopupContainer, CloseButton } from '../../styles/board/planPopup';
 import PlanContainer from '../../components/Board/PlanContainer';
 import Button from '../Button';
 import axios from 'axios';
-import { getMemberId } from '../../utils/token/tokenUtils';
+
 const PlanPopup = ({ onClose, onSelect, style, planData }) => {
   // onSelect prop 추가
   const popupRef = useRef(null);

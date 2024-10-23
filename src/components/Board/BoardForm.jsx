@@ -4,7 +4,7 @@ import axios from 'axios'; // Axios를 사용하여 API 요청을 보냅니다.
 import PlanPopup from './PlanPopup';
 import Button from '../../components/Button';
 import PlanSelectBox from './PlanSelectBox'; // PlanSelectBox 임포트
-import apiClient from '../../config/AxiosConfig';
+import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
 import {
   Form,
   InputGroup,
@@ -22,8 +22,17 @@ import {
   ImageStyledBox,
   RemoveAllButton,
 } from '../../styles/board/boardForm';
+import { getMemberId } from '../../utils/token/tokenUtils';
 
-const BoardForm = ({ onSubmit, buttonText, initialData, planData }) => {
+const BoardForm = ({
+  onSubmit,
+  buttonText,
+  initialData,
+  planData,
+  EditModeContent,
+  EditModeTitle,
+  EditModeFileName,
+}) => {
   const [boardTitle, setBoardTitle] = useState(initialData?.title || '');
   const [boardContent, setBoardContent] = useState(initialData?.content || '');
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -36,6 +45,7 @@ const BoardForm = ({ onSubmit, buttonText, initialData, planData }) => {
   const [boardImages, setBoardImages] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
+  console.log('EditModeFileName 조회', EditModeFileName);
   const handleFileChange = async e => {
     const newFiles = Array.from(e.target.files);
     const validFiles = newFiles.filter(file => file.type.startsWith('image/'));
@@ -123,7 +133,7 @@ const BoardForm = ({ onSubmit, buttonText, initialData, planData }) => {
     const formData = {
       title: boardTitle,
       content: boardContent,
-      memberId: 1, // 임시 사용자 ID
+      memberId: getMemberId(), // 임시 사용자 ID
       planId: selectedPlan.planId,
       // selectedPlan, // 선택된 플랜 추가
       boardImages: uploadedFiles.map((file, index) => ({
@@ -161,6 +171,18 @@ const BoardForm = ({ onSubmit, buttonText, initialData, planData }) => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (EditModeTitle) {
+      setBoardTitle(EditModeTitle);
+    }
+    if (EditModeContent) {
+      setBoardContent(EditModeContent);
+    }
+    if (EditModeFileName && Array.isArray(EditModeFileName)) {
+      setUploadedFiles(EditModeFileName);
+    }
+  }, [EditModeTitle, EditModeContent, EditModeFileName]);
 
   return (
     <Container>

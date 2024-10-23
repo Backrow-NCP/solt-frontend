@@ -260,6 +260,7 @@ const Produce = () => {
 		const selectedPlace = placeId;
 	
 		console.log('handleSelectClick called with:', { option, selectedPlace });
+    console.log('Current places before update:', places);
 	
 		if (option === 'directly' && autocompleteSelectedPlace) {
 			// Autocomplete로 직접 선택한 장소를 수정 반영
@@ -268,7 +269,7 @@ const Produce = () => {
 					console.log('Updating place with new selected data:', autocompleteSelectedPlace);
 					return {
 						...place,
-						placeName: autocompleteSelectedPlace.name || autocompleteSelectedPlace.placeName, // 여기에서 name 또는 placeName을 사용
+						placeName: autocompleteSelectedPlace.name || autocompleteSelectedPlace.placeName,
 						latitude: autocompleteSelectedPlace.latitude,
 						longitude: autocompleteSelectedPlace.longitude,
 						addr: autocompleteSelectedPlace.address,
@@ -281,6 +282,7 @@ const Produce = () => {
 
 			setPlaces(updatedPlaces);
 			console.log('Updated places:', updatedPlaces);
+
 		} else if (option === 'directly' && autocompleteSelectedPlace) {
 			// "직접 쓸래요" 옵션으로 장소 반영
 			const updatedPlaces = places.map(place => {
@@ -338,6 +340,7 @@ const Produce = () => {
 			});
 	
 			setPlaces(updatedPlaces);
+      console.log('Updated places with recommended place:', updatedPlaces);
 	
 			// 해당 장소와 연결된 경로(route) 제거
 			const updatedPlanRoute = plan.routes.filter(route => {
@@ -358,10 +361,10 @@ const Produce = () => {
 	
 		// 상태 리셋 및 수정 모드 종료
 		setIsEditing(false);
-		setPlanConfirmed(false);
-		setSelectedOption({ option: null, placeId: null });
-		setSelectedRecommendedPlace(null);
-		setAutocompleteSelectedPlace(null);
+    setPlanConfirmed(false);
+    setSelectedOption({ option: null, placeId: null });
+    setSelectedRecommendedPlace(null);
+    setAutocompleteSelectedPlace(null);
 		setEditPlace(prev => {
 			const updatedEditPlace = { ...prev };
 			delete updatedEditPlace[selectedPlace.startTime];
@@ -394,10 +397,10 @@ const Produce = () => {
       const updatedPlan = {
         title: plan.title || '맞춤 플랜',
         memberId: plan?.member?.memberId || null,
-        places: plan.places.map(place => ({
-          placeName: place.placeName,
+        places: places.map((place) => ({
+            placeName: place.placeName,
         })),
-        themes: plan.themes.map(theme => theme.themeId),
+        themes: plan.themes.map((theme) => theme.themeId),
         location: plan.location || '서울특별시',
         startDate: plan.startDate,
         endDate: plan.endDate,
@@ -409,6 +412,7 @@ const Produce = () => {
         withCredentials: false,
       });
 
+      console.log('전송될 places 데이터:', updatedPlan);
       console.log('서버 응답:', response.data);
 
       // 데이터 업데이트 후 저장
@@ -486,8 +490,8 @@ const Produce = () => {
       isNew: true,
     };
 
-    // 새로운 장소 추가
-    setPlaces(prevPlaces => [...prevPlaces, newPlace]);
+    // 바로 places 배열에 newPlace 추가
+    setPlaces((prevPlaces) => [...prevPlaces, newPlace]);
 
     // 수정 모드 활성화 및 새로운 장소 선택
     setIsEditing(true);
@@ -498,6 +502,8 @@ const Produce = () => {
       ...prevState,
       [newPlace.placeId]: true,
     }));
+
+    console.log('New place added:', newPlace);
   }, [places, days, selectedDay]);
 
   // 일정 추가 시 버튼

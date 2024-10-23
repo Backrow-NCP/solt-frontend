@@ -20,6 +20,7 @@ import {
 } from '../../styles/board/replySection'; // styled-components를 가져옵니다.
 import defaultProfileImage from '../../assets/images/ico/profile.png';
 import Pagination from './Pagination';
+import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
 
 const ReplySection = ({ boardId }) => {
   const [mainInputValue, setMainInputValue] = useState(''); // 댓글 입력 상태
@@ -31,22 +32,21 @@ const ReplySection = ({ boardId }) => {
   const [pageData, setPageData] = useState({});
   const indexOfLastItem = pageData.page * pageData.size;
   const indexOfFirstItem = indexOfLastItem - pageData.size;
-
-  // const currentItems = renderComments().slice(
-  //   indexOfFirstItem,
-  //   indexOfLastItem
-  // );
-
-  // console.log('커랜트 아이템', currentItems);
+  const pageSize = 5; // 요청할 사이즈
+  const [requestParams, setRequestParams] = useState({
+    page: 1, // 기본값: 1페이지
+    size: 5, // 기본값: 6개
+  });
   useEffect(() => {
-    console.log('BoardId:', boardId);
-    const fetchReplies = async () => {
+    const fetchReplies = async params => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/replies/list/${boardId}`
+          `${process.env.REACT_APP_API_URL}/replies/list/${boardId}`,
+          { params: requestParams } // 페이지는 1, 사이즈는 5로 요청
         );
         const data = response.data;
         console.log('불러온 댓글 데이터', data);
+        console.log('불러온 댓글 페이지데이터', pageData);
 
         setComments(data?.dtoList || []);
         setPageData({
@@ -62,8 +62,9 @@ const ReplySection = ({ boardId }) => {
         console.error('Error fetching replies:', error);
       }
     };
-    fetchReplies();
-  }, [pageData.page]); // 페이지가 변경될 때마다 데이터 가져오기
+
+    fetchReplies(); // 페이지 1로 첫 요청
+  }, [requestParams, boardId]); // boardId가 변경될 때마다 댓글을 새로 가져옴
 
   const handleMainInputChange = e => {
     setMainInputValue(e.target.value);
@@ -112,7 +113,7 @@ const ReplySection = ({ boardId }) => {
       boardId: boardId,
       member: {
         memberId: 0,
-        name: '익명',
+        name: '',
         birthYear: '2000-01-01T00:00:00.000Z',
         gender: true,
         fileName: 'defaultProfile.jpg',
@@ -350,19 +351,15 @@ const ReplySection = ({ boardId }) => {
     // 삭제 기능 구현 예정
   };
 
-  const handlePageChange = newPage => {
-    setPageData(prevData => ({
-      ...prevData,
-      page: newPage,
-      startPage: Math.floor((newPage - 1) / 10) * 10 + 1, // 새로운 startPage 계산
-      endPage: Math.min(
-        prevData.startPage + 9,
-        Math.ceil(prevData.total / prevData.size)
-      ), // 새로운 endPage 계산
+  const onPageChange = newPage => {
+    setRequestParams(prevParams => ({
+      ...prevParams,
+      page: newPage, // 페이지 값만 변경
     }));
   };
 
-  const handleNextGroup = () => {
+  // 다음 그룹으로 이동
+  const onNextGroup = () => {
     setPageData(prevData => ({
       ...prevData,
       startPage: prevData.startPage + 10,
@@ -373,17 +370,23 @@ const ReplySection = ({ boardId }) => {
     }));
   };
 
-  const handlePrevGroup = () => {
+  // 이전 그룹으로 이동
+  const onPrevGroup = () => {
     setPageData(prevData => ({
       ...prevData,
       startPage: Math.max(prevData.startPage - 10, 1),
       endPage: Math.max(prevData.endPage - 10, 10), // 최소 10으로 설정
     }));
   };
+
+  if (!comments.length) {
+    return <div>댓글이 없습니다.</div>;
+  }
+
   return (
     <ReplyContainer>
       <ReplySubmitContainer className="main-reply-submit">
-        <ReplyCount>댓글 {comments.length}개</ReplyCount>
+        <ReplyCount>댓글 {pageData?.total}개</ReplyCount>
         <ReplyInput
           type="text"
           value={mainInputValue}
@@ -397,9 +400,9 @@ const ReplySection = ({ boardId }) => {
         {renderComments(pageData.size)} {/* 댓글과 대댓글 렌더링 */}
         <Pagination
           pageData={pageData}
-          onPageChange={handlePageChange} // 페이지 변경 핸들러
-          onNextGroup={handleNextGroup} // 다음 그룹 핸들러
-          onPrevGroup={handlePrevGroup} // 이전 그룹 핸들러
+          onPageChange={onPageChange} // 페이지 변경 핸들러
+          onNextGroup={onNextGroup} // 다음 그룹 핸들러
+          onPrevGroup={onPrevGroup} // 이전 그룹 핸들러
         />
       </ReplyListContainer>
     </ReplyContainer>

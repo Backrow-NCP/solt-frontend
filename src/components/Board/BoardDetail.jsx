@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate import 추가
+import { getMemberId } from '../../utils/token/tokenUtils';
 import {
   InfoTextTitleContainer,
   DateAuthorContainer,
@@ -18,11 +20,35 @@ import {
 
 import PrevButton from '../../assets/images/prevButton.svg';
 import NextButton from '../../assets/images/nextButton.svg';
-import axios from 'axios'; // axios를 가져옵니다.
+
 import ReplySection from './ReplySection'; // ReplySection을 가져옵니다.
+import defaultImage from '../../assets/images/sample/nonImage.jpg';
+import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
 
 const BoardDetail = ({ boardData }) => {
+  console.log('나 겟멤버 함수', getMemberId());
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate(); // navigate 변수를 정의합니다.
+  useEffect(() => {
+    setupInterceptors(setLoading);
+
+    const handleKeyDown = event => {
+      if (event.key === 'ArrowRight') {
+        handleNextImage();
+      } else if (event.key === 'ArrowLeft') {
+        handlePrevImage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentImageIndex, boardData]);
 
   const handleNextImage = () => {
     if (boardData) {
@@ -45,54 +71,102 @@ const BoardDetail = ({ boardData }) => {
     setCurrentImageIndex(index);
   };
 
+  console.log('날좀보소날좀보소날좀보소', boardData.images);
   const handleEdit = async () => {
-    try {
-      const response = await axios.get(`/board/edit/${boardData.boardId}`);
-      console.log('Edit Response:', response.data);
-    } catch (error) {
-      console.error('Error fetching edit data:', error);
+    if (window.confirm('게시글을 수정하시겠습니까?')) {
+      try {
+        navigate(`/board/edit/${boardData.boardId}`, {
+          state: {
+            content: boardData.content,
+            title: boardData.title,
+            fileName: boardData.images,
+            plan: boardData.plan,
+            memberId: boardData.member.memberId,
+          },
+        }); // navigate 호출 종료
+      } catch (error) {
+        console.error('Error fetching edit data:', error);
+      }
     }
   };
 
   const handleDelete = async () => {
-    try {
-      const response = await axios.delete(`board/delete/${boardData.boardId}`);
-      console.log('Delete Response:', response.data);
-    } catch (error) {
-      console.error('Error deleting the post:', error);
+    if (window.confirm('게시글을 삭제하시겠습니까?')) {
+      try {
+        const response = await apiClient.delete(`boards/${boardData.boardId}`);
+        console.log('Delete Response:', response.data);
+
+        // 삭제 성공 후 알림창 띄우기
+        alert('정상적으로 삭제되었습니다!');
+
+        // 삭제 성공 후 게시글 목록 페이지로 이동
+        navigate('/board/list');
+      } catch (error) {
+        console.error('Error deleting the post:', error);
+        alert('게시글 삭제 중 오류가 발생했습니다. 다시 시도해 주세요.');
+      }
     }
   };
+
+  const thumbnailize = '?type=f&w=50&h=50'; // 썸네일 크기 설정
+  const imageUrl =
+    boardData.images?.length > 0
+      ? `${process.env.REACT_APP_IMAGE_STORAGE_URL}${boardData.images[currentImageIndex].fileName}`
+      : defaultImage; // 기본 이미지 설정
 
   if (!boardData) {
     return console.log('!boardData일때, 보드디테일', boardData);
   }
   console.log('보드데이터 체크용, 보드디테일', boardData);
 
+  const calculateDuration = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    const dayInMilliseconds = 24 * 60 * 60 * 1000;
+
+    // 두 날짜 차이 계산
+    const diffInMilliseconds = end - start;
+    const diffInDays = Math.round(diffInMilliseconds / dayInMilliseconds);
+
+    if (diffInDays === 0) {
+      return '당일치기';
+    }
+
+    const nights = diffInDays; // 숙박 일수
+    const days = nights + 1; // 총 일수
+
+    return `${nights}박 ${days}일`;
+  };
+  const currentMemberId = getMemberId();
   return (
     <>
       <BoardContainer>
         <InfoTextTitleContainer>
           <InfoText>
-            [{boardData.location}] [{boardData.duration}]
+            [{boardData.plan.location}] [
+            {calculateDuration(
+              boardData.plan.startDate,
+              boardData.plan.endDate
+            )}
+            ]
           </InfoText>
           <Title>{boardData.title}</Title>
         </InfoTextTitleContainer>
         <DateAuthorContainer>
-          {new Date(boardData.regDate).toLocaleString()} /{' '}
-          {boardData.member.name} 님
+          {new Date(boardData.regDate).toLocaleDateString()}
+          {new Date(boardData.regDate).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          })}{' '}
+          / {boardData.member.name} 님
         </DateAuthorContainer>
 
         <ButtonContainer>
           <Button onClick={handlePrevImage}>
             <img src={PrevButton} alt="이전 이미지" />
           </Button>
-          <Image
-            src={
-              boardData.images[currentImageIndex]?.fileName ||
-              '/sampleImage/nonImage.jpg'
-            }
-            alt="게시물 이미지"
-          />
+          <Image src={imageUrl} alt="게시물 이미지" />
           <Button onClick={handleNextImage}>
             <img src={NextButton} alt="다음 이미지" />
           </Button>
@@ -102,7 +176,7 @@ const BoardDetail = ({ boardData }) => {
           {boardData.images.map((image, index) => (
             <Thumbnail
               key={image.fileName}
-              src={image.fileName}
+              src={`${process.env.REACT_APP_IMAGE_STORAGE_URL}${image.fileName}${thumbnailize}`} // 썸네일 URL 생성
               alt={`썸네일 ${index + 1}`}
               className={currentImageIndex === index ? 'active' : ''}
               onClick={() => handleThumbnailClick(index)}
@@ -112,11 +186,12 @@ const BoardDetail = ({ boardData }) => {
 
         <Content>{boardData.content}</Content>
 
-        <ButtonContainerStyled>
-          <EditButton onClick={handleEdit}>수정</EditButton>
-          <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
-        </ButtonContainerStyled>
-
+        {currentMemberId === boardData.member.memberId && (
+          <ButtonContainerStyled>
+            <EditButton onClick={handleEdit}>수정</EditButton>
+            <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
+          </ButtonContainerStyled>
+        )}
         {/* ReplySection 컴포넌트 삽입 */}
         <ReplySection boardId={boardData.boardId} />
       </BoardContainer>
