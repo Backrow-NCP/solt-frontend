@@ -93,7 +93,6 @@ const BestBoardList = () => {
                 <span className="author">
                   작성자: {item.member?.name || '알 수 없음'}
                 </span>
-                <br />
                 <div className="locationDurationContainer">
                   <div className="locationBox">
                     {item.location || '위치 없음'}
