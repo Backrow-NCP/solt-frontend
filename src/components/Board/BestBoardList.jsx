@@ -47,6 +47,9 @@ const BestBoardList = () => {
         { params }
       );
       setItems(response.data.dtoList || []); // dtoList에서 데이터 가져오기
+      response.data.dtoList.forEach(item => {
+        console.log(item);
+      });
     } catch (err) {
       setError(err);
       console.error('게시글 데이터 가져오기 실패:', err);
@@ -68,15 +71,37 @@ const BestBoardList = () => {
     }
   };
 
+  const calculateDuration = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    const dayInMilliseconds = 24 * 60 * 60 * 1000;
+
+    // 두 날짜 차이 계산
+    const diffInMilliseconds = end - start;
+    const diffInDays = Math.round(diffInMilliseconds / dayInMilliseconds);
+
+    if (diffInDays === 0) {
+      return '당일치기';
+    }
+
+    const nights = diffInDays; // 숙박 일수
+    const days = nights + 1; // 총 일수
+
+    return `${nights}박 ${days}일`;
+  };
+
   // 이미지 URL 설정
   const imageUrl = item =>
-    item.image?.length > 0
-      ? `${process.env.REACT_APP_IMAGE_STORAGE_URL}${item.image[0].fileName}`
+    item.images?.length > 0
+      ? `${process.env.REACT_APP_IMAGE_STORAGE_URL}${item.images[0].fileName}`
       : defaultImage; // 기본 이미지 설정
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>오류 발생: {error.message}</div>;
 
+  console.log('bestBoardList의 items', items);
+  console.log('bestBoardList의 이미지 url 체크', imageUrl(items));
   return (
     <>
       <GlobalStyle />
@@ -96,10 +121,13 @@ const BestBoardList = () => {
                 <br />
                 <div className="locationDurationContainer">
                   <div className="locationBox">
-                    {item.location || '위치 없음'}
+                    {item.plan.location || '위치 없음'}
                   </div>
                   <div className="durationBox">
-                    {item.duration || '기간 없음'}
+                    {calculateDuration(
+                      item.plan.startDate,
+                      item.plan.endDate
+                    ) || '기간 없음'}
                   </div>
                 </div>
                 <h3 className="bestTitle size_xl">{item.title}</h3>

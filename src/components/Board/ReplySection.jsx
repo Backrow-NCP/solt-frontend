@@ -361,11 +361,31 @@ const ReplySection = ({ boardData }) => {
     }
   };
 
-  const submitEditedReply = replyId => {
-    //실제 로직은 axios put
-    const updatedContent = replyContent[replyId]; // 수정된 내용 가져오기
-    console.log('수정된 댓글 내용:', updatedContent);
-    setIsEditing(null); // 수정 모드 비활성화
+  console.log('리플라이 섹션');
+  const submitEditedReply = async reply => {
+    const updatedContent = replyContent[reply.replyId]; // 수정된 내용 가져오기
+
+    if (!updatedContent) {
+      console.error('수정된 내용이 없습니다.');
+      return;
+    }
+
+    try {
+      // API 요청
+      const response = await apiClient.put(`/replies/${reply.replyId}`, {
+        content: updatedContent,
+      });
+
+      if (response.status === 200) {
+        console.log('댓글이 성공적으로 수정되었습니다:', response.data);
+        setIsEditing(null); // 수정 모드 비활성화
+      } else {
+        throw new Error('댓글 수정에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('댓글 수정 중 오류 발생:', error);
+      alert('댓글 수정에 실패했습니다. 다시 시도해주세요.'); // 오류 알림
+    }
   };
 
   const handleReplyDelete = () => {

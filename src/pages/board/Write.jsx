@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate
 import BoardForm from '../../components/Board/BoardForm';
 import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
-import { getMemberId } from '../../utils/token/tokenUtils';
+import { getMemberId, getToken } from '../../utils/token/tokenUtils'; // getToken 추가
 import { FoodBank } from '@mui/icons-material';
 
 const Write = () => {
@@ -12,6 +12,14 @@ const Write = () => {
 
   useEffect(() => {
     setupInterceptors(setLoading);
+
+    const token = getToken(); // 토큰 확인
+    if (!token) {
+      alert('로그인이 필요합니다.'); // 알림 메시지
+
+      return; // 더 이상 실행하지 않도록 리턴
+    }
+
     const memberId = getMemberId(); // 회원 ID 가져오기
     fetchPlanDetails(memberId); // 회원 ID를 사용하여 플랜 상세 정보를 요청
     console.log(planData);
