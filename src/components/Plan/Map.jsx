@@ -40,7 +40,7 @@ const Map = ({
       {filteredPlaces.map((place, index) =>
         place.latitude && place.longitude ? (
           <MarkerF
-            key={place.startTime}
+            key={`${place.placeName}-${place.startTime}`}
             position={{ lat: place.latitude, lng: place.longitude }}
             onClick={() => {
               console.log('Selected Marker Info:', place); // 선택된 마커의 정보를 콘솔에 출력
