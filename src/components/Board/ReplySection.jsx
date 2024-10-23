@@ -109,6 +109,7 @@ const ReplySection = ({ boardData }) => {
         ]);
         setMainInputValue(''); // 메인 입력란 초기화
         alert('댓글 등록을 완료 했습니다!');
+        fetchReplies();
         // window.location.reload(); // 페이지 새로 고침
       } catch (error) {
         console.error('댓글 등록 실패:', error);
