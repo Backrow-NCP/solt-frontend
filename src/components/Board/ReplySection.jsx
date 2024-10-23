@@ -367,10 +367,16 @@ const ReplySection = ({ boardData }) => {
   const submitEditedReply = replyId => {
     //실제 로직은 axios put
     const updatedContent = replyContent[replyId]; // 수정된 내용 가져오기
-    console.log('수정된 댓글 내용:', updatedContent);
+
+    if (!updatedContent) {
+      console.error('수정된 내용이 없습니다.');
+      return;
+    }
+
     const data = {
       content: updatedContent,
     };
+
     apiClient
       .put(`/replies/${replyId}`, data)
       .then(res => {
@@ -378,7 +384,7 @@ const ReplySection = ({ boardData }) => {
       })
       .catch(err => {
         console.error(err);
-        alert('댓글 수정에 실패했습니다.');
+        alert('댓글 수정에 실패했습니다. 다시 시도해주세요.'); // 오류 알림
       });
 
     setIsEditing(null); // 수정 모드 비활성화

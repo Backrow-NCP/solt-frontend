@@ -130,6 +130,7 @@ const BoardDetailContainer = ({
 
   const handleLike = async () => {
     try {
+      // 좋아요 요청
       const response = await apiClient.post('/like', {
         boardId: boardId,
         memberId: memberId,
@@ -137,7 +138,20 @@ const BoardDetailContainer = ({
 
       if (response.status === 200) {
         setLikeCount(response.data.likeCount);
-        setActive(!active);
+
+        // 좋아요 상태 요청
+        const statusResponse = await apiClient.get('/like/status', {
+          params: {
+            boardId: boardId,
+            memberId: memberId,
+          },
+        });
+
+        if (statusResponse.status === 200) {
+          // 상태 응답 처리
+          console.log('좋아요 상태:', statusResponse.data);
+          // 필요에 따라 상태 업데이트 등 추가 작업 수행
+        }
       }
     } catch (error) {
       console.error('좋아요 요청 실패:', error);
