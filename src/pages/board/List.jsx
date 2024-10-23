@@ -5,6 +5,7 @@ import BoardList from '../../components/Board/BoardList';
 import BestBoardList from '../../components/Board/BestBoardList';
 import Button from '../../components/Button';
 import { PlanContainer, ButtonContainer } from '../../styles/board/listPage';
+import { getToken } from '../../utils/token/tokenUtils';
 
 const List = () => {
   const navigate = useNavigate();
@@ -17,6 +18,14 @@ const List = () => {
     page: 1, // 기본값: 1페이지
     size: 6, // 기본값: 6개
   });
+
+  const handleWriteButton = () => {
+    if (getToken()) {
+      navigate('/board/write');
+    } else {
+      alert('로그인이 필요합니다.');
+    }
+  };
 
   // 데이터 가져오기 함수
   const fetchData = async params => {
@@ -95,11 +104,7 @@ const List = () => {
           플랜 자랑하기
         </h2>
         <ButtonContainer>
-          <Button
-            color="blue"
-            size="lg"
-            onClick={() => navigate('/board/write')}
-          >
+          <Button color="blue" size="lg" onClick={() => handleWriteButton()}>
             글 작성
           </Button>
         </ButtonContainer>
