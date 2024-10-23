@@ -146,6 +146,11 @@ const Detail = ({ isDetailPage }) => {
 
   console.log('필터링 플레이스 디테일 페이지', filteredPlaces);
 
+  console.log(
+    '플랜 아이디가 높아서 찍어보는 boardData Detail.jsx 편',
+    boardData.plan
+  );
+
   return (
     <Container>
       {/* 지도 컴포넌트 */}

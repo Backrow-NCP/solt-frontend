@@ -125,6 +125,11 @@ const TabContainer = ({
     isNew: true,
   };
 
+  console.log(
+    '플랜아이디가 높은게 이상해서 찍는 탭 컨테니어에서의 boardData',
+    boardData.plan
+  );
+
   return (
     <CombinedContainer>
       <TabsContainer setEditPlace={setEditPlace}>

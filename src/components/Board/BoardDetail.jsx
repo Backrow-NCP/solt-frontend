@@ -71,31 +71,40 @@ const BoardDetail = ({ boardData }) => {
     setCurrentImageIndex(index);
   };
 
-  console.log('');
+  console.log('날좀보소날좀보소날좀보소', boardData.images);
   const handleEdit = async () => {
-    try {
-      navigate(`/board/edit/${boardData.boardId}`, {
-        state: {
-          content: boardData.content,
-          title: boardData.title,
-          fileName: boardData.fileName,
-          plan: boardData.plan,
-          memberId: boardData.member.memberId,
-        },
-      }); // navigate 호출 종료
-    } catch (error) {
-      console.error('Error fetching edit data:', error);
+    if (window.confirm('게시글을 수정하시겠습니까?')) {
+      try {
+        navigate(`/board/edit/${boardData.boardId}`, {
+          state: {
+            content: boardData.content,
+            title: boardData.title,
+            fileName: boardData.images,
+            plan: boardData.plan,
+            memberId: boardData.member.memberId,
+          },
+        }); // navigate 호출 종료
+      } catch (error) {
+        console.error('Error fetching edit data:', error);
+      }
     }
   };
 
   const handleDelete = async () => {
-    try {
-      const response = await apiClient.delete(
-        `board/delete/${boardData.boardId}`
-      );
-      console.log('Delete Response:', response.data);
-    } catch (error) {
-      console.error('Error deleting the post:', error);
+    if (window.confirm('게시글을 삭제하시겠습니까?')) {
+      try {
+        const response = await apiClient.delete(`boards/${boardData.boardId}`);
+        console.log('Delete Response:', response.data);
+
+        // 삭제 성공 후 알림창 띄우기
+        alert('정상적으로 삭제되었습니다!');
+
+        // 삭제 성공 후 게시글 목록 페이지로 이동
+        navigate('/board/list');
+      } catch (error) {
+        console.error('Error deleting the post:', error);
+        alert('게시글 삭제 중 오류가 발생했습니다. 다시 시도해 주세요.');
+      }
     }
   };
 

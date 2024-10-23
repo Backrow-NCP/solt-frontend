@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BoardContainer } from '../../styles/board/boardList';
 import Pagination from './Pagination';
 import BoardItem from './BoardItem';
@@ -6,14 +6,10 @@ import BoardItem from './BoardItem';
 const BoardList = ({
   boardData, // boardData를 props로 받음
   pageData,
+  onPageChange, // 부모로부터 받은 페이지 변경 함수
   onNextGroup,
   onPrevGroup,
 }) => {
-  const [currentPage, setCurrentPage] = useState(pageData.currentPage || 1);
-
-  console.log('보드데이터 뭐지', boardData);
-  console.log('페이지데이터 뭐지', pageData);
-
   const boardDetails = boardData.map(board => ({
     boardId: board.boardId,
     endDate: board.plan.endDate,
@@ -28,15 +24,6 @@ const BoardList = ({
     modDate: board.modDate,
   }));
 
-  console.log('나 보드디테일 ^^', boardDetails);
-
-  // 페이지 변경 핸들러
-  const onPageChange = newPage => {
-    setCurrentPage(newPage);
-    console.log(`페이지가 ${newPage}로 변경되었습니다.`);
-    // 필요한 다른 작업을 여기서 처리할 수 있습니다.
-  };
-
   // boardData가 없거나 비어있는 경우 메시지 출력
   if (!Array.isArray(boardData) || boardData.length === 0) {
     return (
@@ -45,8 +32,6 @@ const BoardList = ({
       </h3>
     );
   }
-
-  console.log('BoardList 보드 데이터', boardData);
 
   return (
     <>
@@ -58,7 +43,7 @@ const BoardList = ({
 
       <Pagination
         pageData={pageData} // pageData를 전체로 넘겨줍니다.
-        onPageChange={onPageChange} // 페이지 변경 핸들러
+        onPageChange={onPageChange} // 부모로부터 받은 페이지 변경 핸들러
         onNextGroup={onNextGroup} // 다음 그룹 핸들러
         onPrevGroup={onPrevGroup} // 이전 그룹 핸들러
       />

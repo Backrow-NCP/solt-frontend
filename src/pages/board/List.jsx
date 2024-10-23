@@ -18,34 +18,56 @@ const List = () => {
     size: 6, // 기본값: 6개
   });
 
+  // 데이터 가져오기 함수
+  const fetchData = async params => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/boards/list`,
+        { params } // 요청 시 파라미터를 포함
+      );
+      setAllBoardData(response.data); // 전체 데이터 저장
+    } catch (err) {
+      setError(err);
+      console.error('데이터 가져오기 실패:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 초기 데이터 요청
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/boards/list`,
-          { params: requestParams } // 요청 시 파라미터를 포함
-        );
+    fetchData(requestParams);
+  }, [requestParams]);
 
-        setAllBoardData(response.data); // 전체 데이터 저장
-      } catch (err) {
-        setError(err);
-        console.error('데이터 가져오기 실패:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // 페이지 변경 핸들러
+  const onPageChange = newPage => {
+    setRequestParams(prevParams => ({
+      ...prevParams,
+      page: newPage, // 페이지 값만 변경
+    }));
+  };
 
-    fetchData();
-  }, [requestParams]); // requestParams가 변경될 때마다 데이터 재요청
+  // 다음 그룹으로 이동
+  const onNextGroup = () => {
+    setRequestParams(prevParams => ({
+      ...prevParams,
+      page: prevParams.page + 1, // 다음 페이지로 이동
+    }));
+  };
+
+  // 이전 그룹으로 이동
+  const onPrevGroup = () => {
+    setRequestParams(prevParams => ({
+      ...prevParams,
+      page: prevParams.page - 1, // 이전 페이지로 이동
+    }));
+  };
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>오류 발생: {error.message}</div>;
 
   // allBoardData가 존재할 경우 boardData와 pageData 분리
-  console.log('allData', allBoardData);
   const { dtoList: boardData, ...pageData } = allBoardData || {};
-  console.log('boardData', boardData);
-  console.log('pageData', pageData);
 
   return (
     <div className="inner">
@@ -73,7 +95,15 @@ const List = () => {
         </ButtonContainer>
       </PlanContainer>
 
-      {boardData && <BoardList boardData={boardData} pageData={pageData} />}
+      {boardData && (
+        <BoardList
+          boardData={boardData}
+          pageData={pageData}
+          onPageChange={onPageChange} // 페이지 변경 핸들러 전달
+          onNextGroup={onNextGroup} // 다음 그룹 핸들러 전달
+          onPrevGroup={onPrevGroup} // 이전 그룹 핸들러 전달
+        />
+      )}
     </div>
   );
 };
