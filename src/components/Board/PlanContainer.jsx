@@ -9,7 +9,7 @@ import {
 } from '../../styles/board/planContainer';
 
 // 각 지역에 맞는 이미지를 import
-import seoulImage from '../../assets/images/bn/plan_load_02.jpg';
+import seoulImage from '../../assets/images/bn/area2.jpg';
 
 const PlanContainer = ({ plan, children, EditModePlanData }) => {
   // 지역에 따라 이미지를 반환하는 함수
