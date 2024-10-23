@@ -32,6 +32,8 @@ const BoardForm = ({
   EditModeContent,
   EditModeTitle,
   EditModeFileName,
+  EditModePlanData,
+  isEditMode,
 }) => {
   const [boardTitle, setBoardTitle] = useState(initialData?.title || '');
   const [boardContent, setBoardContent] = useState(initialData?.content || '');
@@ -190,8 +192,17 @@ const BoardForm = ({
         <SectionContainer>
           <Title>나의 플랜</Title>
           <div style={{ position: 'relative', display: 'inline-block' }}>
-            <InputLabel htmlFor="plan" onClick={togglePopup}>
-              플랜 선택
+            <InputLabel
+              htmlFor="plan"
+              onClick={!isEditMode ? togglePopup : undefined} // 수정모드일 때 클릭 비활성화
+              style={{
+                borderColor: isEditMode ? 'red' : 'inherit', // isEditMode가 true면 빨간색
+                color: isEditMode ? 'red' : 'inherit', // isEditMode가 true면 빨간색
+                cursor: isEditMode ? 'default' : 'pointer', // isEditMode가 true면 커서를 기본값으로
+                pointerEvents: isEditMode ? 'none' : 'auto',
+              }}
+            >
+              {isEditMode ? '수정불가' : '플랜 선택'}
             </InputLabel>
             {isPopupOpen && (
               <PlanPopup
@@ -207,7 +218,11 @@ const BoardForm = ({
             )}
           </div>
         </SectionContainer>
-        <PlanSelectBox selectedPlan={selectedPlan} />{' '}
+        <PlanSelectBox
+          selectedPlan={selectedPlan}
+          EditModePlanData={EditModePlanData}
+          isEditMode={isEditMode}
+        />
         {/* 선택한 플랜을 표시하는 컴포넌트 */}
         <InputGroup>
           <TitleInput
