@@ -8,9 +8,9 @@ import {
 } from '../../styles/board/boardDetailContainer';
 import TabContainer from './TabContainer';
 import Button from '../Button';
-import axios from 'axios';
 import PlanInfo from '../Plan/PlanInfo';
 import planTime from '../../utils/plan/planTime';
+import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
 
 const BoardDetailContainer = ({
   planData,
@@ -27,6 +27,7 @@ const BoardDetailContainer = ({
   const { boardId } = useParams();
   const navigate = useNavigate(); // useNavigate 훅 사용
   const [isLiked, setIsLiked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // console.log('planData 확인용 BDC', places); => null 값 나옴
 
@@ -35,28 +36,14 @@ const BoardDetailContainer = ({
   const [selectedDay, setSelectedDay] = useState(1); // 선택된 날짜 상태 추가
   const placesData = planData?.places;
   const [editPlace, setEditPlace] = useState({}); // 추가
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  useEffect(() => {
+    setupInterceptors(setLoading);
+  }, []);
 
   // 게시물 데이터를 가져오는 useEffect
   useEffect(() => {
-    // const fetchBoardData = async () => {
-    //   try {
-    //     const response = await axios.get('/sampleData.json');
-    //     const data = response.data;
-    //     const boardItem = data.dtoList.find(
-    //       item => item.boardId === parseInt(boardId, 10)
-    //     );
-
-    //     if (boardItem) {
-    //       setBoardData(boardItem);
-    //       setIsLiked(false);
-    //     } else {
-    //       console.log(`게시글 ID ${boardId}에 해당하는 데이터가 없습니다.`);
-    //     }
-    //   } catch (error) {
-    //     console.error('게시글 데이터를 가져오는 중 오류 발생:', error);
-    //   }
-    // };
-
     if (boardId) {
       // fetchBoardData();
     } else {
@@ -111,6 +98,37 @@ const BoardDetailContainer = ({
     setSelectedDay(index + 1);
   }, []);
 
+  const handleSaveToMyPage = useCallback(() => {
+    const reqData = {
+      ...planData,
+      places: planData?.places.map(place => {
+        place.placeId = null;
+        return place;
+      }),
+      routes: planData?.routes.map(route => {
+        route.routeId = null;
+        return route;
+      }),
+      themes: planData?.themes.map(theme => theme.themeId),
+    };
+
+    apiClient
+      .post('/plans', reqData)
+      .then(res => {
+        console.log(res);
+        if (res.status >= 200 && res.status < 300) {
+          setShowTooltip(true);
+          setTimeout(() => setShowTooltip(false), 3000); // 3초 후 툴팁 숨기기
+        } else {
+          alert('저장에 실패했습니다. 다시 시도해주세요.');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('저장에 실패했습니다. 다시 시도해주세요.');
+      });
+  }, [planData]);
+
   // // console.log('places BDC', places);
   // console.log('필터링 플레이스 BDC', filteredPlaces);
   // // console.log('days:', days);
@@ -149,7 +167,12 @@ const BoardDetailContainer = ({
       </div>
 
       <BottomButtonContainer>
-        <Button size="lg" color="blue" data-tooltip-id="my-tooltip-click">
+        <Button
+          size="lg"
+          color="blue"
+          data-tooltip-id="my-tooltip-click"
+          onClick={handleSaveToMyPage}
+        >
           마이페이지에 저장
         </Button>
         <Tooltip
@@ -178,8 +201,7 @@ const BoardDetailContainer = ({
               </div>
             </>
           }
-          events={['click']}
-          clickable
+          isOpen={showTooltip}
         />
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
