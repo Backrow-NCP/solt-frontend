@@ -65,7 +65,7 @@ const BoardDetailContainer = ({
 
         if (statusResponse.status === 200) {
           console.log('좋아요 상태:', statusResponse.data);
-          setActive(statusResponse.data); // 초기 좋아요 상태 설정
+          setActive(statusResponse.data?.isLiked); // 초기 좋아요 상태 설정
         }
       } catch (error) {
         console.error('좋아요 상태 요청 실패:', error);
@@ -167,7 +167,9 @@ const BoardDetailContainer = ({
         if (statusResponse.status === 200) {
           // 상태 응답 처리
           console.log('좋아요 상태:', statusResponse.data);
-          setActive(statusResponse.data); // 상태 업데이트
+          setActive(statusResponse.data?.isLiked); // 상태 업데이트
+        } else {
+          console.log('좋아요 못 불러옴');
         }
       }
     } catch (error) {
@@ -177,7 +179,7 @@ const BoardDetailContainer = ({
 
   console.log('보드데이터 테스트중 BDC', boardData);
 
-  console.log('좋아요 상태');
+  // console.log('좋아요 상태');
   return (
     <DetailWrapper>
       <div>
