@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { apiNoToken } from '../../config/AxiosConfig'; // apiNoToken을 사용하여 Axios 요청 처리
 import SignupStyles from '../../styles/auth/signup';
 import Button from '../../components/Button';
+import closeIcon from '../../assets/images/ico/btn_close.svg';
 
 function Signup({ closePopup }) {
   const navigate = useNavigate();
@@ -145,7 +146,9 @@ function Signup({ closePopup }) {
       <SignupStyles />
       <div className="signup_popup_overlay">
         <div className="signup_popup">
-          <button className="close_button size_xxs pt_gy" onClick={closePopup}>닫기</button>
+          <button className="close_button" onClick={closePopup}>
+            <img src={closeIcon} alt="닫기" className="close_icon" /> {/* 이미지로 닫기 버튼 대체 */}
+          </button>
           <h2>회원가입</h2>
           <form className="signup_form" onSubmit={handleSubmit}>
             <div className="input_group">

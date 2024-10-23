@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import PasswordResetStyles from '../../styles/auth/passwordReset';
 import Button from '../../components/Button';
 import axios from 'axios';
+import closeIcon from '../../assets/images/ico/btn_close.svg'; // 닫기 아이콘 이미지 불러오기
 
 const PasswordReset = ({ closePopup, email }) => {  // email을 props로 받음
   const [newPassword, setNewPassword] = useState('');
@@ -49,8 +50,8 @@ const PasswordReset = ({ closePopup, email }) => {  // email을 props로 받음
       <PasswordResetStyles />
       <div className="password_reset_popup_overlay">
         <div className="password_reset_popup">
-          <button className="close_button size_xxs pt_gy" onClick={closePopup}>
-            닫기
+          <button className="close_button" onClick={closePopup}>
+            <img src={closeIcon} alt="닫기" className="close_icon" /> {/* 이미지로 닫기 버튼 대체 */}
           </button>
           <h2>새 비밀번호</h2>
           <form className="password_reset_form" onSubmit={handleSubmit}>
