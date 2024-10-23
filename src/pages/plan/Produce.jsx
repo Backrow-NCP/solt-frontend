@@ -176,7 +176,10 @@ const Produce = () => {
   const handlePriceChange = useCallback(
     (selectedPlace, newPrice) => {
       const updatedPlaces = places.map(place => {
-        if (place.startTime === selectedPlace.startTime) {
+        if (
+          place.startTime === selectedPlace.startTime &&
+          place.placeName === selectedPlace.placeName
+        ) {
           // 금액 변경
           return { ...place, price: newPrice };
         }
@@ -206,10 +209,11 @@ const Produce = () => {
   );
 
   // 금액 수정 활성화
-  const toggleEditPrice = useCallback(placeId => {
+  const toggleEditPrice = useCallback(place => {
     setEditPrice(prevState => ({
       ...prevState,
-      [placeId]: !prevState[placeId],
+      [`${place.placeName}-${place.startTime}`]:
+        !prevState[`${place.placeName}-${place.startTime}`],
     }));
   }, []);
 
@@ -231,14 +235,23 @@ const Produce = () => {
   // 플랜 수정 취소
   const handleCancelClick = useCallback(() => {
     const { placeId } = selectedOption;
-    console.log('플랜 수정 취소:', placeId);
-    const place = places.find(p => p.placeId === placeId);
+    console.log('플랜 수정 취소:', selectedOption);
+    const place = places.find(
+      p =>
+        p.startTime === placeId.startTime && p.placeName === placeId.placeName
+    );
     console.log('플랜 수정 취소:', place);
 
     // 일정 추가 place 삭제 (isNew 플래그 사용)
     if (place && place.isNew) {
       // isNew 플래그로 새로 추가된 장소만 제거
-      setPlaces(prevPlaces => prevPlaces.filter(p => p.placeId !== placeId));
+      setPlaces(prevPlaces =>
+        prevPlaces.filter(
+          p =>
+            p.startTime === placeId.startTime &&
+            p.placeName === placeId.placeName
+        )
+      );
       console.log('New place removed:', placeId);
     }
 
@@ -256,134 +269,147 @@ const Produce = () => {
 
   // ModifyContainer의 "이 장소로 선택" 버튼 클릭 시
   const handleSelectClick = useCallback(() => {
-		const { option, placeId } = selectedOption;
-		const selectedPlace = placeId;
-	
-		console.log('handleSelectClick called with:', { option, selectedPlace });
+    const { option, placeId } = selectedOption;
+    const selectedPlace = placeId;
+
+    console.log('handleSelectClick called with:', { option, selectedPlace });
     console.log('Current places before update:', places);
-	
-		if (option === 'directly' && autocompleteSelectedPlace) {
-			// Autocomplete로 직접 선택한 장소를 수정 반영
-			const updatedPlaces = places.map(place => {
-				if (place.startTime === selectedPlace.startTime) {
-					console.log('Updating place with new selected data:', autocompleteSelectedPlace);
-					return {
-						...place,
-						placeName: autocompleteSelectedPlace.name || autocompleteSelectedPlace.placeName,
-						latitude: autocompleteSelectedPlace.latitude,
-						longitude: autocompleteSelectedPlace.longitude,
-						addr: autocompleteSelectedPlace.address,
-						isNew: false,
-						price: 0,
-					};
-				}
-				return place;
-			});
 
-			setPlaces(updatedPlaces);
-			console.log('Updated places:', updatedPlaces);
+    if (option === 'directly' && autocompleteSelectedPlace) {
+      // Autocomplete로 직접 선택한 장소를 수정 반영
+      const updatedPlaces = places.map(place => {
+        if (place.startTime === selectedPlace.startTime) {
+          console.log(
+            'Updating place with new selected data:',
+            autocompleteSelectedPlace
+          );
+          return {
+            ...place,
+            placeName:
+              autocompleteSelectedPlace.name ||
+              autocompleteSelectedPlace.placeName,
+            latitude: autocompleteSelectedPlace.latitude,
+            longitude: autocompleteSelectedPlace.longitude,
+            addr: autocompleteSelectedPlace.address,
+            isNew: false,
+            price: 0,
+          };
+        }
+        return place;
+      });
 
-		} else if (option === 'directly' && autocompleteSelectedPlace) {
-			// "직접 쓸래요" 옵션으로 장소 반영
-			const updatedPlaces = places.map(place => {
-				if (place.startTime === selectedOption.startTime) {
-					console.log('Updating place with new selected data:', autocompleteSelectedPlace);
-					return {
-						...place,
-						placeName: autocompleteSelectedPlace.name, // name 값을 placeName으로 업데이트
-						latitude: autocompleteSelectedPlace.latitude,
-						longitude: autocompleteSelectedPlace.longitude,
-						addr: autocompleteSelectedPlace.address,
-						description: null,
-						isNew: false,
-						price: 0, // 직접 수정 시 가격 0으로 설정
-					};
-				}
-				return place;
-			});
-		
-			setPlaces(updatedPlaces);
-		
-			// 경로(route) 업데이트
-			const updatedPlanRoute = plan.routes.filter(route => {
-				return (
-					route.startTime !== selectedOption.endTime &&
-					route.endTime !== selectedOption.startTime
-				);
-			});
-		
-			setPlan({
-				...plan,
-				routes: updatedPlanRoute,
-			});
-		
-			// 수정된 장소를 추적
-			setModifiedPlaces(prev => [...prev, selectedOption.startTime]);
-			console.log('Updated Plan and Places:', updatedPlaces);
-		}
+      setPlaces(updatedPlaces);
+      console.log('Updated places:', updatedPlaces);
+    } else if (option === 'directly' && autocompleteSelectedPlace) {
+      // "직접 쓸래요" 옵션으로 장소 반영
+      const updatedPlaces = places.map(place => {
+        if (place.startTime === selectedOption.startTime) {
+          console.log(
+            'Updating place with new selected data:',
+            autocompleteSelectedPlace
+          );
+          return {
+            ...place,
+            placeName: autocompleteSelectedPlace.name, // name 값을 placeName으로 업데이트
+            latitude: autocompleteSelectedPlace.latitude,
+            longitude: autocompleteSelectedPlace.longitude,
+            addr: autocompleteSelectedPlace.address,
+            description: null,
+            isNew: false,
+            price: 0, // 직접 수정 시 가격 0으로 설정
+          };
+        }
+        return place;
+      });
 
-		if (option === 'recomm' && selectedRecommendedPlace) {
-			// 추천받은 장소로 수정 반영
-			const updatedPlaces = places.map(place => {
-				if (place.startTime === selectedPlace.startTime) {
-					return {
-						...place,
-						placeName: selectedRecommendedPlace.placeName || selectedRecommendedPlace.name,
-						startTime: place.startTime, // startTime 유지
-						addr: selectedRecommendedPlace.addr || selectedRecommendedPlace.address || place.addr,
-						description: selectedRecommendedPlace.description || place.description, // 필요 시 수정
-						isNew: false, // 수정 완료 후 isNew 플래그 제거
-						price: selectedRecommendedPlace.price || place.price, // 추천 수정 시 가격 업데이트
-					};
-				}
-				return place;
-			});
-	
-			setPlaces(updatedPlaces);
+      setPlaces(updatedPlaces);
+
+      // 경로(route) 업데이트
+      const updatedPlanRoute = plan.routes.filter(route => {
+        return (
+          route.startTime !== selectedOption.endTime &&
+          route.endTime !== selectedOption.startTime
+        );
+      });
+
+      setPlan({
+        ...plan,
+        routes: updatedPlanRoute,
+      });
+
+      // 수정된 장소를 추적
+      setModifiedPlaces(prev => [...prev, selectedOption.startTime]);
+      console.log('Updated Plan and Places:', updatedPlaces);
+    }
+
+    if (option === 'recomm' && selectedRecommendedPlace) {
+      // 추천받은 장소로 수정 반영
+      const updatedPlaces = places.map(place => {
+        if (place.startTime === selectedPlace.startTime) {
+          return {
+            ...place,
+            placeName:
+              selectedRecommendedPlace.placeName ||
+              selectedRecommendedPlace.name,
+            startTime: place.startTime, // startTime 유지
+            addr:
+              selectedRecommendedPlace.addr ||
+              selectedRecommendedPlace.address ||
+              place.addr,
+            description:
+              selectedRecommendedPlace.description || place.description, // 필요 시 수정
+            isNew: false, // 수정 완료 후 isNew 플래그 제거
+            price: selectedRecommendedPlace.price || place.price, // 추천 수정 시 가격 업데이트
+          };
+        }
+        return place;
+      });
+
+      setPlaces(updatedPlaces);
       console.log('Updated places with recommended place:', updatedPlaces);
-	
-			// 해당 장소와 연결된 경로(route) 제거
-			const updatedPlanRoute = plan.routes.filter(route => {
-				return (
-					route.startTime !== selectedPlace.endTime &&
-					route.endTime !== selectedPlace.startTime
-				);
-			});
-	
-			setPlan({
-				...plan,
-				routes: updatedPlanRoute,
-			});
-	
-			// 수정된 장소를 추적
-			setModifiedPlaces(prev => [...prev, selectedPlace.startTime]);
-		}
-	
-		// 상태 리셋 및 수정 모드 종료
-		setIsEditing(false);
+
+      // 해당 장소와 연결된 경로(route) 제거
+      const updatedPlanRoute = plan.routes.filter(route => {
+        return (
+          route.startTime !== selectedPlace.endTime &&
+          route.endTime !== selectedPlace.startTime
+        );
+      });
+
+      setPlan({
+        ...plan,
+        routes: updatedPlanRoute,
+      });
+
+      // 수정된 장소를 추적
+      setModifiedPlaces(prev => [...prev, selectedPlace.startTime]);
+    }
+
+    // 상태 리셋 및 수정 모드 종료
+    setIsEditing(false);
     setPlanConfirmed(false);
     setSelectedOption({ option: null, placeId: null });
     setSelectedRecommendedPlace(null);
     setAutocompleteSelectedPlace(null);
-		setEditPlace(prev => {
-			const updatedEditPlace = { ...prev };
-			delete updatedEditPlace[selectedPlace.startTime];
-			return updatedEditPlace;
-		});
-	
-		console.log('After setIsEditing:', isEditing);
-	}, [
-		selectedOption,
-		autocompleteSelectedPlace,
-		selectedRecommendedPlace,
-		places,
-		plan,
-		setPlaces,
-		setPlan,
-		setModifiedPlaces,
-		isEditing
-	]);
-	
+    setEditPlace(prev => {
+      const updatedEditPlace = { ...prev };
+      delete updatedEditPlace[selectedPlace.startTime];
+      return updatedEditPlace;
+    });
+
+    console.log('After setIsEditing:', isEditing);
+  }, [
+    selectedOption,
+    autocompleteSelectedPlace,
+    selectedRecommendedPlace,
+    places,
+    plan,
+    setPlaces,
+    setPlan,
+    setModifiedPlaces,
+    isEditing,
+  ]);
+
   // 플랜 확정/수정 버튼 클릭 핸들러
   const handlePlanButtonClick = useCallback(async () => {
     if (planConfirmed) {
@@ -394,39 +420,39 @@ const Produce = () => {
       try {
         setIsLoading(true); // 로딩 시작
 
-      const updatedPlan = {
-        title: plan.title || '맞춤 플랜',
-        memberId: plan?.member?.memberId || null,
-        places: places.map((place) => ({
+        const updatedPlan = {
+          title: plan.title || '맞춤 플랜',
+          memberId: plan?.member?.memberId || null,
+          places: places.map(place => ({
             placeName: place.placeName,
-        })),
-        themes: plan.themes.map((theme) => theme.themeId),
-        location: plan.location || '서울특별시',
-        startDate: plan.startDate,
-        endDate: plan.endDate,
-      };
+          })),
+          themes: plan.themes.map(theme => theme.themeId),
+          location: plan.location || '서울특별시',
+          startDate: plan.startDate,
+          endDate: plan.endDate,
+        };
 
-      console.log('Final plan to be sent to server:', updatedPlan);
+        console.log('Final plan to be sent to server:', updatedPlan);
 
-      const response = await apiClient.post('/plans/recom', updatedPlan, {
-        withCredentials: false,
-      });
+        const response = await apiClient.post('/plans/recom', updatedPlan, {
+          withCredentials: false,
+        });
 
-      console.log('전송될 places 데이터:', updatedPlan);
-      console.log('서버 응답:', response.data);
+        console.log('전송될 places 데이터:', updatedPlan);
+        console.log('서버 응답:', response.data);
 
-      // 데이터 업데이트 후 저장
-      response.data.planId = plan.planId;
-      sessionStorage.setItem('planData', JSON.stringify(response.data));
-      alert('플랜이 수정되었습니다.');
-      
-      window.location.reload();
-			} catch (error) {
-				console.error('저장 오류:', error);
-				alert('저장 중 오류가 발생했습니다.');
-			} finally {
-				setIsLoading(false); // 로딩 종료
-			}
+        // 데이터 업데이트 후 저장
+        response.data.planId = plan.planId;
+        sessionStorage.setItem('planData', JSON.stringify(response.data));
+        alert('플랜이 수정되었습니다.');
+
+        window.location.reload();
+      } catch (error) {
+        console.error('저장 오류:', error);
+        alert('저장 중 오류가 발생했습니다.');
+      } finally {
+        setIsLoading(false); // 로딩 종료
+      }
     }
   }, [planConfirmed, plan, places, combinedList, navigate]);
 
@@ -450,26 +476,24 @@ const Produce = () => {
   const handleAddPlace = useCallback(() => {
     // 선택한 날짜에 해당하는 장소들 필터링
     const formattedThisDate = days[selectedDay - 1]
-      .replace(/\s/g, '')
-      .replace(/\./g, '-')
-      .slice(0, -1);
-    const placesOnSelectedDay = places.filter(
-      place =>
-        new Date(place.startTime).toISOString().split('T')[0] ===
-        formattedThisDate
-    );
+			.replace(/\s/g, '')
+			.replace(/\./g, '-')
+			.slice(0, -1);
+
+			const placesOnSelectedDay = places.filter(
+				place => new Date(place.startTime).toISOString().split('T')[0] === formattedThisDate
+			);
 
     let newStartTime;
 
     if (placesOnSelectedDay.length > 0) {
       // 마지막 장소의 endTime을 기준으로 새로운 startTime 설정
       const lastPlace = placesOnSelectedDay[placesOnSelectedDay.length - 1];
-      const lastEndTime = new Date(lastPlace.endTime);
+  		const lastEndTime = new Date(lastPlace.endTime);
 
       // 마지막 endTime에 1시간 추가
       lastEndTime.setHours(lastEndTime.getHours() + 1);
-
-      newStartTime = lastEndTime.toISOString();
+  		newStartTime = lastEndTime.toISOString();
     } else {
       // 해당 날짜에 장소가 없을 경우
       const selectedDate = new Date(days[selectedDay - 1]);
@@ -491,7 +515,7 @@ const Produce = () => {
     };
 
     // 바로 places 배열에 newPlace 추가
-    setPlaces((prevPlaces) => [...prevPlaces, newPlace]);
+    setPlaces(prevPlaces => [...prevPlaces, newPlace]);
 
     // 수정 모드 활성화 및 새로운 장소 선택
     setIsEditing(true);

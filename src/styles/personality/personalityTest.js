@@ -96,7 +96,7 @@ const PersonalityTestStyle = styled.div`
     -webkit-user-drag: none;
     width: 50%;
     height: auto;
-    min-width: 500px; /* 이미지의 최소 너비를 설정 */
+    min-width: 400px; /* 이미지의 최소 너비를 설정 */
     max-width: 1000px; /* 이미지의 최대 너비를 설정 (필요에 따라 설정) */
   }
 
@@ -136,22 +136,21 @@ const PersonalityTestStyle = styled.div`
 
   .test_flex {
     display: flex;
-    flex-wrap: wrap; /* 필요 시 줄바꿈 */
+    flex-wrap: nowrap; /* 줄바꿈을 하지 않도록 설정 */
     gap: 20px; /* 각 섹션 간 여백 */
     justify-content: space-around; /* 양쪽 정렬 */
   }
 
   @media (max-width: 768px) {
-    /* 화면 너비가 768px 이하일 때 */
+    /* 화면 너비가 768px 이하일 때에도 두 개의 요소가 가로로 유지되도록 */
     .test_flex {
-      flex-direction: column; /* 세로로 나열 */
-      align-items: center; /* 세로로 배치 시 중앙 정렬 */
+      flex-wrap: nowrap; /* 줄바꿈을 허용하지 않음 */
     }
   }
   /* 각 섹션 너비 설정 */
   .test_flex > div {
     flex: 1;
-    max-width: 100%;
+    max-width: 45%; /* 각 아이템이 차지할 최대 너비를 45%로 제한 */
   }
 
   .title {
@@ -163,12 +162,6 @@ const PersonalityTestStyle = styled.div`
     margin: 80px 0 32px;
     transition: all 0.3s ease-in-out;
   }
-
-  // .result_title.sticky {
-  //   position: sticky;
-  //   top: 100px; /* 도달했을때 고정시킬 위치 */
-  //   z-index: -10; /* 스크롤에 따라 우선순위가 달라지도록 */
-  // }
 
   .answerBtn {
     display: flex;
@@ -234,6 +227,19 @@ const PersonalityTestStyle = styled.div`
     display: block; /* 이미지 주변 여백 제거 */
     width: 100%;
     height: auto;
+  }
+
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #14b8ff;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1000;
   }
 
   .test_size_xxs {

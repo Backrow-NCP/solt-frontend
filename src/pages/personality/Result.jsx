@@ -12,6 +12,7 @@ function PersonalityResult() {
     location.state?.resultData || null
   ); // location.state에 데이터가 있으면 사용하고 없으면 null
   const [isLoading, setIsLoading] = useState(!resultData); // 만약 location.state에 resultData가 있으면 로딩 불필요
+  const [showModal, setShowModal] = useState(false); // 모달창 상태 관리
 
   useEffect(() => {
     if (!resultData) {
@@ -44,6 +45,14 @@ function PersonalityResult() {
 
   const handleResultAll = () => {
     navigate('/personalityTest/getAllResults');
+  };
+
+  const handleShare = () => {
+    const shareLink = window.location.href; // 현재 페이지 링크
+    navigator.clipboard.writeText(shareLink).then(() => {
+      setShowModal(true); // 링크 복사 후 모달 창 표시
+      setTimeout(() => setShowModal(false), 2000); // 2초 후 모달 자동 닫기
+    });
   };
 
   return (
@@ -141,7 +150,18 @@ function PersonalityResult() {
         <Button size="xl" color="white" onClick={handleRetry}>
           다시 하기
         </Button>
+        <Button size="xl" color="white" onClick={handleShare}>
+          <img
+            src={`https://kr.object.ncloudstorage.com/solt-objectstorage/board/1947c4a5-d48e-490f-a0cb-9db7d4060399`}
+            alt="ShareButton"
+          />
+        </Button>
       </div>
+      {showModal && (
+        <div className="modal">
+          <p>링크가 복사되었습니다!</p>
+        </div>
+      )}
     </PersonalityTest>
   );
 }

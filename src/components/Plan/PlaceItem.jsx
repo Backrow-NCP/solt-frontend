@@ -24,8 +24,13 @@ const PlaceItem = ({
     setIsModified(!isModified);
   };
 
+  const modifyClickFilter = (s, place) => {
+    handleModifyClick(s, place);
+    setIsModified(false);
+  };
+
   return (
-    <Item key={`place-${place.startTime}`} className="flex">
+    <Item key={`place-${place.placeName}-${place.startTime}`} className="flex">
       <span className="place_time pt_blue size_xs weight_b">
         {planTime(place.startTime)}
       </span>
@@ -46,8 +51,11 @@ const PlaceItem = ({
             />
             <span>{route.transportation.type}</span>
             <span>
-								{route.travelTime >= 60
-                ? Math.floor(route.travelTime / 60) + '시간' + (route.travelTime % 60) + '분'
+              {route.travelTime >= 60
+                ? Math.floor(route.travelTime / 60) +
+                  '시간' +
+                  (route.travelTime % 60) +
+                  '분'
                 : route.travelTime + '분'}
             </span>
             <span>
@@ -76,17 +84,21 @@ const PlaceItem = ({
             min="0"
             value={place.price}
             onChange={e => handlePriceChange(place, Number(e.target.value))}
-            disabled={!editPrice[place.placeId] || isEditing}
+            disabled={
+              !editPrice[`${place.placeName}-${place.startTime}`] || isEditing
+            }
           />
           <span className="pt_pink size_sm weight_b">원</span>
         </div>
         {displayButtons && (
           <button
-            onClick={() => toggleEditPrice(place.placeId)}
+            onClick={() => toggleEditPrice(place)}
             className="pt_gy size_xxs"
             disabled={isEditing}
           >
-            {editPrice[place.placeId] ? '확인' : '금액 수정'}
+            {editPrice[`${place.placeName}-${place.startTime}`]
+              ? '확인'
+              : '금액 수정'}
           </button>
         )}
       </div>
@@ -106,12 +118,12 @@ const PlaceItem = ({
       {isModified && (
         <ul className="place_change">
           <li>
-            <button onClick={() => handleModifyClick('directly', place)}>
+            <button onClick={() => modifyClickFilter('directly', place)}>
               직접 쓸래요
             </button>
           </li>
           <li>
-            <button onClick={() => handleModifyClick('recomm', place)}>
+            <button onClick={() => modifyClickFilter('recomm', place)}>
               다른 추천 받을래요
             </button>
           </li>
