@@ -64,9 +64,7 @@ function PersonalityTest() {
         }
 
         // 페이지 이동
-        navigate('/personalityTest/result', {
-          state: { resultData: fetchedData },
-        });
+        navigate(`/personalityTest/result/${fetchedData.resultId}`);
       })
       .catch(error => console.error('Error fetching result:', error));
 
