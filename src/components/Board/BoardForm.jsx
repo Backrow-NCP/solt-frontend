@@ -90,10 +90,10 @@ const BoardForm = ({
         console.log('파일 업로드 응답:', uploadedUUids);
         // uploadedFiles 상태에 새로 업로드된 파일들의 uuid를 추가
         setUploadedFiles(prevFiles => [...prevFiles, ...uploadedUUids]);
-        console.log('업로디드 파일:', uploadedFiles);
+        console.log('업로디드 파일:', [...uploadedFiles, ...uploadedUUids]);
         // 기존 파일 배열에 새로 선택한 파일 추가
         setSelectedFiles(prevFiles => [...prevFiles, ...newUniqueFiles]);
-        console.log('셀렉티드 파일:', selectedFiles);
+        console.log('셀렉티드 파일:', [...selectedFiles, ...newUniqueFiles]);
       } catch (error) {
         console.error('파일 업로드 실패:', error);
       }
@@ -175,16 +175,25 @@ const BoardForm = ({
   }, []);
 
   useEffect(() => {
+    if (EditModeFileName && Array.isArray(EditModeFileName)) {
+      setUploadedFiles(EditModeFileName.map(file => file.fileName));
+      const filePreviews = EditModeFileName.map(file => ({
+        file,
+        preview: `${process.env.REACT_APP_IMAGE_STORAGE_URL}${file.fileName}`,
+      }));
+      console.log(filePreviews);
+      setSelectedFiles(filePreviews);
+    }
+  }, [EditModeFileName]);
+
+  useEffect(() => {
     if (EditModeTitle) {
       setBoardTitle(EditModeTitle);
     }
     if (EditModeContent) {
       setBoardContent(EditModeContent);
     }
-    if (EditModeFileName && Array.isArray(EditModeFileName)) {
-      setUploadedFiles(EditModeFileName);
-    }
-  }, [EditModeTitle, EditModeContent, EditModeFileName]);
+  }, [EditModeTitle, EditModeContent]);
 
   return (
     <Container>
@@ -268,7 +277,7 @@ const BoardForm = ({
             selectedFiles.map((file, index) => (
               <ImageContainer key={index}>
                 <ImageThumbnail
-                  src={URL.createObjectURL(file)}
+                  src={file.preview || URL.createObjectURL(file)}
                   alt={`thumbnail-${index}`}
                 />
                 <RemoveButton

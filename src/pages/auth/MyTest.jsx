@@ -25,7 +25,22 @@ const MyTest = () => {
         .get('/personalityTestLog/list', {
           params: { memberId }, // memberId를 쿼리 파라미터로 전송
         })
-        .then(response => setResults(response.data)) // 응답 데이터 저장
+        .then(response => {
+          const sortedResults = response.data.sort((a, b) => {
+            const dateA = new Date(
+              a.regDate[0],
+              a.regDate[1] - 1,
+              a.regDate[2]
+            );
+            const dateB = new Date(
+              b.regDate[0],
+              b.regDate[1] - 1,
+              b.regDate[2]
+            );
+            return dateB - dateA; // 내림차순으로 정렬
+          });
+          setResults(sortedResults); // 정렬된 데이터 저장
+        })
         .catch(error => console.error('Error fetching data:', error));
     }
   }, [memberId]);

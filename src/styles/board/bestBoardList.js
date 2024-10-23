@@ -26,12 +26,30 @@ export const ImageWrapper = styled.div`
   align-items: center;
   overflow: hidden;
   border-radius: 10px;
-  cursor: pointer; /* 커서 모양을 손 모양으로 변경 */
+  cursor: pointer;
 
-  /* 마우스 호버 시 배경색 변경 */
+  /* 호버 시 어두운 배경색 */
   &:hover {
-    background-color: rgba(0, 0, 0, 0.5); /* 호버 시 어두운 배경색 */
-    transition: background-color 0.3s ease; /* 부드러운 전환 효과 */
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease;
+  }
+
+  /* 하트와 좋아요 개수를 항상 하단에 고정 */
+  .bestLikeCount {
+    position: absolute;
+    bottom: 15px; /* 하단에서 10px 위에 고정 */
+    left: 15px; /* 왼쪽에서 15px */
+    font-size: 15px;
+    color: white; /* 텍스트 색상 */
+    z-index: 10; /* 다른 요소들 위에 표시되도록 설정 */
+  }
+
+  .heart {
+    color: red;
+    font-size: 15px;
+    transform: scaleX(1.3);
+    display: inline-block;
+    margin-right: 5px;
   }
 `;
 
@@ -54,73 +72,57 @@ export const OverlayBlack = styled.div`
 
 export const TextOverlay = styled.div`
   position: absolute;
-  top: 50%;
-  left: 0; /* 왼쪽에서 시작하도록 설정 */
-  transform: translate(0, -20%); /* 수직 중앙 정렬 */
-  color: white; /* 텍스트 색상 */
-  font-size: 24px; /* 텍스트 크기 */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* 텍스트 그림자 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 
   .author {
-    opacity: 0.8; /* 작성자 이름의 투명도 설정 */
+    opacity: 0.8;
     font-size: 12px;
-    margin-left: 15px;
+    margin-top: 90px;
+    margin-bottom: 5px;
   }
 
   .locationDurationContainer {
-    display: flex; /* 가로 배치 */
+    display: flex;
     font-size: 12px;
-    gap: 3px; /* 박스 간 간격 조정 */
-    margin-left: 13px;
+    gap: 3px;
+    margin-top: 5px;
     margin-bottom: 5px;
   }
 
   .locationBox,
   .durationBox {
-    border: 1px solid #ccc; /* 테두리 추가 */
-    border-radius: 10px; /* 테두리 둥글게 */
-    padding: 5px; /* 내부 여백 추가 */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 5px;
     font-weight: bold;
   }
 
   .contentBox {
-    width: 100%; /* 콘텐츠 박스의 고정 너비 설정 */
-    max-width: 95%; /* 필요시 최소 너비 설정 */
     max-height: 4.8em;
-    overflow: hidden; /* 넘치는 텍스트 숨김 */
-    text-overflow: ellipsis; /* 넘치는 텍스트를 "..."으로 표시 */
+    overflow: hidden;
+    text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* 최대 3줄로 제한 */
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
-    word-wrap: break-word; /* 긴 단어를 자동으로 줄바꿈 */
-    line-height: 1.2em; /* 줄 높이를 맞춤 */
-    white-space: normal; /* 여러 줄을 허용 */
+    word-wrap: break-word;
+    line-height: 1.2em;
     font-size: 15px;
-    height: calc(1.2em * 3); /* 1줄의 높이(1.2em) * 3줄 = 3.6em */
-    margin-left: 15px;
-    margin-bottom: 0px; /* 하단 여백 조정 */
-
-    overflow-wrap: break-word; /* 긴 단어에만 줄바꿈 적용 */
-    word-break: normal; /* 기본 줄바꿈 동작으로 변경 */
+    white-space: normal;
   }
 
   .bestTitle {
-    margin-left: 15px;
-  }
-
-  .bestLikeCount {
-    margin-left: 15px;
-    font-size: 15px;
-    margin-bottom: 0px; /* 하단 여백 줄이기 */
-    margin-top: 10px;
-  }
-
-  .heart {
-    color: red; /* ♥ 심볼의 색상 */
-    font-size: 15px; /* 심볼의 크기 */
-    transform: scaleX(1.3); /* 가로로 1.5배 확장 */
-    display: inline-block; /* transform을 적용하기 위해 inline-block 설정 */
-    margin-right: 2px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
   }
 `;
 
