@@ -77,6 +77,7 @@ const BoardDetail = ({ boardData }) => {
       try {
         navigate(`/board/edit/${boardData.boardId}`, {
           state: {
+            boardId: boardData.boardId,
             content: boardData.content,
             title: boardData.title,
             fileName: boardData.images,

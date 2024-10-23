@@ -11,9 +11,9 @@ const Edit = isEditMode => {
   const [planData, setPlanData] = useState(null); // 플랜 데이터 상태 관리
 
   // location.state에서 기존 게시글 데이터 추출
-  const { content, title, fileName, plan } = location.state || {};
+  const { boardId, content, title, fileName, plan } = location.state || {};
 
-  console.log('4개 !@#!@#', content, title, fileName, plan);
+  console.log('4개 !@#!@#', boardId, content, title, fileName, plan);
 
   // 현재 사용자 ID를 얻어서 플랜 데이터를 불러오기
   useEffect(() => {
@@ -48,8 +48,9 @@ const Edit = isEditMode => {
   const handleSubmit = async formData => {
     try {
       // 수정 요청을 위한 API 호출
+      console.log('이거 언디파인드일걸요', boardId);
       const response = await apiClient.put(
-        `${process.env.REACT_APP_API_URL}/boards/${location.state.boardId}`, // 기존 게시글 ID로 수정 요청
+        `${process.env.REACT_APP_API_URL}/boards/${boardId}`, // 기존 게시글 ID로 수정 요청
         formData // 수정할 데이터
       );
 

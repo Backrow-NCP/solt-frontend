@@ -107,6 +107,9 @@ const BoardForm = ({
       setSelectedFiles(prevFiles =>
         prevFiles.filter((_, index) => index !== indexToRemove)
       );
+      setUploadedFiles(prevFiles =>
+        prevFiles.filter((_, index) => index !== indexToRemove)
+      );
     }
   };
 
@@ -135,8 +138,6 @@ const BoardForm = ({
     const formData = {
       title: boardTitle,
       content: boardContent,
-      memberId: getMemberId(), // 임시 사용자 ID
-      planId: selectedPlan.planId,
       // selectedPlan, // 선택된 플랜 추가
       boardImages: uploadedFiles.map((file, index) => ({
         fileName: file,
