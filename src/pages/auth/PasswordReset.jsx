@@ -4,47 +4,14 @@ import PasswordResetStyles from '../../styles/auth/passwordReset';
 import Button from '../../components/Button';
 import axios from 'axios';
 
-const PasswordReset = ({ closePopup }) => {
+const PasswordReset = ({ closePopup, email }) => {  // email을 props로 받음
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
-  // 컴포넌트 마운트 시 userId 가져오기
   useEffect(() => {
-    const fetchMemberData = async () => {
-      try {
-        const token = localStorage.getItem('token'); // 토큰 가져오기
-        console.log(token); // 토큰 값 출력 (디버깅용)
-
-        if (token) {
-          // /members API 호출
-          const response = await axios.get(`${process.env.REACT_APP_API_URL}/members`, {
-            headers: {
-              Authorization: token,
-            },
-          });
-
-          console.log('API 응답:', response.data); // 응답 데이터 출력 (디버깅용)
-
-          const { id } = response.data; // 서버에서 반환한 사용자 ID
-          if (id) {
-            setUserId(id); // userId 설정
-          } else {
-            throw new Error('userId를 가져오지 못했습니다.');
-          }
-        } else {
-          throw new Error('토큰이 없습니다.');
-        }
-      } catch (error) {
-        console.error('사용자 정보를 가져오는 데 실패했습니다:', error);
-        window.alert('사용자 정보를 가져오는 데 실패했습니다. 다시 로그인해주세요.');
-        navigate('/login'); // 오류 발생 시 로그인 페이지로 이동
-      }
-    };
-
-    fetchMemberData();
-  }, [navigate]);
+    console.log("PasswordReset에서 받은 email:", email); // 이메일이 제대로 전달되었는지 확인
+  }, [email]);
 
   const handleNewPasswordChange = (e) => setNewPassword(e.target.value);
   const handleConfirmPasswordChange = (e) => setConfirmPassword(e.target.value);
@@ -53,17 +20,13 @@ const PasswordReset = ({ closePopup }) => {
     e.preventDefault();
     if (newPassword === confirmPassword) {
       try {
-        const token = localStorage.getItem('token'); // 토큰 가져오기
-
-        if (!userId) {
-          throw new Error('userId를 찾을 수 없습니다.');
-        }
-
-        const response = await axios.put(`${process.env.REACT_APP_API_URL}/members/${userId}/password`, {
-          password: newPassword,
+        // /members/password API 호출
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/members/password`, {
+          email,   // email로 요청
+          password: newPassword, // 새 비밀번호
         }, {
           headers: {
-            Authorization: token, // Bearer 접두어 없이 토큰만 전달
+            'Content-Type': 'application/json', // JSON 형식으로 요청
           },
         });
 
@@ -77,7 +40,7 @@ const PasswordReset = ({ closePopup }) => {
         window.alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
       }
     } else {
-      alert('비밀번호가 일치하지 않습니다.');
+      window.alert('비밀번호가 일치하지 않습니다.');
     }
   };
 
