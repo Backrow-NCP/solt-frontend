@@ -53,6 +53,28 @@ const BoardDetailContainer = ({
     }
   }, [boardId]);
 
+  useEffect(() => {
+    const fetchLikeStatus = async () => {
+      try {
+        const statusResponse = await apiClient.get('/like/status', {
+          params: {
+            boardId: boardId,
+            memberId: memberId,
+          },
+        });
+
+        if (statusResponse.status === 200) {
+          console.log('좋아요 상태:', statusResponse.data);
+          setActive(statusResponse.data); // 초기 좋아요 상태 설정
+        }
+      } catch (error) {
+        console.error('좋아요 상태 요청 실패:', error);
+      }
+    };
+
+    fetchLikeStatus(); // 컴포넌트 마운트 시 상태 요청
+  }, [boardId, memberId]);
+
   // 마이페이지로 이동하는 핸들러
   const handleNavigateToMyPage = () => {
     navigate('/auth/mypage'); // 마이페이지로 이동
@@ -121,23 +143,18 @@ const BoardDetailContainer = ({
     setLikeCount(boardData.likeCount); // 서버에서 받아온 좋아요 상태 초기화
   }, [boardData]);
 
-  useEffect(() => {
-    if (boardData) {
-      // 예시로 boardData의 liked 속성을 사용 (수정 필요)
-      setActive(boardData.isLiked); // 게시글의 좋아요 여부에 따라 초기화
-    }
-  }, [boardData]); // boardData가 변경될 때마다 실행
-
   const handleLike = async () => {
     try {
       // 좋아요 요청
+
       const response = await apiClient.post('/like', {
         boardId: boardId,
         memberId: memberId,
       });
 
       if (response.status === 200) {
-        setLikeCount(response.data.likeCount);
+        setLikeCount(response.data.likeCount); // 좋아요 갯수 업데이트
+        console.log('setLikeCount 증가', response.data.likeCount);
 
         // 좋아요 상태 요청
         const statusResponse = await apiClient.get('/like/status', {
@@ -150,7 +167,7 @@ const BoardDetailContainer = ({
         if (statusResponse.status === 200) {
           // 상태 응답 처리
           console.log('좋아요 상태:', statusResponse.data);
-          // 필요에 따라 상태 업데이트 등 추가 작업 수행
+          setActive(statusResponse.data); // 상태 업데이트
         }
       }
     } catch (error) {
@@ -160,6 +177,7 @@ const BoardDetailContainer = ({
 
   console.log('보드데이터 테스트중 BDC', boardData);
 
+  console.log('좋아요 상태');
   return (
     <DetailWrapper>
       <div>
