@@ -11,6 +11,7 @@ import Button from '../Button';
 import PlanInfo from '../Plan/PlanInfo';
 import planTime from '../../utils/plan/planTime';
 import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
+import { getMemberId } from '../../utils/token/tokenUtils';
 
 const BoardDetailContainer = ({
   planData,
@@ -26,17 +27,18 @@ const BoardDetailContainer = ({
 }) => {
   const { boardId } = useParams();
   const navigate = useNavigate(); // useNavigate 훅 사용
-  const [isLiked, setIsLiked] = useState(false);
+
   const [loading, setLoading] = useState(false);
-
+  const memberId = getMemberId();
   // console.log('planData 확인용 BDC', places); => null 값 나옴
-
+  const [likeCount, setLikeCount] = useState(boardData.likeCount); // 좋아요 카운트
   const [editPrice, setEditPrice] = useState(0); // 가격 상태 추가
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태 추가
   const [selectedDay, setSelectedDay] = useState(1); // 선택된 날짜 상태 추가
   const placesData = planData?.places;
   const [editPlace, setEditPlace] = useState({}); // 추가
   const [showTooltip, setShowTooltip] = useState(false);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     setupInterceptors(setLoading);
@@ -50,20 +52,6 @@ const BoardDetailContainer = ({
       console.log('boardId가 undefined입니다.');
     }
   }, [boardId]);
-
-  // 좋아요 핸들러
-  const handleLike = () => {
-    setIsLiked(prevState => {
-      const newLikedState = !prevState;
-      // setBoardData(prevData => ({
-      //   ...prevData,
-      //   likeCount: newLikedState
-      //     ? prevData.likeCount + 1
-      //     : prevData.likeCount - 1,
-      // }));
-      return newLikedState;
-    });
-  };
 
   // 마이페이지로 이동하는 핸들러
   const handleNavigateToMyPage = () => {
@@ -129,10 +117,33 @@ const BoardDetailContainer = ({
       });
   }, [planData]);
 
-  // // console.log('places BDC', places);
-  // console.log('필터링 플레이스 BDC', filteredPlaces);
-  // // console.log('days:', days);
-  // console.log('plan', planData);
+  useEffect(() => {
+    setLikeCount(boardData.likeCount); // 서버에서 받아온 좋아요 상태 초기화
+  }, [boardData]);
+
+  useEffect(() => {
+    if (boardData) {
+      // 예시로 boardData의 liked 속성을 사용 (수정 필요)
+      setActive(boardData.isLiked); // 게시글의 좋아요 여부에 따라 초기화
+    }
+  }, [boardData]); // boardData가 변경될 때마다 실행
+
+  const handleLike = async () => {
+    try {
+      const response = await apiClient.post('/like', {
+        boardId: boardId,
+        memberId: memberId,
+      });
+
+      if (response.status === 200) {
+        setLikeCount(response.data.likeCount);
+        setActive(!active);
+      }
+    } catch (error) {
+      console.error('좋아요 요청 실패:', error);
+    }
+  };
+
   console.log('보드데이터 테스트중 BDC', boardData);
 
   return (
@@ -208,12 +219,14 @@ const BoardDetailContainer = ({
           <HeartStyled
             width={24}
             height={24}
-            active={isLiked}
-            onClick={handleLike}
+            onClick={() => {
+              handleLike(); // 좋아요 처리
+              setActive(prevActive => !prevActive); // active 상태 토글
+            }}
+            active={active}
           />
-          <span style={{ fontSize: '18px' }}>
-            {boardData ? boardData.likeCount : 0}
-          </span>
+
+          <span style={{ fontSize: '18px' }}>{likeCount}</span>
         </div>
       </BottomButtonContainer>
     </DetailWrapper>

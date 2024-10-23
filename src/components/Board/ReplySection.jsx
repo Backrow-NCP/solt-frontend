@@ -87,7 +87,7 @@ const ReplySection = ({ boardData }) => {
         memberId: getMemberId(), // 적절한 memberId로 설정
         member: { name: getMemberName() },
         parentReplyId: null, // 부모 댓글 ID는 null
-        regDate: new Date().toISOString(),
+        regDate: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }),
       };
 
       try {

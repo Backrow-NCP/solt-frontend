@@ -11,14 +11,9 @@ import defaultImage from '../../assets/images/sample/nonImage.jpg';
 const BoardItem = ({ board }) => {
   const navigate = useNavigate();
 
-  // 현재 페이지 및 페이지 크기 상태 관리
-  const [page, setPage] = useState(0);
-  const [size] = useState(5); // 고정된 페이지 크기
-
   const handleClick = async () => {
     try {
       navigate(`/board/detail/${board.boardId}`);
-      setPage(prevPage => prevPage + 1); // 예시로 다음 페이지로 이동
     } catch (error) {
       console.error('게시물 데이터를 가져오는 데 실패했습니다:', error);
     }
