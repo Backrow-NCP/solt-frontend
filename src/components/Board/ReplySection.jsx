@@ -32,6 +32,7 @@ const ReplySection = ({ boardData }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [replyContent, setReplyContent] = useState({}); // 초기 댓글 내용 및 수정 댓글 내용 저장
   const [pageData, setPageData] = useState({});
+  const [loading, setLoading] = useState(false);
   const indexOfLastItem = pageData.page * pageData.size;
   const indexOfFirstItem = indexOfLastItem - pageData.size;
   const pageSize = 5; // 요청할 사이즈
@@ -42,36 +43,37 @@ const ReplySection = ({ boardData }) => {
 
   console.log('멤버이름확인용', getMemberName());
   useEffect(() => {
+    setupInterceptors(setLoading);
     const memberId = getMemberId(); // 현재 로그인된 사용자 ID 가져오기
   }, []);
 
+  const fetchReplies = async params => {
+    console.log('보드데이터 잘 왔나? 댓글 섹션', boardData);
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/replies/list/${boardData.boardId}`,
+        { params: requestParams } // 페이지는 1, 사이즈는 5로 요청
+      );
+      const data = response.data;
+      console.log('불러온 댓글 데이터', data);
+      console.log('불러온 댓글 페이지데이터', pageData);
+
+      setComments(data?.dtoList || []);
+      setPageData({
+        page: data.page,
+        size: data.size,
+        total: data.total,
+        startPage: data.startPage,
+        endPage: data.endPage,
+        prev: data.prev,
+        next: data.next,
+      });
+    } catch (error) {
+      console.error('Error fetching replies:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchReplies = async params => {
-      console.log('보드데이터 잘 왔나? 댓글 섹션', boardData);
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/replies/list/${boardData.boardId}`,
-          { params: requestParams } // 페이지는 1, 사이즈는 5로 요청
-        );
-        const data = response.data;
-        console.log('불러온 댓글 데이터', data);
-        console.log('불러온 댓글 페이지데이터', pageData);
-
-        setComments(data?.dtoList || []);
-        setPageData({
-          page: data.page,
-          size: data.size,
-          total: data.total,
-          startPage: data.startPage,
-          endPage: data.endPage,
-          prev: data.prev,
-          next: data.next,
-        });
-      } catch (error) {
-        console.error('Error fetching replies:', error);
-      }
-    };
-
     fetchReplies(); // 페이지 1로 첫 요청
   }, [requestParams, boardData.boardId]); // boardId가 변경될 때마다 댓글을 새로 가져옴
 
@@ -102,6 +104,7 @@ const ReplySection = ({ boardData }) => {
             ...newReply,
             replyId: response.data.replyId,
             regDate: new Date().toISOString(),
+            member: { memberId: newReply?.memberId },
           },
         ]);
         setMainInputValue(''); // 메인 입력란 초기화
@@ -365,6 +368,19 @@ const ReplySection = ({ boardData }) => {
     //실제 로직은 axios put
     const updatedContent = replyContent[replyId]; // 수정된 내용 가져오기
     console.log('수정된 댓글 내용:', updatedContent);
+    const data = {
+      content: updatedContent,
+    };
+    apiClient
+      .put(`/replies/${replyId}`, data)
+      .then(res => {
+        fetchReplies();
+      })
+      .catch(err => {
+        console.error(err);
+        alert('댓글 수정에 실패했습니다.');
+      });
+
     setIsEditing(null); // 수정 모드 비활성화
   };
 
