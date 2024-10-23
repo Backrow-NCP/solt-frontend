@@ -4,7 +4,7 @@ import BoardForm from '../../components/Board/BoardForm';
 import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
 import { getMemberId } from '../../utils/token/tokenUtils';
 
-const Edit = () => {
+const Edit = isEditMode => {
   const location = useLocation(); // 게시글 수정 시 기존 데이터를 받음
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -65,6 +65,14 @@ const Edit = () => {
     }
   };
 
+  const PlanData = {
+    planId: plan.planId,
+    startDate: plan.startDate,
+    endDate: plan.endDate,
+    title: plan.title,
+    location: plan.location,
+  };
+
   return (
     <div className="inner">
       <h2
@@ -83,7 +91,8 @@ const Edit = () => {
           EditModeContent={content} // 기존 게시글 내용 전달
           EditModeTitle={title} // 기존 제목 전달
           EditModeFileName={fileName} // 기존 파일명 전달
-          EditModeplanId={planData.planId} // 플랜 데이터 전달
+          EditModePlanData={planData} // 플랜 데이터 전달
+          isEditMode={true}
         />
       ) : (
         <p>데이터를 불러오는 중입니다...</p>

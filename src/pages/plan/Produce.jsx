@@ -227,7 +227,7 @@ const Produce = () => {
 
   // 각 플랜 수정
   const handleModifyClick = useCallback((option, placeId) => {
-    console.log('플랜 수정!!!!', placeId);
+    console.log('플랜 수정', placeId);
     setIsEditing(true);
     setSelectedOption({ option, placeId });
   }, []);
@@ -444,7 +444,7 @@ const Produce = () => {
         // 데이터 업데이트 후 저장
         response.data.planId = plan.planId;
         sessionStorage.setItem('planData', JSON.stringify(response.data));
-        alert('플랜이 수정되었습니다.');
+        // alert('플랜이 수정되었습니다.');
 
         window.location.reload();
       } catch (error) {

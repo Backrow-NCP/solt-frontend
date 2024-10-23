@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { apiNoToken } from '../../config/AxiosConfig'; // apiNoToken 불러오기
 import LoginStyles from '../../styles/auth/login';
 import Button from '../../components/Button';
+import PasswordManagement from './PasswordManagement.jsx';
 
 const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
   const [email, setEmail] = useState('');

@@ -193,7 +193,7 @@ const BoardDetail = ({ boardData }) => {
           </ButtonContainerStyled>
         )}
         {/* ReplySection 컴포넌트 삽입 */}
-        <ReplySection boardId={boardData.boardId} />
+        <ReplySection boardData={boardData} />
       </BoardContainer>
     </>
   );

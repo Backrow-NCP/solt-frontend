@@ -236,6 +236,36 @@ function ProfileEdit() {
       window.alert('프로필 수정 중 오류가 발생했습니다.');
     }
   };
+
+  const handleAccountDelete = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        window.alert('로그인이 필요합니다.');
+        navigate('/auth/login');
+        return;
+      }
+  
+      if (window.confirm('정말로 회원탈퇴를 하시겠습니까?')) {
+        const response = await apiClient.delete('/members', {
+          headers: {
+            Authorization: token, // Bearer 토큰 전송
+          },
+        });
+  
+        if (response.status === 200) {
+          localStorage.removeItem('token');
+          window.alert('회원 탈퇴가 성공적으로 완료되었습니다.');
+          navigate('/');
+        }
+      }
+    } catch (error) {
+      console.error('회원 탈퇴 중 오류가 발생했습니다:', error);
+      window.alert('회원 탈퇴 중 오류가 발생했습니다.');
+    }
+  };
+  
   
   
 
@@ -367,10 +397,19 @@ function ProfileEdit() {
               </div>
             </div>
 
-            {/* 확인 버튼 */}
-            <Button color="blue" size="lg" onClick={handleSubmit}>
-              확인
-            </Button>
+            <div className="button_group">
+              <div className="confirm_button">
+                <Button color="blue" size="lg" onClick={handleSubmit}>
+                  확인
+                </Button>
+              </div>              
+              <div className="delete_button">
+                <button onClick={handleAccountDelete}>
+                  회원탈퇴
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

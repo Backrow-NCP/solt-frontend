@@ -69,10 +69,20 @@ const List = () => {
   // allBoardData가 존재할 경우 boardData와 pageData 분리
   const { dtoList: boardData, ...pageData } = allBoardData || {};
 
+  const bestBoardData = boardData
+    ? boardData.map(item => ({
+        ...item,
+        size: 10, // size를 10으로 설정
+      }))
+    : [];
+
+  console.log('bestBoardData 리스트페이지', bestBoardData);
+
   return (
     <div className="inner">
       <h2 style={{ textAlign: 'center', marginTop: '50px' }}>BEST 게시글</h2>
-      {boardData && <BestBoardList boardData={boardData} />}
+
+      {bestBoardData.length > 0 && <BestBoardList boardData={bestBoardData} />}
 
       <PlanContainer>
         <h2
