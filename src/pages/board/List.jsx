@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { apiNoToken } from '../../config/AxiosConfig';
 import BoardList from '../../components/Board/BoardList';
 import BestBoardList from '../../components/Board/BestBoardList';
 import Button from '../../components/Button';
@@ -18,6 +18,11 @@ const List = () => {
     page: 1, // 기본값: 1페이지
     size: 6, // 기본값: 6개
   });
+  const [bestRequestParams, setBestRequestParams] = useState({
+    page: 1,
+    size: 5,
+    order: "l",
+  });
 
   const handleWriteButton = () => {
     if (getToken()) {
@@ -30,11 +35,11 @@ const List = () => {
   // 데이터 가져오기 함수
   const fetchData = async params => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/boards/list`,
-        { params } // 요청 시 파라미터를 포함
-      );
-      setAllBoardData(response.data); // 전체 데이터 저장
+      apiNoToken.get(`/boards/list`, { params }) // 요청 시 파라미터를 포함
+      .then(res => {
+        console.log('전체 게시글:', res.data);
+        setAllBoardData(res.data); // 전체 데이터 저장
+      }).catch(console.error);
     } catch (err) {
       setError(err);
       console.error('데이터 가져오기 실패:', err);
@@ -75,23 +80,13 @@ const List = () => {
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>오류 발생: {error.message}</div>;
 
-  // allBoardData가 존재할 경우 boardData와 pageData 분리
   const { dtoList: boardData, ...pageData } = allBoardData || {};
-
-  const bestBoardData = boardData
-    ? boardData.map(item => ({
-        ...item,
-        size: 10, // size를 10으로 설정
-      }))
-    : [];
-
-  console.log('bestBoardData 리스트페이지', bestBoardData);
 
   return (
     <div className="inner">
       <h2 style={{ textAlign: 'center', marginTop: '50px' }}>BEST 게시글</h2>
 
-      {bestBoardData.length > 0 && <BestBoardList boardData={bestBoardData} />}
+      <BestBoardList bestRequestParams={bestRequestParams}/>
 
       <PlanContainer>
         <h2

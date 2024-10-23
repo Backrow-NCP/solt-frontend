@@ -14,13 +14,13 @@ import {
   OverlayBlack,
 } from '../../styles/board/bestBoardList';
 import defaultImage from '../../assets/images/sample/nonImage.jpg';
-import axios from 'axios';
+import { apiNoToken } from '../../config/AxiosConfig';
 
-const BestBoardList = () => {
+const BestBoardList = ({ bestRequestParams }) => {
   const navigate = useNavigate();
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [boardsData, setBoardsData] = useState(null);
 
   const settings = {
     dots: true,
@@ -35,32 +35,17 @@ const BestBoardList = () => {
   };
 
   // 데이터 가져오기 함수
-  const fetchData = async () => {
-    const params = {
-      page: 1, // 페이지 1
-      size: 10, // 사이즈 5
-    };
-
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/boards/list`,
-        { params }
-      );
-      setItems(response.data.dtoList || []); // dtoList에서 데이터 가져오기
-      response.data.dtoList.forEach(item => {
-        console.log(item);
-      });
-    } catch (err) {
-      setError(err);
-      console.error('게시글 데이터 가져오기 실패:', err);
-    } finally {
-      setLoading(false);
-    }
+  const fetchData = params => {
+    apiNoToken.get(`/boards/list`, { params })
+    .then(res => {
+      console.log('베스트 게시글:', res.data?.dtoList);
+      setBoardsData(res.data?.dtoList);
+    }).catch(console.error);
   };
 
   // 컴포넌트 마운트 시 데이터 가져오기
   useEffect(() => {
-    fetchData();
+    fetchData(bestRequestParams);
   }, []);
 
   const handleClick = boardId => {
@@ -93,21 +78,21 @@ const BestBoardList = () => {
 
   // 이미지 URL 설정
   const imageUrl = item =>
-    item.images?.length > 0
+    item?.images?.length > 0
       ? `${process.env.REACT_APP_IMAGE_STORAGE_URL}${item.images[0].fileName}`
       : defaultImage; // 기본 이미지 설정
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>오류 발생: {error.message}</div>;
 
-  console.log('bestBoardList의 items', items);
-  console.log('bestBoardList의 이미지 url 체크', imageUrl(items));
+  console.log('bestBoardList의 items', boardsData);
+  console.log('bestBoardList의 이미지 url 체크', imageUrl(boardsData));
   return (
     <>
       <GlobalStyle />
       <CarouselContainer>
         <Slider {...settings}>
-          {items.map((item, index) => (
+          {boardsData && boardsData.map((item, index) => (
             <ImageWrapper
               key={item.boardId}
               onClick={() => handleClick(item.boardId)}
