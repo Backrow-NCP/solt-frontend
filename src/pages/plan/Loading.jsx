@@ -41,6 +41,8 @@ const Loading = () => {
   const settings = {
     infinite: true,
     speed: 500,
+		autoplay: true,
+    autoplaySpeed: 2500,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
@@ -51,6 +53,7 @@ const Loading = () => {
   return (
     <PlanLoad>
       <div className="background"></div>
+			
       <div className="load_cont">
         <div>
 					<div className="load_icon"><img src={LoadingGIF} alt="로딩중" /></div>

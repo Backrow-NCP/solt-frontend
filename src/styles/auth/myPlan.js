@@ -1,14 +1,13 @@
-// src/styles/auth/MyPlanStyles.js
-
 import { createGlobalStyle } from 'styled-components';
 
 const MyPlanStyles = createGlobalStyle`
-  .main-container {
+  .myplan {
     display: flex;
     flex-direction: row;
     width: 80%;
     gap: 20px;
     max-width: 1600px;
+    max-height: 1200px;
     margin: 80px auto 0;
   }
 
@@ -55,16 +54,15 @@ const MyPlanStyles = createGlobalStyle`
 
   /* 반응형 설정 */
   @media (max-width: 1024px) {
-    .main-container {
-      flex-direction: column;
+    .myplan {
+      flex-direction: column; /* 사이드바와 컨텐츠를 수직으로 배치 */
     }
 
     .sidebar {
       width: 100%;
+      margin-bottom: 20px; /* 사이드바 아래 여백 추가 */
       position: relative;
-      top: 0;
-      left: 0;
-      margin-bottom: 20px;
+      margin-top: 0;
     }
 
     .my-plan-container {

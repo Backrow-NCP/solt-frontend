@@ -94,6 +94,9 @@ const GlobalStyles = createGlobalStyle`
   .pt_pink {
     color: #F78C9F;
   }
+	.pt_black {
+    color: black;
+  }
 
   /* font */
   h2 {
@@ -151,117 +154,138 @@ const GlobalStyles = createGlobalStyle`
 	/* header */
 	header {
 		position: sticky;
+		top: 0;
+		z-index: 10;
+		height: 100px;
+		background: rgba(255, 255, 255, 0.8);
 
-    top: 0;
-    z-index: 10;
-    height: 100px;
-    background: rgba(255,255,255,0.8);
+		.inner {
+			align-items: center;
+			justify-content: space-between;
+			height: 100%;
+		}
 
+		nav ul {
+			gap: 80px;
+
+			li {
+				a {
+					display: block;
+					font-size: 18px;
+					transition: 0.2s;
+
+					&:hover {
+						color: #15B8FF;
+					}
+				}
+
+				&.active a {
+					font-weight: 600;
+				}
+			}
+		}
+
+		.login {
+			gap: 10px;
+
+			a:first-child {
+				margin-right: 16px;
+			}
+		}
 	}
-	header .inner {
-		align-items: center;
-    justify-content: space-between;
-    height: 100%;
-	}
-	header nav ul {
-		gap: 80px;
-	}
-	header nav ul li a {
-		display: block;
-		font-size: 18px;
-		transition: 0.2s;
-	}
-	header nav ul li a:hover {
-		color: #15B8FF;
-	}	
-	header nav ul li.active a {
-		font-weight: 600;
-	}
-
-  header .login {
-    gap: 10px;
-  }
-
-
-  header .login a:first-child {
-    margin-right: 16px;
-  }
-
 
 	/* footer */
   footer {
     margin-top: 200px;
-    padding: 80px 0;
-    border-top: 1px solid #ededed;
-    background: #fff;
-  }
-  footer .inner {
-    position: relative;
-  }
-  footer .logo a {
-    display: block;
-  }
-  footer .logo img {
-    width: 200px;
-  }
-  footer .info {
-    margin-left: 80px;
-  }
-  footer .info span {
-    display: inline-block;
-    margin: 0 20px 5px 0;
-  }
-  footer .info p {
-    margin-top: 10px;
-  }
-  footer .menu {
-    position: absolute;
-    top: 0;
-    right: 0;
-    text-align: right;
-  }
-  footer .menu li:first-child {
-    margin-bottom: 10px;
-  }
-  footer .menu li a {
-    color: #777;
-    transition: 0.2s;
-  }
-  footer .menu li:hover a {
-    color: #000;
+		padding: 80px 0;
+		border-top: 1px solid #ededed;
+		background: #fff;
+
+		.inner {
+			position: relative;
+		}
+
+		.logo {
+			a {
+				display: block;
+			}
+
+			img {
+				width: 200px;
+			}
+		}
+
+		.info {
+			margin-left: 80px;
+
+			span {
+				display: inline-block;
+				margin: 0 20px 5px 0;
+			}
+
+			p {
+				margin-top: 10px;
+			}
+		}
+
+		.menu {
+			position: absolute;
+			top: 0;
+			right: 0;
+			text-align: right;
+
+			li:first-child {
+				margin-bottom: 10px;
+			}
+
+			li {
+				a {
+					color: #777;
+					transition: 0.2s;
+
+					&:hover {
+						color: #000;
+					}
+				}
+			}
+		}
   }
 
   .floating-wrapper {
     position: fixed;
-    right: 10vh;
-    bottom: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* 팝업이 오른쪽에서 나타나도록 조정 */
-    gap: 6px; /* 버튼 사이 간격 */
-    z-index: 10;
+		right: 20vh;
+		bottom: 100px;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 6px;
+		z-index: 10;
+
+		.floating {
+			font-size: 0;
+
+			li:first-child {
+				margin-bottom: 6px;
+			}
+
+			li {
+				a {
+					display: block;
+				}
+			}
+		}
   }
 
-  footer .floating {
-
-    font-size: 0;
-  }
-  footer .floating li:first-child {
-    margin-bottom: 6px;
-  }
-  footer .floating li a {
-    display: block;
-  }
-    .chatbot-popup {
-    position: absolute; /* 팝업이 고정된 위치에 나타나도록 */
-    bottom: 60px; /* 필요한 위치로 조정 */
+  .chatbot-popup {
+    position: absolute;
+    bottom: 60px;
     right: 0;
-    width: 350px; /* 팝업의 너비 */
-    background: white;
+    z-index: 20;
+    width: 350px;
+    padding: 20px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    padding: 20px;
-    z-index: 20; /* 팝업이 버튼들 위에 표시되도록 */
+    background: white;
   }
 
 	// 구글맵 검색
@@ -296,10 +320,8 @@ const GlobalStyles = createGlobalStyle`
       font-size: 14px;
     }
     .inner {
-
-		  max-width: 1200px;
-
-    }
+			max-width: 1200px;
+		}
     .size_xxs {
       font-size: 11px;
     }
@@ -317,6 +339,10 @@ const GlobalStyles = createGlobalStyle`
     }
     .size_xl {
       font-size: 20px;
+    }
+
+		.floating-wrapper {
+      right: 5vh;
     }
   }
 
@@ -348,36 +374,42 @@ const GlobalStyles = createGlobalStyle`
 
     header {
       height: 85px;
-    }
-    header .logo {
-      width: 110px;
-    }
-    header .logo a {
-      display: block;
-    }
-    header nav ul li a {
-      font-size: 15px;
-      font-weight: 500;
+
+			.logo {
+				width: 110px;
+
+				a {
+					display: block;
+				}
+			}
+
+			nav ul li {
+				a {
+					font-size: 14px;
+					font-weight: 500;
+				}
+			}
     }
 
     footer {
       margin-top: 150px;
-      padding: 60px 0;
-    }
-    footer .logo {
-      width: 110px;
-    }
-    footer .info {
-      margin-left: 40px;
+			padding: 60px 0;
+
+			.logo {
+				width: 110px;
+			}
+
+			.info {
+				margin-left: 40px;
+			}
     }
 
-    footer .floating-wrapper {
-
-      right: 5vh;
+    .floating-wrapper {
+			.floating img {
+				width: 38px;
+			}
     }
-    footer .floating img {
-      width: 38px;
-    }
+    
   }
 
   @media (max-width: 700px) {
@@ -390,47 +422,56 @@ const GlobalStyles = createGlobalStyle`
     .size_lg {
       font-size: 15px;
     }
+		h2 {
+			font-size: 28px;
+		}
 
     header {
       padding: 15px 0 6px;
-    }
-    header .inner {
-      align-items: unset;
-      position: relative;
-    }
-    header .logo {
-      width: 100px;
-    }
-    header nav {
-      width: 100%;
-    }
-    header nav ul {
-      justify-content: center;
-      gap: 35px;
-    }
-    header .log {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-    header .log .btn_blk {
-      display: none;
+
+			.inner {
+				align-items: unset;
+				position: relative;
+			}
+
+			.logo {
+				width: 100px;
+			}
+
+			nav {
+				width: 100%;
+
+				ul {
+					justify-content: center;
+					gap: 35px;
+				}
+			}
+
+			.log {
+				position: absolute;
+				top: 0;
+				right: 0;
+
+				.btn_blk {
+					display: none;
+				}
+			}
     }
 
     footer {
       margin-top: 100px;
-      padding: 40px 0 50px;
-    }
-    footer .info {
-      width: 100%;
-      margin: 20px 0 0;
-    }
+			padding: 40px 0 50px;
 
-    footer .floating-wrapper {
-      right: 4%;
-      bottom: 60px;
-
+			.info {
+				width: 100%;
+				margin: 20px 0 0;
+			}
     }
+		
+		.floating-wrapper {
+			right: 4%;
+			bottom: 60px;
+		}
   }
 `;
 

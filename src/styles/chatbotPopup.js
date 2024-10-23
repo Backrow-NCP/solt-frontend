@@ -86,15 +86,16 @@ const fadeIn = keyframes`
   }
 `;
 
+
 export const ChatBubble = styled.div`
   max-width: 70%;
   padding: 10px 15px;
-  margin-bottom: 10px;
-  margin-top: 10px;
+  margin-bottom: 5px; /* 말풍선 사이 간격 줄이기 */
+  margin-top: 5px; /* 말풍선 사이 간격 줄이기 */
   border-radius: 15px;
-  background-color: ${({ isUser }) => (isUser ? '#6ACFFF' : '#f1f1f1')};
-  color: ${({ isUser }) => (isUser ? '#fff' : '#333')};
-  align-self: ${({ isUser }) => (isUser ? 'flex-end' : 'flex-start')};
+  background-color: ${({ $isUser }) => ($isUser ? '#6ACFFF' : '#f1f1f1')};
+  color: ${({ $isUser }) => ($isUser ? '#fff' : '#333')};
+  align-self: ${({ $isUser }) => ($isUser ? 'flex-end' : 'flex-start')};
   font-size: 14px;
   line-height: 1.4;
   animation: ${fadeIn} 0.4s ease-in-out;
@@ -104,6 +105,7 @@ export const ChatBubble = styled.div`
     font-size: 13px;
   }
 `;
+
 
 export const InputWrapper = styled.div`
   display: flex;

@@ -1,37 +1,31 @@
-
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { BoardContainer } from '../../styles/board/boardList';
-import Pagination from '../../components/Board/Pagination';
-import BoardItem from '../Board/BoardItem';
+import Pagination from './Pagination';
+import BoardItem from './BoardItem';
 
-const BoardList = () => {
-  const [items, setItems] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+const BoardList = ({
+  boardData, // boardData를 props로 받음
+  pageData,
+  onPageChange, // 부모로부터 받은 페이지 변경 함수
+  onNextGroup,
+  onPrevGroup,
+}) => {
+  const boardDetails = boardData.map(board => ({
+    boardId: board.boardId,
+    endDate: board.plan.endDate,
+    startDate: board.plan.startDate,
+    member: board.member,
+    title: board.title,
+    image: board.images,
+    location: board.plan?.location,
+    regDate: board.regDate,
+    plan: board.plan,
+    likeCount: board.likeCount,
+    modDate: board.modDate,
+  }));
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const url = `${process.env.REACT_APP_API_URL}/board/list`;
-        // const params = `?page=${currentPage}&size=${itemsPerPage}`;
-        // const fullUrl = url + params; // 전체 URL 확인
-        // console.log('Fetching data from:', fullUrl); // 전체 URL 로그
-        // const response = await axios.get(fullUrl);
-        const response = await axios.get('/sampledata.json');
-        console.log(response);
-        setItems(response.data.dtoList); // 데이터 배열을 상태에 저장
-      } catch (error) {
-        console.error('데이터를 가져오는 중 오류 발생:', error);
-      }
-    };
-
-    fetchData();
-  }, [currentPage, itemsPerPage]); // currentPage와 itemsPerPage 변경 시 fetchData 호출
-
-  const totalPages = Math.ceil(items.length / itemsPerPage);
-
-  if (!Array.isArray(items) || items.length === 0) {
+  // boardData가 없거나 비어있는 경우 메시지 출력
+  if (!Array.isArray(boardData) || boardData.length === 0) {
     return (
       <h3 style={{ textAlign: 'center', marginTop: '50px' }}>
         게시글이 없습니다.
@@ -42,29 +36,19 @@ const BoardList = () => {
   return (
     <>
       <BoardContainer>
-        {items.map(item => (
-          <BoardItem
-            key={item.boardId}
-            item={item}
-            boardId={item.boardId} // boardId를 키로 사용
-            title={item.title}
-            content={item.content}
-            imageUrl={item?.images[0]?.fileName || '/sampleImage/nonImage.jpg'}
-            location={item.location} // location이 필요하면 추가
-            date={new Date(item.regDate).toLocaleDateString()} // 등록일을 원하는 형식으로 포맷
-            author={item.member.name} // 작성자 이름
-            duration={item.duration} // duration이 필요하면 추가
-          />
+        {boardDetails.map(board => (
+          <BoardItem key={board.boardId} board={board} />
         ))}
       </BoardContainer>
+
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
+        pageData={pageData} // pageData를 전체로 넘겨줍니다.
+        onPageChange={onPageChange} // 부모로부터 받은 페이지 변경 핸들러
+        onNextGroup={onNextGroup} // 다음 그룹 핸들러
+        onPrevGroup={onPrevGroup} // 이전 그룹 핸들러
       />
     </>
   );
 };
 
 export default BoardList;
-

@@ -1,46 +1,202 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate import 추가
+import { getMemberId } from '../../utils/token/tokenUtils';
+import {
+  InfoTextTitleContainer,
+  DateAuthorContainer,
+  Title,
+  Content,
+  InfoText,
+  Image,
+  ButtonContainer,
+  Button,
+  Thumbnail,
+  ThumbnailContainer,
+  ButtonContainerStyled,
+  EditButton,
+  DeleteButton,
+  BoardContainer,
+} from '../../styles/board/boardDetail'; // styled-components를 가져옵니다.
 
-const BoardDetail = () => {
-  const { boardId } = useParams(); // URL에서 boardId를 가져옴
-  const [board, setBoard] = useState(null);
+import PrevButton from '../../assets/images/prevButton.svg';
+import NextButton from '../../assets/images/nextButton.svg';
 
+import ReplySection from './ReplySection'; // ReplySection을 가져옵니다.
+import defaultImage from '../../assets/images/sample/nonImage.jpg';
+import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
+
+const BoardDetail = ({ boardData }) => {
+  console.log('나 겟멤버 함수', getMemberId());
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate(); // navigate 변수를 정의합니다.
   useEffect(() => {
-    const fetchBoardData = async () => {
-      try {
-        const response = await axios.get(`/sampleData.json`); // public 폴더 안에 있는 JSON 파일에서 데이터 가져오기
+    setupInterceptors(setLoading);
 
-        const boardData = response.data.dtoList.find(
-          item => item.boardId === parseInt(boardId)
-        );
-        setBoard(boardData);
-      } catch (error) {
-        console.error('게시물 데이터를 불러오는 중 오류 발생:', error);
+    const handleKeyDown = event => {
+      if (event.key === 'ArrowRight') {
+        handleNextImage();
+      } else if (event.key === 'ArrowLeft') {
+        handlePrevImage();
       }
     };
 
-    fetchBoardData();
-  }, [boardId]);
+    window.addEventListener('keydown', handleKeyDown);
 
-  if (!board) {
-    return <h3>게시물 정보를 불러오는 중입니다...</h3>;
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentImageIndex, boardData]);
+
+  const handleNextImage = () => {
+    if (boardData) {
+      setCurrentImageIndex(
+        prevIndex => (prevIndex + 1) % boardData.images.length
+      );
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (boardData) {
+      setCurrentImageIndex(
+        prevIndex =>
+          (prevIndex - 1 + boardData.images.length) % boardData.images.length
+      );
+    }
+  };
+
+  const handleThumbnailClick = index => {
+    setCurrentImageIndex(index);
+  };
+
+  console.log('날좀보소날좀보소날좀보소', boardData.images);
+  const handleEdit = async () => {
+    if (window.confirm('게시글을 수정하시겠습니까?')) {
+      try {
+        navigate(`/board/edit/${boardData.boardId}`, {
+          state: {
+            boardId: boardData.boardId,
+            content: boardData.content,
+            title: boardData.title,
+            fileName: boardData.images,
+            plan: boardData.plan,
+            memberId: boardData.member.memberId,
+          },
+        }); // navigate 호출 종료
+      } catch (error) {
+        console.error('Error fetching edit data:', error);
+      }
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm('게시글을 삭제하시겠습니까?')) {
+      try {
+        const response = await apiClient.delete(`boards/${boardData.boardId}`);
+        console.log('Delete Response:', response.data);
+
+        // 삭제 성공 후 알림창 띄우기
+        alert('정상적으로 삭제되었습니다!');
+
+        // 삭제 성공 후 게시글 목록 페이지로 이동
+        navigate('/board/list');
+      } catch (error) {
+        console.error('Error deleting the post:', error);
+        alert('게시글 삭제 중 오류가 발생했습니다. 다시 시도해 주세요.');
+      }
+    }
+  };
+
+  const thumbnailize = '?type=f&w=50&h=50'; // 썸네일 크기 설정
+  const imageUrl =
+    boardData.images?.length > 0
+      ? `${process.env.REACT_APP_IMAGE_STORAGE_URL}${boardData.images[currentImageIndex].fileName}`
+      : defaultImage; // 기본 이미지 설정
+
+  if (!boardData) {
+    return console.log('!boardData일때, 보드디테일', boardData);
   }
+  console.log('보드데이터 체크용, 보드디테일', boardData);
 
+  const calculateDuration = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    const dayInMilliseconds = 24 * 60 * 60 * 1000;
+
+    // 두 날짜 차이 계산
+    const diffInMilliseconds = end - start;
+    const diffInDays = Math.round(diffInMilliseconds / dayInMilliseconds);
+
+    if (diffInDays === 0) {
+      return '당일치기';
+    }
+
+    const nights = diffInDays; // 숙박 일수
+    const days = nights + 1; // 총 일수
+
+    return `${nights}박 ${days}일`;
+  };
+  const currentMemberId = getMemberId();
   return (
-    <div className="board-detail">
-      <h2>{board.title}</h2>
-      <p>{board.content}</p>
-      <p>작성자: {board.member.name}</p>
-      <img
-        src={board.images[0]?.fileName || '/sampleImage/nonImage.jpg'}
-        alt="게시물 이미지"
-      />
-      <p>위치: {board.location}</p>
-      <p>기간: {board.duration}</p>
-      <p>등록일: {new Date(board.regDate).toLocaleDateString()}</p>
-      <p>좋아요: {board.likeCount}</p>
-    </div>
+    <>
+      <BoardContainer>
+        <InfoTextTitleContainer>
+          <InfoText>
+            [{boardData.plan.location}] [
+            {calculateDuration(
+              boardData.plan.startDate,
+              boardData.plan.endDate
+            )}
+            ]
+          </InfoText>
+          <Title>{boardData.title}</Title>
+        </InfoTextTitleContainer>
+        <DateAuthorContainer>
+          {new Date(boardData.regDate).toLocaleDateString()}
+          {new Date(boardData.regDate).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          })}{' '}
+          / {boardData.member.name} 님
+        </DateAuthorContainer>
+
+        <ButtonContainer>
+          <Button onClick={handlePrevImage}>
+            <img src={PrevButton} alt="이전 이미지" />
+          </Button>
+          <Image src={imageUrl} alt="게시물 이미지" />
+          <Button onClick={handleNextImage}>
+            <img src={NextButton} alt="다음 이미지" />
+          </Button>
+        </ButtonContainer>
+
+        <ThumbnailContainer>
+          {boardData.images.map((image, index) => (
+            <Thumbnail
+              key={image.fileName}
+              src={`${process.env.REACT_APP_IMAGE_STORAGE_URL}${image.fileName}${thumbnailize}`} // 썸네일 URL 생성
+              alt={`썸네일 ${index + 1}`}
+              className={currentImageIndex === index ? 'active' : ''}
+              onClick={() => handleThumbnailClick(index)}
+            />
+          ))}
+        </ThumbnailContainer>
+
+        <Content>{boardData.content}</Content>
+
+        {currentMemberId === boardData.member.memberId && (
+          <ButtonContainerStyled>
+            <EditButton onClick={handleEdit}>수정</EditButton>
+            <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
+          </ButtonContainerStyled>
+        )}
+        {/* ReplySection 컴포넌트 삽입 */}
+        <ReplySection boardData={boardData} />
+      </BoardContainer>
+    </>
   );
 };
 

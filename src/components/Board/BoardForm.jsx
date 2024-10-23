@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Axios를 사용하여 API 요청을 보냅니다.
 import PlanPopup from './PlanPopup';
 import Button from '../../components/Button';
 import PlanSelectBox from './PlanSelectBox'; // PlanSelectBox 임포트
+import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
 import {
   Form,
   InputGroup,
@@ -19,8 +22,19 @@ import {
   ImageStyledBox,
   RemoveAllButton,
 } from '../../styles/board/boardForm';
+import { getMemberId } from '../../utils/token/tokenUtils';
 
-const BoardForm = ({ onSubmit, buttonText, initialData }) => {
+const BoardForm = ({
+  onSubmit,
+  buttonText,
+  initialData,
+  planData,
+  EditModeContent,
+  EditModeTitle,
+  EditModeFileName,
+  EditModePlanData,
+  isEditMode,
+}) => {
   const [boardTitle, setBoardTitle] = useState(initialData?.title || '');
   const [boardContent, setBoardContent] = useState(initialData?.content || '');
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -29,21 +43,71 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
     initialData?.selectedPlan || null
   ); // 초기 선택된 플랜
   const imageContainerRef = useRef(null);
+  const navigate = useNavigate();
+  const [boardImages, setBoardImages] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
-  const handleFileChange = e => {
-    const files = Array.from(e.target.files);
-    const validFiles = files.filter(file => file.type.startsWith('image/'));
+  console.log('EditModeFileName 조회', EditModeFileName);
+  const handleFileChange = async e => {
+    const newFiles = Array.from(e.target.files);
+    const validFiles = newFiles.filter(file => file.type.startsWith('image/'));
 
-    if (validFiles.length !== files.length) {
+    if (validFiles.length !== newFiles.length) {
       alert('이미지 파일만 업로드 가능합니다.');
+      return;
     }
 
-    setSelectedFiles(prevFiles => [...prevFiles, ...validFiles]);
+    // 중복된 파일을 걸러내기 위해 기존 선택된 파일과 비교
+    const newUniqueFiles = validFiles.filter(
+      newFile =>
+        !selectedFiles.some(
+          file => file.name === newFile.name && file.size === newFile.size
+        )
+    );
+    console.log(newFiles);
+    console.log(validFiles);
+    console.log(newUniqueFiles);
+
+    if (newUniqueFiles.length > 0) {
+      const formData = new FormData();
+      newUniqueFiles.forEach(file => {
+        formData.append('files', file);
+      });
+
+      try {
+        // 파일 업로드 요청
+        const uploadResponse = await apiClient.post(
+          `${process.env.REACT_APP_API_URL}/files`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        // 업로드 응답에서 uuid 값을 추출하여 배열에 담음
+        const uploadedUUids = uploadResponse.data.filenames;
+        console.log('파일 업로드 응답:', uploadedUUids);
+        // uploadedFiles 상태에 새로 업로드된 파일들의 uuid를 추가
+        setUploadedFiles(prevFiles => [...prevFiles, ...uploadedUUids]);
+        console.log('업로디드 파일:', [...uploadedFiles, ...uploadedUUids]);
+        // 기존 파일 배열에 새로 선택한 파일 추가
+        setSelectedFiles(prevFiles => [...prevFiles, ...newUniqueFiles]);
+        console.log('셀렉티드 파일:', [...selectedFiles, ...newUniqueFiles]);
+      } catch (error) {
+        console.error('파일 업로드 실패:', error);
+      }
+    } else {
+      alert('중복된 파일은 업로드할 수 없습니다.');
+    }
   };
 
   const handleRemoveFile = indexToRemove => {
     if (window.confirm('이 이미지를 정말로 제거하시겠습니까?')) {
       setSelectedFiles(prevFiles =>
+        prevFiles.filter((_, index) => index !== indexToRemove)
+      );
+      setUploadedFiles(prevFiles =>
         prevFiles.filter((_, index) => index !== indexToRemove)
       );
     }
@@ -65,6 +129,7 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
 
   const handlePlanSelect = plan => {
     setSelectedPlan(plan); // 선택된 플랜 상태 업데이트
+    console.log('팝업에서 선택한 플랜 데이터', plan);
     closePopup();
   };
 
@@ -73,12 +138,9 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
     const formData = {
       title: boardTitle,
       content: boardContent,
-      memberId: 1, // 임시 사용자 ID
-      planId: selectedPlan.id,
       // selectedPlan, // 선택된 플랜 추가
-      boardImages: selectedFiles.map((file, index) => ({
-        uuid: URL.createObjectURL(file),
-        fileName: file.name,
+      boardImages: uploadedFiles.map((file, index) => ({
+        fileName: file,
         ord: index,
       })),
     };
@@ -113,14 +175,44 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (EditModeFileName && Array.isArray(EditModeFileName)) {
+      setUploadedFiles(EditModeFileName.map(file => file.fileName));
+      const filePreviews = EditModeFileName.map(file => ({
+        file,
+        preview: `${process.env.REACT_APP_IMAGE_STORAGE_URL}${file.fileName}`,
+      }));
+      console.log(filePreviews);
+      setSelectedFiles(filePreviews);
+    }
+  }, [EditModeFileName]);
+
+  useEffect(() => {
+    if (EditModeTitle) {
+      setBoardTitle(EditModeTitle);
+    }
+    if (EditModeContent) {
+      setBoardContent(EditModeContent);
+    }
+  }, [EditModeTitle, EditModeContent]);
+
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
         <SectionContainer>
           <Title>나의 플랜</Title>
           <div style={{ position: 'relative', display: 'inline-block' }}>
-            <InputLabel htmlFor="plan" onClick={togglePopup}>
-              플랜 선택
+            <InputLabel
+              htmlFor="plan"
+              onClick={!isEditMode ? togglePopup : undefined} // 수정모드일 때 클릭 비활성화
+              style={{
+                borderColor: isEditMode ? 'red' : 'inherit', // isEditMode가 true면 빨간색
+                color: isEditMode ? 'red' : 'inherit', // isEditMode가 true면 빨간색
+                cursor: isEditMode ? 'default' : 'pointer', // isEditMode가 true면 커서를 기본값으로
+                pointerEvents: isEditMode ? 'none' : 'auto',
+              }}
+            >
+              {isEditMode ? '수정불가' : '플랜 선택'}
             </InputLabel>
             {isPopupOpen && (
               <PlanPopup
@@ -131,11 +223,16 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
                   top: '-5px',
                   left: '105%',
                 }}
+                planData={planData}
               />
             )}
           </div>
         </SectionContainer>
-        <PlanSelectBox selectedPlan={selectedPlan} />{' '}
+        <PlanSelectBox
+          selectedPlan={selectedPlan}
+          EditModePlanData={EditModePlanData}
+          isEditMode={isEditMode}
+        />
         {/* 선택한 플랜을 표시하는 컴포넌트 */}
         <InputGroup>
           <TitleInput
@@ -181,7 +278,7 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
             selectedFiles.map((file, index) => (
               <ImageContainer key={index}>
                 <ImageThumbnail
-                  src={URL.createObjectURL(file)}
+                  src={file.preview || URL.createObjectURL(file)}
                   alt={`thumbnail-${index}`}
                 />
                 <RemoveButton
@@ -202,7 +299,12 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
           )}
         </ImageStyledBox>
         <ButtonGroup>
-          <Button type="button" color="white" size="lg">
+          <Button
+            type="button"
+            color="white"
+            size="lg"
+            onClick={() => navigate(-1)}
+          >
             취소
           </Button>
           <Button type="submit" color="blue" size="lg">
@@ -215,4 +317,3 @@ const BoardForm = ({ onSubmit, buttonText, initialData }) => {
 };
 
 export default BoardForm;
-

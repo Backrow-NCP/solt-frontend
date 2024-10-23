@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 const PasswordResetStyles = createGlobalStyle`
-  .password-reset-popup-overlay {
+  .password_reset_popup_overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -16,7 +16,7 @@ const PasswordResetStyles = createGlobalStyle`
     animation: fadeIn 0.5s forwards; /* 팝업 배경 페이드인 */
   }
 
-  .password-reset-popup {
+  .password_reset_popup {
     background-color: #fff;
     padding: 30px;
     border-radius: 32px;
@@ -48,7 +48,7 @@ const PasswordResetStyles = createGlobalStyle`
     }
   }
 
-  .close-button {
+  .close_button {
     position: absolute;
     top: 15px;
     margin-right: 10px;
@@ -66,16 +66,16 @@ const PasswordResetStyles = createGlobalStyle`
     text-align: center;
   }
 
-  .password-reset-form {
+  .password_reset_form {
     display: flex;
     flex-direction: column;
   }
 
-  .input-group {
+  .input_group {
     margin-bottom: 15px;
   }
 
-  .input-group input {
+  .input_group input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -83,7 +83,7 @@ const PasswordResetStyles = createGlobalStyle`
     font-size: 16px;
   }
 
-  .password-reset-submit-button {
+  .password_reset_submit_button {
     width: 40%;
     padding: 10px;
     background-color: #000;

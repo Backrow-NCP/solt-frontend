@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -7,39 +7,38 @@ import {
   PlanName,
   PlanActions,
 } from '../../styles/board/planContainer';
-import itaewonImage from '../../assets/images/bn/area1.jpg';
-import jamsilImage from '../../assets/images/bn/area2.jpg';
-import gangnamImage from '../../assets/images/bn/area3.jpg';
-import jongroImage from '../../assets/images/bn/area4.jpg';
-import hongdaeImage from '../../assets/images/bn/area5.jpg';
 
-const PlanContainer = ({ plan, children }) => {
-  // 지역에 따른 이미지를 반환하는 함수
-  const getImageForArea = area => {
-    switch (area) {
-      case '이태원':
-        return itaewonImage;
-      case '잠실':
-        return jamsilImage;
-      case '강남':
-        return gangnamImage;
-      case '종로':
-        return jongroImage;
-      case '홍대':
-        return hongdaeImage;
-      default:
-        return '/images/default.jpg';
-    }
+// 각 지역에 맞는 이미지를 import
+import seoulImage from '../../assets/images/bn/plan_load_02.jpg';
+
+const PlanContainer = ({ plan, children, EditModePlanData }) => {
+  // 지역에 따라 이미지를 반환하는 함수
+  const getImageForLocation = area => {
+    return seoulImage; // 모든 경우에 서울 이미지 반환
   };
 
+  useEffect(() => {
+    console.log('plan container 에서 찍는 콘솔', EditModePlanData);
+  }, [EditModePlanData]); // EditModePlanData가 변경될 때마다 실행
+
+  // plan 객체가 존재하는 경우와 EditModePlanData의 첫 번째 요소가 존재하는 경우 처리
+  const activePlan =
+    EditModePlanData && EditModePlanData.length > 0
+      ? EditModePlanData[0]
+      : plan;
+
   return (
-    <PlanCard style={{ backgroundImage: `url(${getImageForArea(plan.area)})` }}>
+    <PlanCard
+      key={activePlan.id} // 고유한 키 필요
+      style={{
+        backgroundImage: `url(${getImageForLocation(activePlan.location)})`,
+      }}
+    >
       <PlanDetails>
-        <p className="plan-date weight_sb">{`${plan.startDate} ~ ${plan.endDate}`}</p>
-        <p className="plan-area weight_sb">{plan.area}</p>
+        <p className="plan_date weight_sb">{`${activePlan.startDate} ~ ${activePlan.endDate}`}</p>
       </PlanDetails>
       <PlanName>
-        <h2 className="plan-title weight_sb">{plan.title}</h2>
+        <h2 className="plan_title weight_sb">{activePlan.title}</h2>
       </PlanName>
       <PlanActions>{children}</PlanActions>
     </PlanCard>
@@ -49,12 +48,21 @@ const PlanContainer = ({ plan, children }) => {
 PlanContainer.propTypes = {
   plan: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    area: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
   }).isRequired,
   children: PropTypes.node,
+  EditModePlanData: PropTypes.arrayOf(
+    PropTypes.shape({
+      planId: PropTypes.number,
+      location: PropTypes.string,
+      startDate: PropTypes.string,
+      endDate: PropTypes.string,
+      title: PropTypes.string,
+    })
+  ).isRequired,
 };
 
 export default PlanContainer;

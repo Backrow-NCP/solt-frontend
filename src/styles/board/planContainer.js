@@ -5,13 +5,12 @@ export const PlanCard = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  display: flex;
   justify-content: flex-start; /* 혹은 center, space-around */
   width: 100%;
   height: 150px;
   padding: 20px;
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 20px;
   margin-bottom: 0px;
   position: relative;
   overflow: hidden;
