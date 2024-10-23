@@ -476,26 +476,24 @@ const Produce = () => {
   const handleAddPlace = useCallback(() => {
     // 선택한 날짜에 해당하는 장소들 필터링
     const formattedThisDate = days[selectedDay - 1]
-      .replace(/\s/g, '')
-      .replace(/\./g, '-')
-      .slice(0, -1);
-    const placesOnSelectedDay = places.filter(
-      place =>
-        new Date(place.startTime).toISOString().split('T')[0] ===
-        formattedThisDate
-    );
+			.replace(/\s/g, '')
+			.replace(/\./g, '-')
+			.slice(0, -1);
+
+			const placesOnSelectedDay = places.filter(
+				place => new Date(place.startTime).toISOString().split('T')[0] === formattedThisDate
+			);
 
     let newStartTime;
 
     if (placesOnSelectedDay.length > 0) {
       // 마지막 장소의 endTime을 기준으로 새로운 startTime 설정
       const lastPlace = placesOnSelectedDay[placesOnSelectedDay.length - 1];
-      const lastEndTime = new Date(lastPlace.endTime);
+  		const lastEndTime = new Date(lastPlace.endTime);
 
       // 마지막 endTime에 1시간 추가
       lastEndTime.setHours(lastEndTime.getHours() + 1);
-
-      newStartTime = lastEndTime.toISOString();
+  		newStartTime = lastEndTime.toISOString();
     } else {
       // 해당 날짜에 장소가 없을 경우
       const selectedDate = new Date(days[selectedDay - 1]);
