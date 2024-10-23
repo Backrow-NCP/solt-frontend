@@ -138,7 +138,8 @@ const BoardForm = ({
     const formData = {
       title: boardTitle,
       content: boardContent,
-      // selectedPlan, // 선택된 플랜 추가
+      planId: selectedPlan?.planId, // 선택된 플랜 추가
+      memberId: getMemberId(),
       boardImages: uploadedFiles.map((file, index) => ({
         fileName: file,
         ord: index,
