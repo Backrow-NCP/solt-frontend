@@ -16,10 +16,20 @@ const apiClient = axios.create({
   withCredentials: true, // 세션 유지 (쿠키 전송)
 });
 
+// 로그인 팝업 열기 함수
+const openLoginPopup = () => {
+  // 팝업을 열도록 하는 로직을 구현
+  const loginPopup = document.getElementById('login-popup');
+  if (loginPopup) {
+    loginPopup.style.display = 'block'; // 팝업 창을 보이게 설정
+  }
+};
+
+
 // 로그아웃 함수
 const handleLogout = () => {
   localStorage.clear(); // 로컬스토리지에 저장된 모든 데이터를 삭제
-  window.location.href = '/login'; // 로그아웃 후 로그인 페이지로 리다이렉트
+  openLoginPopup(); // 로그인 팝업을 열기
 };
 
 // 인터셉터 설정 함수

@@ -21,8 +21,10 @@ import {
 import defaultProfileImage from '../../assets/images/ico/profile.png';
 import Pagination from './Pagination';
 import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
+import { getMemberId } from '../../utils/token/tokenUtils';
+import { getMemberName } from '../../utils/token/tokenMemberName';
 
-const ReplySection = ({ boardId }) => {
+const ReplySection = ({ boardData }) => {
   const [mainInputValue, setMainInputValue] = useState(''); // 댓글 입력 상태
   const [comments, setComments] = useState([]); // 댓글 상태
   const [visibleReplyInputs, setVisibleReplyInputs] = useState({}); // 각 댓글에 대한 답글 입력 가시성 관리
@@ -37,11 +39,18 @@ const ReplySection = ({ boardId }) => {
     page: 1, // 기본값: 1페이지
     size: 5, // 기본값: 6개
   });
+
+  console.log('멤버이름확인용', getMemberName());
+  useEffect(() => {
+    const memberId = getMemberId(); // 현재 로그인된 사용자 ID 가져오기
+  }, []);
+
   useEffect(() => {
     const fetchReplies = async params => {
+      console.log('보드데이터 잘 왔나? 댓글 섹션', boardData);
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/replies/list/${boardId}`,
+          `${process.env.REACT_APP_API_URL}/replies/list/${boardData.boardId}`,
           { params: requestParams } // 페이지는 1, 사이즈는 5로 요청
         );
         const data = response.data;
@@ -64,31 +73,44 @@ const ReplySection = ({ boardId }) => {
     };
 
     fetchReplies(); // 페이지 1로 첫 요청
-  }, [requestParams, boardId]); // boardId가 변경될 때마다 댓글을 새로 가져옴
+  }, [requestParams, boardData.boardId]); // boardId가 변경될 때마다 댓글을 새로 가져옴
 
   const handleMainInputChange = e => {
     setMainInputValue(e.target.value);
   };
 
-  const handleMainSubmit = () => {
+  const handleMainSubmit = async () => {
     if (mainInputValue.trim()) {
       const newReply = {
-        replyId: comments.length + 1,
-        content: mainInputValue,
-        boardId: boardId,
-        member: {
-          memberId: 0,
-          name: '익명',
-          birthYear: '2000-01-01T00:00:00.000Z',
-          gender: true,
-          fileName: 'defaultProfile.jpg',
-        },
-        parentReplyId: null,
-        regDate: new Date().toISOString(),
-        modDate: new Date().toISOString(),
+        content: mainInputValue, // 메인 입력 값으로 설정
+        boardId: boardData.boardId,
+        memberId: getMemberId(), // 적절한 memberId로 설정
+        member: { name: getMemberName() },
+        parentReplyId: null, // 부모 댓글 ID는 null
+        regDate: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Seoul' }),
       };
-      setComments([...comments, newReply]);
-      setMainInputValue(''); // 메인 입력란 초기화
+
+      try {
+        console.log('어떤걸 보내는지 체크용', newReply);
+        const response = await apiClient.post(
+          `${process.env.REACT_APP_API_URL}/replies`,
+          newReply
+        );
+        setComments([
+          ...comments,
+          {
+            ...newReply,
+            replyId: response.data.replyId,
+            regDate: new Date().toISOString(),
+          },
+        ]);
+        setMainInputValue(''); // 메인 입력란 초기화
+        alert('댓글 등록을 완료 했습니다!');
+        // window.location.reload(); // 페이지 새로 고침
+      } catch (error) {
+        console.error('댓글 등록 실패:', error);
+        // 에러 처리 추가 가능
+      }
     }
   };
 
@@ -110,7 +132,7 @@ const ReplySection = ({ boardId }) => {
     const newSubReply = {
       replyId: comments.length + 1, // 고유 ID 생성
       content: replyContent,
-      boardId: boardId,
+      boardId: boardData.boardId,
       member: {
         memberId: 0,
         name: '',
@@ -149,6 +171,7 @@ const ReplySection = ({ boardId }) => {
   // 댓글 렌더링
   const renderComments = size => {
     console.log('댓글 목록:', comments);
+
     const allReplies = comments.map(comment => ({
       ...comment,
       isSubReply: comment.parentReplyId !== null,
@@ -163,15 +186,12 @@ const ReplySection = ({ boardId }) => {
         return (
           <>
             <ReplyItem key={reply.replyId}>
-              <ProfileImage
-                src={defaultProfileImage}
-                alt={`${reply.member.name}의 프로필`}
-              />
+              <ProfileImage src={defaultProfileImage} />
               <ReplyContent>
                 <ReplyMeta>
-                  <ReplyName>{reply.member.name}</ReplyName>{' '}
+                  <ReplyName>{reply.member.name}</ReplyName>
                   {/* 수정 및 삭제 버튼 추가 */}
-                  {reply.member.memberId === 1 && ( // memberId가 1인 경우에만 버튼 표시
+                  {reply.member.memberId === getMemberId() && ( // memberId가 1인 경우에만 버튼 표시
                     <div
                       style={{
                         marginRight: 'auto',
@@ -189,7 +209,8 @@ const ReplySection = ({ boardId }) => {
                     </div>
                   )}
                   <ReplyDate>
-                    {new Date(reply.regDate).toLocaleString()}
+                    {reply.regDate.split('T')[0]}{' '}
+                    {reply.regDate.split('T')[1].slice(0, 5)}
                   </ReplyDate>
                 </ReplyMeta>
 
@@ -379,10 +400,6 @@ const ReplySection = ({ boardId }) => {
     }));
   };
 
-  if (!comments.length) {
-    return <div>댓글이 없습니다.</div>;
-  }
-
   return (
     <ReplyContainer>
       <ReplySubmitContainer className="main-reply-submit">
@@ -398,12 +415,18 @@ const ReplySection = ({ boardId }) => {
 
       <ReplyListContainer>
         {renderComments(pageData.size)} {/* 댓글과 대댓글 렌더링 */}
-        <Pagination
-          pageData={pageData}
-          onPageChange={onPageChange} // 페이지 변경 핸들러
-          onNextGroup={onNextGroup} // 다음 그룹 핸들러
-          onPrevGroup={onPrevGroup} // 이전 그룹 핸들러
-        />
+        {pageData.total === 0 ? ( // 댓글이 없을 경우 메시지 표시
+          <p style={{ textAlign: 'center', margin: '20px 0' }}>
+            첫 댓글을 달아보세요 !
+          </p>
+        ) : (
+          <Pagination
+            pageData={pageData}
+            onPageChange={onPageChange} // 페이지 변경 핸들러
+            onNextGroup={onNextGroup} // 다음 그룹 핸들러
+            onPrevGroup={onPrevGroup} // 이전 그룹 핸들러
+          />
+        )}
       </ReplyListContainer>
     </ReplyContainer>
   );

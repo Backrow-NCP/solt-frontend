@@ -8,9 +8,10 @@ import {
 } from '../../styles/board/boardDetailContainer';
 import TabContainer from './TabContainer';
 import Button from '../Button';
-import axios from 'axios';
 import PlanInfo from '../Plan/PlanInfo';
 import planTime from '../../utils/plan/planTime';
+import apiClient, { setupInterceptors } from '../../config/AxiosConfig';
+import { getMemberId } from '../../utils/token/tokenUtils';
 
 const BoardDetailContainer = ({
   planData,
@@ -26,57 +27,31 @@ const BoardDetailContainer = ({
 }) => {
   const { boardId } = useParams();
   const navigate = useNavigate(); // useNavigate 훅 사용
-  const [isLiked, setIsLiked] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const memberId = getMemberId();
   // console.log('planData 확인용 BDC', places); => null 값 나옴
-
+  const [likeCount, setLikeCount] = useState(boardData.likeCount); // 좋아요 카운트
   const [editPrice, setEditPrice] = useState(0); // 가격 상태 추가
   const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태 추가
   const [selectedDay, setSelectedDay] = useState(1); // 선택된 날짜 상태 추가
   const placesData = planData?.places;
   const [editPlace, setEditPlace] = useState({}); // 추가
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    setupInterceptors(setLoading);
+  }, []);
 
   // 게시물 데이터를 가져오는 useEffect
   useEffect(() => {
-    // const fetchBoardData = async () => {
-    //   try {
-    //     const response = await axios.get('/sampleData.json');
-    //     const data = response.data;
-    //     const boardItem = data.dtoList.find(
-    //       item => item.boardId === parseInt(boardId, 10)
-    //     );
-
-    //     if (boardItem) {
-    //       setBoardData(boardItem);
-    //       setIsLiked(false);
-    //     } else {
-    //       console.log(`게시글 ID ${boardId}에 해당하는 데이터가 없습니다.`);
-    //     }
-    //   } catch (error) {
-    //     console.error('게시글 데이터를 가져오는 중 오류 발생:', error);
-    //   }
-    // };
-
     if (boardId) {
       // fetchBoardData();
     } else {
       console.log('boardId가 undefined입니다.');
     }
   }, [boardId]);
-
-  // 좋아요 핸들러
-  const handleLike = () => {
-    setIsLiked(prevState => {
-      const newLikedState = !prevState;
-      // setBoardData(prevData => ({
-      //   ...prevData,
-      //   likeCount: newLikedState
-      //     ? prevData.likeCount + 1
-      //     : prevData.likeCount - 1,
-      // }));
-      return newLikedState;
-    });
-  };
 
   // 마이페이지로 이동하는 핸들러
   const handleNavigateToMyPage = () => {
@@ -111,10 +86,64 @@ const BoardDetailContainer = ({
     setSelectedDay(index + 1);
   }, []);
 
-  // // console.log('places BDC', places);
-  // console.log('필터링 플레이스 BDC', filteredPlaces);
-  // // console.log('days:', days);
-  // console.log('plan', planData);
+  const handleSaveToMyPage = useCallback(() => {
+    const reqData = {
+      ...planData,
+      places: planData?.places.map(place => {
+        place.placeId = null;
+        return place;
+      }),
+      routes: planData?.routes.map(route => {
+        route.routeId = null;
+        return route;
+      }),
+      themes: planData?.themes.map(theme => theme.themeId),
+    };
+
+    apiClient
+      .post('/plans', reqData)
+      .then(res => {
+        console.log(res);
+        if (res.status >= 200 && res.status < 300) {
+          setShowTooltip(true);
+          setTimeout(() => setShowTooltip(false), 3000); // 3초 후 툴팁 숨기기
+        } else {
+          alert('저장에 실패했습니다. 다시 시도해주세요.');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('저장에 실패했습니다. 다시 시도해주세요.');
+      });
+  }, [planData]);
+
+  useEffect(() => {
+    setLikeCount(boardData.likeCount); // 서버에서 받아온 좋아요 상태 초기화
+  }, [boardData]);
+
+  useEffect(() => {
+    if (boardData) {
+      // 예시로 boardData의 liked 속성을 사용 (수정 필요)
+      setActive(boardData.isLiked); // 게시글의 좋아요 여부에 따라 초기화
+    }
+  }, [boardData]); // boardData가 변경될 때마다 실행
+
+  const handleLike = async () => {
+    try {
+      const response = await apiClient.post('/like', {
+        boardId: boardId,
+        memberId: memberId,
+      });
+
+      if (response.status === 200) {
+        setLikeCount(response.data.likeCount);
+        setActive(!active);
+      }
+    } catch (error) {
+      console.error('좋아요 요청 실패:', error);
+    }
+  };
+
   console.log('보드데이터 테스트중 BDC', boardData);
 
   return (
@@ -149,7 +178,12 @@ const BoardDetailContainer = ({
       </div>
 
       <BottomButtonContainer>
-        <Button size="lg" color="blue" data-tooltip-id="my-tooltip-click">
+        <Button
+          size="lg"
+          color="blue"
+          data-tooltip-id="my-tooltip-click"
+          onClick={handleSaveToMyPage}
+        >
           마이페이지에 저장
         </Button>
         <Tooltip
@@ -178,20 +212,21 @@ const BoardDetailContainer = ({
               </div>
             </>
           }
-          events={['click']}
-          clickable
+          isOpen={showTooltip}
         />
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <HeartStyled
             width={24}
             height={24}
-            active={isLiked}
-            onClick={handleLike}
+            onClick={() => {
+              handleLike(); // 좋아요 처리
+              setActive(prevActive => !prevActive); // active 상태 토글
+            }}
+            active={active}
           />
-          <span style={{ fontSize: '18px' }}>
-            {boardData ? boardData.likeCount : 0}
-          </span>
+
+          <span style={{ fontSize: '18px' }}>{likeCount}</span>
         </div>
       </BottomButtonContainer>
     </DetailWrapper>

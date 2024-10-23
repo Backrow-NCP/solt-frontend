@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -14,40 +13,14 @@ import {
   GlobalStyle,
   OverlayBlack,
 } from '../../styles/board/bestBoardList';
+import defaultImage from '../../assets/images/sample/nonImage.jpg';
+import axios from 'axios';
 
 const BestBoardList = () => {
-  const [items, setItems] = useState([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const url = `${process.env.REACT_APP_API_URL}/board/list`;
-        // const response = await axios.get(url);
-        const response = await axios.get('/sampledata.json');
-        let data = response.data.dtoList;
-
-        // likeCount가 높은 순서로 정렬, likeCount가 같으면 regDate 최신순으로 정렬
-        data = data.sort((a, b) => {
-          if (b.likeCount !== a.likeCount) {
-            return b.likeCount - a.likeCount;
-          }
-          return new Date(b.regDate) - new Date(a.regDate);
-        });
-
-        // 상위 10개의 게시글을 추출
-        let top10Items = data.slice(0, 10);
-        const tenthItem = top10Items[9];
-        top10Items = [tenthItem, ...top10Items.slice(0, 9)];
-
-        setItems(top10Items);
-      } catch (error) {
-        console.error('데이터를 가져오는 중 오류 발생:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const settings = {
     dots: true,
@@ -61,9 +34,48 @@ const BestBoardList = () => {
     prevArrow: <PrevArrow />,
   };
 
-  const handleItemClick = boardId => {
-    navigate(`/board/detail/${boardId}`);
+  // 데이터 가져오기 함수
+  const fetchData = async () => {
+    const params = {
+      page: 1, // 페이지 1
+      size: 10, // 사이즈 5
+    };
+
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/boards/list`,
+        { params }
+      );
+      setItems(response.data.dtoList || []); // dtoList에서 데이터 가져오기
+    } catch (err) {
+      setError(err);
+      console.error('게시글 데이터 가져오기 실패:', err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  // 컴포넌트 마운트 시 데이터 가져오기
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleClick = boardId => {
+    try {
+      navigate(`/board/detail/${boardId}`);
+    } catch (error) {
+      console.error('게시물 데이터를 가져오는 데 실패했습니다:', error);
+    }
+  };
+
+  // 이미지 URL 설정
+  const imageUrl = item =>
+    item.image?.length > 0
+      ? `${process.env.REACT_APP_IMAGE_STORAGE_URL}${item.image[0].fileName}`
+      : defaultImage; // 기본 이미지 설정
+
+  if (loading) return <div>로딩 중...</div>;
+  if (error) return <div>오류 발생: {error.message}</div>;
 
   return (
     <>
@@ -73,16 +85,9 @@ const BestBoardList = () => {
           {items.map((item, index) => (
             <ImageWrapper
               key={item.boardId}
-              onClick={() => handleItemClick(item.boardId)}
+              onClick={() => handleClick(item.boardId)}
             >
-              <Image
-                src={
-                  item.images && item.images.length > 0
-                    ? item.images[0]?.fileName
-                    : '/sampleImage/nonImage.jpg'
-                }
-                alt={`Best post ${index + 1}`}
-              />
+              <Image src={imageUrl(item)} alt={`Best post ${index + 1}`} />
               <OverlayBlack />
               <TextOverlay>
                 <span className="author">
