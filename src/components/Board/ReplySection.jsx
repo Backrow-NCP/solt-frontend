@@ -211,10 +211,7 @@ const ReplySection = ({ boardData }) => {
                       </ReplyDeleteButton>
                     </div>
                   )}
-                  <ReplyDate>
-                    {reply.regDate.split('T')[0]}{' '}
-                    {reply.regDate.split('T')[1].slice(0, 5)}
-                  </ReplyDate>
+                  <ReplyDate>{convertToKST(reply.regDate)}</ReplyDate>
                 </ReplyMeta>
 
                 {isEditing === reply.replyId ? (
@@ -453,5 +450,13 @@ const ReplySection = ({ boardData }) => {
     </ReplyContainer>
   );
 };
+
+function convertToKST(dateString) {
+  const date = new Date(dateString);
+  const offset = 9 * 60; // 한국 시간대는 UTC+9
+  const kstDate = new Date(date.getTime() + offset * 60 * 1000);
+  kstDate.setHours(kstDate.getHours() + 9);
+  return kstDate.toISOString().replace('T', ' ').substring(0, 16);
+}
 
 export default ReplySection;
