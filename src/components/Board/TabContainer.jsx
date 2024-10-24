@@ -106,6 +106,8 @@ const TabContainer = ({
     const lastEndTime = new Date(lastPlace.endTime);
     lastEndTime.setHours(lastEndTime.getHours() + 1);
     newStartTime = lastEndTime.toISOString();
+  } else if (days === null || days.length <= 0) {
+    newStartTime = new Date().toISOString();
   } else {
     const selectedDate = new Date(days[selectedDay - 1]);
     selectedDate.setHours(9, 0, 0, 0);
