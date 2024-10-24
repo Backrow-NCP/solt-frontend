@@ -4,6 +4,7 @@ import { apiNoToken } from '../../config/AxiosConfig'; // apiNoToken 불러오�
 import LoginStyles from '../../styles/auth/login';
 import Button from '../../components/Button';
 import PasswordManagement from './PasswordManagement.jsx';
+import closeIcon from '../../assets/images/ico/btn_close.svg'; // 닫기 아이콘 이미지 불러오기
 
 const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
   const [email, setEmail] = useState('');
@@ -64,7 +65,9 @@ const Login = ({ closePopup, onSignupClick, onFindPasswordClick }) => {
       <LoginStyles />
       <div className="login_popup_overlay">
         <div className="login_popup">
-          <button className="close_button size_xxs pt_gy" onClick={closePopup}>닫기</button>
+          <button className="close_button" onClick={closePopup}>
+            <img src={closeIcon} alt="닫기" className="close_icon" /> {/* 이미지로 닫기 버튼 대체 */}
+          </button>
           <h2>로그인</h2>
           <form className="login_form" onSubmit={handleSubmit}>
             <div className="input_group">

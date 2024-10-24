@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import FindPasswordStyles from '../../styles/auth/findPassword';
 import Button from '../../components/Button';
+import closeIcon from '../../assets/images/ico/btn_close.svg'; // 닫기 아이콘 이미지 불러오기
+
 
 const FindPassword = ({ closePopup, onPasswordResetClick }) => {
   const [email, setEmail] = useState('');
@@ -72,8 +74,8 @@ const FindPassword = ({ closePopup, onPasswordResetClick }) => {
       <FindPasswordStyles /> {/* 글로벌 스타일 적용 */}
       <div className="find_password_popup_overlay">
         <div className="find_password_popup">
-          <button className="close_button size_xxs pt_gy" onClick={closePopup}>
-            닫기
+          <button className="close_button" onClick={closePopup}>
+            <img src={closeIcon} alt="닫기" className="close_icon" /> {/* 이미지로 닫기 버튼 대체 */}
           </button>
           <h2>비밀번호 찾기</h2>
 
