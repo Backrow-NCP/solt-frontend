@@ -56,25 +56,32 @@ function PersonalityResult() {
           description: `${resultData.seasoning} - ${resultData.description}`,
           imageUrl: `https://kr.object.ncloudstorage.com/solt-objectstorage/board/${resultData.image}`,
           link: {
-            mobileWebUrl: 'http://localhost:3000',
-            webUrl: 'http://localhost:3000',
+            mobileWebUrl: 'http://solt.my:8082',
+            webUrl: 'http://solt.my:8082',
           },
         },
         buttons: [
           {
-            title: '자세히 보기',
-            link: {
-              mobileWebUrl: `http://localhost:3000/personalityTest/result/${resultData.resultId}`,
-              webUrl: `http://localhost:3000/personalityTest/result/${resultData.resultId}`,
-            },
-          },
-          {
             title: '나도 해보기',
             link: {
-              mobileWebUrl: 'http://localhost:3000/personalityTest/test',
-              webUrl: 'http://localhost:3000/personalityTest/test',
+              mobileWebUrl: `http://solt.my:8082`,
+              webUrl: `http://solt.my:8082`,
             },
           },
+          // {
+          //   title: '자세히 보기',
+          //   link: {
+          //     mobileWebUrl: `http://solt.my:8082/personalityTest/result/${resultData.resultId}`,
+          //     webUrl: `http://solt.my:8082/personalityTest/result/${resultData.resultId}`,
+          //   },
+          // },
+          // {
+          //   title: '나도 해보기',
+          //   link: {
+          //     mobileWebUrl: 'http://solt.my:8082/personalityTest/test',
+          //     webUrl: 'http://solt.my:8082/personalityTest/test',
+          //   },
+          // },
         ],
       });
     }
@@ -103,7 +110,7 @@ function PersonalityResult() {
   };
 
   const handleShare = () => {
-    const shareLink = 'http://localhost:3000'; // 현재 페이지 링크
+    const shareLink = 'http://solt.my:8082'; // 현재 페이지 링크
     navigator.clipboard.writeText(shareLink).then(() => {
       setShowModal(true); // 링크 복사 후 모달 창 표시
       setTimeout(() => setShowModal(false), 2000); // 2초 후 모달 자동 닫기
@@ -208,11 +215,7 @@ function PersonalityResult() {
             alt="ShareButton"
           />
         </Button>
-        <a
-          id="kakaotalk-sharing-btn"
-          href="javascript:;"
-          style={{ marginLeft: '10px' }}
-        >
+        <a id="kakaotalk-sharing-btn" href="javascript:;">
           <img
             src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
             alt="카카오톡 공유 보내기 버튼"
